@@ -13,6 +13,7 @@ import NFTBalance from "components/NFTBalance";
 import ERC20Transfers from "components/ERC20Transfers";
 import DEX from "components/DEX";
 import Wallet from "components/Wallet";
+import SignIn from "components/SignIn";
 import { Layout, Tabs, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "components/NativeBalance";
@@ -59,6 +60,13 @@ const styles = {
     marginTop: "1em",
     justifyContent: "center",
   },
+  bglogin: {
+    height: "100vh",
+    display: "grid",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundImage: "linear-gradient(90deg, #1ac7fe, #b114fb)",
+  },
 };
 const App = () => {
   const {
@@ -76,87 +84,98 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  return (
-    <Layout style={{ height: "100vh", overflow: "hidden" }}>
-      <Router>
-        <Header style={styles.header}>
-          <div style={{ display: "flex" }}>
-            <Logo />
-            <p className="logotext">Pizza</p>
-          </div>
-          <div style={styles.headerRight}>
-            <Chains />
-            <Account />
-          </div>
-        </Header>
-        <Layout style={{ backgroundColor: "#1f1f1f" }}>
-          <Sider width={"16em"}>
-            <div style={styles.siderBalance}>
-              <Text style={{ fontSize: "15px", margin: "10px" }} strong>
-                Balance
-              </Text>
-              <NativeBalance />
+  if (!isAuthenticated) {
+    return (
+      <Layout className="fade" style={styles.bglogin}>
+        <SignIn />
+      </Layout>
+    );
+  } else {
+    return (
+      <Layout style={{ height: "100vh", overflow: "hidden" }}>
+        <Router>
+          <Header className="fade" style={styles.header}>
+            <div style={{ display: "flex" }}>
+              <Logo />
+              <p className="logotext">Pizza</p>
             </div>
-            <MenuItems />
-          </Sider>
-          <Content id="internal">
-            {authError && (
-              <div style={styles.errorDiv}>
-                <Alert message={authError.message} type="error" closable />
+            <div style={styles.headerRight}>
+              <Chains />
+              <Account />
+            </div>
+          </Header>
+          <Layout className="fade" style={{ backgroundColor: "#1f1f1f" }}>
+            <Sider width={"16em"}>
+              <div style={styles.siderBalance}>
+                <Text style={{ fontSize: "15px", margin: "10px" }} strong>
+                  Balance
+                </Text>
+                <NativeBalance />
               </div>
-            )}
-            <div style={styles.content}>
-              <Switch>
-                <Route path="/wallet">
-                  <Wallet />
-                </Route>
-                <Route path="/1inch">
-                  <div id="floater-dex">
-                    <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
-                      <Tabs.TabPane tab={<span>Ethereum</span>} key="1">
-                        <DEX chain="eth" />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane
-                        tab={<span>Binance Smart Chain</span>}
-                        key="2"
+              <MenuItems />
+            </Sider>
+            <Content id="internal">
+              {authError && (
+                <div style={styles.errorDiv}>
+                  <Alert message={authError.message} type="error" closable />
+                </div>
+              )}
+              <div style={styles.content}>
+                <Switch>
+                  <Route path="/wallet">
+                    <Wallet />
+                  </Route>
+                  <Route path="/1inch">
+                    <div id="floater-dex">
+                      <Tabs
+                        defaultActiveKey="1"
+                        style={{ alignItems: "center" }}
                       >
-                        <DEX chain="bsc" />
+                        <Tabs.TabPane tab={<span>Ethereum</span>} key="1">
+                          <DEX chain="eth" />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane
+                          tab={<span>Binance Smart Chain</span>}
+                          key="2"
+                        >
+                          <DEX chain="bsc" />
+                        </Tabs.TabPane>
+                        <Tabs.TabPane tab={<span>Polygon</span>} key="3">
+                          <DEX chain="polygon" />
+                        </Tabs.TabPane>
+                      </Tabs>
+                    </div>
+                  </Route>
+                  <Route path="/erc20transfers">
+                    <ERC20Transfers />
+                  </Route>
+                  <Route path="/dashboard">
+                    <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
+                      <Tabs.TabPane tab={<span>Tokens</span>} key="1">
+                        <ERC20Balance />
                       </Tabs.TabPane>
-                      <Tabs.TabPane tab={<span>Polygon</span>} key="3">
-                        <DEX chain="polygon" />
+                      <Tabs.TabPane tab={<span>NFTs</span>} key="2">
+                        <NFTBalance />
                       </Tabs.TabPane>
                     </Tabs>
-                  </div>
-                </Route>
-                <Route path="/erc20transfers">
-                  <ERC20Transfers />
-                </Route>
-                <Route path="/dashboard">
-                  <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
-                    <Tabs.TabPane tab={<span>Tokens</span>} key="1">
-                      <ERC20Balance />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab={<span>NFTs</span>} key="2">
-                      <NFTBalance />
-                    </Tabs.TabPane>
-                  </Tabs>
-                </Route>
-                <Route path="/">
-                  <Redirect to="/dashboard" />
-                </Route>
-                <Route path="/home">
-                  <Redirect to="/dashboard" />
-                </Route>
-                <Route path="/nonauthenticated">
-                  <>Please login using the "Authenticate" button</>
-                </Route>
-              </Switch>
-            </div>
-          </Content>
-        </Layout>
-      </Router>
-    </Layout>
-  );
+                  </Route>
+                  <Route path="/">
+                    <Redirect to="/dashboard" />
+                  </Route>
+                  <Route path="/home">
+                    <Redirect to="/dashboard" />
+                  </Route>
+                  <Route path="/nonauthenticated">
+                    <>Please login using the "Authenticate" button</>
+                  </Route>
+                </Switch>
+              </div>
+            </Content>
+          </Layout>
+        </Router>
+      </Layout>
+    );
+  }
 };
 
 export const Logo = () => (

@@ -5,6 +5,7 @@ import MathWallet from "./WalletIcons/MathWallet.svg";
 import TokenPocket from "./WalletIcons/TokenPocket.svg";
 import SafePal from "./WalletIcons/SafePal.svg";
 import TrustWallet from "./WalletIcons/TrustWallet.png";
+import Web3Auth from "./WalletIcons/Web3Auth.svg";
 
 export const connectors = [
   {
@@ -24,6 +25,12 @@ export const connectors = [
     icon: TrustWallet,
     connectorId: "injected",
     priority: 3,
+  },
+  {
+    title: "Web3Auth",
+    icon: Web3Auth,
+    connectorId: "web3auth",
+    priority: 999,
   },
   {
     title: "MathWallet",
