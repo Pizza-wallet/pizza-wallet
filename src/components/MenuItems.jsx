@@ -1,7 +1,12 @@
 import { useLocation } from "react-router";
 import { Menu } from "antd";
 import { NavLink } from "react-router-dom";
-import { SendOutlined, SwapOutlined, LayoutOutlined } from "@ant-design/icons";
+import {
+  SendOutlined,
+  SwapOutlined,
+  LayoutOutlined,
+  UserSwitchOutlined,
+} from "@ant-design/icons";
 
 function MenuItems() {
   const { pathname } = useLocation();
@@ -15,6 +20,7 @@ function MenuItems() {
         height: "100%",
         paddingTop: "10px",
         justifyContent: "center",
+        border: "none",
       }}
       defaultSelectedKeys={[pathname]}
     >
@@ -31,6 +37,11 @@ function MenuItems() {
       <Menu.Item key="/1inch">
         <NavLink to="/1inch">
           <SwapOutlined /> Dex
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="/ERC20Transfers">
+        <NavLink to="/ERC20Transfers">
+          <UserSwitchOutlined /> Transactions
         </NavLink>
       </Menu.Item>
     </Menu>

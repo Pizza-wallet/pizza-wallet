@@ -13,8 +13,8 @@ import { getWrappedNative } from "helpers/networks";
 const styles = {
   card: {
     width: "430px",
-    boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
-    border: "1px solid #e7eaf3",
+    backgroundColor: "rgba(14, 13, 13, 0.3)",
+    border: "none",
     borderRadius: "1rem",
     fontSize: "16px",
     fontWeight: "500",
@@ -186,7 +186,10 @@ function DEX({ chain, customTokens = {} }) {
     <>
       <Card style={styles.card} bodyStyle={{ padding: "18px" }}>
         <Card
-          style={{ borderRadius: "1rem" }}
+          style={{
+            borderRadius: "1rem",
+            backgroundColor: "rgba(14, 13, 13, 0.3)",
+          }}
           bodyStyle={{ padding: "0.8rem" }}
         >
           <div
@@ -252,7 +255,10 @@ function DEX({ chain, customTokens = {} }) {
           <ArrowDownOutlined />
         </div>
         <Card
-          style={{ borderRadius: "1rem" }}
+          style={{
+            borderRadius: "1rem",
+            backgroundColor: "rgba(14, 13, 13, 0.3)",
+          }}
           bodyStyle={{ padding: "0.8rem" }}
         >
           <div

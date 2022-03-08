@@ -16,18 +16,20 @@ const styles = {
     gap: "5px",
   },
   card: {
-    boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
-    border: "1px solid #e7eaf3",
+    // boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
+    border: "none",
     borderRadius: "1rem",
     width: "450px",
     fontSize: "16px",
     fontWeight: "500",
+    marginTop: "-3em",
   },
 };
 
 function Wallet() {
   return (
     <Card
+      className="floater"
       style={styles.card}
       title={
         <div style={styles.header}>

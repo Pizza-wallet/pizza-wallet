@@ -10,6 +10,7 @@ import Account from "components/Account/Account";
 import Chains from "components/Chains";
 import ERC20Balance from "components/ERC20Balance";
 import NFTBalance from "components/NFTBalance";
+import ERC20Transfers from "components/ERC20Transfers";
 import DEX from "components/DEX";
 import Wallet from "components/Wallet";
 import { Layout, Tabs, Alert } from "antd";
@@ -25,7 +26,6 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     fontFamily: "Roboto, sans-serif",
-    color: "#041836",
     marginTop: "130px",
     padding: "10px",
   },
@@ -36,9 +36,9 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     fontFamily: "Roboto, sans-serif",
-    borderBottom: "2px solid rgba(0, 0, 0, 0.06)",
+    // borderBottom: "2px solid rgba(0, 0, 0, 0.06)",
     padding: "0 10px",
-    boxShadow: "0 1px 10px rgb(151 164 175 / 10%)",
+    // boxShadow: "0 1px 10px rgb(151 164 175 / 10%)",
   },
   headerRight: {
     display: "flex",
@@ -46,6 +46,18 @@ const styles = {
     alignItems: "center",
     fontSize: "15px",
     fontWeight: "600",
+  },
+  siderBalance: {
+    margin: "15px",
+    fontSize: "30px",
+    borderRadius: "1em",
+    backgroundColor: "#141414",
+  },
+  errorDiv: {
+    width: "100%",
+    display: "flex",
+    marginTop: "1em",
+    justifyContent: "center",
   },
 };
 const App = () => {
@@ -65,36 +77,21 @@ const App = () => {
   }, [isAuthenticated, isWeb3Enabled]);
 
   return (
-    <Layout style={{ height: "100vh", overflow: "auto" }}>
+    <Layout style={{ height: "100vh", overflow: "hidden" }}>
       <Router>
         <Header style={styles.header}>
           <div style={{ display: "flex" }}>
             <Logo />
-            <p
-              style={{
-                fontSize: "4em",
-                margin: "15px",
-                fontFamily: "Lobster Two",
-              }}
-              className="logotext"
-            >
-              Pizza
-            </p>
+            <p className="logotext">Pizza</p>
           </div>
           <div style={styles.headerRight}>
             <Chains />
             <Account />
           </div>
         </Header>
-        <Layout>
+        <Layout style={{ backgroundColor: "#1f1f1f" }}>
           <Sider width={"16em"}>
-            <div
-              style={{
-                marginBottom: "5px",
-                fontSize: "30px",
-                bgcolor: "#434343",
-              }}
-            >
+            <div style={styles.siderBalance}>
               <Text style={{ fontSize: "15px", margin: "10px" }} strong>
                 Balance
               </Text>
@@ -102,15 +99,9 @@ const App = () => {
             </div>
             <MenuItems />
           </Sider>
-          <Content>
+          <Content id="internal">
             {authError && (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
+              <div style={styles.errorDiv}>
                 <Alert message={authError.message} type="error" closable />
               </div>
             )}
@@ -120,20 +111,25 @@ const App = () => {
                   <Wallet />
                 </Route>
                 <Route path="/1inch">
-                  <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
-                    <Tabs.TabPane tab={<span>Ethereum</span>} key="1">
-                      <DEX chain="eth" />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane
-                      tab={<span>Binance Smart Chain</span>}
-                      key="2"
-                    >
-                      <DEX chain="bsc" />
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab={<span>Polygon</span>} key="3">
-                      <DEX chain="polygon" />
-                    </Tabs.TabPane>
-                  </Tabs>
+                  <div id="floater-dex">
+                    <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
+                      <Tabs.TabPane tab={<span>Ethereum</span>} key="1">
+                        <DEX chain="eth" />
+                      </Tabs.TabPane>
+                      <Tabs.TabPane
+                        tab={<span>Binance Smart Chain</span>}
+                        key="2"
+                      >
+                        <DEX chain="bsc" />
+                      </Tabs.TabPane>
+                      <Tabs.TabPane tab={<span>Polygon</span>} key="3">
+                        <DEX chain="polygon" />
+                      </Tabs.TabPane>
+                    </Tabs>
+                  </div>
+                </Route>
+                <Route path="/erc20transfers">
+                  <ERC20Transfers />
                 </Route>
                 <Route path="/dashboard">
                   <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
