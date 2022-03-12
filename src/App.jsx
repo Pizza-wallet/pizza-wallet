@@ -65,7 +65,7 @@ const styles = {
     display: "grid",
     alignItems: "center",
     justifyContent: "center",
-    backgroundImage: "linear-gradient(90deg, #1ac7fe, #b114fb)",
+    backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
   },
 };
 const App = () => {

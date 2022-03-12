@@ -161,13 +161,13 @@
   transition: opacity 300ms linear;
 }
 
-/* .glass-card {
+.glass-card {
   background: rgba(14, 13, 13, 0.35);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.8);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  border-radius: 5em;
-} */
+  border-radius: 2em;
+}
 
 html,
 body {

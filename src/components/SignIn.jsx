@@ -1,19 +1,35 @@
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
-import { Spin, Dropdown, Button, Menu, Alert } from "antd";
+import { Spin, Dropdown, Button, Menu } from "antd";
+import Text from "antd/lib/typography/Text";
 import { DownOutlined } from "@ant-design/icons";
-// import LoginChain from "./Chains/LoginChain";
+import { connectors } from "./Account/config";
+import apple from "./Account/WalletIcons/apple.svg";
+import google from "./Account/WalletIcons/google.svg";
+import twitter from "./Account/WalletIcons/twitter.svg";
+import facebook from "./Account/WalletIcons/facebook.svg";
+import github from "./Account/WalletIcons/github.svg";
 import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
 // import Logo from "./Account/WalletIcons/Web3Auth.svg";
 import { useState, useEffect } from "react";
 
 const styles = {
+  account: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  web3: {
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "center",
+    width: "350px",
+    height: "450px",
+  },
   card: {
-    width: "250px",
-    height: "250px",
-    backgroundColor: "#434343",
-    borderRadius: "20px",
+    width: "350px",
+    height: "450px",
     display: "flex",
     flexDirection: "column",
     padding: "20px",
@@ -22,8 +38,17 @@ const styles = {
   },
   topdiv: {
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  socialicons: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    paddingBottom: "1em",
+    cursor: "pointer",
   },
   buttonCard: {
     display: "flex",
@@ -36,9 +61,10 @@ const styles = {
     borderRadius: "20px",
     borderWidth: "0px",
     color: "white",
-    backgroundImage: "linear-gradient(90deg, #0364ff, #1ac7fe)",
+    backgroundImage: "linear-gradient(90deg, #0364ff, #1eb7ef)",
     width: "100%",
     cursor: "pointer",
+    fontWeight: "600",
   },
   green: {
     color: "green",
@@ -65,6 +91,24 @@ const styles = {
     border: "2px solid rgb(231, 234, 243)",
     borderRadius: "12px",
     margin: "12px",
+  },
+  icon: {
+    alignSelf: "center",
+    fill: "rgb(40, 13, 95)",
+    flexShrink: "0",
+    marginBottom: "8px",
+    height: "30px",
+  },
+  connector: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    height: "auto",
+    justifyContent: "center",
+    marginLeft: "auto",
+    marginRight: "auto",
+    padding: "20px 5px",
+    cursor: "pointer",
   },
 };
 
@@ -125,36 +169,94 @@ export default function SignIn() {
       provider: "web3Auth",
       clientId:
         "BAlJwJl_Lq6hQodeCZZclImL8BGkXmE0rUxXXUvCzk38nRAu--EOTPAWueiAVkdBmj6tK2YPAYcR2WHEe4x5N1U",
-      chainId: `${chain}`,
+      chainId: `${chain}` || "0x2a",
       appLogo: "pizza.svg",
     });
   };
 
   return (
-    <div style={styles.card}>
-      <div style={styles.topdiv}>
-        <img style={styles.img} src="pizza.svg" width={80} height={80} />
-      </div>
-      <div style={styles.topdiv}>
-        <Dropdown overlay={menu} trigger={["click"]}>
-          <Button
-            key={selected?.key}
-            icon={selected?.icon}
-            style={{ ...styles.button, ...styles.item }}
+    <div style={styles.account}>
+      <div className="glass-card" style={styles.card}>
+        <div style={styles.topdiv}>
+          <div
+            style={{
+              marginTop: "-10px",
+              paddingBottom: "10px",
+              display: "flex",
+              justifyContent: "center",
+              fontWeight: "700",
+              fontSize: "20px",
+            }}
           >
-            <span style={{ marginLeft: "5px" }}>
-              {selected?.value || "Choose chain"}
-            </span>
-            <DownOutlined />
-          </Button>
-        </Dropdown>
+            <Spin spinning={isAuthenticating}> Social Login </Spin>
+          </div>
+          <img style={styles.img} src="pizza.svg" width={80} height={80} />
+        </div>
+        <div style={styles.topdiv}>
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <Button
+              key={selected?.key}
+              icon={selected?.icon}
+              style={{ ...styles.button, ...styles.item }}
+            >
+              <span style={{ marginLeft: "5px" }}>
+                {selected?.value || "Choose chain"}
+              </span>
+              <DownOutlined />
+            </Button>
+          </Dropdown>
+        </div>
+        {authError && alert(JSON.stringify(authError.message))}
+        <div style={styles.buttonCard}>
+          <div style={styles.socialicons} onClick={handleCustomLogin}>
+            <img src={apple} alt="logo" />
+            <img src={google} alt="logo" />
+            <img src={twitter} alt="logo" />
+            <img src={facebook} alt="logo" />
+            <img src={github} alt="logo" />
+            <Text>and more</Text>
+          </div>
+          <button style={styles.loginButton} onClick={handleCustomLogin}>
+            Social Login with Web3Auth
+          </button>
+        </div>
       </div>
-      {isAuthenticating && <Spin />}
-      {authError && <Alert warning>{JSON.stringify(authError.message)}</Alert>}
-      <div style={styles.buttonCard}>
-        <button style={styles.loginButton} onClick={handleCustomLogin}>
-          Login with Web3Auth
-        </button>
+      <span style={{ fontSize: "3em", padding: "3em" }}>OR</span>
+      <div className="glass-card" style={styles.web3}>
+        <div
+          style={{
+            padding: "10px",
+            display: "flex",
+            justifyContent: "center",
+            fontWeight: "700",
+            fontSize: "20px",
+          }}
+        >
+          <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+          {connectors.map(({ title, icon, connectorId }, key) => (
+            <div
+              style={styles.connector}
+              key={key}
+              onClick={async () => {
+                try {
+                  await authenticate({
+                    provider: connectorId,
+                    signingMessage: "Pizza Authentication",
+                  });
+                  window.localStorage.setItem("connectorId", connectorId);
+                } catch (e) {
+                  console.log(e);
+                  alert(e.message);
+                }
+              }}
+            >
+              <img src={icon} alt={title} style={styles.icon} />
+              <Text style={{ fontSize: "14px" }}>{title}</Text>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
