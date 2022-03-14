@@ -26,6 +26,12 @@ export const connectors = [
     priority: 3,
   },
   {
+    title: "Coinbase Wallet",
+    icon: TrustWallet,
+    connectorId: "Walletlink",
+    priority: 4,
+  },
+  {
     title: "MathWallet",
     icon: MathWallet,
     connectorId: "injected",

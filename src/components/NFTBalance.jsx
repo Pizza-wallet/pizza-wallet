@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMoralis, useNFTBalances } from "react-moralis";
-import { Card, Image, Tooltip, Modal, Input, Skeleton } from "antd";
+import { Card, Image, Tooltip, Modal, Input, Skeleton, Empty } from "antd";
 import {
   FileSearchOutlined,
   SendOutlined,
@@ -75,6 +75,9 @@ function NFTBalance() {
       <h1>🖼 NFT Balances</h1>
       <div style={styles.NFTs}>
         <Skeleton active loading={!NFTBalances?.result}>
+          {!NFTBalances?.result.length && (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          )}
           {NFTBalances?.result &&
             NFTBalances.result.map((nft, index) => {
               //Verify Metadata
