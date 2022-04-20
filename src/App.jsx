@@ -12,6 +12,7 @@ import ERC20Balance from "components/ERC20Balance";
 import NFTBalance from "components/NFTBalance";
 import ERC20Transfers from "components/ERC20Transfers";
 import DEX from "components/DEX";
+import Bridge from "components/Bridge";
 import Wallet from "components/Wallet";
 import SignIn from "components/SignIn";
 import { Layout, Tabs, Alert } from "antd";
@@ -158,6 +159,9 @@ const App = () => {
                         <NFTBalance />
                       </Tabs.TabPane>
                     </Tabs>
+                  </Route>
+                  <Route path="/bridge">
+                    <Bridge />
                   </Route>
                   <Route path="/">
                     <Redirect to="/dashboard" />

@@ -18,11 +18,11 @@ const styles = {
     alignItems: "center",
     width: "fit-content",
     borderRadius: "12px",
-    backgroundColor: "rgb(244, 244, 244)",
+    backgroundImage: "linear-gradient(90deg, #0364ff, #1eb7ef)",
     cursor: "pointer",
   },
   text: {
-    color: "#21BF96",
+    color: "#ffffff",
     cursor: "pointer",
   },
   connector: {
@@ -61,7 +61,7 @@ function Account() {
     return (
       <>
         <div onClick={() => setIsAuthModalVisible(true)}>
-          <p style={styles.text}>Authenticate</p>
+          <p style={styles.text}>Connect Wallet</p>
         </div>
         <Modal
           visible={isAuthModalVisible}

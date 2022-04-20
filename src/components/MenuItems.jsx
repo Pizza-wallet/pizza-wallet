@@ -6,6 +6,7 @@ import {
   SwapOutlined,
   LayoutOutlined,
   UserSwitchOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 
 function MenuItems() {
@@ -42,6 +43,11 @@ function MenuItems() {
       <Menu.Item key="/ERC20Transfers">
         <NavLink to="/ERC20Transfers">
           <UserSwitchOutlined /> Transactions
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="/bridge">
+        <NavLink to="/bridge">
+          <ArrowRightOutlined rotate="-45" /> Bridge
         </NavLink>
       </Menu.Item>
     </Menu>

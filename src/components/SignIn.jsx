@@ -4,7 +4,8 @@ import "../style.css";
 import { Spin, Dropdown, Button, Menu } from "antd";
 import Text from "antd/lib/typography/Text";
 import { DownOutlined } from "@ant-design/icons";
-import { connectors } from "./Account/config";
+// import { connectors } from "./Account/config";
+import Account from "components/Account/Account";
 import apple from "./Account/WalletIcons/apple.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
@@ -29,7 +30,7 @@ const styles = {
   },
   card: {
     width: "350px",
-    height: "450px",
+    height: "520px",
     display: "flex",
     flexDirection: "column",
     padding: "20px",
@@ -46,7 +47,7 @@ const styles = {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
-    alignItems: "center",
+    alignItems: "end",
     paddingBottom: "1em",
     cursor: "pointer",
   },
@@ -188,7 +189,7 @@ export default function SignIn() {
               fontSize: "20px",
             }}
           >
-            <Spin spinning={isAuthenticating}> Social Login </Spin>
+            <Spin spinning={isAuthenticating}> Login </Spin>
           </div>
           <img style={styles.img} src="pizza.svg" width={80} height={80} />
         </div>
@@ -207,22 +208,28 @@ export default function SignIn() {
           </Dropdown>
         </div>
         {authError && alert(JSON.stringify(authError.message))}
-        <div style={styles.buttonCard}>
-          <div style={styles.socialicons} onClick={handleCustomLogin}>
-            <img src={apple} alt="logo" />
-            <img src={google} alt="logo" />
-            <img src={twitter} alt="logo" />
-            <img src={facebook} alt="logo" />
-            <img src={github} alt="logo" />
-            <Text>and more</Text>
+        <div>
+          <div style={styles.buttonCard}>
+            <div style={styles.socialicons} onClick={handleCustomLogin}>
+              <img src={apple} alt="logo" />
+              <img src={google} alt="logo" />
+              <img src={twitter} alt="logo" />
+              <img src={facebook} alt="logo" />
+              <img src={github} alt="logo" />
+              <Text>and more</Text>
+            </div>
+            <button style={styles.loginButton} onClick={handleCustomLogin}>
+              Social Login with Web3Auth
+            </button>
           </div>
-          <button style={styles.loginButton} onClick={handleCustomLogin}>
-            Social Login with Web3Auth
+          <span style={{ fontSize: "1em", fontWeight: "600" }}>OR</span>
+          <button style={styles.loginButton}>
+            <Account />
           </button>
         </div>
       </div>
-      <span style={{ fontSize: "3em", padding: "3em" }}>OR</span>
-      <div className="glass-card" style={styles.web3}>
+
+      {/* <div className="glass-card" style={styles.web3}>
         <div
           style={{
             padding: "10px",
@@ -257,7 +264,7 @@ export default function SignIn() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
