@@ -7,6 +7,7 @@ import {
   LayoutOutlined,
   UserSwitchOutlined,
   ArrowRightOutlined,
+  DollarOutlined,
 } from "@ant-design/icons";
 
 function MenuItems() {
@@ -48,6 +49,11 @@ function MenuItems() {
       <Menu.Item key="/bridge">
         <NavLink to="/bridge">
           <ArrowRightOutlined rotate="-45" /> Bridge
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="/onramp">
+        <NavLink to="/Onramp">
+          <DollarOutlined /> Fiat Onramp
         </NavLink>
       </Menu.Item>
     </Menu>

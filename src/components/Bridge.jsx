@@ -26,7 +26,7 @@ const styles = {
   },
 };
 
-function DEX() {
+function Bridge() {
   return (
     <>
       <Card style={styles.card} bodyStyle={{ padding: "18px" }}>
@@ -50,4 +50,4 @@ function DEX() {
   );
 }
 
-export default DEX;
+export default Bridge;
