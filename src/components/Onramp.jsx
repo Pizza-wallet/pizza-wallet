@@ -17,7 +17,7 @@ function Ramper() {
 
   return (
     <iframe
-      src="https://widget.onramper.com?defaultCrypto=ETH&apiKey=pk_test_x5M_5fdXzn1fxK04seu0JgFjGsu7CH8lOvS9xZWzuSM0"
+      src="https://widget.onramper.com?defaultCrypto=ETH&color=d79e00&apiKey=pk_test_x5M_5fdXzn1fxK04seu0JgFjGsu7CH8lOvS9xZWzuSM0"
       title="ramper"
       frameBorder="no"
       allow="accelerometer; autoplay; camera; gyroscope; payment;"
@@ -27,7 +27,8 @@ function Ramper() {
         boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
         border: "1px solid #e7eaf3",
         borderRadius: "1rem",
-        color: "black",
+        marginTop: "-5em",
+        filter: "invert(90%)",
       }}
     />
   );
