@@ -173,6 +173,7 @@ export default function SignIn() {
       chainId: `${chain}` || "0x2a",
       appLogo: "pizza.svg",
     });
+    window.localStorage.setItem("connectorId", "web3Auth");
   };
 
   return (
