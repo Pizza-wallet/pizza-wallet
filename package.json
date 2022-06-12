@@ -1,6 +1,7 @@
 {
   "name": "pizza-wallet",
   "version": "0.1.0",
+  "homepage": ".",
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@coinbase/wallet-sdk": "^3.0.4",

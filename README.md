@@ -10,8 +10,9 @@
     - [Requirements](#requirements)
     - [Install all dependencies](#install-all-dependencies)
     - [Create a Moralis Testnet Server](#create-a-moralis-testnet-server)
-    - [Run App](#run-app)
+    - [Start a Development Server](#start-the-webpack-development-server)
     - [Build App](#build-app)
+- [Contribute](#contribute)
 
 ## Description
 
@@ -68,8 +69,15 @@ yarn install
 ```sh
 export REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL] && export REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
 ```
+or
+2.4 Create a .env file
+2.5 Edit the .env file
+```shell
+REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL]
+REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
+```
 
-### Run App:
+### Start the Webpack Development Server:
 
 ```sh
 yarn run
@@ -80,5 +88,11 @@ or
 ### Build App:
 
 ```sh
-yarn build && yarn cache
+yarn build
 ```
+
+## Contribute
+
+We love builders! Here's how you can help:
+- Bug fixer - Check github's [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues) to see what needs to be fixed.
+- The dev - Want to help build new features? Check our board on [ClickUp](https://sharing.clickup.com/36638099/b/h/7-36638099-2/26df81f54e08e7a) and start building!
