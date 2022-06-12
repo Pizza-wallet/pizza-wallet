@@ -69,9 +69,9 @@ yarn install
 ```sh
 export REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL] && export REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
 ```
-or
-2.4 Create a .env file
-2.5 Edit the .env file
+or <br>
+2.4 Create a .env file <br>
+2.5 Edit the .env file <br>
 ```shell
 REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL]
 REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
