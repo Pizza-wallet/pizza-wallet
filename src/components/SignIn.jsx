@@ -169,7 +169,7 @@ export default function SignIn() {
     await authenticate({
       provider: "web3Auth",
       clientId:
-        "BAlJwJl_Lq6hQodeCZZclImL8BGkXmE0rUxXXUvCzk38nRAu--EOTPAWueiAVkdBmj6tK2YPAYcR2WHEe4x5N1U",
+        "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
       chainId: `${chain}` || "0x2a",
       appLogo: "pizza.svg",
     });
