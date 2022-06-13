@@ -80,7 +80,7 @@ REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
 ### Start the Webpack Development Server:
 
 ```sh
-yarn run
+yarn start
 ```
 
 or
