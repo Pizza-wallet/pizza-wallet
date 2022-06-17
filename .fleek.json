@@ -3,6 +3,6 @@
       "image": "node:lts-alpine3.16",
       "command": "apk add --no-cache git openssh && yarn install && yarn run build",
       "publicDir": "build",
-      "baseDir": "src"
+      "baseDir": "./"
     }
 }
