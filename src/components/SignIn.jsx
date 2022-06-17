@@ -223,10 +223,10 @@ export default function SignIn() {
               Social Login with Web3Auth
             </button>
           </div>
-          <span style={{ fontSize: "1em", fontWeight: "600" }}>OR</span>
+          {/* <span style={{ fontSize: "1em", fontWeight: "600" }}>OR</span>
           <button style={styles.loginButton}>
             <Account />
-          </button>
+          </button> */}
         </div>
       </div>
 
