@@ -1,7 +1,7 @@
 {
     "build": {
       "image": "node:lts-alpine3.16",
-      "command": "yarn install && yarn run build",
+      "command": "apt install git && yarn install && yarn run build",
       "publicDir": "build",
       "baseDir": "src"
     }
