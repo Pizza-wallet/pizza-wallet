@@ -60,8 +60,6 @@ function Account() {
   if (!isAuthenticated || !account) {
     return (
       <>
-        {/* TODO: Social login with web3 auth component here? */}
-
         <div onClick={() => setIsAuthModalVisible(true)}>
           <p style={styles.text}>Connect Wallet</p>
         </div>
@@ -119,6 +117,22 @@ function Account() {
 
   return (
     <>
+      {/* <button
+        onClick={async () => {
+          try {
+            console.log("change")
+            await web3._provider.request({
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x38" }],
+            });
+            console.log("changed")
+          } catch (e) {
+            console.error(e);
+          }
+        }}
+      >
+        Hi
+      </button> */}
       <div style={styles.account} onClick={() => setIsModalVisible(true)}>
         <p style={{ marginRight: "5px", ...styles.text }}>
           {getEllipsisTxt(account, 6)}
