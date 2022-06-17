@@ -3,6 +3,6 @@
       "image": "node:lts-alpine3.16",
       "command": "yarn install && yarn run build",
       "publicDir": "build",
-      "baseDir": "app"
+      "baseDir": "src"
     }
 }
