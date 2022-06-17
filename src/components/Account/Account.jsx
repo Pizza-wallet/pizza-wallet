@@ -60,31 +60,65 @@ function Account() {
   if (!isAuthenticated || !account) {
     return (
       <>
+        {/* TODO: Social login with web3 auth component here? */}
+
         <div onClick={() => setIsAuthModalVisible(true)}>
           <p style={styles.text}>Connect Wallet</p>
         </div>
+        <Modal
+          visible={isAuthModalVisible}
+          footer={null}
+          onCancel={() => setIsAuthModalVisible(false)}
+          bodyStyle={{
+            padding: "15px",
+            fontSize: "17px",
+            fontWeight: "500",
+          }}
+          style={{ fontSize: "16px", fontWeight: "500" }}
+          width="340px"
+        >
+          <div
+            style={{
+              padding: "10px",
+              display: "flex",
+              justifyContent: "center",
+              fontWeight: "700",
+              fontSize: "20px",
+            }}
+          >
+            <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+            {connectors.map(({ title, icon, connectorId }, key) => (
+              <div
+                style={styles.connector}
+                key={key}
+                onClick={async () => {
+                  try {
+                    await authenticate({
+                      provider: connectorId,
+                      signingMessage: "Pizza Authentication",
+                    });
+                    window.localStorage.setItem("connectorId", connectorId);
+                    setIsAuthModalVisible(false);
+                  } catch (e) {
+                    console.log(e);
+                    <Alert message={e.message} type="warning" closable />;
+                  }
+                }}
+              >
+                <img src={icon} alt={title} style={styles.icon} />
+                <Text style={{ fontSize: "14px" }}>{title}</Text>
+              </div>
+            ))}
+          </div>
+        </Modal>
       </>
     );
   }
 
   return (
     <>
-      {/* <button
-        onClick={async () => {
-          try {
-            console.log("change")
-            await web3._provider.request({
-              method: "wallet_switchEthereumChain",
-              params: [{ chainId: "0x38" }],
-            });
-            console.log("changed")
-          } catch (e) {
-            console.error(e);
-          }
-        }}
-      >
-        Hi
-      </button> */}
       <div style={styles.account} onClick={() => setIsModalVisible(true)}>
         <p style={{ marginRight: "5px", ...styles.text }}>
           {getEllipsisTxt(account, 6)}
