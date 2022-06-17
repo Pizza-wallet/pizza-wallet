@@ -4,15 +4,12 @@ import "../style.css";
 import { Spin, Dropdown, Button, Menu } from "antd";
 import Text from "antd/lib/typography/Text";
 import { DownOutlined } from "@ant-design/icons";
-// import { connectors } from "./Account/config";
-import Account from "components/Account/Account";
 import apple from "./Account/WalletIcons/apple.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
 import facebook from "./Account/WalletIcons/facebook.svg";
 import github from "./Account/WalletIcons/github.svg";
 import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
-// import Logo from "./Account/WalletIcons/Web3Auth.svg";
 import { useState, useEffect } from "react";
 
 const styles = {
@@ -22,9 +19,6 @@ const styles = {
     alignItems: "center",
   },
   web3: {
-    // display: "flex",
-    // justifyContent: "center",
-    // alignItems: "center",
     width: "350px",
     height: "450px",
   },
@@ -223,49 +217,8 @@ export default function SignIn() {
               Social Login with Web3Auth
             </button>
           </div>
-          <span style={{ fontSize: "1em", fontWeight: "600" }}>OR</span>
-          <button style={styles.loginButton}>
-            <Account />
-          </button>
         </div>
       </div>
-
-      {/* <div className="glass-card" style={styles.web3}>
-        <div
-          style={{
-            padding: "10px",
-            display: "flex",
-            justifyContent: "center",
-            fontWeight: "700",
-            fontSize: "20px",
-          }}
-        >
-          <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          {connectors.map(({ title, icon, connectorId }, key) => (
-            <div
-              style={styles.connector}
-              key={key}
-              onClick={async () => {
-                try {
-                  await authenticate({
-                    provider: connectorId,
-                    signingMessage: "Pizza Authentication",
-                  });
-                  window.localStorage.setItem("connectorId", connectorId);
-                } catch (e) {
-                  console.log(e);
-                  alert(e.message);
-                }
-              }}
-            >
-              <img src={icon} alt={title} style={styles.icon} />
-              <Text style={{ fontSize: "14px" }}>{title}</Text>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 }
