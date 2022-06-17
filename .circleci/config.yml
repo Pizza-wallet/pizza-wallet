@@ -7,7 +7,6 @@ orbs:
   # Orbs reduce the amount of configuration required for common tasks.
   # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@4.7
-  heroku: circleci/heroku@0.0.10 # Invoke the Heroku orb
 
 jobs:
   # Below is the definition of your job to build and test your app, you can rename and customize it as you want.
@@ -16,7 +15,7 @@ jobs:
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # A list of available CircleCI Docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/node
     docker:
-      - image: cimg/node:16.15
+      - image: node:lts-alpine3.16
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
@@ -24,28 +23,19 @@ jobs:
       - checkout
       # Next, the node orb's install-packages step will install the dependencies from a package.json.
       # The orb install-packages step will also automatically cache them for faster future runs.
+      - run:
+          name: Install git and openssh & Add environment variables
+          command: apk add --no-cache git openssh && echo $REACT_APP_MORALIS_APPLICATION_ID $REACT_APP_MORALIS_SERVER_URL
       - node/install-packages:
           # If you are using yarn, change the line below from "npm" to "yarn"
           pkg-manager: yarn
-      - run:
-          name: Add environment variables
-          command: echo $REACT_APP_MORALIS_APPLICATION_ID $REACT_APP_MORALIS_SERVER_URL
-          # No tests written yet
+      # No tests written yet
 
 workflows:
   # Below is the definition of your workflow.
   # Inside the workflow, you provide the jobs you want to run, e.g this workflow runs the build-and-test job above.
   # CircleCI will run this workflow on every commit.
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
-  heroku-deploy:
-    jobs:
-      - build-and-test
-      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
-          requires:
-            - build-and-test
-          filters:
-            branches:
-              only: sequential-branch-filter
   ci:
     jobs:
       - build-and-test
