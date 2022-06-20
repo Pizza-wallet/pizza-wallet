@@ -41,6 +41,11 @@ function MenuItems() {
           <SwapOutlined /> Dex
         </NavLink>
       </Menu.Item>
+      <Menu.Item key="/dexv2">
+        <NavLink to="/dexv2">
+          <SwapOutlined /> Dex v2
+        </NavLink>
+      </Menu.Item>
       <Menu.Item key="/ERC20Transfers">
         <NavLink to="/ERC20Transfers">
           <UserSwitchOutlined /> Transactions

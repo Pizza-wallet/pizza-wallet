@@ -12,6 +12,7 @@ import ERC20Balance from "components/ERC20Balance";
 import NFTBalance from "components/NFTBalance";
 import ERC20Transfers from "components/ERC20Transfers";
 import DEX from "components/DEX";
+import DEXv2 from "components/DEXv2";
 import Bridge from "components/Bridge";
 import Onramp from "components/Onramp";
 import Wallet from "components/Wallet";
@@ -144,6 +145,9 @@ const App = () => {
                         </Tabs.TabPane>
                       </Tabs>
                     </div>
+                  </Route>
+                  <Route path="/dexv2">
+                    <DEXv2 />
                   </Route>
                   <Route path="/erc20transfers">
                     <ERC20Transfers />

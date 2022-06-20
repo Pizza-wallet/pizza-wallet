@@ -31,19 +31,20 @@ function Bridge() {
     <>
       <Card style={styles.card} bodyStyle={{ padding: "18px" }}>
         <Text>
-          The Pizza Wallet Bridge is still in an experimental stage and hence is
-          being developed in isolation from the rest of the project.
+          The Pizza Wallet DEX v2, that allows users to do both swaps and cross
+          chain swaps, is still in an experimental stage and hence is being
+          developed in isolation from the rest of the project.
           <br />
-          Click the button below to visit the Bridge.
+          Click the button below to visit the DEX v2.
         </Text>
         <Button
           style={styles.button}
           type="primary"
-          href="https://pizzabridge.vercel.app/"
+          href="https://pizza-rubic.on.fleek.co/"
           target="blank"
           rel="noopener noreferrer"
         >
-          Bridge
+          DEX v2
         </Button>
       </Card>
     </>
