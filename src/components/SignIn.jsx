@@ -14,6 +14,8 @@ import github from "./Account/WalletIcons/github.svg";
 import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
 // import Logo from "./Account/WalletIcons/Web3Auth.svg";
 import { useState, useEffect } from "react";
+import { Web3AuthCore } from "@web3auth/core";
+import { CHAIN_NAMESPACES, ADAPTER_EVENTS } from "@web3auth/base";
 
 const styles = {
   account: {
@@ -143,11 +145,43 @@ export default function SignIn() {
 
   console.log("chain", chain);
 
+  function subscribeAuthEvents(web3auth) {
+    web3auth.on(ADAPTER_EVENTS.CONNECTED, (data) => {
+      console.log("Yeah!, you are successfully logged in", data);
+    });
+
+    web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
+      console.log("connecting");
+    });
+
+    web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+      console.log("disconnected");
+    });
+
+    web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
+      console.log("some error or user have cancelled login request", error);
+    });
+  }
+
   useEffect(() => {
     if (!chain) return null;
     const newSelected = menuItems.find((item) => item.key === chain);
     setSelected(newSelected);
     console.log("current chainId: ", chain);
+
+    const web3authCore = new Web3AuthCore({
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.EIP155, // This should be selected based on chain selected
+        chainId: `${chain}` || "0x2a",
+      },
+      authMode: "DAPP",
+      clientId:
+        "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+    });
+
+    // Initialize custom login each time the chain changes
+    subscribeAuthEvents(web3authCore);
+    web3authCore.init();
   }, [chain]);
 
   const handleMenuClick = (e) => {
