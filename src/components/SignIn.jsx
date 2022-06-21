@@ -345,6 +345,40 @@ export default function SignIn() {
             alt="logo"
           />
         </div>
+        <div>
+          <h5>EMAIL</h5>
+          <input
+            style={{
+              borderRadius: "18px",
+              background: "#423e3e",
+              padding: "20px",
+              width: "100%",
+              height: "15px",
+            }}
+            type="text"
+            placeHolder="Email"
+          />
+          <div
+            style={{
+              borderRadius: "18px",
+              background: "#373333",
+              border: "1px solid #5e5b5b",
+              height: "45px",
+              marginTop: "10px",
+            }}
+          >
+            <div
+              style={{
+                textAlign: "center",
+                verticalAlign: "middle",
+                lineHeight: "45px",
+                cursor: "pointer",
+              }}
+            >
+              Continue with Email
+            </div>
+          </div>
+        </div>
       </Modal>
     </div>
   );
