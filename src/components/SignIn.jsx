@@ -1,7 +1,7 @@
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
-import { Spin, Dropdown, Button, Menu } from "antd";
+import { Spin, Dropdown, Button, Menu, Modal } from "antd";
 import Text from "antd/lib/typography/Text";
 import { DownOutlined } from "@ant-design/icons";
 // import { connectors } from "./Account/config";
@@ -144,6 +144,7 @@ export default function SignIn() {
   const [selected, setSelected] = useState({});
   const [chain, setchain] = useState("");
   const [web3AuthCore, setweb3AuthCore] = useState("");
+  const [visible, setVisibility] = useState(false);
 
   console.log("chain", chain);
 
@@ -221,24 +222,10 @@ export default function SignIn() {
     </Menu>
   );
 
-  const handleCustomLogin = async () => {
-    // await authenticate({
-    //   provider: "web3Auth",
-    //   clientId:
-    //     "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
-    //   chainId: `${chain}` || "0x2a",
-    //   appLogo: "pizza.svg",
-    // });
-    // window.localStorage.setItem("connectorId", "web3Auth");
-
-    // This function should open a modal with same ui as before and then complete login buttons
-    // for each social media icon.
-    // console.log(web3AuthCore);
-
+  const handleSocialLogin = async (provider) => {
     try {
-      // await web3AuthCore.connectTo("metamask");
       await web3AuthCore.connectTo("openlogin", {
-        loginProvider: "google",
+        loginProvider: provider,
       });
       window.localStorage.setItem("connectorId", "web3Auth");
     } catch (e) {
@@ -282,7 +269,7 @@ export default function SignIn() {
         {authError && alert(JSON.stringify(authError.message))}
         <div>
           <div style={styles.buttonCard}>
-            <div style={styles.socialicons} onClick={handleCustomLogin}>
+            <div style={styles.socialicons} onClick={() => setVisibility(true)}>
               <img src={apple} alt="logo" />
               <img src={google} alt="logo" />
               <img src={twitter} alt="logo" />
@@ -290,7 +277,10 @@ export default function SignIn() {
               <img src={github} alt="logo" />
               <Text>and more</Text>
             </div>
-            <button style={styles.loginButton} onClick={handleCustomLogin}>
+            <button
+              style={styles.loginButton}
+              onClick={() => setVisibility(true)}
+            >
               Social Login with Web3Auth
             </button>
           </div>
@@ -300,42 +290,62 @@ export default function SignIn() {
           </button>
         </div>
       </div>
-      {/* <div className="glass-card" style={styles.web3}>
-        <div
-          style={{
-            padding: "10px",
-            display: "flex",
-            justifyContent: "center",
-            fontWeight: "700",
-            fontSize: "20px",
-          }}
-        >
-          <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          {connectors.map(({ title, icon, connectorId }, key) => (
-            <div
-              style={styles.connector}
-              key={key}
-              onClick={async () => {
-                try {
-                  await authenticate({
-                    provider: connectorId,
-                    signingMessage: "Pizza Authentication",
-                  });
-                  window.localStorage.setItem("connectorId", connectorId);
-                } catch (e) {
-                  console.log(e);
-                  alert(e.message);
-                }
-              }}
-            >
-              <img src={icon} alt={title} style={styles.icon} />
-              <Text style={{ fontSize: "14px" }}>{title}</Text>
+      <Modal
+        title={
+          <div style={{ display: "flex" }}>
+            <div style={{ marginRight: "10px", marginTop: "5px" }}>
+              <img style={styles.img} src="pizza.svg" width={35} height={35} />
             </div>
-          ))}
+            <div>
+              <h3>Signin</h3>
+              <h5>Select one of the following to continue</h5>
+            </div>
+          </div>
+        }
+        visible={visible}
+        width={375}
+        onCancel={() => setVisibility(false)}
+        footer={
+          <div
+            style={{
+              float: "left",
+              fontSize: "11px",
+              marginBottom: "10px",
+              marginLeft: "10px",
+            }}
+          >
+            <p>Terms of use | Privacy policy</p>
+          </div>
+        }
+      >
+        <div style={styles.socialicons}>
+          <img
+            onClick={() => handleSocialLogin("apple")}
+            src={apple}
+            alt="logo"
+          />
+          <img
+            onClick={() => handleSocialLogin("google")}
+            src={google}
+            alt="logo"
+          />
+          <img
+            onClick={() => handleSocialLogin("twitter")}
+            src={twitter}
+            alt="logo"
+          />
+          <img
+            onClick={() => handleSocialLogin("facebook")}
+            src={facebook}
+            alt="logo"
+          />
+          <img
+            onClick={() => handleSocialLogin("github")}
+            src={github}
+            alt="logo"
+          />
         </div>
-      </div> */}
+      </Modal>
     </div>
   );
 }
