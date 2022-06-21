@@ -16,6 +16,7 @@ import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
 import { useState, useEffect } from "react";
 import { Web3AuthCore } from "@web3auth/core";
 import { CHAIN_NAMESPACES, ADAPTER_EVENTS } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 
 const styles = {
   account: {
@@ -139,13 +140,14 @@ const menuItems = [
 ];
 
 export default function SignIn() {
-  const { authenticate, authError, isAuthenticating } = useMoralis();
+  const { authError, isAuthenticating } = useMoralis();
   const [selected, setSelected] = useState({});
   const [chain, setchain] = useState("");
+  const [web3AuthCore, setweb3AuthCore] = useState("");
 
   console.log("chain", chain);
 
-  function subscribeAuthEvents(web3auth) {
+  const subscribeAuthEvents = (web3auth) => {
     web3auth.on(ADAPTER_EVENTS.CONNECTED, (data) => {
       console.log("Yeah!, you are successfully logged in", data);
     });
@@ -161,7 +163,23 @@ export default function SignIn() {
     web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
       console.log("some error or user have cancelled login request", error);
     });
-  }
+  };
+
+  const configureAdapters = (web3Auth) => {
+    const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        network: "testnet", // detect environment and change between test and mainnet
+        clientId:
+          "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+        uxMode: "popup",
+      },
+      loginSettings: {
+        relogin: false,
+      },
+    });
+
+    web3Auth.configureAdapter(openloginAdapter);
+  };
 
   useEffect(() => {
     if (!chain) return null;
@@ -169,7 +187,7 @@ export default function SignIn() {
     setSelected(newSelected);
     console.log("current chainId: ", chain);
 
-    const web3authCore = new Web3AuthCore({
+    const web3Auth = new Web3AuthCore({
       chainConfig: {
         chainNamespace: CHAIN_NAMESPACES.EIP155, // This should be selected based on chain selected
         chainId: `${chain}` || "0x2a",
@@ -179,9 +197,13 @@ export default function SignIn() {
         "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
     });
 
-    // Initialize custom login each time the chain changes
-    subscribeAuthEvents(web3authCore);
-    web3authCore.init();
+    // Initialize custom login each time the chain changes.
+    subscribeAuthEvents(web3Auth);
+    configureAdapters(web3Auth);
+    web3Auth.init();
+
+    // Then save instance in state -
+    setweb3AuthCore(web3Auth);
   }, [chain]);
 
   const handleMenuClick = (e) => {
@@ -200,14 +222,29 @@ export default function SignIn() {
   );
 
   const handleCustomLogin = async () => {
-    await authenticate({
-      provider: "web3Auth",
-      clientId:
-        "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
-      chainId: `${chain}` || "0x2a",
-      appLogo: "pizza.svg",
-    });
-    window.localStorage.setItem("connectorId", "web3Auth");
+    // await authenticate({
+    //   provider: "web3Auth",
+    //   clientId:
+    //     "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+    //   chainId: `${chain}` || "0x2a",
+    //   appLogo: "pizza.svg",
+    // });
+    // window.localStorage.setItem("connectorId", "web3Auth");
+
+    // This function should open a modal with same ui as before and then complete login buttons
+    // for each social media icon.
+    // console.log(web3AuthCore);
+
+    try {
+      // await web3AuthCore.connectTo("metamask");
+      await web3AuthCore.connectTo("openlogin", {
+        loginProvider: "google",
+      });
+      window.localStorage.setItem("connectorId", "web3Auth");
+    } catch (e) {
+      // error handling here
+      console.log("error from custom login - ", e);
+    }
   };
 
   return (
@@ -263,7 +300,6 @@ export default function SignIn() {
           </button>
         </div>
       </div>
-
       {/* <div className="glass-card" style={styles.web3}>
         <div
           style={{
