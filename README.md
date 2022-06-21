@@ -12,6 +12,7 @@
     - [Create a Moralis Testnet Server](#create-a-moralis-testnet-server)
     - [Start a Development Server](#start-the-webpack-development-server)
     - [Build App](#build-app)
+    - [Docker](#docker)
 - [Contribute](#contribute)
 
 ## Description
@@ -89,6 +90,14 @@ or
 
 ```sh
 yarn build
+```
+
+### Docker
+
+We recommend developing with Docker. This ensures you're development environment is isolated from the rest of your machine. Refer to the official documentation to install Docker. ([Docs](https://docs.docker.com/desktop/linux/install/))
+
+```sh
+docker-compose up --build
 ```
 
 ## Contribute
