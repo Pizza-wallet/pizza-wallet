@@ -39,7 +39,7 @@ function Bridge() {
         <Button
           style={styles.button}
           type="primary"
-          href="https://pizza-connext.on.fleek.co/"
+          href="https://pizza-bridge.on.fleek.co/"
           target="blank"
           rel="noopener noreferrer"
         >
