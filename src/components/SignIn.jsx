@@ -147,6 +147,23 @@ export default function SignIn() {
   const [web3AuthCore, setweb3AuthCore] = useState("");
   const [visible, setVisibility] = useState(false);
   const [email, setEmail] = useState("");
+  const [viewMoreOptions, setViewMoreOptions] = useState(false);
+
+  const socialOptions = [
+    { name: "apple", src: apple },
+    { name: "google", src: google },
+    { name: "twitter", src: twitter },
+    { name: "facebook", src: facebook },
+    { name: "github", src: github },
+  ];
+  const moreSocialOptions = [
+    // different social logins to go here
+    { name: "apple", src: apple },
+    { name: "google", src: google },
+    { name: "twitter", src: twitter },
+    { name: "facebook", src: facebook },
+    { name: "github", src: github },
+  ];
 
   console.log("chain", chain);
 
@@ -180,7 +197,6 @@ export default function SignIn() {
         relogin: false,
         extraLoginOptions: {
           login_hint: email,
-          redirect_uri: "http://localhost:3000/",
         },
       },
     });
@@ -250,6 +266,16 @@ export default function SignIn() {
       // error handling here
       console.log("error from custom login - ", e);
     }
+  };
+
+  const showSocialOptions = (options) => {
+    return options.map((val) => (
+      <img
+        onClick={() => handleSocialLogin(val.name)}
+        src={val.src}
+        alt="logo"
+      />
+    ));
   };
 
   return (
@@ -336,35 +362,37 @@ export default function SignIn() {
           </div>
         }
       >
-        <div style={styles.socialicons}>
-          <img
-            onClick={() => handleSocialLogin("apple")}
-            src={apple}
-            alt="logo"
-          />
-          <img
-            onClick={() => handleSocialLogin("google")}
-            src={google}
-            alt="logo"
-          />
-          <img
-            onClick={() => handleSocialLogin("twitter")}
-            src={twitter}
-            alt="logo"
-          />
-          <img
-            onClick={() => handleSocialLogin("facebook")}
-            src={facebook}
-            alt="logo"
-          />
-          <img
-            onClick={() => handleSocialLogin("github")}
-            src={github}
-            alt="logo"
-          />
-        </div>
-        <div>
-          <h5>EMAIL</h5>
+        <div style={styles.socialicons}>{showSocialOptions(socialOptions)}</div>
+
+        {viewMoreOptions && (
+          <div style={styles.socialicons}>
+            {showSocialOptions(moreSocialOptions)}
+          </div>
+        )}
+
+        <p
+          style={{
+            float: "right",
+            fontSize: "12px",
+            cursor: "pointer",
+            marginRight: "20px",
+            marginTop: "10px",
+          }}
+          onClick={() => setViewMoreOptions(!viewMoreOptions)}
+        >
+          View more options
+        </p>
+        <div style={{ marginTop: "40px" }}>
+          <div
+            style={{
+              fontWeight: "400",
+              fontSize: "14px",
+              lineHeight: "1.5em",
+              marginBottom: "8px",
+            }}
+          >
+            EMAIL
+          </div>
           <input
             style={{
               background: "#393938",
