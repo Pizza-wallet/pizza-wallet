@@ -17,6 +17,7 @@ import { useState, useEffect } from "react";
 import { Web3AuthCore } from "@web3auth/core";
 import { CHAIN_NAMESPACES, ADAPTER_EVENTS } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { validateEmail } from "../helpers/utils";
 
 const styles = {
   account: {
@@ -145,6 +146,7 @@ export default function SignIn() {
   const [chain, setchain] = useState("");
   const [web3AuthCore, setweb3AuthCore] = useState("");
   const [visible, setVisibility] = useState(false);
+  const [email, setEmail] = useState("");
 
   console.log("chain", chain);
 
@@ -176,6 +178,10 @@ export default function SignIn() {
       },
       loginSettings: {
         relogin: false,
+        extraLoginOptions: {
+          login_hint: email,
+          redirect_uri: "http://localhost:3000/",
+        },
       },
     });
 
@@ -205,7 +211,7 @@ export default function SignIn() {
 
     // Then save instance in state -
     setweb3AuthCore(web3Auth);
-  }, [chain]);
+  }, [chain, email]);
 
   const handleMenuClick = (e) => {
     setchain(e.key);
@@ -224,9 +230,21 @@ export default function SignIn() {
 
   const handleSocialLogin = async (provider) => {
     try {
-      await web3AuthCore.connectTo("openlogin", {
-        loginProvider: provider,
-      });
+      if (provider == "email_passwordless") {
+        // check email and provide error message.
+        if (validateEmail(email)) {
+          await web3AuthCore.connectTo("openlogin", {
+            loginProvider: provider,
+          });
+        } else {
+          // show pop-up need to add valid email
+        }
+      } else {
+        await web3AuthCore.connectTo("openlogin", {
+          loginProvider: provider,
+        });
+      }
+
       window.localStorage.setItem("connectorId", "web3Auth");
     } catch (e) {
       // error handling here
@@ -349,23 +367,41 @@ export default function SignIn() {
           <h5>EMAIL</h5>
           <input
             style={{
-              borderRadius: "18px",
-              background: "#423e3e",
-              padding: "20px",
+              background: "#393938",
+              border: "1px solid #27282d",
+              boxSizing: "border-box",
+              boxShadow: "inset 2px 2px 10px rgba(0, 0, 0, 0.4)",
+              borderRadius: "24px",
+              padding: "0 28px",
+              height: "48px",
               width: "100%",
-              height: "15px",
+              fontSize: "16px",
+              marginBottom: "16px",
             }}
             type="text"
-            placeHolder="Email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <div
             style={{
-              borderRadius: "18px",
-              background: "#373333",
-              border: "1px solid #5e5b5b",
-              height: "45px",
-              marginTop: "10px",
+              backgroundColor: "#2f3136",
+              border: "1px solid #404145",
+              boxSizing: "border-box",
+              boxShadow: "2px 2px 12px rgb(3 100 255 / 5%)",
+              borderRadius: "24px",
+              height: "48px",
+              width: "100%",
+              padding: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#65676f",
+              fontStyle: "normal",
+              fontWeight: "400",
+              fontSize: "16px",
+              cursor: "pointer",
             }}
+            onClick={() => handleSocialLogin("email_passwordless")}
           >
             <div
               style={{
