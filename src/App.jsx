@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import {
   BrowserRouter as Router,
@@ -22,6 +22,16 @@ import NativeBalance from "components/NativeBalance";
 import "./style.css";
 import Text from "antd/lib/typography/Text";
 import MenuItems from "./components/MenuItems";
+import { Web3AuthCore } from "@web3auth/core";
+import { CHAIN_NAMESPACES, ADAPTER_EVENTS } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import {
+  AvaxLogo,
+  PolygonLogo,
+  BSCLogo,
+  ETHLogo,
+} from "./components/Chains/Logos";
+
 const { Header, Sider, Content } = Layout;
 
 const styles = {
@@ -70,6 +80,30 @@ const styles = {
     backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
   },
 };
+
+const menuItems = [
+  {
+    key: "0x2a",
+    value: "Kovan Testnet",
+    icon: <ETHLogo />,
+  },
+  {
+    key: "0x61",
+    value: "BSC Testnet",
+    icon: <BSCLogo />,
+  },
+  {
+    key: "0x13881",
+    value: "Mumbai",
+    icon: <PolygonLogo />,
+  },
+  {
+    key: "0xa869",
+    value: "Avalanche Testnet",
+    icon: <AvaxLogo />,
+  },
+];
+
 const App = () => {
   const {
     isWeb3Enabled,
@@ -79,17 +113,106 @@ const App = () => {
     authError,
   } = useMoralis();
 
-  useEffect(() => {
+  const [web3AuthCore, setWeb3AuthCore] = useState("");
+  const [selected, setSelected] = useState({});
+  const [chain, setchain] = useState("");
+  const [authenticated, setAuthenticated] = useState(false);
+
+  async function fetchUserData() {
+    // You can await here
+    const userInfo = await web3AuthCore.getUserInfo();
+    console.log("userinfo from fetchUserData - ", userInfo);
     const connectorId = window.localStorage.getItem("connectorId");
-    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
+    console.log("connectorId - ", connectorId);
+    enableWeb3({ provider: connectorId });
+    // ...
+  }
+  useEffect(() => {
+    console.log("web3authCore here - ", web3AuthCore);
+    if (chain) {
+      console.log("useInfo - ", fetchUserData());
+    }
+    const connectorId = window.localStorage.getItem("connectorId");
+    if (authenticated && !isWeb3Enabled && !isWeb3EnableLoading)
       enableWeb3({ provider: connectorId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, isWeb3Enabled]);
+  }, [isWeb3Enabled]);
+
+  const subscribeAuthEvents = (web3auth) => {
+    web3auth.on(ADAPTER_EVENTS.CONNECTED, (data) => {
+      console.log("Yeah!, you are successfully logged in", data);
+      setAuthenticated(true);
+    });
+
+    web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
+      console.log("connecting");
+    });
+
+    web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+      console.log("disconnected");
+      setAuthenticated(false);
+    });
+
+    web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
+      console.log("some error or user have cancelled login request", error);
+    });
+  };
+
+  const configureAdapters = (web3Auth) => {
+    const openloginAdapter = new OpenloginAdapter({
+      adapterSettings: {
+        network: "testnet", // detect environment and change between test and mainnet
+        clientId:
+          "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+        uxMode: "popup",
+      },
+      loginSettings: {
+        relogin: false,
+        // extraLoginOptions: {
+        //   login_hint: email,
+        // },
+      },
+    });
+
+    web3Auth.configureAdapter(openloginAdapter);
+  };
+
+  useEffect(() => {
+    if (!chain) return null;
+    const newSelected = menuItems.find((item) => item.key === chain);
+    setSelected(newSelected);
+    console.log("current chainId: ", chain);
+
+    const web3Auth = new Web3AuthCore({
+      chainConfig: {
+        chainNamespace: CHAIN_NAMESPACES.EIP155, // This should be selected based on chain selected
+        chainId: `${chain}` || "0x2a",
+      },
+      authMode: "DAPP",
+      clientId:
+        "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+    });
+
+    // Initialize custom login each time the chain changes.
+    subscribeAuthEvents(web3Auth);
+    configureAdapters(web3Auth);
+    web3Auth.init();
+
+    // Then save instance in state -
+    setWeb3AuthCore(web3Auth);
+  }, [chain]);
 
   if (!isAuthenticated) {
     return (
       <Layout className="fade" style={styles.bglogin}>
-        <SignIn />
+        <button onClick={fetchUserData}>fetch user data</button>
+        <SignIn
+          web3AuthCore={web3AuthCore}
+          chain={chain}
+          setchain={setchain}
+          setAuthenticated={setAuthenticated}
+          selected={selected}
+        />
       </Layout>
     );
   } else {

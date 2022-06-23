@@ -18,10 +18,10 @@ import linked from "./Account/WalletIcons/linked.svg";
 import line from "./Account/WalletIcons/line.svg";
 import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
 // import Logo from "./Account/WalletIcons/Web3Auth.svg";
-import { useState, useEffect } from "react";
-import { Web3AuthCore } from "@web3auth/core";
-import { CHAIN_NAMESPACES, ADAPTER_EVENTS } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import { useState } from "react";
+// import { Web3AuthCore } from "@web3auth/core";
+// import { CHAIN_NAMESPACES, ADAPTER_EVENTS } from "@web3auth/base";
+// import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
 import { validateEmail } from "../helpers/utils";
 
 const styles = {
@@ -145,11 +145,11 @@ const menuItems = [
   },
 ];
 
-export default function SignIn() {
+export default function SignIn({ web3AuthCore, chain, setchain, selected }) {
   const { authError, isAuthenticating } = useMoralis();
-  const [selected, setSelected] = useState({});
-  const [chain, setchain] = useState("");
-  const [web3AuthCore, setweb3AuthCore] = useState("");
+  // const [selected, setSelected] = useState({});
+  // const [chain, setchain] = useState("");
+  // const [web3AuthCore, setweb3AuthCore] = useState("");
   const [visible, setVisibility] = useState(false);
   const [email, setEmail] = useState("");
   const [viewMoreOptions, setViewMoreOptions] = useState(false);
@@ -172,68 +172,6 @@ export default function SignIn() {
 
   console.log("chain", chain);
 
-  const subscribeAuthEvents = (web3auth) => {
-    web3auth.on(ADAPTER_EVENTS.CONNECTED, (data) => {
-      console.log("Yeah!, you are successfully logged in", data);
-    });
-
-    web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
-      console.log("connecting");
-    });
-
-    web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-      console.log("disconnected");
-    });
-
-    web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-      console.log("some error or user have cancelled login request", error);
-    });
-  };
-
-  const configureAdapters = (web3Auth) => {
-    const openloginAdapter = new OpenloginAdapter({
-      adapterSettings: {
-        network: "testnet", // detect environment and change between test and mainnet
-        clientId:
-          "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
-        uxMode: "popup",
-      },
-      loginSettings: {
-        relogin: false,
-        extraLoginOptions: {
-          login_hint: email,
-        },
-      },
-    });
-
-    web3Auth.configureAdapter(openloginAdapter);
-  };
-
-  useEffect(() => {
-    if (!chain) return null;
-    const newSelected = menuItems.find((item) => item.key === chain);
-    setSelected(newSelected);
-    console.log("current chainId: ", chain);
-
-    const web3Auth = new Web3AuthCore({
-      chainConfig: {
-        chainNamespace: CHAIN_NAMESPACES.EIP155, // This should be selected based on chain selected
-        chainId: `${chain}` || "0x2a",
-      },
-      authMode: "DAPP",
-      clientId:
-        "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
-    });
-
-    // Initialize custom login each time the chain changes.
-    subscribeAuthEvents(web3Auth);
-    configureAdapters(web3Auth);
-    web3Auth.init();
-
-    // Then save instance in state -
-    setweb3AuthCore(web3Auth);
-  }, [chain, email]);
-
   const handleMenuClick = (e) => {
     setchain(e.key);
     console.log(`${chain}`);
@@ -252,10 +190,14 @@ export default function SignIn() {
   const handleSocialLogin = async (provider) => {
     try {
       if (provider == "email_passwordless") {
-        // check email and provide error message.
+        // check email and provide error message if invalid.
         if (validateEmail(email)) {
+          // re-initialise web3 with email here?
           await web3AuthCore.connectTo("openlogin", {
             loginProvider: provider,
+            extraLoginOptions: {
+              login_hint: email,
+            },
           });
         } else {
           // show pop-up need to add valid email
@@ -285,6 +227,11 @@ export default function SignIn() {
     ));
   };
 
+  const handleLogout = async () => {
+    await web3AuthCore.logout();
+  };
+
+  console.log("web3AuthCore from SignIn - ", web3AuthCore);
   return (
     <div style={styles.account}>
       <div className="glass-card" style={styles.card}>
@@ -341,6 +288,7 @@ export default function SignIn() {
           </button>
         </div>
       </div>
+      <button onClick={handleLogout}>logout</button>
       <Modal
         title={
           <div style={{ display: "flex" }}>
