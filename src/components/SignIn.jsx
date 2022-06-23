@@ -11,6 +11,11 @@ import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
 import facebook from "./Account/WalletIcons/facebook.svg";
 import github from "./Account/WalletIcons/github.svg";
+import discord from "./Account/WalletIcons/discord.svg";
+import reddit from "./Account/WalletIcons/reddit.svg";
+import twitch from "./Account/WalletIcons/twitch.svg";
+import linked from "./Account/WalletIcons/linked.svg";
+import line from "./Account/WalletIcons/line.svg";
 import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
 // import Logo from "./Account/WalletIcons/Web3Auth.svg";
 import { useState, useEffect } from "react";
@@ -158,11 +163,11 @@ export default function SignIn() {
   ];
   const moreSocialOptions = [
     // different social logins to go here
-    { name: "apple", src: apple },
-    { name: "google", src: google },
-    { name: "twitter", src: twitter },
-    { name: "facebook", src: facebook },
-    { name: "github", src: github },
+    { name: "discord", src: discord },
+    { name: "reddit", src: reddit },
+    { name: "twitch", src: twitch },
+    { name: "linkedin", src: linked },
+    { name: "line", src: line },
   ];
 
   console.log("chain", chain);
@@ -274,6 +279,8 @@ export default function SignIn() {
         onClick={() => handleSocialLogin(val.name)}
         src={val.src}
         alt="logo"
+        width={40}
+        height={40}
       />
     ));
   };
@@ -380,7 +387,7 @@ export default function SignIn() {
           }}
           onClick={() => setViewMoreOptions(!viewMoreOptions)}
         >
-          View more options
+          View {viewMoreOptions ? "less" : "more"} options
         </p>
         <div style={{ marginTop: "40px" }}>
           <div
