@@ -13,6 +13,7 @@
     - [Start a Development Server](#start-the-webpack-development-server)
     - [Build App](#build-app)
     - [Docker](#docker)
+    - [CI/CD](#ci/cd)
 - [Contribute](#contribute)
 
 ## Description
@@ -97,8 +98,23 @@ yarn build
 We recommend developing with Docker. This ensures you're development environment is isolated from the rest of your machine. Refer to the official documentation to install Docker. ([Docs](https://docs.docker.com/desktop/linux/install/))
 
 ```sh
-docker-compose up --build
+docker-compose -f docker-compose-dev.yml up --build
 ```
+
+### CI/CD
+
+We run our CI/CD environment with GitHub Actions
+
+The Workflow:
+
+- On Push:
+    - CodeQL Security Check
+- If successful:
+    - Build Docker Container
+- If successful:
+    - Run Tests
+- If successful:
+    - Deploy to Fleek
 
 ## Contribute
 
