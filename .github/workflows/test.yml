@@ -1,0 +1,18 @@
+name: Test
+
+on:
+  workflow_run:
+    workflows: [" Build"]
+    types:
+      - completed
+
+jobs:
+  test:
+    runs-on: node:lts-alpine3.16
+    name: Test Docker Build
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: apk add --no-cache git openssh && yarn install
+      - name: Test
+        run: yarn run test
