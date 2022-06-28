@@ -1,7 +1,5 @@
 # Pizza Wallet
 
-[![CircleCI](https://circleci.com/gh/Pizza-Wallet-Development-team/pizza-wallet/tree/main.svg?style=svg)](https://circleci.com/gh/Pizza-Wallet-Development-team/pizza-wallet/tree/main)
-
 ## Table of contents
 - [Description](#description)
     - [Integrations](#integrations)
