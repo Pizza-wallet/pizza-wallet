@@ -82,8 +82,14 @@ const App = () => {
 
   useEffect(() => {
     const connectorId = window.localStorage.getItem("connectorId");
+    const chainId = window.localStorage.getItem("chainId");
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
-      enableWeb3({ provider: connectorId });
+      enableWeb3({
+        provider: connectorId,
+        clientId:
+          "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+        chainId: chainId,
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
