@@ -21,6 +21,7 @@ A self custodial user focused wallet with built in DeFi features.
 ### Integrations
 
 - [Moralis](https://moralis.io/) - Web3 Tools
+- [LI.FI](https://li.fi/) - Comming soon!
 - [Connext](https://www.connext.network/) - Bridge
 - [Rubic](https://rubic.exchange/) - Cross Chain Swaps
 - [Transak](https://transak.com/) - Fiat Onramp
