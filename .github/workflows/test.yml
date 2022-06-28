@@ -12,7 +12,5 @@ jobs:
     name: Test Docker Build
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
-        run: apt install --no-cache git openssh && yarn install
       - name: Test
-        run: yarn run test
+        run: docker build -f Dockerfile.test
