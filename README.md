@@ -11,7 +11,7 @@
     - [Start a Development Server](#start-the-webpack-development-server)
     - [Build App](#build-app)
     - [Docker](#docker)
-    - [CI/CD](#ci/cd)
+    - [CI/CD](#cicd)
 - [Contribute](#contribute)
 
 ## Description
@@ -112,8 +112,6 @@ The Workflow:
     - Build Docker Container
 - If successful:
     - Run Tests
-- If successful:
-    - Deploy to Fleek
 
 ## Contribute
 
