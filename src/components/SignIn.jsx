@@ -174,6 +174,7 @@ export default function SignIn() {
       appLogo: "pizza.svg",
     });
     window.localStorage.setItem("connectorId", "web3Auth");
+    window.localStorage.setItem("chainId", chain || "0x2a");
   };
 
   return (
