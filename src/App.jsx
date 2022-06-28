@@ -12,8 +12,6 @@ import ERC20Balance from "components/ERC20Balance";
 import NFTBalance from "components/NFTBalance";
 import ERC20Transfers from "components/ERC20Transfers";
 import DEX from "components/DEX";
-import DEXv2 from "components/DEXv2";
-import Bridge from "components/Bridge";
 import Onramp from "components/Onramp";
 import Wallet from "components/Wallet";
 import SignIn from "components/SignIn";
@@ -134,26 +132,8 @@ const App = () => {
                   <Route path="/wallet">
                     <Wallet />
                   </Route>
-                  <Route path="/1inch">
-                    <div id="floater-dex">
-                      <Tabs
-                        defaultActiveKey="1"
-                        style={{ alignItems: "center" }}
-                      >
-                        <Tabs.TabPane tab={<span>Swaps</span>} key="1">
-                          <DEX chain="polygon" />
-                        </Tabs.TabPane>
-                        <Tabs.TabPane
-                          tab={<span>Cross Chain Swaps</span>}
-                          key="3"
-                        >
-                          <DEX chain="polygon" />
-                        </Tabs.TabPane>
-                      </Tabs>
-                    </div>
-                  </Route>
-                  <Route path="/dexv2">
-                    <DEXv2 />
+                  <Route path="/dex">
+                    <DEX />
                   </Route>
                   <Route path="/erc20transfers">
                     <ERC20Transfers />
@@ -167,9 +147,6 @@ const App = () => {
                         <NFTBalance />
                       </Tabs.TabPane>
                     </Tabs>
-                  </Route>
-                  <Route path="/bridge">
-                    <Bridge />
                   </Route>
                   <Route path="/onramp">
                     <Onramp />
