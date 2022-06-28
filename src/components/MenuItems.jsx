@@ -6,7 +6,6 @@ import {
   SwapOutlined,
   LayoutOutlined,
   UserSwitchOutlined,
-  ArrowRightOutlined,
   DollarOutlined,
 } from "@ant-design/icons";
 
@@ -31,29 +30,19 @@ function MenuItems() {
           <LayoutOutlined /> Dashboard
         </NavLink>
       </Menu.Item>
-      <Menu.Item key="/wallet">
-        <NavLink to="/wallet">
-          <SendOutlined /> Transfer
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/1inch">
-        <NavLink to="/1inch">
-          <SwapOutlined /> Dex
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/dexv2">
-        <NavLink to="/dexv2">
-          <SwapOutlined /> Dex v2
-        </NavLink>
-      </Menu.Item>
       <Menu.Item key="/ERC20Transfers">
         <NavLink to="/ERC20Transfers">
           <UserSwitchOutlined /> Transactions
         </NavLink>
       </Menu.Item>
-      <Menu.Item key="/bridge">
-        <NavLink to="/bridge">
-          <ArrowRightOutlined rotate="-45" /> Bridge
+      <Menu.Item key="/wallet">
+        <NavLink to="/wallet">
+          <SendOutlined /> Transfer
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="/dex">
+        <NavLink to="/dex">
+          <SwapOutlined /> Exchange
         </NavLink>
       </Menu.Item>
       <Menu.Item key="/onramp">
