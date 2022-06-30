@@ -6,6 +6,7 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import Web3 from "web3";
 import Account from "components/Account/Account";
 import Chains from "components/Chains";
 import ERC20Balance from "components/ERC20Balance";
@@ -119,24 +120,30 @@ const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
 
   async function fetchUserData() {
-    // You can await here
-    const userInfo = await web3AuthCore.getUserInfo();
-    console.log("userinfo from fetchUserData - ", userInfo);
-    const connectorId = window.localStorage.getItem("connectorId");
-    console.log("connectorId - ", connectorId);
-    enableWeb3({ provider: connectorId });
-    // ...
+    // connecting to web3AuthCore provider here
+    const web3 = new Web3(web3AuthCore.provider);
+    console.log("conncted to web3 - ", web3);
+    console.log("is web3 enabled - ", isWeb3Enabled);
+
+    const accounts = await web3.eth.getAccounts();
+ 
+    // need to wrap above web3 somehow like below - 
+    //const moralis = new Moralis(web3)
+    console.log("user accounts from web3 - ", accounts);
+
   }
   useEffect(() => {
     console.log("web3authCore here - ", web3AuthCore);
-    if (chain) {
-      console.log("useInfo - ", fetchUserData());
-    }
+
     const connectorId = window.localStorage.getItem("connectorId");
     if (authenticated && !isWeb3Enabled && !isWeb3EnableLoading)
-      enableWeb3({ provider: connectorId });
+      enableWeb3({
+        provider: connectorId,
+        clientId:
+          "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isWeb3Enabled]);
+  }, [authenticated, isWeb3Enabled]);
 
   const subscribeAuthEvents = (web3auth) => {
     web3auth.on(ADAPTER_EVENTS.CONNECTED, (data) => {
@@ -201,6 +208,8 @@ const App = () => {
     // Then save instance in state -
     setWeb3AuthCore(web3Auth);
   }, [chain]);
+
+  console.log("provider - ", web3AuthCore.provider);
 
   if (!isAuthenticated) {
     return (
