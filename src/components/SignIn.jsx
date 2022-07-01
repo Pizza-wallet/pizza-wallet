@@ -5,7 +5,7 @@ import { Spin, Dropdown, Button, Menu } from "antd";
 import Text from "antd/lib/typography/Text";
 import { DownOutlined } from "@ant-design/icons";
 // import { connectors } from "./Account/config";
-import Account from "components/Account/Account";
+import Account from "./Account/Account.jsx";
 import apple from "./Account/WalletIcons/apple.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
