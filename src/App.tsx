@@ -6,18 +6,18 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Account from "components/Account/Account";
-import Chains from "components/Chains";
-import ERC20Balance from "components/ERC20Balance";
-import NFTBalance from "components/NFTBalance";
-import ERC20Transfers from "components/ERC20Transfers";
-import DEX from "components/DEX";
-import Onramp from "components/Onramp";
-import Wallet from "components/Wallet";
-import SignIn from "components/SignIn";
+import Account from "./components/Account/Account";
+import Chains from "./components/Chains";
+import ERC20Balance from "./components/ERC20Balance";
+import NFTBalance from "./components/NFTBalance";
+import ERC20Transfers from "./components/ERC20Transfers";
+import DEX from "./components/DEX";
+import Onramp from "./components/Onramp";
+import Wallet from "./components/Wallet";
+import SignIn from "./components/SignIn";
 import { Layout, Tabs, Alert } from "antd";
 import "antd/dist/antd.css";
-import NativeBalance from "components/NativeBalance";
+import NativeBalance from "./components/NativeBalance";
 import "./style.css";
 import Text from "antd/lib/typography/Text";
 import MenuItems from "./components/MenuItems";
@@ -79,8 +79,10 @@ const App = () => {
   } = useMoralis();
 
   useEffect(() => {
-    const connectorId = window.localStorage.getItem("connectorId");
-    const chainId = window.localStorage.getItem("chainId");
+    type Web3ProviderType = any;
+    const connectorId: Web3ProviderType =
+      window.localStorage.getItem("connectorId");
+    const chainId: number = Number(window.localStorage.getItem("chainId"));
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
       enableWeb3({
         provider: connectorId,
