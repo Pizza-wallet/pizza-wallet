@@ -1,4 +1,4 @@
-import { useERC20Balance } from "hooks/useERC20Balance";
+import { useERC20Balance } from "../../../hooks/useERC20Balance";
 import { useMoralis, useNativeBalance } from "react-moralis";
 import { Image, Select } from "antd";
 import { useMemo } from "react";

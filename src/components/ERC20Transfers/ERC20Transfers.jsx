@@ -4,7 +4,7 @@ import { getEllipsisTxt } from "../../helpers/formatters";
 import { getExplorer } from "../../helpers/networks";
 import "antd/dist/antd.css";
 import { Skeleton, Table } from "antd";
-import { useERC20Transfers } from "hooks/useERC20Transfers";
+import { useERC20Transfers } from "../../hooks/useERC20Transfers";
 
 function ERC20Transfers() {
   const { ERC20Transfers, chainId } = useERC20Transfers();
