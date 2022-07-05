@@ -34,10 +34,10 @@ function DEX() {
     // example of how a route could be executed
     const routesRequestTest = {
       fromChainId: 3, // Ropsten
-      fromAmount: "1000000000000000000", // 1
-      fromTokenAddress: "0x0000000000000000000000000000000000000000", // TEST Token
+      fromAmount: "10000000000000000000", // 1
+      fromTokenAddress: "0xe71678794fff8846bff855f716b0ce9d9a78e844", // TEST Token
       toChainId: 4, // Rinkeby
-      toTokenAddress: "0x0000000000000000000000000000000000000000", // TEST Token
+      toTokenAddress: "0x9ac2c46d7acc21c881154d57c0dc1c55a3139198", // TEST Token
     };
 
     const signer = web3.getSigner();
