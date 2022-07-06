@@ -11,7 +11,6 @@
     - [Start a Development Server](#start-the-webpack-development-server)
     - [Build App](#build-app)
     - [Docker](#docker)
-    - [CI/CD](#cicd)
 - [Contribute](#contribute)
 
 ## Description
@@ -98,21 +97,7 @@ We recommend developing with Docker. This ensures you're development environment
 docker-compose -f docker-compose-dev.yml up --build
 ```
 
-### CI/CD
-
-We run our CI/CD environment with GitHub Actions
-
-The Workflow:
-
-- On Push:
-    - CodeQL Security Check
-- If successful:
-    - Build Docker Container
-- If successful:
-    - Run Tests
-
 ## Contribute
 
 We love builders! Here's how you can help:
 - Bug fixer - Check github's [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues) to see what needs to be fixed.
-- The dev - Want to help build new features? Check our board on [ClickUp](https://sharing.clickup.com/36638099/b/h/7-36638099-2/26df81f54e08e7a) and start building!
