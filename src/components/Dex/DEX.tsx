@@ -1,15 +1,27 @@
+import { useState, useEffect } from "react";
 import { useMoralis, useChain } from "react-moralis";
 import LiFi from "./LiFi";
 import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
+import { Chain } from "../../types";
 
 function DEX() {
   const { web3 } = useMoralis();
   const { switchNetwork } = useChain();
   const chainsTokensTools = useChainsTokensTools();
+  const [availableChains, setAvailableChains] = useState<Chain[]>(
+    chainsTokensTools.chains,
+  );
 
-  const switchChainHook = (requiredChainId) => {
-    switchNetwork(requiredChainId);
-    const signer = web3.getSigner();
+  useEffect(() => {
+    // get chains
+    setAvailableChains(chainsTokensTools.chains);
+  }, [chainsTokensTools.chains]);
+
+  const switchChainHook = (requiredChainId: number) => {
+    // temporary fix this function should return type SwitchChainHook (check lifi code)
+    type SwitchChainHook = any;
+    switchNetwork(requiredChainId.toString());
+    const signer: SwitchChainHook = web3?.getSigner();
     // return the associated Signer
     return signer;
   };
@@ -24,14 +36,14 @@ function DEX() {
       toTokenAddress: "0x9ac2c46d7acc21c881154d57c0dc1c55a3139198", // TEST Token
     };
 
-    const signer = web3.getSigner();
+    const signer = web3?.getSigner();
     const routeResponse = await LiFi.getRoutes(routesRequestTest);
     console.log("routeResponse - ", routeResponse);
     const route = routeResponse.routes[0];
     console.log(">> Got Route");
     console.log(route);
 
-    if (route) {
+    if (route && signer) {
       try {
         await LiFi.executeRoute(signer, route, { switchChainHook });
       } catch (e) {
@@ -43,7 +55,7 @@ function DEX() {
     }
   };
 
-  console.log("chains - ", chainsTokensTools.chains);
+  console.log("chains - ", availableChains);
 
   return (
     <>
@@ -52,21 +64,6 @@ function DEX() {
           Execute example route
         </button>
       </div>
-      <iframe
-        src="https://transferto.xyz/embed"
-        title="lifi"
-        className="iframe"
-        frameBorder="no"
-        style={{
-          width: "450px",
-          height: "690px",
-          boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
-          border: "1px solid #e7eaf3",
-          background: "white",
-          borderRadius: "1rem",
-          marginTop: "-5em",
-        }}
-      />
     </>
   );
 }
