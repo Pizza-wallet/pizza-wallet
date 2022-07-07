@@ -2,20 +2,33 @@ import { useState, useEffect } from "react";
 import { useMoralis, useChain } from "react-moralis";
 import LiFi from "./LiFi";
 import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
-import { Chain } from "../../types";
+import { Chain, ChainKey } from "../../types";
+import SwapForm from "./SwapForm";
 
 function DEX() {
   const { web3 } = useMoralis();
-  const { switchNetwork } = useChain();
+  const { switchNetwork, chainId, chain } = useChain();
   const chainsTokensTools = useChainsTokensTools();
   const [availableChains, setAvailableChains] = useState<Chain[]>(
     chainsTokensTools.chains,
   );
 
+  // From
+  const [selectedChain, setSelectedChain] = useState<ChainKey>();
+
   useEffect(() => {
     // get chains
     setAvailableChains(chainsTokensTools.chains);
   }, [chainsTokensTools.chains]);
+
+  useEffect(() => {
+    if (chain && chainId) {
+      const newFromChain = availableChains.find(
+        (chain) => chain.id === Number(chainId),
+      );
+      setSelectedChain(newFromChain?.key);
+    }
+  }, [chain]);
 
   const switchChainHook = (requiredChainId: number) => {
     // temporary fix this function should return type SwitchChainHook (check lifi code)
@@ -63,6 +76,10 @@ function DEX() {
         <button style={{ color: "black" }} onClick={handleExecuteRoute}>
           Execute example route
         </button>
+        <SwapForm
+          availableChains={availableChains}
+          selectedChain={selectedChain}
+        />
       </div>
     </>
   );
