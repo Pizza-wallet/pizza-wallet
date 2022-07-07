@@ -1,27 +1,11 @@
-import { useEffect } from "react";
-import Lifi from "@lifinance/sdk";
 import { useMoralis, useChain } from "react-moralis";
+import LiFi from "./LiFi";
+import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
 
 function DEX() {
   const { web3 } = useMoralis();
   const { switchNetwork } = useChain();
-  // Testnets are only enabled on the staging environment
-  const config = {
-    apiUrl: "https://staging.li.quest/v1/",
-  };
-  const lifi = new Lifi(config);
-
-  useEffect(() => {
-    async function fetchData() {
-      // You can pass config in to getPossibilities to limit number of chains/bridges etc.
-      const possibilities = await lifi.getPossibilities();
-      // We should show this information in a dropdown menu?
-      console.log("possibilities - ", possibilities);
-    }
-
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const chainsTokensTools = useChainsTokensTools();
 
   const switchChainHook = (requiredChainId) => {
     switchNetwork(requiredChainId);
@@ -41,7 +25,7 @@ function DEX() {
     };
 
     const signer = web3.getSigner();
-    const routeResponse = await lifi.getRoutes(routesRequestTest);
+    const routeResponse = await LiFi.getRoutes(routesRequestTest);
     console.log("routeResponse - ", routeResponse);
     const route = routeResponse.routes[0];
     console.log(">> Got Route");
@@ -49,7 +33,7 @@ function DEX() {
 
     if (route) {
       try {
-        await lifi.executeRoute(signer, route, { switchChainHook });
+        await LiFi.executeRoute(signer, route, { switchChainHook });
       } catch (e) {
         // Handle error here and show info to user
         console.log("error with executeRoute - ", e);
@@ -58,6 +42,8 @@ function DEX() {
       console.log("cant find route show error to user");
     }
   };
+
+  console.log("chains - ", chainsTokensTools.chains);
 
   return (
     <>

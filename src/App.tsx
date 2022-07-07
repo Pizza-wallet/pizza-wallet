@@ -6,12 +6,13 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import { ChainsTokensToolsProvider } from "./components/Dex/providers/chainsTokensToolsProvider";
 import Account from "./components/Account/Account";
 import Chains from "./components/Chains";
 import ERC20Balance from "./components/ERC20Balance";
 import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
-import DEX from "./components/DEX";
+import DEX from "./components/Dex/DEX";
 import Onramp from "./components/Onramp";
 import Wallet from "./components/Wallet";
 import SignIn from "./components/SignIn";
@@ -135,7 +136,9 @@ const App = () => {
                     <Wallet />
                   </Route>
                   <Route path="/dex">
-                    <DEX />
+                    <ChainsTokensToolsProvider>
+                      <DEX />
+                    </ChainsTokensToolsProvider>
                   </Route>
                   <Route path="/erc20transfers">
                     <ERC20Transfers />
