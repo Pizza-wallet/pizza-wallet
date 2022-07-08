@@ -75,7 +75,7 @@ export const ChainsTokensToolsProvider = ({ children }: AuxProps) => {
       }
       const newTokens: TokenAmountList = {};
       // let chain: keyof typeof tokens
-      for (let chainId in tokens) {
+      for (const chainId in tokens) {
         const chain = getChainById(Number(chainId));
         if (!newTokens[chain.key]) newTokens[chain.key] = [];
         newTokens[chain.key] = tokens[chainId];

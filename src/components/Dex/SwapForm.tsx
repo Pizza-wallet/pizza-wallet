@@ -1,65 +1,78 @@
-import { Chain, ChainKey, getChainByKey } from "../../types";
-import { Avatar, Select } from "antd";
+import { Chain, ChainKey, TokenWithAmounts, TokenAmount } from "../../types";
+import { useRef } from "react";
+import { Row, Col } from "antd";
+import { RefSelectProps } from "antd/lib/select";
+import ChainSelect from "./ChainSelect";
+import TokenSelect from "./TokenSelect";
 
 interface SwapFormProps {
   availableChains: Array<Chain>;
   selectedFromChain?: ChainKey;
-  onChangeFromChain: (v: ChainKey) => void;
+  onChangeFromChain: (chainKey: ChainKey) => void;
+  setFromToken: (tokenAddress: string) => void;
+  fromToken: string;
+  tokens: { [ChainKey: string]: Array<TokenWithAmounts> };
+  balances: { [ChainKey: string]: Array<TokenAmount> } | undefined;
 }
 
 function SwapForm({
   availableChains,
   selectedFromChain,
   onChangeFromChain,
+  setFromToken,
+  fromToken,
+  tokens,
+  balances,
 }: SwapFormProps) {
-  const chain = selectedFromChain
-    ? getChainByKey(selectedFromChain)
-    : undefined;
-  console.log("chain - ", chain);
-  const disabled = false;
-  const positionFixed = true;
+  const fromSelectRef = useRef<RefSelectProps>();
+  const onChangeFromToken = (tokenAddress: string) => {
+    // unselect
+    fromSelectRef?.current?.blur();
+    setFromToken(tokenAddress);
+  };
   return (
     <>
-      <div>
-        {/* TODO: Extract selects to their own components as they will be re-used*/}
-        <Select
-          style={{ width: 200, position: "relative" }}
-          disabled={disabled}
-          placeholder="Select Chain"
-          value={selectedFromChain}
-          onChange={(v: ChainKey) => onChangeFromChain(v)}
-          dropdownStyle={{
-            minWidth: 300,
-            position: positionFixed ? "fixed" : "relative",
-          }}
-          bordered={true}
-          optionLabelProp="data-label"
-        >
-          <Select.OptGroup label="Supported Chains">
-            {availableChains.map((chain) => (
-              <Select.Option
-                key={chain.key}
-                value={chain.key}
-                data-label={chain.name}
-              >
-                <div>
-                  <span role="img" aria-label={chain.name}>
-                    <Avatar
-                      size="small"
-                      src={chain.logoURI}
-                      alt={chain.key}
-                      style={{ marginRight: 10 }}
-                    >
-                      {chain.name[0]}
-                    </Avatar>
-                  </span>
-                  <span>{chain.name}</span>
-                </div>
-              </Select.Option>
-            ))}
-          </Select.OptGroup>
-        </Select>
-      </div>
+      <Row style={{ marginBottom: 8 }}>
+        <Col span={10}>
+          <div className="form-text">{"From:"}</div>
+        </Col>
+      </Row>
+
+      <Row style={{ marginBottom: 8 }} gutter={[0, 0]}>
+        <Col span={12}>
+          <div className="form-input-wrapper chain-select">
+            <ChainSelect
+              availableChains={availableChains}
+              selectedChain={selectedFromChain}
+              onChangeSelectedChain={onChangeFromChain}
+            />
+          </div>
+        </Col>
+        <Col span={12}>
+          <div
+            className="form-input-wrapper token-select"
+            style={{
+              borderTopLeftRadius: "0px !important",
+              borderBottomLeftRadius: "0px !important",
+            }}
+          >
+            <TokenSelect
+              tokens={tokens}
+              selectedChain={selectedFromChain}
+              balances={balances}
+              selectedToken={fromToken}
+              onChangeSelectedToken={onChangeFromToken}
+              selectReference={fromSelectRef}
+              grayed={false}
+            />
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={24}>
+          <div className="form-input-wrapper"></div>
+        </Col>
+      </Row>
     </>
   );
 }

@@ -1,26 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useMoralis, useChain } from "react-moralis";
 import { Form } from "antd";
 import LiFi from "./LiFi";
 import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
-import { Chain, ChainKey } from "../../types";
+import { Chain, ChainKey, TokenAmountList, TokenAmount } from "../../types";
 import SwapForm from "./SwapForm";
 
 function DEX() {
-  const { web3 } = useMoralis();
+  const { web3, account } = useMoralis();
   const { switchNetwork } = useChain();
   const chainsTokensTools = useChainsTokensTools();
   const [availableChains, setAvailableChains] = useState<Chain[]>(
     chainsTokensTools.chains,
   );
+  const [tokens, setTokens] = useState<TokenAmountList>(
+    chainsTokensTools.tokens,
+  );
+  const [balances, setBalances] = useState<{
+    [ChainKey: string]: Array<TokenAmount>;
+  }>();
 
   // From
   const [selectedFromChain, setSelectedFromChain] = useState<ChainKey>();
+  const [fromToken, setFromToken] = useState<string>("");
 
   useEffect(() => {
     // get chains
     setAvailableChains(chainsTokensTools.chains);
   }, [chainsTokensTools.chains]);
+
+  useEffect(() => {
+    // get tokens
+    setTokens(chainsTokensTools.tokens);
+  }, [chainsTokensTools.tokens]);
+
+  useEffect(() => {
+    // get balances
+    updateBalances();
+  }, [account, tokens]);
 
   // Do we want chain to change here if changed in the header and vice versa?
   // useEffect(() => {
@@ -38,6 +55,24 @@ function DEX() {
     );
     setSelectedFromChain(newFromChain?.key);
   };
+
+  const updateBalances = useCallback(async () => {
+    if (account) {
+      console.log("calling update balances with account - ", account);
+      // one call per chain to show balances as soon as the request comes back
+      Object.entries(tokens).forEach(([chainKey, tokenList]) => {
+        LiFi.getTokenBalances(account, tokenList).then((portfolio: any) => {
+          setBalances((balances) => {
+            if (!balances) balances = {};
+            return {
+              ...balances,
+              [chainKey]: portfolio,
+            };
+          });
+        });
+      });
+    }
+  }, [account, tokens]);
 
   const switchChainHook = (requiredChainId: number) => {
     // temporary fix this function should return type SwitchChainHook (check lifi code)
@@ -79,6 +114,8 @@ function DEX() {
 
   console.log("chains - ", availableChains);
 
+  console.log("balances - ", balances);
+
   return (
     <>
       <div>
@@ -90,6 +127,10 @@ function DEX() {
             availableChains={availableChains}
             selectedFromChain={selectedFromChain}
             onChangeFromChain={onChangeFromChain}
+            setFromToken={setFromToken}
+            fromToken={fromToken}
+            tokens={tokens}
+            balances={balances}
           />
         </Form>
       </div>

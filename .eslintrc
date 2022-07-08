@@ -15,7 +15,8 @@
     "plugin:react/jsx-runtime",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -30,6 +31,6 @@
     "react/prop-types": "off",
     "react/jsx-key": "off",
     "react/no-unescaped-entities": "off",
-    "linebreak-style": 0,
+    "linebreak-style": 0
   }
 }

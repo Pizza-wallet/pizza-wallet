@@ -83,7 +83,7 @@ const App = () => {
     type Web3ProviderType = any;
     const connectorId: Web3ProviderType =
       window.localStorage.getItem("connectorId");
-    const chainId: number = Number(window.localStorage.getItem("chainId"));
+    const chainId = Number(window.localStorage.getItem("chainId"));
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
       enableWeb3({
         provider: connectorId,
