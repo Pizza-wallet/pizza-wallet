@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMoralis, useChain } from "react-moralis";
+import { Form } from "antd";
 import LiFi from "./LiFi";
 import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
 import { Chain, ChainKey } from "../../types";
@@ -7,28 +8,36 @@ import SwapForm from "./SwapForm";
 
 function DEX() {
   const { web3 } = useMoralis();
-  const { switchNetwork, chainId, chain } = useChain();
+  const { switchNetwork } = useChain();
   const chainsTokensTools = useChainsTokensTools();
   const [availableChains, setAvailableChains] = useState<Chain[]>(
     chainsTokensTools.chains,
   );
 
   // From
-  const [selectedChain, setSelectedChain] = useState<ChainKey>();
+  const [selectedFromChain, setSelectedFromChain] = useState<ChainKey>();
 
   useEffect(() => {
     // get chains
     setAvailableChains(chainsTokensTools.chains);
   }, [chainsTokensTools.chains]);
 
-  useEffect(() => {
-    if (chain && chainId) {
-      const newFromChain = availableChains.find(
-        (chain) => chain.id === Number(chainId),
-      );
-      setSelectedChain(newFromChain?.key);
-    }
-  }, [chain]);
+  // Do we want chain to change here if changed in the header and vice versa?
+  // useEffect(() => {
+  //   if (chain && chainId) {
+  //     const newFromChain = availableChains.find(
+  //       (chain) => chain.id === Number(chainId),
+  //     );
+  //     setSelectedChain(newFromChain?.key);
+  //   }
+  // }, [chain]);
+
+  const onChangeFromChain = (chainKey: ChainKey) => {
+    const newFromChain = availableChains.find(
+      (chain) => chain.key === chainKey,
+    );
+    setSelectedFromChain(newFromChain?.key);
+  };
 
   const switchChainHook = (requiredChainId: number) => {
     // temporary fix this function should return type SwitchChainHook (check lifi code)
@@ -76,10 +85,13 @@ function DEX() {
         <button style={{ color: "black" }} onClick={handleExecuteRoute}>
           Execute example route
         </button>
-        <SwapForm
-          availableChains={availableChains}
-          selectedChain={selectedChain}
-        />
+        <Form>
+          <SwapForm
+            availableChains={availableChains}
+            selectedFromChain={selectedFromChain}
+            onChangeFromChain={onChangeFromChain}
+          />
+        </Form>
       </div>
     </>
   );

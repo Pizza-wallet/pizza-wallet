@@ -3,23 +3,31 @@ import { Avatar, Select } from "antd";
 
 interface SwapFormProps {
   availableChains: Array<Chain>;
-  selectedChain?: ChainKey;
+  selectedFromChain?: ChainKey;
+  onChangeFromChain: (v: ChainKey) => void;
 }
 
-function SwapForm({ availableChains, selectedChain }: SwapFormProps) {
-  const chain = selectedChain ? getChainByKey(selectedChain) : undefined;
+function SwapForm({
+  availableChains,
+  selectedFromChain,
+  onChangeFromChain,
+}: SwapFormProps) {
+  const chain = selectedFromChain
+    ? getChainByKey(selectedFromChain)
+    : undefined;
   console.log("chain - ", chain);
   const disabled = false;
   const positionFixed = true;
   return (
     <>
       <div>
+        {/* TODO: Extract selects to their own components as they will be re-used*/}
         <Select
           style={{ width: 200, position: "relative" }}
           disabled={disabled}
           placeholder="Select Chain"
-          value={selectedChain}
-          // onChange={(v: ChainKey) => onChangeSelectedChain(v)}
+          value={selectedFromChain}
+          onChange={(v: ChainKey) => onChangeFromChain(v)}
           dropdownStyle={{
             minWidth: 300,
             position: positionFixed ? "fixed" : "relative",
