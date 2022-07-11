@@ -27,6 +27,11 @@ function DEX() {
   const [fromToken, setFromToken] = useState<string>("");
   const [fromAmount, setFromAmount] = useState<BigNumber>(new BigNumber(0));
 
+  // To
+  const [selectedToChain, setSelectedToChain] = useState<ChainKey>();
+  const [toToken, setToToken] = useState<string>("");
+  const [toAmount, setToAmount] = useState<BigNumber>(new BigNumber(Infinity));
+
   useEffect(() => {
     // get chains
     setAvailableChains(chainsTokensTools.chains);
@@ -52,12 +57,20 @@ function DEX() {
   //   }
   // }, [chain]);
 
+  const getChain = (chainKey: ChainKey) => {
+    return availableChains.find((chain) => chain.key === chainKey);
+  };
+
   const onChangeFromChain = (chainKey: ChainKey) => {
-    const newFromChain = availableChains.find(
-      (chain) => chain.key === chainKey,
-    );
+    const newFromChain = getChain(chainKey);
     setFromToken("");
     setSelectedFromChain(newFromChain?.key);
+  };
+
+  const onChangeToChain = (chainKey: ChainKey) => {
+    const newToChain = getChain(chainKey);
+    setToToken("");
+    setSelectedToChain(newToChain?.key);
   };
 
   const updateBalances = useCallback(async () => {
@@ -87,34 +100,34 @@ function DEX() {
     return signer;
   };
 
-  const handleExecuteRoute = async () => {
-    // example of how a route could be executed
-    const routesRequestTest = {
-      fromChainId: 3, // Ropsten
-      fromAmount: "10000000000000000000", // 1
-      fromTokenAddress: "0xe71678794fff8846bff855f716b0ce9d9a78e844", // TEST Token
-      toChainId: 4, // Rinkeby
-      toTokenAddress: "0x9ac2c46d7acc21c881154d57c0dc1c55a3139198", // TEST Token
-    };
+  // const handleExecuteRoute = async () => {
+  //   // example of how a route could be executed
+  //   const routesRequestTest = {
+  //     fromChainId: 3, // Ropsten
+  //     fromAmount: "10000000000000000000", // 1
+  //     fromTokenAddress: "0xe71678794fff8846bff855f716b0ce9d9a78e844", // TEST Token
+  //     toChainId: 4, // Rinkeby
+  //     toTokenAddress: "0x9ac2c46d7acc21c881154d57c0dc1c55a3139198", // TEST Token
+  //   };
 
-    const signer = web3?.getSigner();
-    const routeResponse = await LiFi.getRoutes(routesRequestTest);
-    console.log("routeResponse - ", routeResponse);
-    const route = routeResponse.routes[0];
-    console.log(">> Got Route");
-    console.log(route);
+  //   const signer = web3?.getSigner();
+  //   const routeResponse = await LiFi.getRoutes(routesRequestTest);
+  //   console.log("routeResponse - ", routeResponse);
+  //   const route = routeResponse.routes[0];
+  //   console.log(">> Got Route");
+  //   console.log(route);
 
-    if (route && signer) {
-      try {
-        await LiFi.executeRoute(signer, route, { switchChainHook });
-      } catch (e) {
-        // Handle error here and show info to user
-        console.log("error with executeRoute - ", e);
-      }
-    } else {
-      console.log("cant find route show error to user");
-    }
-  };
+  //   if (route && signer) {
+  //     try {
+  //       await LiFi.executeRoute(signer, route, { switchChainHook });
+  //     } catch (e) {
+  //       // Handle error here and show info to user
+  //       console.log("error with executeRoute - ", e);
+  //     }
+  //   } else {
+  //     console.log("cant find route show error to user");
+  //   }
+  // };
 
   console.log("chains - ", availableChains);
 
@@ -123,17 +136,19 @@ function DEX() {
   return (
     <>
       <div>
-        <button style={{ color: "black" }} onClick={handleExecuteRoute}>
-          Execute example route
-        </button>
         <Form>
           <SwapForm
             availableChains={availableChains}
             selectedFromChain={selectedFromChain}
+            selectedToChain={selectedToChain}
             onChangeFromChain={onChangeFromChain}
+            onChangeToChain={onChangeToChain}
             setFromToken={setFromToken}
+            setToToken={setToToken}
             setFromAmount={setFromAmount}
+            setToAmount={setToAmount}
             fromToken={fromToken}
+            toToken={toToken}
             tokens={tokens}
             balances={balances}
           />
