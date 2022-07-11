@@ -1,19 +1,14 @@
+import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
-import { Spin, Dropdown, Button, Menu } from "antd";
+import { Spin } from "antd";
 import Text from "antd/lib/typography/Text";
-import { DownOutlined } from "@ant-design/icons";
-// import { connectors } from "./Account/config";
-import Account from "./Account/Account.jsx";
 import apple from "./Account/WalletIcons/apple.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
 import facebook from "./Account/WalletIcons/facebook.svg";
 import github from "./Account/WalletIcons/github.svg";
-import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
-// import Logo from "./Account/WalletIcons/Web3Auth.svg";
-import { useState, useEffect } from "react";
 
 const styles = {
   account: {
@@ -22,15 +17,12 @@ const styles = {
     alignItems: "center",
   },
   web3: {
-    // display: "flex",
-    // justifyContent: "center",
-    // alignItems: "center",
     width: "350px",
     height: "450px",
   },
   card: {
     width: "350px",
-    height: "520px",
+    height: "300px",
     display: "flex",
     flexDirection: "column",
     padding: "20px",
@@ -72,7 +64,7 @@ const styles = {
   },
   img: {
     justifySelf: "center",
-    objectFit: "contain",
+    padding: "10px",
   },
   input: {
     padding: "10px",
@@ -113,57 +105,9 @@ const styles = {
   },
 };
 
-const menuItems = [
-  {
-    key: "0x2a",
-    value: "Kovan Testnet",
-    icon: <ETHLogo />,
-  },
-  {
-    key: "0x61",
-    value: "BSC Testnet",
-    icon: <BSCLogo />,
-  },
-  {
-    key: "0x13881",
-    value: "Mumbai",
-    icon: <PolygonLogo />,
-  },
-  {
-    key: "0xa869",
-    value: "Avalanche Testnet",
-    icon: <AvaxLogo />,
-  },
-];
-
 export default function SignIn() {
-  const { authenticate, authError, isAuthenticating } = useMoralis();
-  const [selected, setSelected] = useState({});
-  const [chain, setchain] = useState("");
-
-  console.log("chain", chain);
-
-  useEffect(() => {
-    if (!chain) return null;
-    const newSelected = menuItems.find((item) => item.key === chain);
-    setSelected(newSelected);
-    console.log("current chainId: ", chain);
-  }, [chain]);
-
-  const handleMenuClick = (e) => {
-    setchain(e.key);
-    console.log(`${chain}`);
-  };
-
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      {menuItems.map((item) => (
-        <Menu.Item key={item.key} icon={item.icon} style={styles.item}>
-          <span style={{ marginLeft: "5px" }}>{item.value}</span>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  const { authenticate, isAuthenticating } = useMoralis();
+  const [chain] = useState("");
 
   const handleCustomLogin = async () => {
     await authenticate({
@@ -174,7 +118,7 @@ export default function SignIn() {
       appLogo: "pizza.svg",
     });
     window.localStorage.setItem("connectorId", "web3Auth");
-    window.localStorage.setItem("chainId", chain || "0x2a");
+    window.localStorage.setItem("chainId", chain || "0x1");
   };
 
   return (
@@ -193,23 +137,8 @@ export default function SignIn() {
           >
             <Spin spinning={isAuthenticating}> Login </Spin>
           </div>
-          <img style={styles.img} src="pizza.svg" width={80} height={80} />
+          <img style={styles.img} src="pizza.svg" width={100} height={100} />
         </div>
-        <div style={styles.topdiv}>
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Button
-              key={selected?.key}
-              icon={selected?.icon}
-              style={{ ...styles.button, ...styles.item }}
-            >
-              <span style={{ marginLeft: "5px" }}>
-                {selected?.value || "Choose chain"}
-              </span>
-              <DownOutlined />
-            </Button>
-          </Dropdown>
-        </div>
-        {authError && alert(JSON.stringify(authError.message))}
         <div>
           <div style={styles.buttonCard}>
             <div style={styles.socialicons} onClick={handleCustomLogin}>
@@ -221,52 +150,11 @@ export default function SignIn() {
               <Text>and more</Text>
             </div>
             <button style={styles.loginButton} onClick={handleCustomLogin}>
-              Social Login with Web3Auth
+              Login
             </button>
           </div>
-          <span style={{ fontSize: "1em", fontWeight: "600" }}>OR</span>
-          <button style={styles.loginButton}>
-            <Account />
-          </button>
         </div>
       </div>
-
-      {/* <div className="glass-card" style={styles.web3}>
-        <div
-          style={{
-            padding: "10px",
-            display: "flex",
-            justifyContent: "center",
-            fontWeight: "700",
-            fontSize: "20px",
-          }}
-        >
-          <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          {connectors.map(({ title, icon, connectorId }, key) => (
-            <div
-              style={styles.connector}
-              key={key}
-              onClick={async () => {
-                try {
-                  await authenticate({
-                    provider: connectorId,
-                    signingMessage: "Pizza Authentication",
-                  });
-                  window.localStorage.setItem("connectorId", connectorId);
-                } catch (e) {
-                  console.log(e);
-                  alert(e.message);
-                }
-              }}
-            >
-              <img src={icon} alt={title} style={styles.icon} />
-              <Text style={{ fontSize: "14px" }}>{title}</Text>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 }
