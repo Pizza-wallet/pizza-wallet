@@ -1,15 +1,18 @@
+import "./dex.css";
 import { Chain, ChainKey, TokenWithAmounts, TokenAmount } from "../../types";
-import { useRef } from "react";
-import { Row, Col } from "antd";
+import { useRef, useState } from "react";
+import { Row, Col, Input } from "antd";
 import { RefSelectProps } from "antd/lib/select";
 import ChainSelect from "./ChainSelect";
 import TokenSelect from "./TokenSelect";
+import BigNumber from "bignumber.js";
 
 interface SwapFormProps {
   availableChains: Array<Chain>;
   selectedFromChain?: ChainKey;
   onChangeFromChain: (chainKey: ChainKey) => void;
   setFromToken: (tokenAddress: string) => void;
+  setFromAmount: (amount: BigNumber) => void;
   fromToken: string;
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> };
   balances: { [ChainKey: string]: Array<TokenAmount> } | undefined;
@@ -20,15 +23,22 @@ function SwapForm({
   selectedFromChain,
   onChangeFromChain,
   setFromToken,
+  setFromAmount,
   fromToken,
   tokens,
   balances,
 }: SwapFormProps) {
+  const [fromAmountString, setfromAmountString] = useState<string>("");
   const fromSelectRef = useRef<RefSelectProps>();
   const onChangeFromToken = (tokenAddress: string) => {
     // unselect
     fromSelectRef?.current?.blur();
     setFromToken(tokenAddress);
+  };
+
+  const onChangeDepositAmount = (amount: string) => {
+    setfromAmountString(amount);
+    setFromAmount(new BigNumber(amount));
   };
   return (
     <>
@@ -70,7 +80,22 @@ function SwapForm({
       </Row>
       <Row>
         <Col span={24}>
-          <div className="form-input-wrapper"></div>
+          <div className="form-input-wrapper">
+            <Input
+              style={{ height: 50, color: "black" }}
+              type="number"
+              defaultValue={0.0}
+              min={0}
+              step={0.000000000000000001}
+              value={fromAmountString}
+              onChange={(event) =>
+                onChangeDepositAmount(event.currentTarget.value)
+              }
+              placeholder="0.0"
+              bordered={false}
+              // className={!hasSufficientBalance() ? "insufficient" : ""}
+            />
+          </div>
         </Col>
       </Row>
     </>

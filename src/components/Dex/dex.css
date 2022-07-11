@@ -1,0 +1,26 @@
+.form-input-wrapper {
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 4px 4px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.chain-select {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+.token-select {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-left: none;
+}
+.token-verify {
+  position: absolute;
+  left: 15px;
+  bottom: 16px;
+}
+.option-item {
+  display: flex;
+}

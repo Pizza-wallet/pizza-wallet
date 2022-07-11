@@ -1,3 +1,4 @@
+import "./dex.css";
 import { useState, useEffect, useCallback } from "react";
 import { useMoralis, useChain } from "react-moralis";
 import { Form } from "antd";
@@ -5,6 +6,7 @@ import LiFi from "./LiFi";
 import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
 import { Chain, ChainKey, TokenAmountList, TokenAmount } from "../../types";
 import SwapForm from "./SwapForm";
+import BigNumber from "bignumber.js";
 
 function DEX() {
   const { web3, account } = useMoralis();
@@ -23,6 +25,7 @@ function DEX() {
   // From
   const [selectedFromChain, setSelectedFromChain] = useState<ChainKey>();
   const [fromToken, setFromToken] = useState<string>("");
+  const [fromAmount, setFromAmount] = useState<BigNumber>(new BigNumber(0));
 
   useEffect(() => {
     // get chains
@@ -53,6 +56,7 @@ function DEX() {
     const newFromChain = availableChains.find(
       (chain) => chain.key === chainKey,
     );
+    setFromToken("");
     setSelectedFromChain(newFromChain?.key);
   };
 
@@ -128,6 +132,7 @@ function DEX() {
             selectedFromChain={selectedFromChain}
             onChangeFromChain={onChangeFromChain}
             setFromToken={setFromToken}
+            setFromAmount={setFromAmount}
             fromToken={fromToken}
             tokens={tokens}
             balances={balances}

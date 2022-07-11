@@ -29,10 +29,10 @@ const ChainSelect = ({
       )}
 
       <Select
-        style={{ width: 200, position: "relative" }}
+        style={{ width: 200, position: "relative", color: "black" }}
         disabled={disabled}
         placeholder="Select Chain"
-        value={selectedChain}
+        value={selectedChain || undefined}
         onChange={(v: ChainKey) => onChangeSelectedChain(v)}
         dropdownStyle={{
           minWidth: 300,

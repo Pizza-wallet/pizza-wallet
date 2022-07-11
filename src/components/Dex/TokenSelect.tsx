@@ -161,24 +161,27 @@ const TokenSelect = ({
 
   return (
     <>
-      <div>
-        <Tooltip title={getTooltip()}>
-          <Avatar size="small" src={token?.logoURI} alt={token?.name}>
-            {token ? token.name : "?"}
-          </Avatar>
-          <Badge className="token-verify" count={getBadge()}></Badge>
-        </Tooltip>
-      </div>
+      {token && (
+        <div>
+          <Tooltip title={getTooltip()}>
+            <Avatar size="small" src={token?.logoURI} alt={token?.name}>
+              {token ? token.name : "?"}
+            </Avatar>
+            <Badge className="token-verify" count={getBadge()}></Badge>
+          </Tooltip>
+        </div>
+      )}
 
       <Select
         style={{
           width: 200,
           position: "relative",
-          // display: 'flex',
+          display: "flex",
+          color: "black",
         }}
         disabled={disabled}
         placeholder="Select Coin"
-        value={selectedToken}
+        value={selectedToken || undefined}
         onChange={(v) => onChangeSelectedToken(v)}
         optionLabelProp="data-label"
         bordered={false}
