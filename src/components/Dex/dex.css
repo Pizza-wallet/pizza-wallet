@@ -24,3 +24,11 @@
 .option-item {
   display: flex;
 }
+.swap-view {
+  width: 95%;
+  margin: auto;
+}
+
+.swap-form {
+  overflow: hidden;
+}

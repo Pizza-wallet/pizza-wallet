@@ -21,6 +21,8 @@ interface SwapFormProps {
   toToken: string;
   tokens: { [ChainKey: string]: Array<TokenWithAmounts> };
   balances: { [ChainKey: string]: Array<TokenAmount> } | undefined;
+  estimatedToAmount: string;
+  estimatedMinToAmount?: string;
 }
 
 function SwapForm({
@@ -37,6 +39,8 @@ function SwapForm({
   toToken,
   tokens,
   balances,
+  estimatedToAmount,
+  estimatedMinToAmount,
 }: SwapFormProps) {
   const [fromAmountString, setfromAmountString] = useState<string>("");
   const fromSelectRef = useRef<RefSelectProps>();
@@ -158,24 +162,24 @@ function SwapForm({
           <Col span={24}>
             <div className="form-input-wrapper disabled">
               <Input
-                style={{ height: 50 }}
+                style={{ height: 50, color: "gray" }}
                 type="text"
                 defaultValue={0.0}
                 min={0}
-                // value={estimatedToAmount}
+                value={estimatedToAmount}
                 onChange={(event) => setToAmount(formatAmountInput(event))}
                 placeholder="..."
                 bordered={false}
                 disabled
               />
-              {/* {!!estimatedMinToAmount && (
+              {!!estimatedMinToAmount && (
                 <Tooltip
                   color={"gray"}
-                  title={`The final amount might change due to slippage but will not fall below ${estimatedMinWithdrawAmount}`}
+                  title={`The final amount might change due to slippage but will not fall below ${estimatedMinToAmount}`}
                 >
                   <span className="amountBadge">?</span>
                 </Tooltip>
-              )} */}
+              )}
             </div>
           </Col>
         </Row>

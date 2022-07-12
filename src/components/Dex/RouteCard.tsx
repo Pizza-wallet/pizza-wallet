@@ -1,17 +1,16 @@
 import { Col, Row, Timeline, Typography } from "antd";
 import BigNumber from "bignumber.js";
 import { useMemo } from "react";
-
 import { formatTokenAmount, parseSecondsAsTime } from "../../services/utils";
 import { getChainById, Route as RouteType, Step } from "../../types";
 
 interface RouteProps {
   route: RouteType;
-  // selected: boolean;
-  // onSelect: Function;
+  selected: boolean;
+  onSelect: () => void;
 }
 
-const RouteCard = ({ route }: RouteProps) => {
+const RouteCard = ({ route, selected, onSelect }: RouteProps) => {
   const tag: string | undefined = useMemo(() => {
     if (!route.tags || !route.tags.length) {
       return "GENERAL";
@@ -112,23 +111,23 @@ const RouteCard = ({ route }: RouteProps) => {
         padding: 24,
         paddingTop: 24,
         paddingBottom: 24,
-        // border: selected ? "1px solid #3f49e1" : "none",
+        border: selected ? "1px solid #3f49e1" : "none",
       }}
-      // onClick={() => onSelect()}
+      onClick={() => onSelect()}
     >
       <div style={{ float: "right" }}>
-        {/* {selected ? (
+        {selected ? (
           <Typography.Text style={{ fontSize: 14, color: "#3f49e1" }}>
             selected
           </Typography.Text>
         ) : (
-          <Typography.Text type="secondary" style={{ fontSize: 14 }}>
+          <Typography.Text
+            type="secondary"
+            style={{ fontSize: 14, cursor: "pointer" }}
+          >
             click to select
           </Typography.Text>
-        )} */}
-        <Typography.Text type="secondary" style={{ fontSize: 14 }}>
-          click to select
-        </Typography.Text>
+        )}
       </div>
       <Timeline className="progress-step-list">
         {!!tag && (

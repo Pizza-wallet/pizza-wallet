@@ -3,20 +3,20 @@ import { Col, Row, Typography } from "antd";
 import RouteCard from "./RouteCard";
 
 interface RouteCarouselProps {
-  // highlightedIndex: number;
+  highlightedIndex: number;
   routes: RouteType[];
   routesLoading: boolean;
   noRoutesAvailable: boolean;
-  // setHighlightedIndex: Function;
+  setHighlightedIndex: (index: number) => void;
 }
 
 const RouteList = ({
-  // highlightedIndex,
+  highlightedIndex,
+  setHighlightedIndex,
   routes,
   routesLoading,
   noRoutesAvailable,
-}: // setHighlightedIndex,
-RouteCarouselProps) => {
+}: RouteCarouselProps) => {
   return (
     <>
       {routes.length > 0 && (
@@ -27,8 +27,8 @@ RouteCarouselProps) => {
                 <RouteCard
                   key={index}
                   route={route}
-                  // selected={highlightedIndex === index}
-                  // onSelect={() => setHighlightedIndex(index)}
+                  selected={highlightedIndex === index}
+                  onSelect={() => setHighlightedIndex(index)}
                 />
               );
             })}

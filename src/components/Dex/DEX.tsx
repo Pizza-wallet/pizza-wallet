@@ -1,7 +1,8 @@
 import "./dex.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useMoralis, useChain } from "react-moralis";
-import { Form, Row, Typography } from "antd";
+import { Form, Row, Typography, Col } from "antd";
+import { Content } from "antd/lib/layout/layout";
 import LiFi from "./LiFi";
 import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
 import {
@@ -13,6 +14,7 @@ import {
   Route as RouteType,
   RoutesResponse,
 } from "../../types";
+import { formatTokenAmountOnly, formatTokenAmount } from "../../services/utils";
 import SwapForm from "./SwapForm";
 import BigNumber from "bignumber.js";
 import RouteList from "./RouteList";
@@ -32,6 +34,7 @@ function DEX() {
   const [balances, setBalances] = useState<{
     [ChainKey: string]: Array<TokenAmount>;
   }>();
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
   const transactionInfoRef = useRef<null | HTMLDivElement>(null);
 
@@ -163,6 +166,27 @@ function DEX() {
     [tokens],
   );
 
+  const getSelectedWithdraw = () => {
+    if (highlightedIndex === -1) {
+      return {
+        estimate: "0.0",
+      };
+    } else {
+      const selectedRoute = routes[highlightedIndex];
+      const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1];
+      return {
+        estimate: formatTokenAmountOnly(
+          lastStep.action.toToken,
+          lastStep.estimate?.toAmount,
+        ),
+        min: formatTokenAmount(
+          lastStep.action.toToken,
+          lastStep.estimate?.toAmountMin,
+        ),
+      };
+    }
+  };
+
   // get transfer routes
   useEffect(() => {
     const getTransferRoutes = async () => {
@@ -237,11 +261,10 @@ function DEX() {
       const { result, id } = routeCallResult;
       if (id === currentRouteCallId) {
         setRoutes(result.routes);
-        // setHighlightedIndex(result.routes.length === 0 ? -1 : 0);
+        setHighlightedIndex(result.routes.length === 0 ? -1 : 0);
         setNoRoutesAvailable(result.routes.length === 0);
         setRoutesLoading(false);
         transactionInfoRef.current?.scrollIntoView({ behavior: "smooth" });
-        // setActiveTransactionInfoTabKey("1");
       }
     }
   }, [routeCallResult, currentRouteCallId]);
@@ -252,47 +275,65 @@ function DEX() {
 
   return (
     <>
-      <div>
-        <Row>
-          <Form>
-            <SwapForm
-              availableChains={availableChains}
-              selectedFromChain={selectedFromChain}
-              selectedToChain={selectedToChain}
-              onChangeFromChain={onChangeFromChain}
-              onChangeToChain={onChangeToChain}
-              setFromToken={setFromTokenAddress}
-              setToToken={setToTokenAddress}
-              setFromAmount={setFromAmount}
-              setToAmount={setToAmount}
-              fromToken={fromTokenAddress}
-              toToken={toTokenAddress}
-              tokens={tokens}
-              balances={balances}
-            />
-          </Form>
-        </Row>
+      <Content
+        style={{
+          marginTop: "0",
+          minHeight: "auto",
+        }}
+      >
+        <div className="swap-view">
+          <Row
+            gutter={[16, 96]}
+            style={{ paddingTop: 48 }}
+            justify="space-around"
+          >
+            <Col sm={23} lg={23} xl={10} className="swap-form">
+              <Form>
+                <SwapForm
+                  availableChains={availableChains}
+                  selectedFromChain={selectedFromChain}
+                  selectedToChain={selectedToChain}
+                  onChangeFromChain={onChangeFromChain}
+                  onChangeToChain={onChangeToChain}
+                  setFromToken={setFromTokenAddress}
+                  setToToken={setToTokenAddress}
+                  setFromAmount={setFromAmount}
+                  setToAmount={setToAmount}
+                  fromToken={fromTokenAddress}
+                  toToken={toTokenAddress}
+                  tokens={tokens}
+                  balances={balances}
+                  estimatedToAmount={getSelectedWithdraw().estimate}
+                  estimatedMinToAmount={getSelectedWithdraw().min}
+                />
+              </Form>
+            </Col>
 
-        <Row>
-          <div ref={transactionInfoRef}>
-            {routesLoading || noRoutesAvailable || routes.length ? (
-              <RouteList
-                // highlightedIndex={highlightedIndex}
-                routes={routes}
-                routesLoading={routesLoading}
-                noRoutesAvailable={noRoutesAvailable}
-                // setHighlightedIndex={setHighlightedIndex}
-              />
-            ) : (
-              <Row style={{ paddingTop: 48 }}>
-                <Typography.Title level={4} disabled>
-                  To get available routes, input your desired tokens to swap.
-                </Typography.Title>
-              </Row>
-            )}
-          </div>
-        </Row>
-      </div>
+            <Col sm={23} lg={23} xl={14}>
+              <div ref={transactionInfoRef}>
+                {routesLoading || noRoutesAvailable || routes.length ? (
+                  <Row style={{ paddingTop: 48 }}>
+                    <RouteList
+                      highlightedIndex={highlightedIndex}
+                      routes={routes}
+                      routesLoading={routesLoading}
+                      noRoutesAvailable={noRoutesAvailable}
+                      setHighlightedIndex={setHighlightedIndex}
+                    />
+                  </Row>
+                ) : (
+                  <Row style={{ paddingTop: 48 }}>
+                    <Typography.Title level={4} disabled>
+                      To get available routes, input your desired tokens to
+                      swap.
+                    </Typography.Title>
+                  </Row>
+                )}
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </Content>
     </>
   );
 }
