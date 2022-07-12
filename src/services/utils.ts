@@ -1,5 +1,6 @@
 import BigNumber from "bignumber.js";
 import { Token } from "../types";
+import { message } from "antd";
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
   if (!amount) {
@@ -55,4 +56,13 @@ export const parseSecondsAsTime = (seconds: number): string => {
 
 export const deepClone = (src: any) => {
   return JSON.parse(JSON.stringify(src));
+};
+
+export const copyToClipboard = async (text: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    message.success("Message copied to clipboard!");
+  } catch {
+    message.error("Copying failed!");
+  }
 };
