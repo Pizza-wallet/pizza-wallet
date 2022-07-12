@@ -1,7 +1,8 @@
 import "./dex.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useMoralis, useChain } from "react-moralis";
-import { Form, Row, Typography, Col } from "antd";
+import { Form, Row, Typography, Col, Button, Popconfirm, Modal } from "antd";
+import { LoadingOutlined, SwapOutlined, SyncOutlined } from "@ant-design/icons";
 import { Content } from "antd/lib/layout/layout";
 import LiFi from "./LiFi";
 import { useChainsTokensTools } from "./providers/chainsTokensToolsProvider";
@@ -14,11 +15,16 @@ import {
   Route as RouteType,
   RoutesResponse,
 } from "../../types";
-import { formatTokenAmountOnly, formatTokenAmount } from "../../services/utils";
+import {
+  formatTokenAmountOnly,
+  formatTokenAmount,
+  deepClone,
+} from "../../services/utils";
 import SwapForm from "./SwapForm";
 import BigNumber from "bignumber.js";
 import RouteList from "./RouteList";
 
+const TOTAL_SLIPPAGE_GUARD_MODAL = new BigNumber(0.9);
 let currentRouteCallId: number;
 
 function DEX() {
@@ -269,9 +275,157 @@ function DEX() {
     }
   }, [routeCallResult, currentRouteCallId]);
 
-  console.log("chains - ", availableChains);
+  const openModal = () => {
+    // deepClone to open new modal without execution info of previous transfer using same route card
+    setSelectedRoute(deepClone(routes[highlightedIndex]));
+  };
 
-  console.log("balances - ", balances);
+  const submitButton = () => {
+    if (!account) {
+      return "Connect button here";
+    }
+    // TODO: add this functionality later
+    // if (fromChainKey && chainId !== getChainByKey(fromChainKey).id) {
+    //   const fromChain = getChainByKey(fromChainKey);
+    //   return (
+    //     <Button
+    //       shape="round"
+    //       type="primary"
+    //       icon={<SwapOutlined />}
+    //       size={"large"}
+    //       htmlType="submit"
+    //       onClick={() => switchChain(fromChain.id)}
+    //     >
+    //       Switch Network to {fromChain.name}
+    //     </Button>
+    //   );
+    // }
+    if (routesLoading) {
+      return (
+        <Button
+          disabled={true}
+          shape="round"
+          type="primary"
+          icon={<SyncOutlined spin />}
+          size={"large"}
+          style={{ cursor: "pointer" }}
+        >
+          Searching Routes...
+        </Button>
+      );
+    }
+    if (noRoutesAvailable) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={"large"}>
+          No Route Found
+        </Button>
+      );
+    }
+    // TODO: add these three functionalities later
+    // if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
+    //   return (
+    //     <Button disabled={true} shape="round" type="primary" size={"large"}>
+    //       Insufficient Gas on Start Chain
+    //     </Button>
+    //   );
+    // }
+    // if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
+    //   return (
+    //     <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+    //       <Button disabled={true} shape="round" type="primary" size={"large"}>
+    //         Insufficient Gas on Destination Chain
+    //       </Button>
+    //     </Tooltip>
+    //   );
+    // }
+    // if (!hasSufficientBalance()) {
+    //   return (
+    //     <Button disabled={true} shape="round" type="primary" size={"large"}>
+    //       Insufficient Funds
+    //     </Button>
+    //   );
+    // }
+    const fromAmountUSD = new BigNumber(
+      routes[highlightedIndex]?.fromAmountUSD,
+    );
+    const toAmountUSD = new BigNumber(routes[highlightedIndex]?.toAmountUSD);
+
+    const gasCostUSD = new BigNumber(
+      routes[highlightedIndex]?.gasCostUSD || -1,
+    ); // gasprices might be too low for correct USD /Cents rounding so might end up being 0.00
+
+    const allValuesAvailable =
+      !fromAmountUSD.isZero() &&
+      !toAmountUSD.isZero() &&
+      !gasCostUSD.isNegative();
+
+    const totalExpenditure = gasCostUSD.isNegative()
+      ? fromAmountUSD
+      : fromAmountUSD.plus(gasCostUSD);
+    const amountReceivedPercentage = toAmountUSD.dividedBy(totalExpenditure);
+    const receivedAmountTooLow = amountReceivedPercentage.isLessThan(
+      TOTAL_SLIPPAGE_GUARD_MODAL,
+    );
+
+    const swapButton = (clickHandler?: () => void) => {
+      return (
+        <Button
+          disabled={highlightedIndex === -1}
+          shape="round"
+          type="primary"
+          icon={<SwapOutlined />}
+          size={"large"}
+          onClick={() => clickHandler?.()}
+        >
+          Swap
+        </Button>
+      );
+    };
+    const popoverContent = (
+      <div
+        style={{
+          maxWidth: "100px !important",
+        }}
+      >
+        {allValuesAvailable && receivedAmountTooLow ? (
+          <Typography.Paragraph>
+            The value of the received tokens is significantly lower than the
+            cost required to execute the transaction. Do you still want to
+            proceed?
+          </Typography.Paragraph>
+        ) : !allValuesAvailable && receivedAmountTooLow ? (
+          <Typography.Paragraph>
+            The value of the received tokens is significantly lower than the
+            cost required to execute the transaction. Also, we could not fetch
+            the FIAT price of one or more of the listed values. Do you still
+            want to proceed?
+          </Typography.Paragraph>
+        ) : (
+          <Typography.Paragraph>
+            We could not fetch the FIAT price of one or more of the listed
+            values. Do you still want to proceed?
+          </Typography.Paragraph>
+        )}
+        <Typography.Paragraph>
+          Swapped token value:{" "}
+          {!fromAmountUSD.isZero() ? `${fromAmountUSD.toFixed(2)} USD` : "~"}{" "}
+          <br />
+          Gas costs:{" "}
+          {!gasCostUSD.isNegative() ? `${gasCostUSD.toFixed(2)} USD` : "~"}{" "}
+          <br />
+          Received token value:{" "}
+          {!toAmountUSD.isZero() ? `${toAmountUSD.toFixed(2)} USD` : "~"}
+        </Typography.Paragraph>
+      </div>
+    );
+    return receivedAmountTooLow || !allValuesAvailable ? (
+      <Popconfirm onConfirm={() => openModal()} title={popoverContent}>
+        {swapButton()}
+      </Popconfirm>
+    ) : (
+      swapButton(openModal)
+    );
+  };
 
   return (
     <>
@@ -282,11 +436,7 @@ function DEX() {
         }}
       >
         <div className="swap-view">
-          <Row
-            gutter={[16, 96]}
-            style={{ paddingTop: 48 }}
-            justify="space-around"
-          >
+          <Row gutter={[16, 96]} justify="space-around">
             <Col sm={23} lg={23} xl={10} className="swap-form">
               <Form>
                 <SwapForm
@@ -307,6 +457,9 @@ function DEX() {
                   estimatedMinToAmount={getSelectedWithdraw().min}
                 />
               </Form>
+              <Row style={{ marginTop: 24 }} justify={"center"}>
+                {submitButton()}
+              </Row>
             </Col>
 
             <Col sm={23} lg={23} xl={14}>
@@ -333,6 +486,26 @@ function DEX() {
             </Col>
           </Row>
         </div>
+
+        {selectedRoute && !!selectedRoute.steps.length && (
+          <Modal
+            className="swapModal"
+            visible={selectedRoute.steps.length > 0}
+            onOk={() => {
+              setSelectedRoute(undefined);
+              updateBalances();
+            }}
+            onCancel={() => {
+              setSelectedRoute(undefined);
+              updateBalances();
+            }}
+            destroyOnClose={true}
+            width={700}
+            footer={null}
+          >
+            {/* Swapping steps here */}
+          </Modal>
+        )}
       </Content>
     </>
   );

@@ -1,5 +1,5 @@
 import { Route as RouteType } from "@lifinance/sdk";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Typography, Spin } from "antd";
 import RouteCard from "./RouteCard";
 
 interface RouteCarouselProps {
@@ -38,8 +38,7 @@ const RouteList = ({
       {routesLoading && !routes.length && (
         <Col span={24}>
           <Row justify={"center"} align="middle" style={{ height: 200 }}>
-            {/* <LoadingIndicator></LoadingIndicator> */}
-            <div>Loading...</div>
+            <Spin />
           </Row>
         </Col>
       )}

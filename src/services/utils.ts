@@ -52,3 +52,7 @@ export const parseSecondsAsTime = (seconds: number): string => {
   const prefix = remainingSeconds < 10 ? "0" : "";
   return `${minutes}:${prefix}${remainingSeconds}`;
 };
+
+export const deepClone = (src: any) => {
+  return JSON.parse(JSON.stringify(src));
+};
