@@ -20,22 +20,28 @@ A self custodial user focused wallet with built in DeFi features.
 ### Integrations
 
 - [Moralis](https://moralis.io/) - Web3 Tools
-- [LI.FI](https://li.fi/) - Bridge Aggregator (In progress)
+- [LI.FI](https://li.fi/) - Cross Chain Swap
 - [Transak](https://transak.com/) - Fiat Onramp
 
 ### Supported Chains
 
 - Ethereum
-- Polygon
-- Avalanche
 - Binance Smart Chain
+- Avalanche
+- Polygon
+- Optimism
+- Arbitrum
+- Fantom
+- Moonriver
+- Gnosis
+- Heco
 
 ## Development Guide
 
 ### Requirements
 
 It is recommended to be running a Debian or Ubuntu based Linux distribution. <br>
-In order to install the requirements for an other OS, please refer to the official guides.  
+In order to install the requirements for another OS, please refer to the official guides.  
 
 1. NVM
 ```sh
