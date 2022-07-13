@@ -1,3 +1,4 @@
+import "./dex.css";
 import { Avatar, Select } from "antd";
 import { Chain, ChainKey, getChainByKey } from "../../types";
 
@@ -29,7 +30,11 @@ const ChainSelect = ({
       )}
 
       <Select
-        style={{ width: 200, position: "relative", color: "black" }}
+        style={{
+          width: 200,
+          position: "relative",
+          color: "black",
+        }}
         disabled={disabled}
         placeholder="Select Chain"
         value={selectedChain || undefined}

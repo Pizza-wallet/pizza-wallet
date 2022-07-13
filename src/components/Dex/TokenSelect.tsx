@@ -1,3 +1,4 @@
+import "./dex.css";
 import {
   CheckCircleTwoTone,
   ClockCircleTwoTone,
