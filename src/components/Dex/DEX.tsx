@@ -98,12 +98,37 @@ function DEX() {
     const newFromChain = getChain(chainKey);
     setFromTokenAddress("");
     setSelectedFromChain(newFromChain?.key);
+    setRoutes([]);
+    setHighlightedIndex(-1);
+    // find same deposit token
+    if (selectedFromChain) {
+      const symbol = tokens[selectedFromChain]?.find(
+        (token) => token.address === fromTokenAddress,
+      )?.symbol;
+      const tokenAddress = tokens[chainKey]?.find(
+        (token) => token.symbol === symbol,
+      )?.address;
+
+      setFromTokenAddress(tokenAddress || "");
+    }
   };
 
   const onChangeToChain = (chainKey: ChainKey) => {
     const newToChain = getChain(chainKey);
     setToTokenAddress("");
     setSelectedToChain(newToChain?.key);
+    setRoutes([]);
+    setHighlightedIndex(-1);
+    // find same withdraw token
+    if (selectedToChain) {
+      const symbol = tokens[selectedToChain].find(
+        (token) => token.address === toTokenAddress,
+      )?.symbol;
+      const tokenAddress = tokens[chainKey].find(
+        (token) => token.symbol === symbol,
+      )?.address;
+      setToTokenAddress(tokenAddress || "");
+    }
   };
 
   const updateBalances = useCallback(async () => {
@@ -141,15 +166,15 @@ function DEX() {
       };
     } else {
       const selectedRoute = routes[highlightedIndex];
-      const lastStep = selectedRoute.steps[selectedRoute.steps.length - 1];
+      const lastStep = selectedRoute?.steps[selectedRoute.steps.length - 1];
       return {
         estimate: formatTokenAmountOnly(
-          lastStep.action.toToken,
-          lastStep.estimate?.toAmount,
+          lastStep?.action.toToken,
+          lastStep?.estimate?.toAmount,
         ),
         min: formatTokenAmount(
-          lastStep.action.toToken,
-          lastStep.estimate?.toAmountMin,
+          lastStep?.action.toToken,
+          lastStep?.estimate?.toAmountMin,
         ),
       };
     }
