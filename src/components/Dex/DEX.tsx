@@ -108,7 +108,6 @@ function DEX() {
 
   const updateBalances = useCallback(async () => {
     if (account) {
-      console.log("calling update balances with account - ", account);
       // one call per chain to show balances as soon as the request comes back
       Object.entries(tokens).forEach(([chainKey, tokenList]) => {
         LiFi.getTokenBalances(account, tokenList).then((portfolio: any) => {
@@ -233,7 +232,7 @@ function DEX() {
         setHighlightedIndex(result.routes.length === 0 ? -1 : 0);
         setNoRoutesAvailable(result.routes.length === 0);
         setRoutesLoading(false);
-        transactionInfoRef.current?.scrollIntoView({ behavior: "smooth" });
+        // transactionInfoRef.current?.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [routeCallResult, currentRouteCallId]);
@@ -428,7 +427,7 @@ function DEX() {
             <Col sm={23} lg={23} xl={14}>
               <div ref={transactionInfoRef}>
                 {routesLoading || noRoutesAvailable || routes.length ? (
-                  <Row style={{ paddingTop: 48 }}>
+                  <Row style={{ paddingTop: 25 }}>
                     <RouteList
                       highlightedIndex={highlightedIndex}
                       routes={routes}
@@ -438,7 +437,7 @@ function DEX() {
                     />
                   </Row>
                 ) : (
-                  <Row style={{ paddingTop: 48 }}>
+                  <Row style={{ paddingTop: 25 }}>
                     <Typography.Title level={4} disabled>
                       To get available routes, input your desired tokens to
                       swap.

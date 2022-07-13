@@ -17,12 +17,11 @@ import {
   Typography,
 } from "antd";
 import { constants } from "ethers";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 
 import { useStepReturnInfo } from "./hooks/useStepReturnInfo";
 import LiFi from "./LiFi";
 import { storeRoute } from "./services/localStorage";
-// import { switchChain, switchChainAndAddToken } from "../services/metamask";
 import Notification, { NotificationType } from "../../services/notifications";
 import {
   renderProcessError,
@@ -55,6 +54,10 @@ interface SwappingProps {
   fixedRecipient?: boolean;
 }
 
+interface RouteState {
+  localRoute: Route;
+}
+
 const Swapping = ({
   route,
   updateRoute,
@@ -65,18 +68,19 @@ const Swapping = ({
   const { web3, account } = useMoralis();
   const { switchNetwork } = useChain();
   const [localRoute, setLocalRoute] = useState<Route>(route);
+  const [state, dispatch] = useReducer(
+    (state: RouteState, newState: Partial<RouteState>) => ({
+      ...state,
+      ...newState,
+    }),
+    {
+      localRoute: route,
+    },
+  );
   const [swapStartedAt, setSwapStartedAt] = useState<number>();
   const [swapDoneAt, setSwapDoneAt] = useState<number>();
   const [isSwapping, setIsSwapping] = useState<boolean>(false);
   const [alerts] = useState<Array<JSX.Element>>([]);
-  const [
-    showWalletConnectChainSwitchModal,
-    setShowWalletConnectChainSwitchModal,
-  ] = useState<{
-    show: boolean;
-    chainId: number;
-    promiseResolver?: () => void;
-  }>({ show: false, chainId: 1 });
 
   const routeReturnInfo = useStepReturnInfo(
     localRoute.steps[localRoute.steps.length - 1],
@@ -85,6 +89,11 @@ const Swapping = ({
   useEffect(() => {
     setLocalRoute(route);
   }, [route]);
+
+  useEffect(() => {
+    // re-renders when localRoute is updated
+    console.log("re-render steps changed - ", state.localRoute.steps);
+  }, [state.localRoute.steps]);
 
   useEffect(() => {
     // check if route is eligible for automatic resuming
@@ -405,36 +414,8 @@ const Swapping = ({
     resumeExecution();
   };
 
-  // const switchChainHook = async (requiredChainId: number) => {
-  //   if (!account) return;
-
-  //   if (isWalletConnectWallet(account)) {
-  //     let promiseResolver;
-  //     const signerAwaiter = new Promise<void>(
-  //       (resolve) => (promiseResolver = resolve),
-  //     );
-
-  //     setShowWalletConnectChainSwitchModal({
-  //       show: true,
-  //       chainId: requiredChainId,
-  //       promiseResolver,
-  //     });
-
-  //     await signerAwaiter;
-  //     return web3?.getSigner();
-  //   }
-
-  //   if ((await web3?.getSigner().getChainId()) !== requiredChainId) {
-  //     // Fallback is Metamask
-  //     const switched = await switchChain(requiredChainId);
-  //     if (!switched) {
-  //       throw new Error("Chain was not switched");
-  //     }
-  //   }
-  //   return web3?.getSigner();
-  // };
-
   const switchChainHook = (requiredChainId: number) => {
+    if (!account) return;
     // temporary fix this function should return type SwitchChainHook (check lifi code)
     type SwitchChainHook = any;
     switchNetwork(requiredChainId.toString());
@@ -447,7 +428,8 @@ const Swapping = ({
   const updateCallback = (updatedRoute: Route) => {
     setLocalRoute(updatedRoute);
     storeRoute(updatedRoute);
-    updateRoute(updatedRoute);
+    dispatch({ localRoute: updatedRoute });
+    // updateRoute(updatedRoute);
   };
 
   const getMainButton = () => {
