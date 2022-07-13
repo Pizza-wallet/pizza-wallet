@@ -1,7 +1,16 @@
 import "./dex.css";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useMoralis, useChain } from "react-moralis";
-import { Form, Row, Typography, Col, Button, Popconfirm, Modal } from "antd";
+import {
+  Form,
+  Row,
+  Typography,
+  Col,
+  Button,
+  Popconfirm,
+  Modal,
+  Tooltip,
+} from "antd";
 import { LoadingOutlined, SwapOutlined, SyncOutlined } from "@ant-design/icons";
 import { Content } from "antd/lib/layout/layout";
 import LiFi from "./LiFi";
@@ -14,11 +23,16 @@ import {
   RoutesRequest,
   Route as RouteType,
   RoutesResponse,
+  // getChainByKey,
+  findDefaultToken,
+  getChainById,
+  isSwapStep,
 } from "../../types";
 import {
   formatTokenAmountOnly,
   formatTokenAmount,
   deepClone,
+  getBalance,
 } from "../../services/utils";
 import SwapForm from "./SwapForm";
 import Swapping from "./Swapping";
@@ -30,7 +44,7 @@ let currentRouteCallId: number;
 
 function DEX() {
   const { web3, account } = useMoralis();
-  const { switchNetwork } = useChain();
+  const { switchNetwork, chainId } = useChain();
   const chainsTokensTools = useChainsTokensTools();
   const [availableChains, setAvailableChains] = useState<Chain[]>(
     chainsTokensTools.chains,
@@ -267,25 +281,83 @@ function DEX() {
     setSelectedRoute(deepClone(routes[highlightedIndex]));
   };
 
+  const hasSufficientBalance = () => {
+    if (!fromTokenAddress || !selectedFromChain) {
+      return true;
+    }
+
+    return fromAmount.lte(
+      getBalance(balances, selectedFromChain, fromTokenAddress),
+    );
+  };
+
+  const hasSufficientGasBalanceOnStartChain = (route?: RouteType) => {
+    if (!route) {
+      return true;
+    }
+
+    const fromChain = getChainById(route.fromChainId);
+    const token = findDefaultToken(fromChain.coin, fromChain.id);
+    const balance = getBalance(balances, fromChain.key, token.address);
+
+    const requiredAmount = route.steps
+      .filter((step) => step.action.fromChainId === route.fromChainId)
+      .map(
+        (step) =>
+          step.estimate.gasCosts &&
+          step.estimate.gasCosts.length &&
+          step.estimate.gasCosts[0].amount,
+      )
+      .map((amount) => new BigNumber(amount || "0"))
+      .reduce((a, b) => a.plus(b), new BigNumber(0))
+      .shiftedBy(-18);
+    return !balance.isZero() && balance.gte(requiredAmount);
+  };
+
+  const hasSufficientGasBalanceOnCrossChain = (route?: RouteType) => {
+    if (!route) {
+      return true;
+    }
+    const lastStep = route.steps[route.steps.length - 1];
+    if (!isSwapStep(lastStep)) {
+      return true;
+    }
+
+    const crossChain = getChainById(lastStep.action.fromChainId);
+    const token = findDefaultToken(crossChain.coin, crossChain.id);
+    const balance = getBalance(balances, crossChain.key, token.address);
+
+    const gasEstimate =
+      lastStep.estimate.gasCosts &&
+      lastStep.estimate.gasCosts.length &&
+      lastStep.estimate.gasCosts[0].amount;
+    const requiredAmount = new BigNumber(gasEstimate || 0).shiftedBy(-18);
+    return !balance.isZero() && balance.gte(requiredAmount);
+  };
+
   const submitButton = () => {
     if (!account) {
       return "Connect button here";
     }
-    // TODO: add this functionality later
-    // if (fromChainKey && chainId !== getChainByKey(fromChainKey).id) {
-    //   const fromChain = getChainByKey(fromChainKey);
-    //   return (
-    //     <Button
-    //       shape="round"
-    //       type="primary"
-    //       icon={<SwapOutlined />}
-    //       size={"large"}
-    //       htmlType="submit"
-    //       onClick={() => switchChain(fromChain.id)}
-    //     >
-    //       Switch Network to {fromChain.name}
-    //     </Button>
-    //   );
+    // Below now works if we need to add it in at later date
+    // if (selectedFromChain && chainId) {
+    //   const fromChain = getChainByKey(selectedFromChain);
+    //   if (fromChain.id !== Number(chainId)) {
+    //     console.log("fromChain - ", fromChain);
+    //     console.log("chainId to string - ", fromChain?.id.toString());
+    //     return (
+    //       <Button
+    //         shape="round"
+    //         type="primary"
+    //         icon={<SwapOutlined />}
+    //         size={"large"}
+    //         htmlType="submit"
+    //         onClick={() => switchNetwork(fromChain?.metamask.chainId)}
+    //       >
+    //         Switch Network to {fromChain?.name}
+    //       </Button>
+    //     );
+    //   }
     // }
     if (routesLoading) {
       return (
@@ -308,30 +380,31 @@ function DEX() {
         </Button>
       );
     }
-    // TODO: add these three functionalities later
-    // if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
-    //   return (
-    //     <Button disabled={true} shape="round" type="primary" size={"large"}>
-    //       Insufficient Gas on Start Chain
-    //     </Button>
-    //   );
-    // }
-    // if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
-    //   return (
-    //     <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
-    //       <Button disabled={true} shape="round" type="primary" size={"large"}>
-    //         Insufficient Gas on Destination Chain
-    //       </Button>
-    //     </Tooltip>
-    //   );
-    // }
-    // if (!hasSufficientBalance()) {
-    //   return (
-    //     <Button disabled={true} shape="round" type="primary" size={"large"}>
-    //       Insufficient Funds
-    //     </Button>
-    //   );
-    // }
+
+    if (!hasSufficientGasBalanceOnStartChain(routes[highlightedIndex])) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={"large"}>
+          Insufficient Gas on Start Chain
+        </Button>
+      );
+    }
+
+    if (!hasSufficientGasBalanceOnCrossChain(routes[highlightedIndex])) {
+      return (
+        <Tooltip title="The selected route requires a swap on the chain you are tranferring to. You need to have gas on that chain to pay for the transaction there.">
+          <Button disabled={true} shape="round" type="primary" size={"large"}>
+            Insufficient Gas on Destination Chain
+          </Button>
+        </Tooltip>
+      );
+    }
+    if (!hasSufficientBalance()) {
+      return (
+        <Button disabled={true} shape="round" type="primary" size={"large"}>
+          Insufficient Funds
+        </Button>
+      );
+    }
     const fromAmountUSD = new BigNumber(
       routes[highlightedIndex]?.fromAmountUSD,
     );

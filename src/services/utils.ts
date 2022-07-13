@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import { Token } from "../types";
+import { Token, ChainKey, TokenAmount } from "../types";
 import { message } from "antd";
 
 export const formatTokenAmount = (token: Token, amount: string | undefined) => {
@@ -65,4 +65,35 @@ export const copyToClipboard = async (text: string) => {
   } catch {
     message.error("Copying failed!");
   }
+};
+
+export const isZeroAddress = (address: string): boolean => {
+  address = address.toLowerCase();
+  return address === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+};
+
+export const getBalance = (
+  currentBalances: { [ChainKey: string]: Array<TokenAmount> } | undefined,
+  chainKey: ChainKey,
+  tokenId: string,
+) => {
+  if (!currentBalances || !currentBalances[chainKey]) {
+    return new BigNumber(0);
+  }
+
+  const formatPotentialZeroAddress = (address: string) => {
+    if (isZeroAddress(address)) {
+      return "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+    }
+    return address;
+  };
+
+  const tokenBalance = currentBalances[chainKey].find(
+    (tokenAmount) =>
+      formatPotentialZeroAddress(tokenAmount.address) ===
+      formatPotentialZeroAddress(tokenId),
+  );
+  return tokenBalance?.amount
+    ? new BigNumber(tokenBalance?.amount)
+    : new BigNumber(0);
 };
