@@ -94,6 +94,11 @@ function DEX() {
     updateBalances();
   }, [account, tokens]);
 
+  useEffect(() => {
+    // re-set highlighted index if user changes any of the below dependencies
+    setHighlightedIndex(-1);
+  }, [fromAmount, toTokenAddress, fromTokenAddress]);
+
   // Do we want chain to change here if changed in the header and vice versa?
   // useEffect(() => {
   //   if (chain && chainId) {

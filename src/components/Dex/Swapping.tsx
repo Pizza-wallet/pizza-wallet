@@ -414,11 +414,14 @@ const Swapping = ({
     resumeExecution();
   };
 
-  const switchChainHook = (requiredChainId: number) => {
+  const switchChainHook = async (requiredChainId: number) => {
     if (!account) return;
     // temporary fix this function should return type SwitchChainHook (check lifi code)
     type SwitchChainHook = any;
-    switchNetwork(requiredChainId.toString());
+
+    // requiredChainId is a number moralis expects string
+    const fromChain = getChainById(requiredChainId);
+    switchNetwork(fromChain?.metamask.chainId);
     const signer: SwitchChainHook = web3?.getSigner();
     // return the associated Signer
     return signer;
