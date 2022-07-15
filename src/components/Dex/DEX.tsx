@@ -227,16 +227,17 @@ function DEX() {
           fromAddress: account || undefined,
           toAddress: account || undefined,
           // advanced options to add later
-          // options: {
-          //   order: optionOrder,
-          //   slippage: optionSlippage / 100,
-          //   bridges: {
-          //     allow: optionEnabledBridges,
-          //   },
-          //   exchanges: {
-          //     allow: optionEnabledExchanges,
-          //   },
-          // },
+          options: {
+            allowSwitchChain: true,
+            // order: optionOrder,
+            // slippage: optionSlippage / 100,
+            // bridges: {
+            //   allow: optionEnabledBridges,
+            // },
+            // exchanges: {
+            //   allow: optionEnabledExchanges,
+            // },
+          },
         };
 
         const id = Math.random();

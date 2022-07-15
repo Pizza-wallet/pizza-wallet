@@ -163,7 +163,7 @@ const TokenSelect = ({
   return (
     <>
       {token && (
-        <div>
+        <div style={{ height: "25px" }}>
           <Tooltip title={getTooltip()}>
             <Avatar size="small" src={token?.logoURI} alt={token?.name}>
               {token ? token.name : "?"}

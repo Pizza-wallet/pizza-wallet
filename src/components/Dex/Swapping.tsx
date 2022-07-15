@@ -421,7 +421,7 @@ const Swapping = ({
 
     // requiredChainId is a number moralis expects string
     const fromChain = getChainById(requiredChainId);
-    switchNetwork(fromChain?.metamask.chainId);
+    await switchNetwork(fromChain?.metamask.chainId);
     const signer: SwitchChainHook = web3?.getSigner();
     // return the associated Signer
     return signer;
