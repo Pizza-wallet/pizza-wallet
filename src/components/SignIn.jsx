@@ -113,12 +113,12 @@ export default function SignIn() {
     await authenticate({
       provider: "web3Auth",
       clientId:
-        "BF3-b9_OnWVea7wzYr14K8-xe9fG3t_mlsX53x2pOZfCDoLDFC6XY4Ip3PwmpWNAJcXJZflcAEKqFxx-gdXdkIc",
-      chainId: `${chain}` || "0x2a",
+        "BNCBMzsJff3_ny7WAFKX1Wl49xZyYFVnTr3E4blLqPXuUoysjLWlGoif7mR9TSr7kn6Qe3FXkG__WyssHSFLSLs",
+      chainId: `${chain}` || "0x1",
       appLogo: "pizza.svg",
     });
     window.localStorage.setItem("connectorId", "web3Auth");
-    window.localStorage.setItem("chainId", chain || "0x2a");
+    window.localStorage.setItem("chainId", chain || "0x1");
   };
 
   return (
