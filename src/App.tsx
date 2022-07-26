@@ -6,14 +6,15 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import SignIn from "./components/SignIn";
 import Account from "./components/Account/Account";
+import Chains from "./components/Chains";
 import ERC20Balance from "./components/ERC20Balance";
 import NFTBalance from "./components/NFTBalance";
-import Wallet from "./components/Wallet";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
 import Onramp from "./components/Onramp";
+import Wallet from "./components/Wallet";
+import SignIn from "./components/SignIn";
 import { Layout, Tabs, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
@@ -108,6 +109,7 @@ const App = () => {
               <p className="logotext">Pizza</p>
             </div>
             <div style={styles.headerRight}>
+              <Chains />
               <Account />
             </div>
           </Header>
@@ -130,6 +132,15 @@ const App = () => {
               <div style={styles.content}>
                 <Switch>
                   <Route path="/wallet">
+                    <Wallet />
+                  </Route>
+                  <Route path="/dex">
+                    <DEX />
+                  </Route>
+                  <Route path="/erc20transfers">
+                    <ERC20Transfers />
+                  </Route>
+                  <Route path="/dashboard">
                     <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
                       <Tabs.TabPane tab={<span>Tokens</span>} key="1">
                         <ERC20Balance />
@@ -139,23 +150,14 @@ const App = () => {
                       </Tabs.TabPane>
                     </Tabs>
                   </Route>
-                  <Route path="/transfer">
-                    <Wallet />
-                  </Route>
-                  <Route path="/activity">
-                    <ERC20Transfers />
-                  </Route>
-                  <Route path="/dex">
-                    <DEX />
-                  </Route>
                   <Route path="/onramp">
                     <Onramp />
                   </Route>
                   <Route path="/">
-                    <Redirect to="/wallet" />
+                    <Redirect to="/dashboard" />
                   </Route>
                   <Route path="/home">
-                    <Redirect to="/wallet" />
+                    <Redirect to="/dashboard" />
                   </Route>
                   <Route path="/nonauthenticated">
                     <>Please login using the "Authenticate" button</>

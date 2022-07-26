@@ -25,19 +25,19 @@ function MenuItems() {
       }}
       defaultSelectedKeys={[pathname]}
     >
+      <Menu.Item key="/dashboard">
+        <NavLink to="/dashboard">
+          <LayoutOutlined /> Dashboard
+        </NavLink>
+      </Menu.Item>
+      <Menu.Item key="/ERC20Transfers">
+        <NavLink to="/ERC20Transfers">
+          <UserSwitchOutlined /> Transactions
+        </NavLink>
+      </Menu.Item>
       <Menu.Item key="/wallet">
         <NavLink to="/wallet">
-          <LayoutOutlined /> Wallet
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/transfer">
-        <NavLink to="/transfer">
           <SendOutlined /> Transfer
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/activity">
-        <NavLink to="/activity">
-          <UserSwitchOutlined /> Activity
         </NavLink>
       </Menu.Item>
       <Menu.Item key="/dex">
@@ -46,7 +46,7 @@ function MenuItems() {
         </NavLink>
       </Menu.Item>
       <Menu.Item key="/onramp">
-        <NavLink to="/onramp">
+        <NavLink to="/Onramp">
           <DollarOutlined /> Fiat Onramp
         </NavLink>
       </Menu.Item>
