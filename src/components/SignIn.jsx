@@ -113,8 +113,7 @@ export default function SignIn() {
     await authenticate({
       provider: "web3Auth",
       clientId:
-        "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-      rpcTarget: "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
+        "BF3-b9_OnWVea7wzYr14K8-xe9fG3t_mlsX53x2pOZfCDoLDFC6XY4Ip3PwmpWNAJcXJZflcAEKqFxx-gdXdkIc",
       chainId: `${chain}` || "0x2a",
       appLogo: "pizza.svg",
     });

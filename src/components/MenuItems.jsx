@@ -25,9 +25,9 @@ function MenuItems() {
       }}
       defaultSelectedKeys={[pathname]}
     >
-      <Menu.Item key="/dashboard">
-        <NavLink to="/dashboard">
-          <LayoutOutlined /> Dashboard
+      <Menu.Item key="/wallet">
+        <NavLink to="/wallet">
+          <LayoutOutlined /> Wallet
         </NavLink>
       </Menu.Item>
       <Menu.Item key="/transfer">
