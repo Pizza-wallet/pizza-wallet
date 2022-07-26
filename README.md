@@ -11,7 +11,6 @@
     - [Start a Development Server](#start-the-webpack-development-server)
     - [Build App](#build-app)
     - [Docker](#docker)
-    - [CI/CD](#cicd)
 - [Contribute](#contribute)
 
 ## Description
@@ -21,22 +20,28 @@ A self custodial user focused wallet with built in DeFi features.
 ### Integrations
 
 - [Moralis](https://moralis.io/) - Web3 Tools
-- [LI.FI](https://li.fi/) - Bridge Aggregator (In progress)
+- [LI.FI](https://li.fi/) - Cross Chain Swap
 - [Transak](https://transak.com/) - Fiat Onramp
 
 ### Supported Chains
 
 - Ethereum
-- Polygon
-- Avalanche
 - Binance Smart Chain
+- Avalanche
+- Polygon
+- Optimism
+- Arbitrum
+- Fantom
+- Moonriver
+- Gnosis
+- Heco
 
 ## Development Guide
 
 ### Requirements
 
 It is recommended to be running a Debian or Ubuntu based Linux distribution. <br>
-In order to install the requirements for an other OS, please refer to the official guides.  
+In order to install the requirements for another OS, please refer to the official guides.  
 
 1. NVM
 ```sh
@@ -98,21 +103,15 @@ We recommend developing with Docker. This ensures you're development environment
 docker-compose -f docker-compose-dev.yml up --build
 ```
 
-### CI/CD
-
-We run our CI/CD environment with GitHub Actions
-
-The Workflow:
-
-- On Push:
-    - CodeQL Security Check
-- If successful:
-    - Build Docker Container
-- If successful:
-    - Run Tests
-
 ## Contribute
 
-We love builders! Here's how you can help:
-- Bug fixer - Check github's [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues) to see what needs to be fixed.
-- The dev - Want to help build new features? Check our board on [ClickUp](https://sharing.clickup.com/36638099/b/h/7-36638099-2/26df81f54e08e7a) and start building!
+- We love builders! Here's how you can help.
+
+#### The Builder:
+- Contact `info@pizzawallet.io` to see where you can be the most useful.
+    
+#### The Bug Fixer:
+- Check github's [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues) to see what needs to be fixed.
+
+#### The Bug Hunter:
+- Found a bug? Either contact us at `info@pizzawallet.io` or create a new [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues).

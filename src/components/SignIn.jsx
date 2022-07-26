@@ -4,7 +4,6 @@ import "../style.css";
 import { Spin, Dropdown, Button, Menu } from "antd";
 import Text from "antd/lib/typography/Text";
 import { DownOutlined } from "@ant-design/icons";
-// import { connectors } from "./Account/config";
 import Account from "./Account/Account.jsx";
 import apple from "./Account/WalletIcons/apple.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -12,7 +11,6 @@ import twitter from "./Account/WalletIcons/twitter.svg";
 import facebook from "./Account/WalletIcons/facebook.svg";
 import github from "./Account/WalletIcons/github.svg";
 import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
-// import Logo from "./Account/WalletIcons/Web3Auth.svg";
 import { useState, useEffect } from "react";
 
 const styles = {
@@ -22,9 +20,6 @@ const styles = {
     alignItems: "center",
   },
   web3: {
-    // display: "flex",
-    // justifyContent: "center",
-    // alignItems: "center",
     width: "350px",
     height: "450px",
   },
@@ -169,9 +164,10 @@ export default function SignIn() {
     await authenticate({
       provider: "web3Auth",
       clientId:
-        "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+        "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
+      rpcTarget: "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
       chainId: `${chain}` || "0x2a",
-      appLogo: "pizza.svg",
+      appLogo: "pizza.png",
     });
     window.localStorage.setItem("connectorId", "web3Auth");
     window.localStorage.setItem("chainId", chain || "0x2a");
@@ -193,7 +189,7 @@ export default function SignIn() {
           >
             <Spin spinning={isAuthenticating}> Login </Spin>
           </div>
-          <img style={styles.img} src="pizza.svg" width={80} height={80} />
+          <img style={styles.img} src="pizza.png" width={80} height={80} />
         </div>
         <div style={styles.topdiv}>
           <Dropdown overlay={menu} trigger={["click"]}>
@@ -230,43 +226,6 @@ export default function SignIn() {
           </button>
         </div>
       </div>
-
-      {/* <div className="glass-card" style={styles.web3}>
-        <div
-          style={{
-            padding: "10px",
-            display: "flex",
-            justifyContent: "center",
-            fontWeight: "700",
-            fontSize: "20px",
-          }}
-        >
-          <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-          {connectors.map(({ title, icon, connectorId }, key) => (
-            <div
-              style={styles.connector}
-              key={key}
-              onClick={async () => {
-                try {
-                  await authenticate({
-                    provider: connectorId,
-                    signingMessage: "Pizza Authentication",
-                  });
-                  window.localStorage.setItem("connectorId", connectorId);
-                } catch (e) {
-                  console.log(e);
-                  alert(e.message);
-                }
-              }}
-            >
-              <img src={icon} alt={title} style={styles.icon} />
-              <Text style={{ fontSize: "14px" }}>{title}</Text>
-            </div>
-          ))}
-        </div>
-      </div> */}
     </div>
   );
 }

@@ -7,7 +7,6 @@ import {
   Redirect,
 } from "react-router-dom";
 import Account from "./components/Account/Account";
-import Chains from "./components/Chains";
 import ERC20Balance from "./components/ERC20Balance";
 import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
@@ -87,7 +86,9 @@ const App = () => {
       enableWeb3({
         provider: connectorId,
         clientId:
-          "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+          "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
+        rpcTarget:
+          "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
         chainId: chainId,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -109,7 +110,6 @@ const App = () => {
               <p className="logotext">Pizza</p>
             </div>
             <div style={styles.headerRight}>
-              <Chains />
               <Account />
             </div>
           </Header>
@@ -131,15 +131,6 @@ const App = () => {
               )}
               <div style={styles.content}>
                 <Switch>
-                  <Route path="/wallet">
-                    <Wallet />
-                  </Route>
-                  <Route path="/dex">
-                    <DEX />
-                  </Route>
-                  <Route path="/erc20transfers">
-                    <ERC20Transfers />
-                  </Route>
                   <Route path="/dashboard">
                     <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
                       <Tabs.TabPane tab={<span>Tokens</span>} key="1">
@@ -150,14 +141,23 @@ const App = () => {
                       </Tabs.TabPane>
                     </Tabs>
                   </Route>
+                  <Route path="/transfer">
+                    <Wallet />
+                  </Route>
+                  <Route path="/activity">
+                    <ERC20Transfers />
+                  </Route>
+                  <Route path="/dex">
+                    <DEX />
+                  </Route>
                   <Route path="/onramp">
                     <Onramp />
                   </Route>
                   <Route path="/">
-                    <Redirect to="/dashboard" />
+                    <Redirect to="/wallet" />
                   </Route>
                   <Route path="/home">
-                    <Redirect to="/dashboard" />
+                    <Redirect to="/wallet" />
                   </Route>
                   <Route path="/nonauthenticated">
                     <>Please login using the "Authenticate" button</>
@@ -173,8 +173,8 @@ const App = () => {
 };
 
 export const Logo = () => (
-  <div style={{ display: "flex", paddingTop: "4px" }}>
-    <img src="pizza.svg" alt="logo" />
+  <div style={{ display: "flex", padding: "10px", width: "64px" }}>
+    <img src="pizza.png" alt="logo" />
   </div>
 );
 
