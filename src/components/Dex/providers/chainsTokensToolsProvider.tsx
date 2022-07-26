@@ -1,4 +1,4 @@
-import { Chain, getChainById } from "@lifinance/sdk";
+import { Chain, getChainById } from "@lifi/sdk";
 import {
   createContext,
   ReactNode,
@@ -66,6 +66,7 @@ export const ChainsTokensToolsProvider = ({ children }: AuxProps) => {
   useEffect(() => {
     const load = async () => {
       const tokens = (await LiFi.getTokens()).tokens;
+      console.log("what getTokens now returns - ", tokens);
       if (!tokens) {
         // eslint-disable-next-line
         console.warn(
@@ -76,9 +77,15 @@ export const ChainsTokensToolsProvider = ({ children }: AuxProps) => {
       const newTokens: TokenAmountList = {};
       // let chain: keyof typeof tokens
       for (const chainId in tokens) {
+        console.log("chainId - ", chainId);
+        
         const chain = getChainById(Number(chainId));
+      
+        console.log("can get chain - ", chain);
+     
         if (!newTokens[chain.key]) newTokens[chain.key] = [];
         newTokens[chain.key] = tokens[chainId];
+     
       }
 
       const oldTokens = data.tokens;

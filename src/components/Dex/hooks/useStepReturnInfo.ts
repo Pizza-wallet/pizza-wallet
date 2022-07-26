@@ -1,4 +1,4 @@
-import { Chain, getChainById, Step, Token, TokenAmount } from "@lifinance/sdk";
+import { Chain, getChainById, Step, Token, TokenAmount } from "@lifi/sdk";
 import BigNumber from "bignumber.js";
 import { useCallback, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";

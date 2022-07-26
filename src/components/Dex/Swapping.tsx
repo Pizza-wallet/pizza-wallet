@@ -4,7 +4,7 @@ import {
   LoadingOutlined,
   PauseCircleOutlined,
 } from "@ant-design/icons";
-import { ExecutionSettings } from "@lifinance/sdk";
+import { ExecutionSettings } from "@lifi/sdk";
 import { useMoralis, useChain } from "react-moralis";
 import {
   Button,

@@ -1,4 +1,4 @@
-import LIFI from "@lifinance/sdk";
+import LIFI from "@lifi/sdk";
 
 const LiFi = new LIFI({
   // Testnets are only enabled on the staging environment

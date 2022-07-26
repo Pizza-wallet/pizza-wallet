@@ -1,2 +1,2 @@
 export * from "./client";
-export * from "@lifinance/sdk";
+export * from "@lifi/sdk";

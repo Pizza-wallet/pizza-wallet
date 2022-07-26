@@ -1,4 +1,4 @@
-import { Route as RouteType } from "@lifinance/sdk";
+import { Route as RouteType } from "@lifi/sdk";
 import { Col, Row, Typography, Spin } from "antd";
 import RouteCard from "./RouteCard";
 
