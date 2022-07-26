@@ -154,10 +154,10 @@ const App = () => {
                     <Onramp />
                   </Route>
                   <Route path="/">
-                    <Redirect to="/wallet" />
+                    <Redirect to="/dashboard" />
                   </Route>
                   <Route path="/home">
-                    <Redirect to="/wallet" />
+                    <Redirect to="/dashboard" />
                   </Route>
                   <Route path="/nonauthenticated">
                     <>Please login using the "Authenticate" button</>
