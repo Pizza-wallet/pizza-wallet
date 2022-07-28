@@ -11,9 +11,9 @@ import ERC20Balance from "./components/ERC20Balance";
 import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
-import Onramp from "./components/Onramp";
 import Wallet from "./components/Wallet";
 import SignIn from "./components/SignIn";
+import Onramper from "./components/Onramper";
 import { Layout, Tabs, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
@@ -150,8 +150,8 @@ const App = () => {
                   <Route path="/dex">
                     <DEX />
                   </Route>
-                  <Route path="/onramp">
-                    <Onramp />
+                  <Route path="/onramper">
+                    <Onramper />
                   </Route>
                   <Route path="/">
                     <Redirect to="/wallet" />

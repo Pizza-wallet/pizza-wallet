@@ -45,8 +45,8 @@ function MenuItems() {
           <SwapOutlined /> Exchange
         </NavLink>
       </Menu.Item>
-      <Menu.Item key="/onramp">
-        <NavLink to="/onramp">
+      <Menu.Item key="/onramper">
+        <NavLink to="/onramper">
           <DollarOutlined /> Fiat Onramp
         </NavLink>
       </Menu.Item>
