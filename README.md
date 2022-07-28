@@ -21,7 +21,7 @@ A self custodial user focused wallet with built in DeFi features.
 
 - [Moralis](https://moralis.io/) - Web3 Tools
 - [LI.FI](https://li.fi/) - Cross Chain Swap
-- [Transak](https://transak.com/) - Fiat Onramp
+- [Onramper](https://onramper.com/) - Fiat Onramp & Offramp
 
 ### Supported Chains
 
