@@ -31,7 +31,7 @@ body {
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  background-color: white;
+  background-color: #103658;
 }
 
 ul[class],
@@ -57,4 +57,45 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+/* Imported css for navigation buttons */
+.transactions {
+  height: 50px;
+  width: 225px;
+}
+.rectangle-3-0 {
+  transform: rotate(0deg);
+  border-radius: 15px;
+  height: 42px;
+  width: 220px;
+  background-color: #faf5ef;
+  border: 3px solid #3e389f;
+}
+.rectangle-2-9 {
+  transform: rotate(0deg);
+  border-radius: 15px;
+  height: 42px;
+  width: 220px;
+  background-color: #faf5ef;
+  border: 3px solid #3e389f;
+}
+.group-1-6 {
+  transform: rotate(0deg);
+  height: 28px;
+  width: 189px;
+}
+.text-1 {
+  transform: rotate(0deg);
+  text-align: left;
+  vertical-align: top;
+  font-size: 24px;
+  font-family: Rubik;
+  line-height: auto;
+  color: #3e389f;
+}
+.img-2 {
+  transform: rotate(-1deg);
+  height: 21px;
+  width: 24px;
 }
