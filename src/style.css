@@ -10,10 +10,6 @@
   border-bottom: 2px solid #21bf96 !important;
 }
 
-@font-face {
-  font-family: "Night";
-  src: local("Night"), url(./fonts/Retrolight.otf) format("opentype");
-}
 .ant-menu-horizontal > .ant-menu-item-selected a,
 .ant-menu-horizontal > .ant-menu-item a:hover {
   color: #21bf96 !important;
@@ -36,43 +32,6 @@
 .ant-modal-content {
   overflow: auto;
   border-radius: 1rem;
-}
-
-.logotext {
-  animation: flicker 1.5s 5 alternate ease-out;
-  font-size: 4em;
-  /* margin: 15px; */
-  font-family: Night;
-  color: #21bf96;
-
-  text-shadow: 0 0 4px #21bf96, 0 0 11px #21bf96, 0 0 19px #21bf96,
-    0 0 40px #2131bf;
-
-  /* transition: text-shadow 100ms linear; */
-  /* border: 0.2rem solid #fff;
-  border-radius: 2rem;
-  padding: 0.1em;
-  box-shadow: 0 0 0.2rem #21bf96, 0 0 0.2rem #21bf96, 0 0 2rem #21bf96,
-    0 0 0.8rem #21bf96, 0 0 2.8rem #2131bf, inset 0 0 1.3rem #2131bf; */
-}
-
-@keyframes flicker {
-  0%,
-  18%,
-  22%,
-  25%,
-  53%,
-  57%,
-  100% {
-    text-shadow: 0 0 4px #21bf96, 0 0 11px #21bf96, 0 0 19px #21bf96,
-      0 0 40px #2131bf, 0 0 80px #2131bf, 0 0 90px #2131bf, 0 0 100px #2131bf,
-      0 0 150px #2131bf;
-  }
-  20%,
-  24%,
-  55% {
-    text-shadow: none;
-  }
 }
 
 #internal {
@@ -171,6 +130,7 @@
 
 html,
 body {
+  background: #103658;
   overflow: hidden;
   scroll-behavior: smooth;
 }

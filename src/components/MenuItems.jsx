@@ -6,8 +6,23 @@ import {
   SwapOutlined,
   LayoutOutlined,
   UserSwitchOutlined,
-  DollarOutlined,
+  // DollarOutlined,
 } from "@ant-design/icons";
+import dollarSign from "../assets/dollar-sign.svg";
+
+const MenuItemButton = (name, icon) => {
+  return (
+    <div className="transactions">
+      <div className="rectangle-3-0" />
+      <img src={icon} />
+      <div className="rectangle-2-9" />
+      <div className="group-1-6">
+        <p className="text-1">{name}</p>
+        <img src="" />
+      </div>
+    </div>
+  );
+};
 
 function MenuItems() {
   const { pathname } = useLocation();
@@ -47,7 +62,8 @@ function MenuItems() {
       </Menu.Item>
       <Menu.Item key="/onramper">
         <NavLink to="/onramper">
-          <DollarOutlined /> Fiat Onramp
+          {/* <DollarOutlined /> Fiat Onramp */}
+          {MenuItemButton("Buy/Sell", dollarSign)}
         </NavLink>
       </Menu.Item>
     </Menu>
