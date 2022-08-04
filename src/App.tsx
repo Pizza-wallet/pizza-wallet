@@ -16,12 +16,50 @@ import SignIn from "./components/SignIn";
 import Onramper from "./components/Onramper";
 import { Layout, Tabs, Alert } from "antd";
 import "antd/dist/antd.css";
-// import NativeBalance from "./components/NativeBalance";
+import NativeBalance from "./components/NativeBalance";
 import "./style.css";
 // import Text from "antd/lib/typography/Text";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
+import styled from "styled-components";
 const { Header, Sider, Content } = Layout;
+
+const BackdropStyled = styled("div")`
+  position: absolute;
+  right: 27px;
+  top: 14px;
+  height: 121px;
+  width: 230px;
+  border: 1px solid #3e389f;
+  background: white;
+  border-radius: 15px;
+`;
+
+const BalanceContainerStyled = styled("div")`
+  width: 230px;
+  height: 130px;
+  border: 1px solid #3e389f;
+  border-radius: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  background-color: #faf5ef;
+  margin-top: 35px;
+`;
+
+const BalanceTitleStyled = styled("div")`
+  height: 40px;
+  background-color: #3e389f;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+`;
+
+const BalanceTextStyled = styled("p")`
+  font-weight: bold;
+  font-size: 18px;
+  color: #faf5ef;
+  padding: 5px;
+`;
 
 const styles = {
   content: {
@@ -49,12 +87,6 @@ const styles = {
     fontSize: "15px",
     fontWeight: "600",
   },
-  siderBalance: {
-    margin: "15px",
-    fontSize: "30px",
-    borderRadius: "1em",
-    backgroundColor: "#141414",
-  },
   errorDiv: {
     width: "100%",
     display: "flex",
@@ -69,6 +101,7 @@ const styles = {
     backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
   },
 };
+
 const App = () => {
   const {
     isWeb3Enabled,
@@ -119,6 +152,7 @@ const App = () => {
               setCollapsedSideBar(!collapsedSideBar);
             }}
             style={{
+              zIndex: "1",
               height: "100vh",
               position: "fixed",
               width: "293px",
@@ -131,12 +165,15 @@ const App = () => {
             <div style={{ display: "flex" }}>
               <Logo />
             </div>
-            {/* <div style={styles.siderBalance}>
-            <Text style={{ fontSize: "15px", margin: "10px" }} strong>
-              Balance
-            </Text>
-            <NativeBalance />
-          </div> */}
+            <div style={{ position: "relative" }}>
+              <BackdropStyled></BackdropStyled>
+              <BalanceContainerStyled>
+                <BalanceTitleStyled>
+                  <BalanceTextStyled>Balance</BalanceTextStyled>
+                </BalanceTitleStyled>
+                <NativeBalance />
+              </BalanceContainerStyled>
+            </div>
             <MenuItems />
           </Sider>
           <Layout

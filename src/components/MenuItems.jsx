@@ -42,6 +42,7 @@ const menuItemButton = (text, icon) => {
 };
 
 function MenuItems() {
+  // use pathname to highlight selected menu item
   // const { pathname } = useLocation();
 
   return (
@@ -55,6 +56,7 @@ function MenuItems() {
         justifyContent: "center",
         border: "none",
         backgroundColor: "#FFF5CE",
+        marginTop: "40px",
       }}
       // defaultSelectedKeys={[pathname]}
     >

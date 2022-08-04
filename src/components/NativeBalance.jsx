@@ -7,7 +7,16 @@ function NativeBalance(props) {
   if (!account || !isAuthenticated) return null;
   if (isLoading) return <Spin></Spin>;
   return (
-    <div style={{ textAlign: "center", whiteSpace: "nowrap" }}>
+    <div
+      style={{
+        textAlign: "center",
+        whiteSpace: "nowrap",
+        color: "#3E389F",
+        fontSize: "24px",
+        marginTop: "24px",
+        fontWeight: "bold",
+      }}
+    >
       {balance.formatted}
     </div>
   );
