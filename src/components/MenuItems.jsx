@@ -1,31 +1,48 @@
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 import { Menu } from "antd";
-import { NavLink } from "react-router-dom";
-import {
-  SendOutlined,
-  SwapOutlined,
-  LayoutOutlined,
-  UserSwitchOutlined,
-  // DollarOutlined,
-} from "@ant-design/icons";
-import dollarSign from "../assets/dollar-sign.svg";
+import { Link } from "react-router-dom";
+// import {
+//   SendOutlined,
+//   SwapOutlined,
+//   // LayoutOutlined,
+//   UserSwitchOutlined,
+//   DollarOutlined,
+// } from "@ant-design/icons";
+import styled from "styled-components";
+import dashboardIcon from "../assets/dashboard.svg";
+import swapIcon from "../assets/swap.svg";
+import buySellIcon from "../assets/buySell.svg";
+import transactionsIcon from "../assets/transactions.svg";
+import transferIcon from "../assets/transfer.svg";
 
-const MenuItemButton = (name, icon) => {
+const MenuListItem = styled("li")`
+  padding-left: 24px;
+  display: flex;
+  align-items: center;
+  height: 50px;
+  margin-bottom: 15px;
+`;
+
+const MenuIcon = styled("img")`
+  height: 20px;
+  margin: 5px 10px 5px 0;
+`;
+
+const menuItemButton = (text, icon) => {
   return (
-    <div className="transactions">
-      <div className="rectangle-3-0" />
-      <img src={icon} />
-      <div className="rectangle-2-9" />
-      <div className="group-1-6">
-        <p className="text-1">{name}</p>
-        <img src="" />
-      </div>
+    <div className="new-button">
+      <a className="btn">
+        <span className="link" data-type="gesture">
+          <MenuIcon src={icon}></MenuIcon>
+          {text}
+        </span>
+      </a>
     </div>
   );
 };
 
 function MenuItems() {
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
 
   return (
     <Menu
@@ -37,35 +54,29 @@ function MenuItems() {
         paddingTop: "10px",
         justifyContent: "center",
         border: "none",
+        backgroundColor: "#FFF5CE",
       }}
-      defaultSelectedKeys={[pathname]}
+      // defaultSelectedKeys={[pathname]}
     >
-      <Menu.Item key="/dashboard">
-        <NavLink to="/dashboard">
-          <LayoutOutlined /> Dashboard
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/transfer">
-        <NavLink to="/transfer">
-          <SendOutlined /> Transfer
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/activity">
-        <NavLink to="/activity">
-          <UserSwitchOutlined /> Activity
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/dex">
-        <NavLink to="/dex">
-          <SwapOutlined /> Exchange
-        </NavLink>
-      </Menu.Item>
-      <Menu.Item key="/onramper">
-        <NavLink to="/onramper">
-          {/* <DollarOutlined /> Fiat Onramp */}
-          {MenuItemButton("Buy/Sell", dollarSign)}
-        </NavLink>
-      </Menu.Item>
+      <MenuListItem>
+        <Link to="/dashboard">
+          {menuItemButton("Dashboard", dashboardIcon)}
+        </Link>
+      </MenuListItem>
+      <MenuListItem>
+        <Link to="/transfer">{menuItemButton("Transfer", transferIcon)}</Link>
+      </MenuListItem>
+      <MenuListItem>
+        <Link to="/dex">{menuItemButton("Swap", swapIcon)}</Link>
+      </MenuListItem>
+      <MenuListItem>
+        <Link to="/onramper">{menuItemButton("Buy / Sell", buySellIcon)}</Link>
+      </MenuListItem>
+      <MenuListItem>
+        <Link to="/activity">
+          {menuItemButton("Transactions", transactionsIcon)}
+        </Link>
+      </MenuListItem>
     </Menu>
   );
 }

@@ -1,4 +1,4 @@
-@import "~antd/dist/antd.dark.css";
+/* @import "~antd/dist/antd.dark.css";
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover::after,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover::after,
 .ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-active::after,
@@ -13,7 +13,7 @@
 .ant-menu-horizontal > .ant-menu-item-selected a,
 .ant-menu-horizontal > .ant-menu-item a:hover {
   color: #21bf96 !important;
-}
+} */
 
 .fade {
   animation: fadein 1s linear forwards;
