@@ -26,18 +26,18 @@ const { Header, Sider, Content } = Layout;
 
 const BackdropStyled = styled("div")`
   position: absolute;
-  right: 27px;
-  top: 14px;
-  height: 121px;
-  width: 230px;
+  right: 32px;
+  top: 8px;
+  height: 117px;
+  width: 215px;
   border: 1px solid #3e389f;
   background: white;
   border-radius: 15px;
 `;
 
 const BalanceContainerStyled = styled("div")`
-  width: 230px;
-  height: 130px;
+  width: 220px;
+  height: 120px;
   border: 1px solid #3e389f;
   border-radius: 15px;
   margin-left: auto;
@@ -243,7 +243,16 @@ const App = () => {
 };
 
 export const Logo = () => (
-  <div style={{ display: "flex", padding: "10px" }}>
+  <div
+    style={{
+      display: "flex",
+      padding: "10px",
+      width: "235px",
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: "25px",
+    }}
+  >
     <img src={PizzaWalletLogo} alt="logo" />
   </div>
 );

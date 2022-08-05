@@ -1,4 +1,4 @@
-// import { useLocation } from "react-router";
+import { useLocation } from "react-router";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 // import {
@@ -28,22 +28,26 @@ const MenuIcon = styled("img")`
   margin: 5px 10px 5px 0;
 `;
 
-const menuItemButton = (text, icon) => {
-  return (
-    <div className="new-button">
-      <a className="btn">
-        <span className="link" data-type="gesture">
-          <MenuIcon src={icon}></MenuIcon>
-          {text}
-        </span>
-      </a>
-    </div>
-  );
-};
-
 function MenuItems() {
   // use pathname to highlight selected menu item
-  // const { pathname } = useLocation();
+  const { pathname } = useLocation();
+
+  const menuItemButton = (text, icon, route) => {
+    console.log("route - ", route);
+    console.log("pathname", pathname);
+
+    const selected = route === pathname ? "selected" : "link";
+    return (
+      <div className="new-button">
+        <a className="btn">
+          <span className={selected} data-type="gesture">
+            <MenuIcon src={icon}></MenuIcon>
+            {text}
+          </span>
+        </a>
+      </div>
+    );
+  };
 
   return (
     <Menu
@@ -56,27 +60,31 @@ function MenuItems() {
         justifyContent: "center",
         border: "none",
         backgroundColor: "#FFF5CE",
-        marginTop: "40px",
+        marginTop: "35px",
       }}
       // defaultSelectedKeys={[pathname]}
     >
       <MenuListItem>
         <Link to="/dashboard">
-          {menuItemButton("Dashboard", dashboardIcon)}
+          {menuItemButton("Dashboard", dashboardIcon, "/dashboard")}
         </Link>
       </MenuListItem>
       <MenuListItem>
-        <Link to="/transfer">{menuItemButton("Transfer", transferIcon)}</Link>
+        <Link to="/transfer">
+          {menuItemButton("Transfer", transferIcon, "/transfer")}
+        </Link>
       </MenuListItem>
       <MenuListItem>
-        <Link to="/dex">{menuItemButton("Swap", swapIcon)}</Link>
+        <Link to="/dex">{menuItemButton("Swap", swapIcon, "/dex")}</Link>
       </MenuListItem>
       <MenuListItem>
-        <Link to="/onramper">{menuItemButton("Buy / Sell", buySellIcon)}</Link>
+        <Link to="/onramper">
+          {menuItemButton("Buy / Sell", buySellIcon, "/onramper")}
+        </Link>
       </MenuListItem>
       <MenuListItem>
         <Link to="/activity">
-          {menuItemButton("Transactions", transactionsIcon)}
+          {menuItemButton("Transactions", transactionsIcon, "/activity")}
         </Link>
       </MenuListItem>
     </Menu>

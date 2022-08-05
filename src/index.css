@@ -77,7 +77,7 @@ select {
   cursor: pointer;
 }
 
-.new-button a span {
+.link {
   width: 100%;
   background: var(--dirty-white-2);
   display: block;
@@ -90,17 +90,11 @@ select {
   line-height: 30px;
 }
 
-/* .new-button a span:hover {
-  background: var(--dirty-white-2);
-  color: #000;
-  border: 4px solid #000;
-} */
-
-/* .new-button a:hover {
+.new-button a:hover {
   box-shadow: 0 0 2px var(--brand-blue-80), 0 0 6px var(--brand-blue-80),
     0 0 9px var(--brand-blue-80), 0 0 15px #030b55;
   font-weight: bold;
-} */
+}
 
 .new-button a:active {
   top: 4px;
@@ -110,16 +104,32 @@ select {
 
 .new-button a {
   display: flex;
-  width: 225px;
-  height: 52px;
+  width: 227px;
+  height: 50px;
   font: normal 22px/25px "Patrick Hand", sans-serif;
   margin: 10px;
   background-color: var(--dirty-white-2);
   color: var(--dirty-white-2);
   text-decoration: none;
   padding-bottom: 3px;
-  box-shadow: 0 2px 0 #000;
+  box-shadow: 0 2px 0 var(--brand-blue);
   border-radius: 17px;
   transition: padding 0.1s, box-shadow 0.1s, top 0.1s;
-  background-image: url("data:image/gif;base64,R0lGODlhBAAEAIABAAAAAAAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjEgNjQuMTQwOTQ5LCAyMDEwLzEyLzA3LTEwOjU3OjAxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgV2luZG93cyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5NUY1OENCRDdDMDYxMUUyOTEzMEE1MEM5QzM0NDVBMyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo5NUY1OENCRTdDMDYxMUUyOTEzMEE1MEM5QzM0NDVBMyI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjk1RjU4Q0JCN0MwNjExRTI5MTMwQTUwQzlDMzQ0NUEzIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjk1RjU4Q0JDN0MwNjExRTI5MTMwQTUwQzlDMzQ0NUEzIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEAQAAAQAsAAAAAAQABAAAAgYEEpdoeQUAOw==");
+  background-image: url("./assets/btn-stripes.svg");
+  background-position: bottom;
+  background-repeat: round;
+  background-position-y: bottom;
+}
+
+.selected {
+  background: var(--brand-blue-80);
+  color: var(--dirty-white-2);
+  border: 4px solid var(--dirty-white-2);
+  width: 100%;
+  display: block;
+  padding: 5px 15px;
+  font-family: "Rubik", sans-serif;
+  border-radius: 15px;
+  display: flex;
+  line-height: 30px;
 }
