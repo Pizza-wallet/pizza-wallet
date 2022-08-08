@@ -198,6 +198,7 @@ const App = () => {
                 <NativeBalance />
               </BalanceContainerStyled>
             </div>
+            {/* <button id="testing-button">Tester</button> */}
             <MenuItems />
           </Sider>
           <Layout
@@ -220,7 +221,6 @@ const App = () => {
             </Header>
             <Content
               style={{
-                // overflow: "auto",
                 overflowY: "scroll",
                 height: "100vh",
                 paddingBottom: "20px",

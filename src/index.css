@@ -139,6 +139,7 @@ select {
   color: var(--dirty-white-2);
   text-decoration: none;
   padding-bottom: 3px;
+  padding-right: 3px;
   box-shadow: 0 2px 0 var(--brand-blue);
   border-radius: 17px;
   transition: padding 0.1s, box-shadow 0.1s, top 0.1s;
@@ -218,4 +219,64 @@ tbody:last-child tr:last-child td:first-child {
   font-family: "Gloria Hallelujah", sans-serif;
   color: #3e389f;
   font-size: 2em;
+}
+
+#testing-button {
+  user-select: none;
+  font-family: "Roboto Slab", serif;
+  padding: 12px 24px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: black;
+  position: relative;
+  width: 100%;
+  max-width: 386px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 0;
+  letter-spacing: 0.6px;
+  transition: letter-spacing 0.4s ease;
+  border: none;
+  display: inline-block;
+  border-radius: 17px;
+  width: 227px;
+  height: 50px;
+  /* border: 3px solid var(--brand-blue-80); */
+}
+#testing-button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: white;
+  z-index: -1;
+  border-radius: 17px;
+  width: 227px;
+  height: 50px;
+  border: 3px solid var(--brand-blue-80);
+}
+
+#testing-button:after {
+  pointer-events: none;
+  content: "";
+  background: white;
+  background-image: url("./assets/btn-stripes.svg");
+  background-position: bottom;
+  background-repeat: round;
+  background-position-y: bottom;
+  /* background-size: 7px; */
+  display: block;
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  transform: translate(6px, 6px);
+  width: 100%;
+  z-index: -2;
+  border-radius: 17px;
+  width: 227px;
+  height: 50px;
+  border: 3px solid var(--brand-blue-80);
 }
