@@ -1,6 +1,11 @@
 import { useMoralis, useERC20Balances } from "react-moralis";
 import { Skeleton, Table } from "antd";
 import { getEllipsisTxt } from "../helpers/formatters";
+import styled from "styled-components";
+
+const AntDTableStyled = styled(Table)`
+  border-radius: 30px;
+`;
 
 function ERC20Balance(props) {
   const { data: assets } = useERC20Balances(props);
@@ -51,7 +56,7 @@ function ERC20Balance(props) {
     <div style={{ width: "65vw", padding: "15px" }}>
       <h1>Token Balances</h1>
       <Skeleton active loading={!assets}>
-        <Table
+        <AntDTableStyled
           dataSource={assets}
           columns={columns}
           rowKey={(record) => {

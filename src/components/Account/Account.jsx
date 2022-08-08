@@ -9,6 +9,7 @@ import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "../../helpers/networks";
 import Text from "antd/lib/typography/Text";
 import { connectors } from "./config";
+// import AccountLogo from "../../assets/account.svg";
 const styles = {
   account: {
     height: "42px",
@@ -18,7 +19,9 @@ const styles = {
     alignItems: "center",
     width: "fit-content",
     borderRadius: "12px",
-    backgroundImage: "linear-gradient(90deg, #0364ff, #1eb7ef)",
+    backgroundColor: "#2C2A51",
+    border: "1px solid #FFF5CE",
+    color: "#FFF5CE",
     cursor: "pointer",
   },
   text: {
@@ -117,27 +120,12 @@ function Account() {
 
   return (
     <>
-      {/* <button
-        onClick={async () => {
-          try {
-            console.log("change")
-            await web3._provider.request({
-              method: "wallet_switchEthereumChain",
-              params: [{ chainId: "0x38" }],
-            });
-            console.log("changed")
-          } catch (e) {
-            console.error(e);
-          }
-        }}
-      >
-        Hi
-      </button> */}
       <div style={styles.account} onClick={() => setIsModalVisible(true)}>
         <p style={{ marginRight: "5px", ...styles.text }}>
           {getEllipsisTxt(account, 6)}
         </p>
         <Blockie currentWallet scale={3} />
+        {/* <img src={AccountLogo} alt="logo" /> */}
       </div>
       <Modal
         visible={isModalVisible}

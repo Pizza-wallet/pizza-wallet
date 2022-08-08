@@ -12,8 +12,8 @@ function NativeBalance(props) {
         textAlign: "center",
         whiteSpace: "nowrap",
         color: "#3E389F",
-        fontSize: "24px",
-        marginTop: "24px",
+        fontSize: "28px",
+        marginTop: "20px",
         fontWeight: "bold",
       }}
     >

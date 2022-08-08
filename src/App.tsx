@@ -7,14 +7,14 @@ import {
   Redirect,
 } from "react-router-dom";
 import Account from "./components/Account/Account";
-import ERC20Balance from "./components/ERC20Balance";
-import NFTBalance from "./components/NFTBalance";
+// import ERC20Balance from "./components/ERC20Balance";
+// import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
 import Wallet from "./components/Wallet";
 import SignIn from "./components/SignIn";
 import Onramper from "./components/Onramper";
-import { Layout, Tabs, Alert } from "antd";
+import { Layout, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
@@ -22,6 +22,7 @@ import "./style.css";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
+import Table from "./components/reusable/Table";
 const { Header, Sider, Content } = Layout;
 
 const BackdropStyled = styled("div")`
@@ -30,7 +31,7 @@ const BackdropStyled = styled("div")`
   top: 8px;
   height: 117px;
   width: 215px;
-  border: 1px solid #3e389f;
+  border: 1.5px solid #3e389f;
   background: white;
   border-radius: 15px;
 `;
@@ -38,7 +39,7 @@ const BackdropStyled = styled("div")`
 const BalanceContainerStyled = styled("div")`
   width: 220px;
   height: 120px;
-  border: 1px solid #3e389f;
+  border: 1.5px solid #3e389f;
   border-radius: 15px;
   margin-left: auto;
   margin-right: auto;
@@ -102,6 +103,29 @@ const styles = {
   },
 };
 
+// mock table data
+const tableData = [
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+  ["1.1", "1.2", "1.3", "1.4"],
+];
+
 const App = () => {
   const {
     isWeb3Enabled,
@@ -138,7 +162,7 @@ const App = () => {
     );
   } else {
     return (
-      <Layout hasSider>
+      <Layout style={{ height: "100vh" }} hasSider>
         <Router>
           <Sider
             width={293}
@@ -185,6 +209,7 @@ const App = () => {
           >
             <Header
               style={{
+                marginTop: "32px",
                 padding: 0,
                 backgroundColor: "#2C2A51",
               }}
@@ -193,7 +218,14 @@ const App = () => {
                 <Account />
               </div>
             </Header>
-            <Content>
+            <Content
+              style={{
+                // overflow: "auto",
+                overflowY: "scroll",
+                height: "100vh",
+                paddingBottom: "20px",
+              }}
+            >
               {authError && (
                 <div style={styles.errorDiv}>
                   <Alert message={authError.message} type="error" closable />
@@ -202,14 +234,26 @@ const App = () => {
               <div style={styles.content}>
                 <Switch>
                   <Route path="/dashboard">
-                    <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
-                      <Tabs.TabPane tab={<span>Tokens</span>} key="1">
-                        <ERC20Balance />
-                      </Tabs.TabPane>
+                    {/* <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}> */}
+                    {/* <Tabs.TabPane tab={<span>Tokens</span>} key="1"> */}
+                    {/* <ERC20Balance /> */}
+                    <div
+                      style={{
+                        margin: "0 50px 50px 50px",
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    >
+                      <Table
+                        tableData={tableData}
+                        headerData={["Asset", "Balance", "Price", "Value"]}
+                      />
+                    </div>
+                    {/* </Tabs.TabPane>
                       <Tabs.TabPane tab={<span>NFTs</span>} key="2">
                         <NFTBalance />
                       </Tabs.TabPane>
-                    </Tabs>
+                    </Tabs> */}
                   </Route>
                   <Route path="/transfer">
                     <Wallet />

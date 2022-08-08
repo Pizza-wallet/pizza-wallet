@@ -40,6 +40,33 @@ body {
   background-color: #103658;
 }
 
+html {
+  font-size: 100%;
+} /*16px*/
+h1 {
+  font-size: 2.074em;
+}
+h2 {
+  font-size: 1.728em;
+}
+h3 {
+  font-size: 1.44em;
+}
+h4 {
+  font-size: 1.2em;
+}
+small {
+  font-size: 0.833em;
+}
+/* .box {
+  padding: 1.25em;
+} */
+@media screen and (min-width: 1400px) {
+  html {
+    font-size: 125%;
+  } /*20px*/
+}
+
 ul[class],
 ol[class] {
   list-style: none;
@@ -122,9 +149,9 @@ select {
 }
 
 .selected {
-  background: var(--brand-blue-80);
-  color: var(--dirty-white-2);
-  border: 4px solid var(--dirty-white-2);
+  background: #fff5ce;
+  color: var(--brand-blue-80);
+  border: 4px solid var(--brand-blue-80);
   width: 100%;
   display: block;
   padding: 5px 15px;
@@ -132,4 +159,63 @@ select {
   border-radius: 15px;
   display: flex;
   line-height: 30px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+  width: 80%;
+  height: 80%;
+  padding: 10px 20px 10px 20px;
+  border: 1.5px solid var(--brand-blue-80);
+  border-collapse: separate;
+  border-radius: 41px;
+  border-spacing: 0px;
+  margin: 0 auto;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+  border-collapse: separate;
+  font-size: 1.3em;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+th,
+td {
+  padding: 5px 4px 6px 4px;
+  text-align: left;
+  vertical-align: top;
+  /* text-align: center; */
+  color: var(--brand-blue-80);
+  /* font-family: "Rubik", sans-serif; */
+  font-family: "Gloria Hallelujah", sans-serif;
+  /* border-left: 1.5px solid var(--brand-blue-80); */
+}
+
+td {
+  font-size: 1.1em;
+}
+
+thead:first-child tr:first-child th:first-child,
+tbody:first-child tr:first-child td:first-child {
+  border-radius: 4px 0 0 0;
+}
+thead:last-child tr:last-child th:first-child,
+tbody:last-child tr:last-child td:first-child {
+  border-radius: 0 0 0 4px;
+}
+
+.tabControls {
+  font-family: "Gloria Hallelujah", sans-serif;
+  color: #3e389f;
+  font-size: 2em;
 }
