@@ -59,6 +59,7 @@ const BalanceTextStyled = styled("p")`
   font-size: 18px;
   color: #faf5ef;
   padding: 5px;
+  padding-left: 20px;
 `;
 
 const styles = {
@@ -74,9 +75,7 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     fontFamily: "Roboto, sans-serif",
-    // borderBottom: "2px solid rgba(0, 0, 0, 0.06)",
     padding: "0 10px",
-    // boxShadow: "0 1px 10px rgb(151 164 175 / 10%)",
   },
   headerRight: {
     float: "right",
