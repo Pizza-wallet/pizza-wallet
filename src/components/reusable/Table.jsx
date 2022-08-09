@@ -8,6 +8,7 @@ const Container = styled("div")`
   background-color: #fff5ce;
   border-radius: 44px;
   position: relative;
+  overflow-x: auto;
 `;
 
 function Table({ tableData, columns, tableTitle }) {
@@ -35,6 +36,7 @@ function Table({ tableData, columns, tableTitle }) {
     <>
       <Container>
         <p className="tabControls">{tableTitle}</p>
+
         <table style={{ width: "100%" }}>
           <thead>
             <tr>{renderHeader()}</tr>

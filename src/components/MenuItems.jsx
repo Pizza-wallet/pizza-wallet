@@ -25,8 +25,8 @@ const MenuListItem = styled("li")`
 `;
 
 const MenuIcon = styled("img")`
-  height: 20px;
-  margin: 5px 10px 5px 0;
+  height: 25px;
+  margin: 0 10px 5px 0;
   background: ${(props) => (props.selected ? "var(--dirty-white-2)" : "")};
 `;
 

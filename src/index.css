@@ -145,8 +145,13 @@ tbody:last-child tr:last-child td:first-child {
   border-radius: 0 0 0 4px;
 }
 
+.scrollable-table {
+  overflow-x: auto;
+}
+
 .tabControls {
   font-family: "Gloria Hallelujah", sans-serif;
   color: #3e389f;
   font-size: 2em;
+  margin: 0 0 5px 15px;
 }

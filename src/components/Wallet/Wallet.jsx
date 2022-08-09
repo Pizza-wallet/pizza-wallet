@@ -23,6 +23,8 @@ const styles = {
     fontSize: "16px",
     fontWeight: "500",
     marginTop: "-3em",
+    marginRight: "auto",
+    marginLeft: "auto",
   },
 };
 

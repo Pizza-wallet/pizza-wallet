@@ -63,11 +63,9 @@ const BalanceTextStyled = styled("p")`
 
 const styles = {
   content: {
-    display: "flex",
-    justifyContent: "center",
-    fontFamily: "Roboto, sans-serif",
     padding: "10px",
     height: "100vh",
+    width: "100%",
   },
   header: {
     zIndex: 1,
@@ -177,7 +175,6 @@ const App = () => {
             <MenuItems />
           </Sider>
           <Layout
-            className="site-layout"
             style={{
               marginLeft: collapsedSideBar ? 0 : 293,
               backgroundColor: "#2C2A51",
@@ -222,7 +219,9 @@ const App = () => {
                     <DEX />
                   </Route>
                   <Route path="/onramper">
-                    <Onramper />
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <Onramper />
+                    </div>
                   </Route>
                   <Route path="/">
                     <Redirect to="/dashboard" />

@@ -68,7 +68,6 @@ function ERC20Transfers() {
       <div
         style={{
           margin: "0 50px 50px 50px",
-          width: "100%",
           height: "100%",
         }}
       >
