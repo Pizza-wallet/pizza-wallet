@@ -1,5 +1,6 @@
 // import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { Spin } from "antd";
 
 const Container = styled("div")`
   width: 100%;
@@ -9,17 +10,14 @@ const Container = styled("div")`
   position: relative;
 `;
 
-function Table({ tableData, headerData }) {
-  // useEffect(() => {
-  //   // set table state
-  // }, []);
-
+function Table({ tableData, columns, tableTitle }) {
   const renderRows = () => {
-    return tableData.map((val, i) => {
+    return tableData.map((data, i) => {
       return (
         <tr key={i}>
-          {val.map((table, j) => {
-            return <td key={j}>{table}</td>;
+          {columns.map((column, j) => {
+            let info = data[column.dataIndex];
+            return <td key={j}>{column.render(info, data)}</td>;
           })}
         </tr>
       );
@@ -27,13 +25,16 @@ function Table({ tableData, headerData }) {
   };
 
   const renderHeader = () => {
-    return headerData.map((val) => <th>{val}</th>);
+    return columns.map((val, i) => <th key={i}>{val.title}</th>);
   };
 
+  if (!tableData) {
+    return <Spin></Spin>;
+  }
   return (
     <>
       <Container>
-        <p className="tabControls">Token</p>
+        <p className="tabControls">{tableTitle}</p>
         <table style={{ width: "100%" }}>
           <thead>
             <tr>{renderHeader()}</tr>

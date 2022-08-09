@@ -7,7 +7,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import Account from "./components/Account/Account";
-// import ERC20Balance from "./components/ERC20Balance";
+import ERC20Balance from "./components/ERC20Balance";
 // import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
@@ -18,11 +18,10 @@ import { Layout, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
-// import Text from "antd/lib/typography/Text";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
-import Table from "./components/reusable/Table";
+
 const { Header, Sider, Content } = Layout;
 
 const BackdropStyled = styled("div")`
@@ -103,29 +102,6 @@ const styles = {
   },
 };
 
-// mock table data
-const tableData = [
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-  ["1.1", "1.2", "1.3", "1.4"],
-];
-
 const App = () => {
   const {
     isWeb3Enabled,
@@ -198,7 +174,6 @@ const App = () => {
                 <NativeBalance />
               </BalanceContainerStyled>
             </div>
-            {/* <button id="testing-button">Tester</button> */}
             <MenuItems />
           </Sider>
           <Layout
@@ -224,6 +199,7 @@ const App = () => {
                 overflowY: "scroll",
                 height: "100vh",
                 paddingBottom: "20px",
+                paddingTop: "70px",
               }}
             >
               {authError && (
@@ -234,26 +210,7 @@ const App = () => {
               <div style={styles.content}>
                 <Switch>
                   <Route path="/dashboard">
-                    {/* <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}> */}
-                    {/* <Tabs.TabPane tab={<span>Tokens</span>} key="1"> */}
-                    {/* <ERC20Balance /> */}
-                    <div
-                      style={{
-                        margin: "0 50px 50px 50px",
-                        width: "100%",
-                        height: "100%",
-                      }}
-                    >
-                      <Table
-                        tableData={tableData}
-                        headerData={["Asset", "Balance", "Price", "Value"]}
-                      />
-                    </div>
-                    {/* </Tabs.TabPane>
-                      <Tabs.TabPane tab={<span>NFTs</span>} key="2">
-                        <NFTBalance />
-                      </Tabs.TabPane>
-                    </Tabs> */}
+                    <ERC20Balance />
                   </Route>
                   <Route path="/transfer">
                     <Wallet />

@@ -14,6 +14,7 @@ import swapIcon from "../assets/swap.svg";
 import buySellIcon from "../assets/buySell.svg";
 import transactionsIcon from "../assets/transactions.svg";
 import transferIcon from "../assets/transfer.svg";
+import MenuButton from "./reusable/MenuButton";
 
 const MenuListItem = styled("li")`
   padding-left: 24px;
@@ -26,6 +27,7 @@ const MenuListItem = styled("li")`
 const MenuIcon = styled("img")`
   height: 20px;
   margin: 5px 10px 5px 0;
+  background: ${(props) => (props.selected ? "var(--dirty-white-2)" : "")};
 `;
 
 function MenuItems() {
@@ -33,19 +35,14 @@ function MenuItems() {
   const { pathname } = useLocation();
 
   const menuItemButton = (text, icon, route) => {
-    console.log("route - ", route);
-    console.log("pathname", pathname);
-
-    const selected = route === pathname ? "selected" : "link";
+    const selected = route === pathname;
     return (
-      <div className="new-button">
-        <a className="btn">
-          <span className={selected} data-type="gesture">
-            <MenuIcon src={icon}></MenuIcon>
-            {text}
-          </span>
-        </a>
-      </div>
+      <MenuButton selected={selected} pathname={pathname}>
+        <span style={{ display: "flex" }}>
+          <MenuIcon selected={selected} src={icon}></MenuIcon>
+          {text}
+        </span>
+      </MenuButton>
     );
   };
 
