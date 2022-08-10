@@ -5,7 +5,7 @@ function NativeBalance(props) {
   const { data: balance, isLoading } = useNativeBalance(props);
   const { account, isAuthenticated } = useMoralis();
   if (!account || !isAuthenticated) return null;
-  if (isLoading) return <Spin></Spin>;
+  if (isLoading) return <Spin style={{ color: "#3e389f" }}></Spin>;
   return (
     <div
       style={{

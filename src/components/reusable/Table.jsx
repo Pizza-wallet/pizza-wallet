@@ -1,6 +1,5 @@
 // import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { Spin } from "antd";
 
 const Container = styled("div")`
   width: 100%;
@@ -30,7 +29,7 @@ function Table({ tableData, columns, tableTitle }) {
   };
 
   if (!tableData) {
-    return <Spin></Spin>;
+    return <></>;
   }
   return (
     <>

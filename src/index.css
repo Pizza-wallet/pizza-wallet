@@ -155,3 +155,8 @@ tbody:last-child tr:last-child td:first-child {
   margin: 0 0 5px 15px;
   -webkit-text-stroke: thin;
 }
+
+.custom-modal-style .ant-modal-content {
+  margin-left: 150px !important;
+  width: 100% !important;
+}

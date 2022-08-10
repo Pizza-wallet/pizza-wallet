@@ -75,8 +75,14 @@ function Account() {
             fontSize: "17px",
             fontWeight: "500",
           }}
-          style={{ fontSize: "16px", fontWeight: "500" }}
+          style={{
+            fontSize: "16px",
+            fontWeight: "500",
+            marginLeft: "150px",
+            width: "100%",
+          }}
           width="340px"
+          className="custom-modal-style"
         >
           <div
             style={{
@@ -158,8 +164,11 @@ function Account() {
               href={`${getExplorer(chainId)}/address/${account}`}
               target="_blank"
               rel="noreferrer"
+              style={{ color: "#3e389f" }}
             >
-              <SelectOutlined style={{ marginRight: "5px" }} />
+              <SelectOutlined
+                style={{ marginRight: "5px", color: "#3e389f" }}
+              />
               View on Explorer
             </a>
           </div>
@@ -173,6 +182,9 @@ function Account() {
             borderRadius: "0.5rem",
             fontSize: "16px",
             fontWeight: "500",
+            backgroundColor: "#3e389f",
+            border: "0px",
+            color: "white",
           }}
           onClick={async () => {
             await logout();
