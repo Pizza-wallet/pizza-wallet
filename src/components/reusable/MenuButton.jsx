@@ -3,7 +3,7 @@ import btnStripe from "../../assets/btn-stripes.svg";
 
 const MenuButton = styled("button")`
   user-select: none;
-  font-family: "Rubik", sans-serif;
+  font-family: "Gloria Hallelujah", sans-serif;
   padding: 12px 24px;
   font-size: 24px;
   line-height: 28px;
@@ -21,6 +21,7 @@ const MenuButton = styled("button")`
   height: 50px;
   transform: rotate(-1deg);
   margin: 10px;
+  -webkit-text-stroke: thin;
 
   &:before {
     content: "";
@@ -35,30 +36,31 @@ const MenuButton = styled("button")`
     border-radius: 17px;
     width: 227px;
     height: 50px;
-    border: 3px solid
-      ${(props) =>
-        props.selected ? "var(--dirty-white-2)" : "var(--brand-blue)"};
+    border: 3px solid var(--brand-blue);
   }
   &:after {
     pointer-events: none;
     content: "";
     background: white;
-    background-image: url(${btnStripe});
+    background: ${(props) =>
+      props.selected ? `var(--brand-blue-80)` : `url(${btnStripe})`};
     background-position: bottom;
     background-repeat: round;
     background-position-y: bottom;
+    background-repeat: round;
     display: block;
     position: absolute;
     height: 100%;
     left: 0;
     top: 0;
-    transform: translate(3px, 5px);
+    transform: translate(3px, 5.5px);
     width: 100%;
     z-index: -2;
     border-radius: 17px;
     width: 227px;
     height: 50px;
-    border: 0.8px solid var(--brand-blue-80);
+    border: ${(props) =>
+      props.selected ? `2px solid #3E389F;` : `1px solid var(--brand-blue)`};
   }
 `;
 

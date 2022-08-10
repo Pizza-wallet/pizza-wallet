@@ -56,7 +56,7 @@ function MenuItems() {
         paddingTop: "10px",
         justifyContent: "center",
         border: "none",
-        backgroundColor: "#FFF5CE",
+        backgroundColor: "#F8F2ED",
         marginTop: "35px",
       }}
       // defaultSelectedKeys={[pathname]}
@@ -81,7 +81,7 @@ function MenuItems() {
       </MenuListItem>
       <MenuListItem>
         <Link to="/activity">
-          {menuItemButton("Transactions", transactionsIcon, "/activity")}
+          {menuItemButton("History", transactionsIcon, "/activity")}
         </Link>
       </MenuListItem>
     </Menu>

@@ -20,8 +20,8 @@ const styles = {
     width: "fit-content",
     borderRadius: "12px",
     backgroundColor: "#2C2A51",
-    border: "1px solid #FFF5CE",
-    color: "#FFF5CE",
+    border: "1px solid #F8F2ED",
+    color: "#F8F2ED",
     cursor: "pointer",
   },
   text: {

@@ -99,7 +99,7 @@ table {
   width: 80%;
   height: 80%;
   padding: 10px 20px 10px 20px;
-  border: 1.5px solid var(--brand-blue-80);
+  border: 2px solid var(--brand-blue);
   border-collapse: separate;
   border-radius: 41px;
   border-spacing: 0px;
@@ -125,15 +125,14 @@ td {
   padding: 5px 4px 6px 4px;
   text-align: left;
   vertical-align: top;
-  /* text-align: center; */
-  color: var(--brand-blue-80);
-  /* font-family: "Rubik", sans-serif; */
+  color: var(--brand-blue);
   font-family: "Gloria Hallelujah", sans-serif;
-  /* border-left: 1.5px solid var(--brand-blue-80); */
+  -webkit-text-stroke: thin;
 }
 
 td {
   font-size: 1.1em;
+  font-family: "Rubik", sans-serif;
 }
 
 thead:first-child tr:first-child th:first-child,
@@ -154,4 +153,5 @@ tbody:last-child tr:last-child td:first-child {
   color: #3e389f;
   font-size: 2em;
   margin: 0 0 5px 15px;
+  -webkit-text-stroke: thin;
 }

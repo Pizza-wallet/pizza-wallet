@@ -5,7 +5,7 @@ import { Spin } from "antd";
 const Container = styled("div")`
   width: 100%;
   padding: 20px 15px 20px 15px;
-  background-color: #fff5ce;
+  background-color: #f8f2ed;
   border-radius: 44px;
   position: relative;
   overflow-x: auto;

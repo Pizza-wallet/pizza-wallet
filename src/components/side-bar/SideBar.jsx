@@ -4,7 +4,7 @@ function SideBar() {
       <div
         style={{
           width: "293px",
-          backgroundColor: "#FFF5CE",
+          backgroundColor: "#F8F2ED",
           height: "100%",
           zIndex: "2",
           position: "fixed",

@@ -49,17 +49,21 @@ const BalanceContainerStyled = styled("div")`
 
 const BalanceTitleStyled = styled("div")`
   height: 40px;
-  background-color: #3e389f;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  background-color: rgba(77, 195, 89, 0.7);
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  border: 1px solid #3e389f;
+  border-bottom: 2.5px solid #3e389f;
 `;
 
 const BalanceTextStyled = styled("p")`
   font-weight: bold;
-  font-size: 18px;
-  color: #faf5ef;
-  padding: 5px;
-  padding-left: 20px;
+  font-family: "Gloria Hallelujah", sans-serif;
+  font-size: 24px;
+  color: #3e389f;
+  padding-top: 2px;
+  padding-left: 15px;
+  -webkit-text-stroke: thin;
 `;
 
 const styles = {
@@ -153,7 +157,7 @@ const App = () => {
               height: "100vh",
               position: "fixed",
               width: "293px",
-              backgroundColor: "#FFF5CE",
+              backgroundColor: "#F8F2ED",
               left: 0,
               top: 0,
               bottom: 0,
