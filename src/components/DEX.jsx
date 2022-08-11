@@ -1,6 +1,8 @@
 function DEX() {
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{ display: "flex", justifyContent: "center", paddingTop: "70px" }}
+    >
       <iframe
         src="https://transferto.xyz/embed"
         title="lifi"

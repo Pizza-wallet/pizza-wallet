@@ -78,8 +78,6 @@ function Account() {
           style={{
             fontSize: "16px",
             fontWeight: "500",
-            marginLeft: "150px",
-            width: "100%",
           }}
           width="340px"
           className="custom-modal-style"

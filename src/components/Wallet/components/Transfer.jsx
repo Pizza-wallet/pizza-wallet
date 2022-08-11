@@ -1,45 +1,57 @@
 import { CreditCardOutlined } from "@ant-design/icons";
-import { Button, Input, notification } from "antd";
-import Text from "antd/lib/typography/Text";
+import { Input, notification } from "antd";
 import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import AddressInput from "../../AddressInput";
 import AssetSelector from "./AssetSelector";
+import styled from "styled-components";
+import {
+  ButtonContainer,
+  PrimaryButton,
+  SecondaryButton,
+} from "../../reusable/Buttons";
 
-const styles = {
-  card: {
-    alignItems: "center",
-    width: "100%",
-  },
-  header: {
-    textAlign: "center",
-  },
-  input: {
-    width: "100%",
-    outline: "none",
-    fontSize: "16px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textverflow: "ellipsis",
-    appearance: "textfield",
-    color: "#041836",
-    fontWeight: "700",
-    border: "none",
-    backgroundColor: "transparent",
-  },
-  select: {
-    marginTop: "20px",
-    display: "flex",
-    alignItems: "center",
-  },
-  textWrapper: { maxWidth: "80px", width: "100%" },
-  row: {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    flexDirection: "row",
-  },
-};
+const Card = styled("div")`
+  width: 428px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #3e389f;
+  background-color: #f8f2ed;
+  border-radius: 44px;
+  padding: 6.8px;
+`;
+
+const InnerCard = styled("div")`
+  position: relative;
+  border: 2px solid #3e389f;
+  background-color: #f8f2ed;
+  border-radius: 41px;
+  padding: 20px;
+  width: 411px;
+`;
+
+const Header = styled("div")`
+  color: #3e389f;
+  font-family: "Gloria Hallelujah", sans-serif;
+  font-size: 24px;
+  padding: 10px 0 10px 20px;
+  -webkit-text-stroke: thin;
+`;
+
+const Text = styled("p")`
+  color: black;
+  font-family: "Rubik", sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  margin: 20px 0 10px 0;
+`;
+
+const Controls = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 37px;
+`;
 
 function Transfer() {
   const { Moralis } = useMoralis();
@@ -123,47 +135,44 @@ function Transfer() {
   }
 
   return (
-    <div style={styles.card}>
-      <div style={styles.tranfer}>
-        <div style={styles.header}>
-          <h3>Transfer Assets</h3>
-        </div>
-        <div style={styles.select}>
-          <div style={styles.textWrapper}>
-            <Text strong>Address:</Text>
-          </div>
-          <AddressInput autoFocus onChange={setReceiver} />
-        </div>
-        <div style={styles.select}>
-          <div style={styles.textWrapper}>
-            <Text strong>Amount:</Text>
-          </div>
-          <Input
-            size="large"
-            prefix={<CreditCardOutlined />}
-            onChange={(e) => {
-              setAmount(`${e.target.value}`);
-            }}
-          />
-        </div>
-        <div style={styles.select}>
-          <div style={styles.textWrapper}>
-            <Text strong>Asset:</Text>
-          </div>
-          <AssetSelector setAsset={setAsset} style={{ width: "100%" }} />
-        </div>
-        <Button
-          type="primary"
+    <Card>
+      <Header>
+        <p>Transfer Assets</p>
+      </Header>
+      <InnerCard>
+        <Text strong>Send to:</Text>
+        <AddressInput autoFocus onChange={setReceiver} />
+
+        <Text strong>Asset:</Text>
+        <AssetSelector setAsset={setAsset} style={{ width: "100%" }} />
+
+        {/* <Text strong>Blockchain:</Text>
+        <AssetSelector setAsset={setAsset} style={{ width: "100%" }} /> */}
+
+        <Text strong>Amount:</Text>
+        <Input
           size="large"
-          loading={isPending}
-          style={{ width: "100%", marginTop: "25px" }}
-          onClick={() => transfer()}
-          disabled={!tx}
-        >
-          Transfer💸
-        </Button>
-      </div>
-    </div>
+          prefix={<CreditCardOutlined />}
+          onChange={(e) => {
+            setAmount(`${e.target.value}`);
+          }}
+        />
+        <Controls>
+          <ButtonContainer width={"167px"} height={"51px"}>
+            <SecondaryButton>Cancel</SecondaryButton>{" "}
+          </ButtonContainer>
+          <ButtonContainer width={"172px"} height={"51px"}>
+            <PrimaryButton
+              loading={isPending}
+              onClick={() => transfer()}
+              disabled={!tx}
+            >
+              Transfer
+            </PrimaryButton>
+          </ButtonContainer>
+        </Controls>
+      </InnerCard>
+    </Card>
   );
 }
 

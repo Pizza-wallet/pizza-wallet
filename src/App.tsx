@@ -11,7 +11,8 @@ import ERC20Balance from "./components/ERC20Balance";
 // import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
-import Wallet from "./components/Wallet";
+// import Wallet from "./components/Wallet";
+import Transfer from "./components/Wallet/components/Transfer";
 import SignIn from "./components/SignIn";
 import Onramper from "./components/Onramper";
 import { Layout, Alert } from "antd";
@@ -199,7 +200,6 @@ const App = () => {
                 overflowY: "scroll",
                 height: "100vh",
                 paddingBottom: "20px",
-                paddingTop: "70px",
               }}
             >
               {authError && (
@@ -213,7 +213,7 @@ const App = () => {
                     <ERC20Balance />
                   </Route>
                   <Route path="/transfer">
-                    <Wallet />
+                    <Transfer />
                   </Route>
                   <Route path="/activity">
                     <ERC20Transfers />
