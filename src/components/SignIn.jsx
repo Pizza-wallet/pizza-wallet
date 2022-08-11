@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
@@ -103,17 +104,29 @@ const SocialIcons = styled("div")`
 export default function SignIn() {
   const { authenticate, authError } = useMoralis();
 
+  const [chain, setchain] = useState("");
+
+   console.log("chain", chain);
+
+   useEffect(() => {
+     if (!chain) return null;
+     const newSelected = menuItems.find((item) => item.key === chain);
+     setSelected(newSelected);
+     console.log("current chainId: ", chain);
+   }, [chain]);
+
   const handleCustomLogin = async () => {
     await authenticate({
       provider: "web3Auth",
       clientId:
         "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
       rpcTarget: "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
-      chainId: "0x2a",
+      chainId: `${chain}` || "0x2a",
       appLogo: "pizza.png",
     });
     window.localStorage.setItem("connectorId", "web3Auth");
-    window.localStorage.setItem("chainId", "0x2a");
+    window.localStorage.setItem("chainId", chain || "0x2a");
+    
   };
 
   return (
