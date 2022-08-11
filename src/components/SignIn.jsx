@@ -136,7 +136,6 @@ export default function SignIn() {
           <FlexContainerCenter>
             <LoginTitle>Login</LoginTitle>
           </FlexContainerCenter>
-          {authError && alert(JSON.stringify(authError.message))}
           <div>
             <ButtonCard>
               <SocialIcons onClick={handleCustomLogin}>
