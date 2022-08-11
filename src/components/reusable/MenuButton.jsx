@@ -48,19 +48,20 @@ const MenuButton = styled("button")`
     background-repeat: round;
     background-position-y: bottom;
     background-repeat: round;
+    background-origin: border-box;
     display: block;
     position: absolute;
     height: 100%;
     left: 0;
     top: 0;
-    transform: translate(3px, 5.5px);
+    transform: translate(3px, 4px);
     width: 100%;
     z-index: -2;
     border-radius: 17px;
     width: 227px;
     height: 50px;
     border: ${(props) =>
-      props.selected ? `2px solid #3E389F;` : `1px solid var(--brand-blue)`};
+      props.selected ? `2px solid #3E389F;` : `2px solid var(--brand-blue)`};
   }
 `;
 

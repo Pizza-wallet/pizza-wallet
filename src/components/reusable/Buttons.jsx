@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const ButtonContainer = styled("div")`
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  margin: ${(props) => props.margin};
 `;
 
 export const PrimaryButton = styled("button")`

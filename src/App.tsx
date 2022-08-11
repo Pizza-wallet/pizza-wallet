@@ -67,6 +67,14 @@ const BalanceTextStyled = styled("p")`
   -webkit-text-stroke: thin;
 `;
 
+const LoginLayout = styled(Layout)`
+  height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-blue);
+`;
+
 const styles = {
   content: {
     padding: "10px",
@@ -134,9 +142,9 @@ const App = () => {
 
   if (!isAuthenticated) {
     return (
-      <Layout className="fade" style={styles.bglogin}>
+      <LoginLayout>
         <SignIn />
-      </Layout>
+      </LoginLayout>
     );
   } else {
     return (
