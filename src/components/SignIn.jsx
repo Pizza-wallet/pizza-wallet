@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
@@ -104,16 +104,9 @@ const SocialIcons = styled("div")`
 export default function SignIn() {
   const { authenticate, authError } = useMoralis();
 
-  const [chain, setchain] = useState("");
+  const [chain] = useState("");
 
-   console.log("chain", chain);
-
-   useEffect(() => {
-     if (!chain) return null;
-     const newSelected = menuItems.find((item) => item.key === chain);
-     setSelected(newSelected);
-     console.log("current chainId: ", chain);
-   }, [chain]);
+  console.log("chain", chain);
 
   const handleCustomLogin = async () => {
     await authenticate({
@@ -126,7 +119,6 @@ export default function SignIn() {
     });
     window.localStorage.setItem("connectorId", "web3Auth");
     window.localStorage.setItem("chainId", chain || "0x2a");
-    
   };
 
   return (
