@@ -53,6 +53,11 @@ const Controls = styled("div")`
   margin-top: 37px;
 `;
 
+const StyledInput = styled(Input)`
+  border: 2px solid #3e389f;
+  border-radius: 15px;
+`;
+
 function Transfer() {
   const { Moralis } = useMoralis();
   const [receiver, setReceiver] = useState();
@@ -150,7 +155,7 @@ function Transfer() {
         <AssetSelector setAsset={setAsset} style={{ width: "100%" }} /> */}
 
         <Text strong>Amount:</Text>
-        <Input
+        <StyledInput
           size="large"
           prefix={<CreditCardOutlined />}
           onChange={(e) => {

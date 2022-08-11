@@ -2,6 +2,12 @@ import { useERC20Balance } from "../../../hooks/useERC20Balance";
 import { useMoralis, useNativeBalance } from "react-moralis";
 import { Image, Select } from "antd";
 import { useMemo } from "react";
+import styled from "styled-components";
+
+const StyledSelect = styled(Select)`
+  border: 2px solid #3e389f;
+  border-radius: 15px;
+`;
 
 export default function AssetSelector({ setAsset, style }) {
   const { assets } = useERC20Balance();
@@ -32,7 +38,7 @@ export default function AssetSelector({ setAsset, style }) {
   }
 
   return (
-    <Select onChange={handleChange} size="large" style={style}>
+    <StyledSelect onChange={handleChange} size="large" style={style}>
       {fullBalance &&
         fullBalance.map((item) => {
           console.log(item);
@@ -80,6 +86,6 @@ export default function AssetSelector({ setAsset, style }) {
             </Select.Option>
           );
         })}
-    </Select>
+    </StyledSelect>
   );
 }
