@@ -102,7 +102,7 @@ const SocialIcons = styled("div")`
 `;
 
 export default function SignIn() {
-  const { authenticate, authError } = useMoralis();
+  const { authenticate } = useMoralis();
 
   const [chain] = useState("");
 
