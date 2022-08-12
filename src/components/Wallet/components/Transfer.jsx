@@ -10,6 +10,7 @@ import {
   PrimaryButton,
   SecondaryButton,
 } from "../../reusable/Buttons";
+import { Link } from "react-router-dom";
 
 const Card = styled("div")`
   width: 428px;
@@ -164,7 +165,9 @@ function Transfer() {
         />
         <Controls>
           <ButtonContainer width={"167px"} height={"51px"}>
-            <SecondaryButton>Cancel</SecondaryButton>{" "}
+            <Link to="/dashboard">
+              <SecondaryButton>Cancel</SecondaryButton>
+            </Link>
           </ButtonContainer>
           <ButtonContainer width={"172px"} height={"51px"}>
             <PrimaryButton
