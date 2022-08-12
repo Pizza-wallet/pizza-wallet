@@ -17,7 +17,7 @@ const MenuListItem = styled("li")`
   display: flex;
   align-items: center;
   height: 50px;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 `;
 
 function MenuItems() {

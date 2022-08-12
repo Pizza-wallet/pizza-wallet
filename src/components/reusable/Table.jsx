@@ -71,7 +71,7 @@ function Table({ tableData, columns, tableTitle }) {
             {/* <PrimaryButton>Add tokens</PrimaryButton> */}
             {tableTitle === "Token" ? (
               <Link to="/onramper">
-                <SecondaryButton>Add tokens</SecondaryButton>
+                <SecondaryButton>Buy tokens</SecondaryButton>
               </Link>
             ) : (
               <Link to="/dashboard">

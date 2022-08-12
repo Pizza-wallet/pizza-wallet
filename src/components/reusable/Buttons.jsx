@@ -75,6 +75,7 @@ export const SecondaryButton = styled("button")`
   height: 100%;
   border: 3px solid #3e389f;
   border-radius: 15px;
+  background-color: var(--layout-white);
   color: #3e389f;
   font-family: "Gloria Hallelujah", sans-serif;
   font-size: 22px;

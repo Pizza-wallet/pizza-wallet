@@ -32,7 +32,7 @@ const BackdropStyled = styled("div")`
   height: 117px;
   width: 215px;
   border: 1.5px solid #3e389f;
-  background: white;
+  background-color: var(--layout-white);
   border-radius: 15px;
 `;
 
@@ -44,7 +44,7 @@ const BalanceContainerStyled = styled("div")`
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  background-color: #faf5ef;
+  background-color: var(--layout-white);
   margin-top: 35px;
 `;
 
