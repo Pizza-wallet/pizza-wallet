@@ -28,9 +28,20 @@ function Table({ tableData, columns, tableTitle }) {
     return columns.map((val, i) => <th key={i}>{val.title}</th>);
   };
 
-  if (!tableData) {
-    return <></>;
-  }
+  if (!tableData)
+    return (
+      <>
+        <Container>
+          <p className="tabControls">{tableTitle}</p>
+          <table style={{ width: "100%" }}>
+            <thead>
+              <tr>{renderHeader()}</tr>
+            </thead>
+            <tr>No data</tr>
+          </table>
+        </Container>
+      </>
+    );
   return (
     <>
       <Container>

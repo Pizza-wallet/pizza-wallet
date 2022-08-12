@@ -122,6 +122,7 @@ const App = () => {
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
+  const [viewSwitched, setViewSwitched] = useState(false);
 
   useEffect(() => {
     type Web3ProviderType = any;
@@ -140,10 +141,10 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated) {
+  if (!viewSwitched) {
     return (
       <LoginLayout>
-        <SignIn />
+        <SignIn setViewSwitched={() => setViewSwitched(true)} />
       </LoginLayout>
     );
   } else {

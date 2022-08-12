@@ -3,7 +3,7 @@ import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
 import Text from "antd/lib/typography/Text";
-import Account from "./Account/Account.jsx";
+// import Account from "./Account/Account.jsx";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
@@ -126,7 +126,7 @@ const menuItems = [
   },
 ];
 
-export default function SignIn() {
+export default function SignIn({ setViewSwitched }) {
   const { authenticate } = useMoralis();
   const [chain, setchain] = useState("");
   const [selected, setSelected] = useState({});
@@ -224,8 +224,9 @@ export default function SignIn() {
                 height={"57px"}
                 margin={"0 0 65px 0"}
               >
-                <PrimaryButton>
-                  <Account />
+                <PrimaryButton onClick={setViewSwitched}>
+                  Connect wallet
+                  {/* <Account /> */}
                 </PrimaryButton>
               </ButtonContainer>
             </FlexContainerCenter>
