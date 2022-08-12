@@ -74,7 +74,7 @@ function ERC20Transfers() {
         <Table
           tableData={ERC20Transfers}
           columns={columns}
-          tableTitle={"Token transfers"}
+          tableTitle={"Transfers History"}
         />
       </div>
     </div>
