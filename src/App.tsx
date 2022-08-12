@@ -72,7 +72,7 @@ const LoginLayout = styled(Layout)`
   display: grid;
   align-items: center;
   justify-content: center;
-  background: var(--brand-blue);
+  background: var(--layout-blue);
 `;
 
 const styles = {
@@ -190,14 +190,14 @@ const App = () => {
           <Layout
             style={{
               marginLeft: collapsedSideBar ? 0 : 293,
-              backgroundColor: "#2C2A51",
+              backgroundColor: "#2F2A75",
             }}
           >
             <Header
               style={{
                 marginTop: "32px",
                 padding: 0,
-                backgroundColor: "#2C2A51",
+                backgroundColor: "#2F2A75",
               }}
             >
               <div style={{ float: "right", marginRight: "10px" }}>

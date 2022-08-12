@@ -1,33 +1,23 @@
 import { useLocation } from "react-router";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-// import {
-//   SendOutlined,
-//   SwapOutlined,
-//   // LayoutOutlined,
-//   UserSwitchOutlined,
-//   DollarOutlined,
-// } from "@ant-design/icons";
 import styled from "styled-components";
-import dashboardIcon from "../assets/dashboard.svg";
-import swapIcon from "../assets/swap.svg";
-import buySellIcon from "../assets/buySell.svg";
-import transactionsIcon from "../assets/transactions.svg";
-import transferIcon from "../assets/transfer.svg";
 import MenuButton from "./reusable/MenuButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTableColumns,
+  faArrowTurnRight,
+  faArrowsRotate,
+  faDollarSign,
+  faClockRotateLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 const MenuListItem = styled("li")`
   padding-left: 24px;
   display: flex;
   align-items: center;
   height: 50px;
-  margin-bottom: 15px;
-`;
-
-const MenuIcon = styled("img")`
-  height: 25px;
-  margin: 0 10px 5px 0;
-  background: ${(props) => (props.selected ? "var(--dirty-white-2)" : "")};
+  margin-bottom: 12px;
 `;
 
 function MenuItems() {
@@ -39,8 +29,14 @@ function MenuItems() {
     return (
       <MenuButton selected={selected} pathname={pathname}>
         <span style={{ display: "flex" }}>
-          <MenuIcon selected={selected} src={icon}></MenuIcon>
-          {text}
+          <FontAwesomeIcon
+            style={{
+              marginRight: "15px",
+              fontSize: "30px",
+            }}
+            icon={icon}
+          />
+          <p>{text}</p>
         </span>
       </MenuButton>
     );
@@ -63,25 +59,25 @@ function MenuItems() {
     >
       <MenuListItem>
         <Link to="/dashboard">
-          {menuItemButton("Dashboard", dashboardIcon, "/dashboard")}
+          {menuItemButton("Dashboard", faTableColumns, "/dashboard")}
         </Link>
       </MenuListItem>
       <MenuListItem>
         <Link to="/transfer">
-          {menuItemButton("Transfer", transferIcon, "/transfer")}
+          {menuItemButton("Transfer", faArrowTurnRight, "/transfer")}
         </Link>
       </MenuListItem>
       <MenuListItem>
-        <Link to="/dex">{menuItemButton("Swap", swapIcon, "/dex")}</Link>
+        <Link to="/dex">{menuItemButton("Swap", faArrowsRotate, "/dex")}</Link>
       </MenuListItem>
       <MenuListItem>
         <Link to="/onramper">
-          {menuItemButton("Buy / Sell", buySellIcon, "/onramper")}
+          {menuItemButton("Buy/Sell", faDollarSign, "/onramper")}
         </Link>
       </MenuListItem>
       <MenuListItem>
         <Link to="/activity">
-          {menuItemButton("History", transactionsIcon, "/activity")}
+          {menuItemButton("History", faClockRotateLeft, "/activity")}
         </Link>
       </MenuListItem>
     </Menu>

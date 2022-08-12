@@ -29,6 +29,8 @@ export const PrimaryButton = styled("button")`
   transition: letter-spacing 0.4s ease;
   border: none;
   display: inline-block;
+  -webkit-text-stroke: thin;
+  letter-spacing: 0.5px;
 
   &:before {
     content: "";
@@ -77,4 +79,6 @@ export const SecondaryButton = styled("button")`
   font-family: "Gloria Hallelujah", sans-serif;
   font-size: 22px;
   cursor: pointer;
+  letter-spacing: 0.5px;
+  -webkit-text-stroke: thin;
 `;

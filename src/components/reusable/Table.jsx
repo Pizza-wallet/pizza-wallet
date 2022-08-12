@@ -1,5 +1,7 @@
 // import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { SecondaryButton } from "./Buttons";
+import { Link } from "react-router-dom";
 
 const Container = styled("div")`
   width: 100%;
@@ -8,6 +10,30 @@ const Container = styled("div")`
   border-radius: 44px;
   position: relative;
   overflow-x: auto;
+`;
+const Container2 = styled("div")`
+  width: 100%;
+  padding: 20px 15px 20px 15px;
+  background-color: #f8f2ed;
+  border-radius: 44px;
+  position: relative;
+  overflow-x: auto;
+  opacity: 0.5;
+`;
+
+const Container3 = styled("div")`
+  position: relative;
+`;
+
+const ButtonContainer = styled("div")`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 239px;
+  height: 57px;
 `;
 
 function Table({ tableData, columns, tableTitle }) {
@@ -31,15 +57,29 @@ function Table({ tableData, columns, tableTitle }) {
   if (!tableData)
     return (
       <>
-        <Container>
-          <p className="tabControls">{tableTitle}</p>
-          <table style={{ width: "100%" }}>
-            <thead>
-              <tr>{renderHeader()}</tr>
-            </thead>
-            <tr>No data</tr>
-          </table>
-        </Container>
+        <Container3>
+          <Container2>
+            <p className="tabControls">{tableTitle}</p>
+            <table style={{ width: "100%", height: "100%", opcaity: "0.5" }}>
+              <thead>
+                <tr>{renderHeader()}</tr>
+              </thead>
+              <tr style={{ height: "250px" }}></tr>
+            </table>
+          </Container2>
+          <ButtonContainer>
+            {/* <PrimaryButton>Add tokens</PrimaryButton> */}
+            {tableTitle === "Token" ? (
+              <Link to="/onramper">
+                <SecondaryButton>Add tokens</SecondaryButton>
+              </Link>
+            ) : (
+              <Link to="/dashboard">
+                <SecondaryButton>No history</SecondaryButton>
+              </Link>
+            )}
+          </ButtonContainer>
+        </Container3>
       </>
     );
   return (

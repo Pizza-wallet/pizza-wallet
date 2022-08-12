@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
@@ -12,8 +12,8 @@ import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import { CustomImg } from "./reusable/CustomImg";
-import { Dropdown, Button, Menu } from "antd";
-import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
+// import { Menu } from "antd";
+// import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -62,6 +62,7 @@ const TextStyled = styled(Text)`
   font-size: 15px;
   line-height: 18px;
   letter-spacing: 0.04em;
+  margin-bottom: 3px;
 `;
 
 const Divider = styled("div")`
@@ -99,61 +100,60 @@ const SocialIcons = styled("div")`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: end;
-  padding-bottom: 1em;
   cursor: pointer;
 `;
 
-const menuItems = [
-  {
-    key: "0x2a",
-    value: "Kovan Testnet",
-    icon: <ETHLogo />,
-  },
-  {
-    key: "0x61",
-    value: "BSC Testnet",
-    icon: <BSCLogo />,
-  },
-  {
-    key: "0x13881",
-    value: "Mumbai",
-    icon: <PolygonLogo />,
-  },
-  {
-    key: "0xa869",
-    value: "Avalanche Testnet",
-    icon: <AvaxLogo />,
-  },
-];
+// const menuItems = [
+//   {
+//     key: "0x2a",
+//     value: "Kovan Testnet",
+//     icon: <ETHLogo />,
+//   },
+//   {
+//     key: "0x61",
+//     value: "BSC Testnet",
+//     icon: <BSCLogo />,
+//   },
+//   {
+//     key: "0x13881",
+//     value: "Mumbai",
+//     icon: <PolygonLogo />,
+//   },
+//   {
+//     key: "0xa869",
+//     value: "Avalanche Testnet",
+//     icon: <AvaxLogo />,
+//   },
+// ];
 
 export default function SignIn({ setViewSwitched }) {
   const { authenticate } = useMoralis();
-  const [chain, setchain] = useState("");
-  const [selected, setSelected] = useState({});
+  const [chain] = useState("");
+  // const [setSelected] = useState({});
 
   console.log("chain", chain);
 
-  useEffect(() => {
-    if (!chain) return null;
-    const newSelected = menuItems.find((item) => item.key === chain);
-    setSelected(newSelected);
-    console.log("current chainId: ", chain);
-  }, [chain]);
+  // useEffect(() => {
+  //   if (!chain) return null;
+  //   const newSelected = menuItems.find((item) => item.key === chain);
+  //   setSelected(newSelected);
+  //   console.log("current chainId: ", chain);
+  // }, [chain]);
 
-  const handleMenuClick = (e) => {
-    setchain(e.key);
-    console.log(`${chain}`);
-  };
+  // const handleMenuClick = (e) => {
+  //   setchain(e.key);
+  //   console.log(`${chain}`);
+  // };
 
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      {menuItems.map((item) => (
-        <Menu.Item key={item.key} icon={item.icon}>
-          <span style={{ marginLeft: "5px" }}>{item.value}</span>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  // const menu = (
+  //   <Menu onClick={handleMenuClick}>
+  //     {menuItems.map((item) => (
+  //       <Menu.Item key={item.key} icon={item.icon}>
+  //         <span style={{ marginLeft: "5px" }}>{item.value}</span>
+  //       </Menu.Item>
+  //     ))}
+  //   </Menu>
+  // );
 
   const handleCustomLogin = async () => {
     await authenticate({
@@ -185,14 +185,13 @@ export default function SignIn({ setViewSwitched }) {
           </FlexContainerCenter>
           {/* {authError && alert(JSON.stringify(authError.message))} */}
           <div>
-            <Dropdown overlay={menu} trigger={["click"]}>
+            {/* <Dropdown overlay={menu} trigger={["click"]}>
               <Button key={selected?.key} icon={selected?.icon}>
                 <span style={{ marginLeft: "5px" }}>
                   {selected?.value || "Choose chain"}
                 </span>
-                {/* <DownOutlined /> */}
               </Button>
-            </Dropdown>
+            </Dropdown> */}
             <ButtonCard>
               <SocialIcons onClick={handleCustomLogin}>
                 <CustomImg margin={"0 0 4px 0"} src={apple} alt="logo" />

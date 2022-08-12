@@ -22,6 +22,7 @@ const MenuButton = styled("button")`
   transform: rotate(-1deg);
   margin: 10px;
   -webkit-text-stroke: thin;
+  letter-spacing: 0.5px;
 
   &:before {
     content: "";
@@ -31,7 +32,7 @@ const MenuButton = styled("button")`
     bottom: 0;
     left: 0;
     background: ${(props) =>
-      props.selected ? "var(--brand-blue)" : "var(--dirty-white-2)"};
+      props.selected ? "var(--brand-blue)" : "var(--layout-white)"};
     z-index: -1;
     border-radius: 17px;
     width: 227px;
