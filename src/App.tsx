@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import {
   HashRouter as Router,
@@ -8,27 +8,78 @@ import {
 } from "react-router-dom";
 import Account from "./components/Account/Account";
 import ERC20Balance from "./components/ERC20Balance";
-import NFTBalance from "./components/NFTBalance";
+// import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
-import Wallet from "./components/Wallet";
+// import Wallet from "./components/Wallet";
+import Transfer from "./components/Wallet/components/Transfer";
 import SignIn from "./components/SignIn";
 import Onramper from "./components/Onramper";
-import { Layout, Tabs, Alert } from "antd";
+import { Layout, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
 import "./style.css";
-import Text from "antd/lib/typography/Text";
 import MenuItems from "./components/MenuItems";
+import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
+import styled from "styled-components";
+
 const { Header, Sider, Content } = Layout;
+
+const BackdropStyled = styled("div")`
+  position: absolute;
+  right: 32px;
+  top: 8px;
+  height: 117px;
+  width: 215px;
+  border: 1.5px solid #3e389f;
+  background-color: var(--layout-white);
+  border-radius: 15px;
+`;
+
+const BalanceContainerStyled = styled("div")`
+  width: 220px;
+  height: 120px;
+  border: 1.5px solid #3e389f;
+  border-radius: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  background-color: var(--layout-white);
+  margin-top: 35px;
+`;
+
+const BalanceTitleStyled = styled("div")`
+  height: 40px;
+  background-color: rgba(77, 195, 89, 0.7);
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
+  border: 1px solid #3e389f;
+  border-bottom: 2.5px solid #3e389f;
+`;
+
+const BalanceTextStyled = styled("p")`
+  font-weight: bold;
+  font-family: "Gloria Hallelujah", sans-serif;
+  font-size: 24px;
+  color: #3e389f;
+  padding-top: 2px;
+  padding-left: 15px;
+  -webkit-text-stroke: thin;
+`;
+
+const LoginLayout = styled(Layout)`
+  height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  background: var(--layout-blue);
+`;
 
 const styles = {
   content: {
-    display: "flex",
-    justifyContent: "center",
-    fontFamily: "Roboto, sans-serif",
-    marginTop: "130px",
     padding: "10px",
+    height: "100vh",
+    width: "100%",
   },
   header: {
     zIndex: 1,
@@ -37,22 +88,14 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     fontFamily: "Roboto, sans-serif",
-    // borderBottom: "2px solid rgba(0, 0, 0, 0.06)",
     padding: "0 10px",
-    // boxShadow: "0 1px 10px rgb(151 164 175 / 10%)",
   },
   headerRight: {
-    display: "flex",
+    float: "right",
     gap: "8px",
-    alignItems: "center",
+
     fontSize: "15px",
     fontWeight: "600",
-  },
-  siderBalance: {
-    margin: "15px",
-    fontSize: "30px",
-    borderRadius: "1em",
-    backgroundColor: "#141414",
   },
   errorDiv: {
     width: "100%",
@@ -68,6 +111,7 @@ const styles = {
     backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
   },
 };
+
 const App = () => {
   const {
     isWeb3Enabled,
@@ -76,6 +120,9 @@ const App = () => {
     isWeb3EnableLoading,
     authError,
   } = useMoralis();
+
+  const [collapsedSideBar, setCollapsedSideBar] = useState(false);
+  const [viewSwitched, setViewSwitched] = useState(false);
 
   useEffect(() => {
     type Web3ProviderType = any;
@@ -87,43 +134,83 @@ const App = () => {
         provider: connectorId,
         clientId:
           "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-        rpcTarget:
-          "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
+        // rpcTarget:
+        //   "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
         chainId: chainId,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated) {
+  if (!viewSwitched) {
     return (
-      <Layout className="fade" style={styles.bglogin}>
-        <SignIn />
-      </Layout>
+      <LoginLayout>
+        <SignIn setViewSwitched={() => setViewSwitched(true)} />
+      </LoginLayout>
     );
   } else {
     return (
-      <Layout style={{ height: "100vh", overflow: "hidden" }}>
+      <Layout style={{ height: "100vh" }} hasSider>
         <Router>
-          <Header className="fade" style={styles.header}>
+          <Sider
+            width={293}
+            breakpoint="sm"
+            collapsedWidth="0"
+            onBreakpoint={(broken) => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+              setCollapsedSideBar(!collapsedSideBar);
+            }}
+            style={{
+              zIndex: "1",
+              height: "100vh",
+              position: "fixed",
+              width: "293px",
+              backgroundColor: "#F8F2ED",
+              left: 0,
+              top: 0,
+              bottom: 0,
+            }}
+          >
             <div style={{ display: "flex" }}>
               <Logo />
-              <p className="logotext">Pizza</p>
             </div>
-            <div style={styles.headerRight}>
-              <Account />
-            </div>
-          </Header>
-          <Layout className="fade" style={{ backgroundColor: "#1f1f1f" }}>
-            <Sider width={"16em"}>
-              <div style={styles.siderBalance}>
-                <Text style={{ fontSize: "15px", margin: "10px" }} strong>
-                  Balance
-                </Text>
+            <div style={{ position: "relative" }}>
+              <BackdropStyled></BackdropStyled>
+              <BalanceContainerStyled>
+                <BalanceTitleStyled>
+                  <BalanceTextStyled>Balance</BalanceTextStyled>
+                </BalanceTitleStyled>
                 <NativeBalance />
+              </BalanceContainerStyled>
+            </div>
+            <MenuItems />
+          </Sider>
+          <Layout
+            style={{
+              marginLeft: collapsedSideBar ? 0 : 293,
+              backgroundColor: "#2F2A75",
+            }}
+          >
+            <Header
+              style={{
+                marginTop: "32px",
+                padding: 0,
+                backgroundColor: "#2F2A75",
+              }}
+            >
+              <div style={{ float: "right", marginRight: "10px" }}>
+                <Account />
               </div>
-              <MenuItems />
-            </Sider>
-            <Content id="internal">
+            </Header>
+            <Content
+              style={{
+                overflowY: "scroll",
+                height: "100vh",
+                paddingBottom: "20px",
+              }}
+            >
               {authError && (
                 <div style={styles.errorDiv}>
                   <Alert message={authError.message} type="error" closable />
@@ -132,17 +219,10 @@ const App = () => {
               <div style={styles.content}>
                 <Switch>
                   <Route path="/dashboard">
-                    <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
-                      <Tabs.TabPane tab={<span>Tokens</span>} key="1">
-                        <ERC20Balance />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane tab={<span>NFTs</span>} key="2">
-                        <NFTBalance />
-                      </Tabs.TabPane>
-                    </Tabs>
+                    <ERC20Balance />
                   </Route>
                   <Route path="/transfer">
-                    <Wallet />
+                    <Transfer />
                   </Route>
                   <Route path="/activity">
                     <ERC20Transfers />
@@ -151,7 +231,9 @@ const App = () => {
                     <DEX />
                   </Route>
                   <Route path="/onramper">
-                    <Onramper />
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <Onramper />
+                    </div>
                   </Route>
                   <Route path="/">
                     <Redirect to="/dashboard" />
@@ -173,8 +255,17 @@ const App = () => {
 };
 
 export const Logo = () => (
-  <div style={{ display: "flex", padding: "10px", width: "64px" }}>
-    <img src="pizza.png" alt="logo" />
+  <div
+    style={{
+      display: "flex",
+      padding: "10px",
+      width: "235px",
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: "25px",
+    }}
+  >
+    <img src={PizzaWalletLogo} alt="logo" />
   </div>
 );
 

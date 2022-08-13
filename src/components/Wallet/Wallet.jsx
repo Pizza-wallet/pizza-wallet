@@ -4,6 +4,7 @@ import Address from "../Address/Address";
 import Blockie from "../Blockie";
 import { Card } from "antd";
 
+// TODO: We can use this component for our new wallet implementation or delete it and start over.
 const styles = {
   title: {
     fontSize: "30px",
@@ -23,6 +24,8 @@ const styles = {
     fontSize: "16px",
     fontWeight: "500",
     marginTop: "-3em",
+    marginRight: "auto",
+    marginLeft: "auto",
   },
 };
 

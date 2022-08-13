@@ -4,6 +4,12 @@ import { getEllipsisTxt } from "../helpers/formatters";
 import Blockie from "./Blockie";
 import { Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import styled from "styled-components";
+
+const StyledInput = styled(Input)`
+  border: 2px solid #3e389f;
+  border-radius: 15px;
+`;
 
 function AddressInput(props) {
   const input = useRef(null);
@@ -81,7 +87,7 @@ function AddressInput(props) {
   );
 
   return (
-    <Input
+    <StyledInput
       ref={input}
       size="large"
       placeholder={props.placeholder ? props.placeholder : "Public address"}

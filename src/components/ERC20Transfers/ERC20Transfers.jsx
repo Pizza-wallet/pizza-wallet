@@ -3,8 +3,9 @@ import { useMoralis } from "react-moralis";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import { getExplorer } from "../../helpers/networks";
 import "antd/dist/antd.css";
-import { Skeleton, Table } from "antd";
+// import { Table } from "antd";
 import { useERC20Transfers } from "../../hooks/useERC20Transfers";
+import Table from "../reusable/Table";
 
 function ERC20Transfers() {
   const { ERC20Transfers, chainId } = useERC20Transfers();
@@ -52,11 +53,9 @@ function ERC20Transfers() {
     },
   ];
 
-  let key = 0;
   return (
-    <div style={{ width: "65vw", padding: "15px" }}>
-      <h1>Token Transfers</h1>
-      <Skeleton loading={!ERC20Transfers}>
+    <div>
+      {/* <Skeleton loading={!ERC20Transfers}>
         <Table
           dataSource={ERC20Transfers}
           columns={columns}
@@ -65,7 +64,19 @@ function ERC20Transfers() {
             return `${record.transaction_hash}-${key}`;
           }}
         />
-      </Skeleton>
+      </Skeleton> */}
+      <div
+        style={{
+          margin: "0 50px 50px 50px",
+          height: "100%",
+        }}
+      >
+        <Table
+          tableData={ERC20Transfers}
+          columns={columns}
+          tableTitle={"Transfers History"}
+        />
+      </div>
     </div>
   );
 }

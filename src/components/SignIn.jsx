@@ -1,164 +1,159 @@
+import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
-import { Spin, Dropdown, Button, Menu } from "antd";
 import Text from "antd/lib/typography/Text";
-import { DownOutlined } from "@ant-design/icons";
-import Account from "./Account/Account.jsx";
-import apple from "./Account/WalletIcons/apple.svg";
+// import Account from "./Account/Account.jsx";
+import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
 import facebook from "./Account/WalletIcons/facebook.svg";
-import github from "./Account/WalletIcons/github.svg";
-import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
-import { useState, useEffect } from "react";
+import styled from "styled-components";
+import LoginLogo from "../assets/login-logo.svg";
+import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
+import { CustomImg } from "./reusable/CustomImg";
+// import { Menu } from "antd";
+// import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Chains/Logos";
 
-const styles = {
-  account: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  web3: {
-    width: "350px",
-    height: "450px",
-  },
-  card: {
-    width: "350px",
-    height: "520px",
-    display: "flex",
-    flexDirection: "column",
-    padding: "20px",
-    justifyContent: "space-between",
-    textAlign: "center",
-  },
-  topdiv: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  socialicons: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "end",
-    paddingBottom: "1em",
-    cursor: "pointer",
-  },
-  buttonCard: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-  },
-  loginButton: {
-    padding: "10px",
-    borderRadius: "20px",
-    borderWidth: "0px",
-    color: "white",
-    backgroundImage: "linear-gradient(90deg, #0364ff, #1eb7ef)",
-    width: "100%",
-    cursor: "pointer",
-    fontWeight: "600",
-  },
-  green: {
-    color: "green",
-  },
-  img: {
-    justifySelf: "center",
-    objectFit: "contain",
-  },
-  input: {
-    padding: "10px",
-    borderRadius: "20px",
-    marginBottom: "20px",
-  },
-  item: {
-    display: "flex",
-    alignItems: "center",
-    height: "42px",
-    fontWeight: "500",
-    fontFamily: "Roboto, sans-serif",
-    fontSize: "14px",
-    padding: "0 10px",
-  },
-  button: {
-    border: "2px solid rgb(231, 234, 243)",
-    borderRadius: "12px",
-    margin: "12px",
-  },
-  icon: {
-    alignSelf: "center",
-    fill: "rgb(40, 13, 95)",
-    flexShrink: "0",
-    marginBottom: "8px",
-    height: "30px",
-  },
-  connector: {
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "column",
-    height: "auto",
-    justifyContent: "center",
-    marginLeft: "auto",
-    marginRight: "auto",
-    padding: "20px 5px",
-    cursor: "pointer",
-  },
-};
+const AccountContainer = styled("div")`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
-const menuItems = [
-  {
-    key: "0x2a",
-    value: "Kovan Testnet",
-    icon: <ETHLogo />,
-  },
-  {
-    key: "0x61",
-    value: "BSC Testnet",
-    icon: <BSCLogo />,
-  },
-  {
-    key: "0x13881",
-    value: "Mumbai",
-    icon: <PolygonLogo />,
-  },
-  {
-    key: "0xa869",
-    value: "Avalanche Testnet",
-    icon: <AvaxLogo />,
-  },
-];
+const Card = styled("div")`
+  width: 428px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid #3e389f;
+  background-color: #f8f2ed;
+  border-radius: 44px;
+  padding: 6.8px;
+`;
 
-export default function SignIn() {
-  const { authenticate, authError, isAuthenticating } = useMoralis();
-  const [selected, setSelected] = useState({});
-  const [chain, setchain] = useState("");
+const InnerCard = styled("div")`
+  position: relative;
+  border: 2px solid #3e389f;
+  background-color: #f8f2ed;
+  border-radius: 41px;
+  padding: 20px;
+  width: 411px;
+`;
+
+const FlexContainerCenter = styled("div")`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const LoginTitle = styled("p")`
+  font-family: "Gloria Hallelujah", sans-serif;
+  color: var(--brand-blue);
+  font-size: 26px;
+  line-height: 52px;
+  letter-spacing: 0.04em;
+  -webkit-text-stroke: thin;
+  margin-bottom: 65px;
+`;
+
+const TextStyled = styled(Text)`
+  font-family: "Rubik", sans-serif;
+  font-size: 15px;
+  line-height: 18px;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+`;
+
+const Divider = styled("div")`
+  margin-top: 50px;
+  margin-bottom: 50px;
+`;
+
+const DividerText = styled("p")`
+  font-family: "Rubik", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.04em;
+  width: 100%;
+  text-align: center;
+  border-bottom: 2px solid #3e389f;
+  line-height: 0.1em;
+`;
+
+const DividerSpan = styled("span")`
+  background: #f8f2ed;
+  padding: 0 10px;
+`;
+
+const ButtonCard = styled("div")`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
+const SocialIcons = styled("div")`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: end;
+  cursor: pointer;
+`;
+
+// const menuItems = [
+//   {
+//     key: "0x2a",
+//     value: "Kovan Testnet",
+//     icon: <ETHLogo />,
+//   },
+//   {
+//     key: "0x61",
+//     value: "BSC Testnet",
+//     icon: <BSCLogo />,
+//   },
+//   {
+//     key: "0x13881",
+//     value: "Mumbai",
+//     icon: <PolygonLogo />,
+//   },
+//   {
+//     key: "0xa869",
+//     value: "Avalanche Testnet",
+//     icon: <AvaxLogo />,
+//   },
+// ];
+
+export default function SignIn({ setViewSwitched }) {
+  const { authenticate } = useMoralis();
+  const [chain] = useState("");
+  // const [setSelected] = useState({});
 
   console.log("chain", chain);
 
-  useEffect(() => {
-    if (!chain) return null;
-    const newSelected = menuItems.find((item) => item.key === chain);
-    setSelected(newSelected);
-    console.log("current chainId: ", chain);
-  }, [chain]);
+  // useEffect(() => {
+  //   if (!chain) return null;
+  //   const newSelected = menuItems.find((item) => item.key === chain);
+  //   setSelected(newSelected);
+  //   console.log("current chainId: ", chain);
+  // }, [chain]);
 
-  const handleMenuClick = (e) => {
-    setchain(e.key);
-    console.log(`${chain}`);
-  };
+  // const handleMenuClick = (e) => {
+  //   setchain(e.key);
+  //   console.log(`${chain}`);
+  // };
 
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      {menuItems.map((item) => (
-        <Menu.Item key={item.key} icon={item.icon} style={styles.item}>
-          <span style={{ marginLeft: "5px" }}>{item.value}</span>
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  // const menu = (
+  //   <Menu onClick={handleMenuClick}>
+  //     {menuItems.map((item) => (
+  //       <Menu.Item key={item.key} icon={item.icon}>
+  //         <span style={{ marginLeft: "5px" }}>{item.value}</span>
+  //       </Menu.Item>
+  //     ))}
+  //   </Menu>
+  // );
 
   const handleCustomLogin = async () => {
     await authenticate({
@@ -174,58 +169,69 @@ export default function SignIn() {
   };
 
   return (
-    <div style={styles.account}>
-      <div className="glass-card" style={styles.card}>
-        <div style={styles.topdiv}>
-          <div
-            style={{
-              marginTop: "-10px",
-              paddingBottom: "10px",
-              display: "flex",
-              justifyContent: "center",
-              fontWeight: "700",
-              fontSize: "20px",
-            }}
-          >
-            <Spin spinning={isAuthenticating}> Login </Spin>
+    <AccountContainer>
+      <Card>
+        <FlexContainerCenter>
+          <CustomImg
+            height={"70%"}
+            width={"70%"}
+            margin={"23px"}
+            src={LoginLogo}
+          />
+        </FlexContainerCenter>
+        <InnerCard>
+          <FlexContainerCenter>
+            <LoginTitle>Login</LoginTitle>
+          </FlexContainerCenter>
+          {/* {authError && alert(JSON.stringify(authError.message))} */}
+          <div>
+            {/* <Dropdown overlay={menu} trigger={["click"]}>
+              <Button key={selected?.key} icon={selected?.icon}>
+                <span style={{ marginLeft: "5px" }}>
+                  {selected?.value || "Choose chain"}
+                </span>
+              </Button>
+            </Dropdown> */}
+            <ButtonCard>
+              <SocialIcons onClick={handleCustomLogin}>
+                <CustomImg margin={"0 0 4px 0"} src={apple} alt="logo" />
+                <img src={facebook} alt="logo" />
+                <img src={google} alt="logo" />
+                <img src={twitter} alt="logo" />
+                <TextStyled>and more</TextStyled>
+              </SocialIcons>
+              <ButtonContainer
+                width={"239px"}
+                height={"57px"}
+                margin={"20px 0 0 0"}
+              >
+                <PrimaryButton onClick={handleCustomLogin}>
+                  Social Login
+                </PrimaryButton>
+              </ButtonContainer>
+            </ButtonCard>
+
+            <Divider>
+              <DividerText>
+                <DividerSpan>OR</DividerSpan>
+              </DividerText>
+            </Divider>
+
+            <FlexContainerCenter>
+              <ButtonContainer
+                width={"239px"}
+                height={"57px"}
+                margin={"0 0 65px 0"}
+              >
+                <PrimaryButton onClick={setViewSwitched}>
+                  Connect wallet
+                  {/* <Account /> */}
+                </PrimaryButton>
+              </ButtonContainer>
+            </FlexContainerCenter>
           </div>
-          <img style={styles.img} src="pizza.png" width={80} height={80} />
-        </div>
-        <div style={styles.topdiv}>
-          <Dropdown overlay={menu} trigger={["click"]}>
-            <Button
-              key={selected?.key}
-              icon={selected?.icon}
-              style={{ ...styles.button, ...styles.item }}
-            >
-              <span style={{ marginLeft: "5px" }}>
-                {selected?.value || "Choose chain"}
-              </span>
-              <DownOutlined />
-            </Button>
-          </Dropdown>
-        </div>
-        {authError && alert(JSON.stringify(authError.message))}
-        <div>
-          <div style={styles.buttonCard}>
-            <div style={styles.socialicons} onClick={handleCustomLogin}>
-              <img src={apple} alt="logo" />
-              <img src={google} alt="logo" />
-              <img src={twitter} alt="logo" />
-              <img src={facebook} alt="logo" />
-              <img src={github} alt="logo" />
-              <Text>and more</Text>
-            </div>
-            <button style={styles.loginButton} onClick={handleCustomLogin}>
-              Social Login with Web3Auth
-            </button>
-          </div>
-          <span style={{ fontSize: "1em", fontWeight: "600" }}>OR</span>
-          <button style={styles.loginButton}>
-            <Account />
-          </button>
-        </div>
-      </div>
-    </div>
+        </InnerCard>
+      </Card>
+    </AccountContainer>
   );
 }
