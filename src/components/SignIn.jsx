@@ -3,7 +3,7 @@ import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import "../style.css";
 import Text from "antd/lib/typography/Text";
-// import Account from "./Account/Account.jsx";
+import Account from "./Account/Account.jsx";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
@@ -126,8 +126,8 @@ const SocialIcons = styled("div")`
 //   },
 // ];
 
-export default function SignIn({ setViewSwitched }) {
-  const { authenticate } = useMoralis();
+export default function SignIn() {
+  const { authenticate, authError } = useMoralis();
   const [chain] = useState("");
   // const [setSelected] = useState({});
 
@@ -183,7 +183,7 @@ export default function SignIn({ setViewSwitched }) {
           <FlexContainerCenter>
             <LoginTitle>Login</LoginTitle>
           </FlexContainerCenter>
-          {/* {authError && alert(JSON.stringify(authError.message))} */}
+          {authError && alert(JSON.stringify(authError.message))}
           <div>
             {/* <Dropdown overlay={menu} trigger={["click"]}>
               <Button key={selected?.key} icon={selected?.icon}>
@@ -223,9 +223,9 @@ export default function SignIn({ setViewSwitched }) {
                 height={"57px"}
                 margin={"0 0 65px 0"}
               >
-                <PrimaryButton onClick={setViewSwitched}>
-                  Connect wallet
-                  {/* <Account /> */}
+                <PrimaryButton>
+                  {/* Connect wallet */}
+                  <Account />
                 </PrimaryButton>
               </ButtonContainer>
             </FlexContainerCenter>
