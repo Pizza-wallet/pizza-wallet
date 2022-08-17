@@ -101,7 +101,6 @@ const SocialIcons = styled("div")`
   cursor: pointer;
 `;
 
-
 export default function SignIn() {
   const { authenticate, authError } = useMoralis();
   const [chain] = useState("");
