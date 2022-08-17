@@ -9,7 +9,7 @@ import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "../../helpers/networks";
 import Text from "antd/lib/typography/Text";
 import { connectors } from "./config";
-// import AccountLogo from "../../assets/account.svg";
+
 const styles = {
   account: {
     height: "42px",
@@ -129,7 +129,6 @@ function Account() {
           {getEllipsisTxt(account, 6)}
         </p>
         <Blockie currentWallet scale={3} />
-        {/* <img src={AccountLogo} alt="logo" /> */}
       </div>
       <Modal
         visible={isModalVisible}
