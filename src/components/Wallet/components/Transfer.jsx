@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 
 const Card = styled("div")`
-  width: 428px;
+  width: 26.8em;
   margin-left: auto;
   margin-right: auto;
   border: 2px solid #3e389f;
@@ -28,7 +28,7 @@ const InnerCard = styled("div")`
   background-color: #f8f2ed;
   border-radius: 41px;
   padding: 20px;
-  width: 411px;
+  width: 25.6em;
 `;
 
 const Header = styled("div")`
@@ -164,12 +164,12 @@ function Transfer() {
           }}
         />
         <Controls>
-          <ButtonContainer width={"167px"} height={"51px"}>
+          <ButtonContainer width={"11em"} height={"51px"}>
             <Link to="/dashboard">
               <SecondaryButton>Cancel</SecondaryButton>
             </Link>
           </ButtonContainer>
-          <ButtonContainer width={"172px"} height={"51px"}>
+          <ButtonContainer width={"11em"} height={"51px"}>
             <PrimaryButton
               loading={isPending}
               onClick={() => transfer()}

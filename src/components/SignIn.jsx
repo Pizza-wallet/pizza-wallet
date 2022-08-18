@@ -209,8 +209,8 @@ export default function SignIn({ setViewSwitched }) {
                 <TextStyled>and more</TextStyled>
               </SocialIcons>
               <ButtonContainer
-                width={"239px"}
-                height={"57px"}
+                width={"230px"}
+                height={"51px"}
                 margin={"20px 0 0 0"}
               >
                 <PrimaryButton onClick={handleCustomLogin}>
@@ -227,8 +227,8 @@ export default function SignIn({ setViewSwitched }) {
 
             <FlexContainerCenter>
               <ButtonContainer
-                width={"239px"}
-                height={"57px"}
+                width={"230px"}
+                height={"51px"}
                 margin={"0 0 65px 0"}
               >
                 <PrimaryButton onClick={setViewSwitched}>

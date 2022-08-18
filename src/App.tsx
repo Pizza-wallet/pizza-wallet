@@ -153,7 +153,7 @@ const App = () => {
         <Router>
           <Sider
             width={293}
-            breakpoint="sm"
+            breakpoint="md"
             collapsedWidth="0"
             onBreakpoint={(broken) => {
               console.log(broken);

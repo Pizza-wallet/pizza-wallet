@@ -12,7 +12,7 @@ export const PrimaryButton = styled("button")`
   background: #3e389f;
   border-radius: 15px;
   font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 22px;
+  font-size: 1.3em;
   cursor: pointer;
   color: white;
 

@@ -42,11 +42,7 @@ body {
   background-color: #103658;
 }
 
-/* html {
-  font-size: 100%;
-}  */
-/*16px*/
-
+/* Below font-size informs em values used in the rest of the app */
 body {
   font-size: 100%;
 }
@@ -77,14 +73,6 @@ h4 {
 }
 small {
   font-size: 0.833em;
-}
-/* .box {
-  padding: 1.25em;
-} */
-@media screen and (min-width: 1400px) {
-  html {
-    font-size: 125%;
-  } /*20px*/
 }
 
 ul[class],
