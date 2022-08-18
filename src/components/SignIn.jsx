@@ -22,7 +22,8 @@ const AccountContainer = styled("div")`
 `;
 
 const Card = styled("div")`
-  width: 428px;
+  width: 26.8em;
+  height: 39em;
   margin-left: auto;
   margin-right: auto;
   border: 2px solid #3e389f;
@@ -37,7 +38,8 @@ const InnerCard = styled("div")`
   background-color: #f8f2ed;
   border-radius: 41px;
   padding: 20px;
-  width: 411px;
+  width: 25.6em;
+  height: 31em;
 `;
 
 const FlexContainerCenter = styled("div")`
@@ -54,7 +56,13 @@ const LoginTitle = styled("p")`
   line-height: 52px;
   letter-spacing: 0.04em;
   -webkit-text-stroke: thin;
-  margin-bottom: 65px;
+  margin-bottom: 2em;
+  @media (min-width: 1250px) {
+    margin-bottom: 2.5em;
+  }
+  @media (max-width: 380px) {
+    margin-bottom: 1em;
+  }
 `;
 
 const TextStyled = styled(Text)`
@@ -66,8 +74,8 @@ const TextStyled = styled(Text)`
 `;
 
 const Divider = styled("div")`
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 3.2em;
+  margin-bottom: 3.2em;
 `;
 
 const DividerText = styled("p")`
@@ -175,7 +183,7 @@ export default function SignIn({ setViewSwitched }) {
           <CustomImg
             height={"70%"}
             width={"70%"}
-            margin={"23px"}
+            margin={"1.4em"}
             src={LoginLogo}
           />
         </FlexContainerCenter>
