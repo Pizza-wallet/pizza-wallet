@@ -6,10 +6,10 @@ import MenuButton from "./reusable/MenuButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTableColumns,
-  faArrowTurnRight,
   faArrowsRotate,
   faDollarSign,
   faClockRotateLeft,
+  faArrowsTurnRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 const MenuListItem = styled("li")`
@@ -20,6 +20,21 @@ const MenuListItem = styled("li")`
   margin-bottom: 20px;
 `;
 
+const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
+  margin-right: 15px;
+  font-size: 30px;
+`;
+
+const ButtonFlexContainer = styled("span")`
+  display: flex;
+  position: absolute;
+  top: 9px;
+`;
+
+const ButtonText = styled("p")`
+  margin-top: 12px;
+`;
+
 function MenuItems() {
   // use pathname to highlight selected menu item
   const { pathname } = useLocation();
@@ -28,16 +43,10 @@ function MenuItems() {
     const selected = route === pathname;
     return (
       <MenuButton selected={selected} pathname={pathname}>
-        <span style={{ display: "flex" }}>
-          <FontAwesomeIcon
-            style={{
-              marginRight: "15px",
-              fontSize: "30px",
-            }}
-            icon={icon}
-          />
-          <p>{text}</p>
-        </span>
+        <ButtonFlexContainer>
+          <FontAwesomeIconStyled icon={icon} />
+          <ButtonText>{text}</ButtonText>
+        </ButtonFlexContainer>
       </MenuButton>
     );
   };
@@ -55,7 +64,6 @@ function MenuItems() {
         backgroundColor: "#F8F2ED",
         marginTop: "35px",
       }}
-      // defaultSelectedKeys={[pathname]}
     >
       <MenuListItem>
         <Link to="/dashboard">
@@ -64,7 +72,7 @@ function MenuItems() {
       </MenuListItem>
       <MenuListItem>
         <Link to="/transfer">
-          {menuItemButton("Transfer", faArrowTurnRight, "/transfer")}
+          {menuItemButton("Transfer", faArrowsTurnRight, "/transfer")}
         </Link>
       </MenuListItem>
       <MenuListItem>

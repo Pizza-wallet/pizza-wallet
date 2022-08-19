@@ -6,7 +6,7 @@ const MenuButton = styled("button")`
   font-family: "Gloria Hallelujah", sans-serif;
   padding: 12px 24px;
   font-size: 24px;
-  line-height: 28px;
+  line-height: 10px;
   color: ${(props) =>
     props.selected ? "var(--dirty-white-2)" : "var(--brand-blue)"};
   position: relative;
