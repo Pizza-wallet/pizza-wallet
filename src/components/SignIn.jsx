@@ -65,7 +65,7 @@ const LoginTitle = styled("p")`
 
 const TextStyled = styled(Text)`
   font-family: "Rubik", sans-serif;
-  font-size: 15px;
+  font-size: 0.93rem;
   line-height: 18px;
   letter-spacing: 0.04em;
   margin-bottom: 3px;
@@ -80,7 +80,7 @@ const DividerText = styled("p")`
   font-family: "Rubik", sans-serif;
   font-style: normal;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 24px;
   letter-spacing: 0.04em;
   width: 100%;

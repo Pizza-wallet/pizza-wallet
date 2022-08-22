@@ -21,18 +21,19 @@ const MenuListItem = styled("li")`
 `;
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
-  margin-right: 15px;
   font-size: 30px;
 `;
 
-const ButtonFlexContainer = styled("span")`
+const ButtonFlexContainer = styled("div")`
   display: flex;
   position: absolute;
   top: 9px;
+  left: 0;
 `;
 
 const ButtonText = styled("p")`
   margin-top: 12px;
+  margin-left: 15px;
 `;
 
 function MenuItems() {
@@ -44,7 +45,9 @@ function MenuItems() {
     return (
       <MenuButton selected={selected} pathname={pathname}>
         <ButtonFlexContainer>
-          <FontAwesomeIconStyled icon={icon} />
+          <div style={{ width: "50px" }}>
+            <FontAwesomeIconStyled icon={icon} />
+          </div>
           <ButtonText>{text}</ButtonText>
         </ButtonFlexContainer>
       </MenuButton>
