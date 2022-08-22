@@ -34,7 +34,7 @@ const InnerCard = styled("div")`
 const Header = styled("div")`
   color: #3e389f;
   font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 24px;
+  font-size: 1.5rem;
   padding: 10px 0 10px 20px;
   -webkit-text-stroke: thin;
 `;
@@ -42,7 +42,7 @@ const Header = styled("div")`
 const Text = styled("p")`
   color: black;
   font-family: "Rubik", sans-serif;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 24px;
   letter-spacing: 0.02em;
   margin: 20px 0 10px 0;

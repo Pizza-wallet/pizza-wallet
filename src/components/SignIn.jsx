@@ -50,7 +50,7 @@ const FlexContainerCenter = styled("div")`
 const LoginTitle = styled("p")`
   font-family: "Gloria Hallelujah", sans-serif;
   color: var(--brand-blue);
-  font-size: 26px;
+  font-size: 1.62rem;
   line-height: 52px;
   letter-spacing: 0.04em;
   -webkit-text-stroke: thin;

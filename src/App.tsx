@@ -60,10 +60,10 @@ const BalanceTitleStyled = styled("div")`
 const BalanceTextStyled = styled("p")`
   font-weight: bold;
   font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #3e389f;
-  padding-top: 2px;
-  padding-left: 15px;
+  padding-top: 0.125em;
+  padding-left: 0.5375em;
   -webkit-text-stroke: thin;
 `;
 

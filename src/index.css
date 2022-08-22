@@ -42,7 +42,8 @@ body {
   background-color: #103658;
 }
 
-/* Below font-size informs em values used in the rest of the app */
+/* Below font-size informs em / rem values used in the rest of the app */
+/* 100% = 16px */
 body {
   font-size: 100%;
 }
@@ -119,7 +120,7 @@ thead {
   vertical-align: middle;
   border-color: inherit;
   border-collapse: separate;
-  font-size: 1.3em;
+  font-size: 1.3rem;
 }
 
 tr {
@@ -159,7 +160,7 @@ tbody:last-child tr:last-child td:first-child {
 .tabControls {
   font-family: "Gloria Hallelujah", sans-serif;
   color: #3e389f;
-  font-size: 2em;
+  font-size: 1.875rem;
   margin: 0 0 5px 15px;
   -webkit-text-stroke: thin;
 }

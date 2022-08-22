@@ -12,13 +12,11 @@ export const PrimaryButton = styled("button")`
   background: #3e389f;
   border-radius: 15px;
   font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 1.3em;
+  font-size: 1.37rem;
   cursor: pointer;
   color: white;
 
   user-select: none;
-
-  padding: 12px 24px;
 
   line-height: 28px;
 
@@ -78,7 +76,7 @@ export const SecondaryButton = styled("button")`
   background-color: var(--layout-white);
   color: #3e389f;
   font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 22px;
+  font-size: 1.37rem;
   cursor: pointer;
   letter-spacing: 0.5px;
   -webkit-text-stroke: thin;

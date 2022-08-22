@@ -4,8 +4,8 @@ import btnStripe from "../../assets/btn-stripes.svg";
 const MenuButton = styled("button")`
   user-select: none;
   font-family: "Gloria Hallelujah", sans-serif;
-  padding: 12px 24px;
-  font-size: 24px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.5rem;
   line-height: 10px;
   color: ${(props) =>
     props.selected ? "var(--dirty-white-2)" : "var(--brand-blue)"};
@@ -17,8 +17,8 @@ const MenuButton = styled("button")`
   border: none;
   display: inline-block;
   border-radius: 17px;
-  width: 227px;
-  height: 50px;
+  width: 14.18rem;
+  height: 3.125rem;
   transform: rotate(-1deg);
   margin: 10px;
   -webkit-text-stroke: thin;
@@ -35,8 +35,8 @@ const MenuButton = styled("button")`
       props.selected ? "var(--brand-blue)" : "var(--layout-white)"};
     z-index: -1;
     border-radius: 17px;
-    width: 227px;
-    height: 50px;
+    width: 14.18rem;
+    height: 3.125rem;
     border: 3px solid var(--brand-blue);
   }
   &:after {
@@ -59,8 +59,8 @@ const MenuButton = styled("button")`
     width: 100%;
     z-index: -2;
     border-radius: 17px;
-    width: 227px;
-    height: 50px;
+    width: 14.18rem;
+    height: 3.125rem;
     border: ${(props) =>
       props.selected ? `2px solid #3E389F;` : `2px solid var(--brand-blue)`};
   }
