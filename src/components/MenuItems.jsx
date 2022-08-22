@@ -28,7 +28,7 @@ const ButtonFlexContainer = styled("div")`
   display: flex;
   position: absolute;
   top: 9px;
-  left: 0;
+  left: 6px;
 `;
 
 const ButtonText = styled("p")`
