@@ -135,9 +135,6 @@ function Transfer() {
       setIsPending(false);
       console.log(error);
     }
-
-    // console.log(txStatus);
-    // console.log(result);
   }
 
   return (
@@ -151,9 +148,6 @@ function Transfer() {
 
         <Text strong>Asset:</Text>
         <AssetSelector setAsset={setAsset} style={{ width: "100%" }} />
-
-        {/* <Text strong>Blockchain:</Text>
-        <AssetSelector setAsset={setAsset} style={{ width: "100%" }} /> */}
 
         <Text strong>Amount:</Text>
         <StyledInput

@@ -1,9 +1,6 @@
-import React from "react";
 import { useMoralis } from "react-moralis";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import { getExplorer } from "../../helpers/networks";
-import "antd/dist/antd.css";
-// import { Table } from "antd";
 import { useERC20Transfers } from "../../hooks/useERC20Transfers";
 import Table from "../reusable/Table";
 
@@ -55,16 +52,6 @@ function ERC20Transfers() {
 
   return (
     <div>
-      {/* <Skeleton loading={!ERC20Transfers}>
-        <Table
-          dataSource={ERC20Transfers}
-          columns={columns}
-          rowKey={(record) => {
-            key++;
-            return `${record.transaction_hash}-${key}`;
-          }}
-        />
-      </Skeleton> */}
       <div
         style={{
           margin: "0 50px 50px 50px",

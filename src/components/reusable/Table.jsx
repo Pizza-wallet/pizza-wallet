@@ -1,4 +1,3 @@
-// import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { SecondaryButton } from "./Buttons";
 import { Link } from "react-router-dom";
@@ -68,7 +67,6 @@ function Table({ tableData, columns, tableTitle }) {
             </table>
           </Container2>
           <ButtonContainer>
-            {/* <PrimaryButton>Add tokens</PrimaryButton> */}
             {tableTitle === "Token" ? (
               <Link to="/onramper">
                 <SecondaryButton>Buy tokens</SecondaryButton>

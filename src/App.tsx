@@ -78,34 +78,11 @@ const styles = {
     height: "100vh",
     width: "100%",
   },
-  header: {
-    zIndex: 1,
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    fontFamily: "Roboto, sans-serif",
-    padding: "0 10px",
-  },
-  headerRight: {
-    float: "right",
-    gap: "8px",
-
-    fontSize: "15px",
-    fontWeight: "600",
-  },
   errorDiv: {
     width: "100%",
     display: "flex",
     marginTop: "1em",
     justifyContent: "center",
-  },
-  bglogin: {
-    height: "100vh",
-    display: "grid",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
   },
 };
 
@@ -119,7 +96,6 @@ const App = () => {
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
-  // const [viewSwitched, setViewSwitched] = useState(false);
 
   useEffect(() => {
     type Web3ProviderType = any;
@@ -131,8 +107,6 @@ const App = () => {
         provider: connectorId,
         clientId:
           "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-        // rpcTarget:
-        //   "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
         chainId: chainId,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps

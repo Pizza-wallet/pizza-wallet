@@ -49,8 +49,6 @@ function Chains() {
   const { isAuthenticated } = useMoralis();
   const [selected, setSelected] = useState({});
 
-  console.log("chain", chain);
-
   useEffect(() => {
     if (!chainId) return null;
     const newSelected = menuItems.find((item) => item.key === chainId);
@@ -59,7 +57,6 @@ function Chains() {
   }, [chainId]);
 
   const handleMenuClick = (e) => {
-    console.log("switch to: ", e.key);
     switchNetwork(e.key);
   };
 

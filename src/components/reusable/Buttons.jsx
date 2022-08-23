@@ -15,16 +15,11 @@ export const PrimaryButton = styled("button")`
   font-size: 22px;
   cursor: pointer;
   color: white;
-
   user-select: none;
-
   padding: 12px 24px;
-
   line-height: 28px;
-
   position: relative;
   text-align: center;
-
   z-index: 0;
   transition: letter-spacing 0.4s ease;
   border: none;

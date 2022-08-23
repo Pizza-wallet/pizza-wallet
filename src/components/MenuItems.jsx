@@ -55,7 +55,6 @@ function MenuItems() {
         backgroundColor: "#F8F2ED",
         marginTop: "35px",
       }}
-      // defaultSelectedKeys={[pathname]}
     >
       <MenuListItem>
         <Link to="/dashboard">
