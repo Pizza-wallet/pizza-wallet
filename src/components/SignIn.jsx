@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
-import "../style.css";
 import Text from "antd/lib/typography/Text";
 import Account from "./Account/Account.jsx";
 import apple from "./Account/WalletIcons/apple-social.svg";
