@@ -6,7 +6,7 @@ const MenuButton = styled("button")`
   font-family: "Gloria Hallelujah", sans-serif;
   padding: 0.75rem 1.5rem;
   font-size: 1.5rem;
-  line-height: 10px;
+  line-height: 0.625rem;
   color: ${(props) =>
     props.selected ? "var(--dirty-white-2)" : "var(--brand-blue)"};
   position: relative;
@@ -16,13 +16,13 @@ const MenuButton = styled("button")`
   transition: letter-spacing 0.4s ease;
   border: none;
   display: inline-block;
-  border-radius: 17px;
+  border-radius: 1.0625rem;
   width: 14.18rem;
   height: 3.125rem;
   transform: rotate(-1deg);
-  margin: 10px;
+  margin: 0.625rem;
   -webkit-text-stroke: thin;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03125rem;
 
   &:before {
     content: "";
@@ -34,10 +34,10 @@ const MenuButton = styled("button")`
     background: ${(props) =>
       props.selected ? "var(--brand-blue)" : "var(--layout-white)"};
     z-index: -1;
-    border-radius: 17px;
+    border-radius: 1.0625rem;
     width: 14.18rem;
     height: 3.125rem;
-    border: 3px solid var(--brand-blue);
+    border: 0.1875rem solid var(--brand-blue);
   }
   &:after {
     pointer-events: none;
@@ -58,11 +58,13 @@ const MenuButton = styled("button")`
     transform: translate(3px, 4px);
     width: 100%;
     z-index: -2;
-    border-radius: 17px;
+    border-radius: 1.0625rem;
     width: 14.18rem;
     height: 3.125rem;
     border: ${(props) =>
-      props.selected ? `2px solid #3E389F;` : `2px solid var(--brand-blue)`};
+      props.selected
+        ? `0.125rem solid #3E389F;`
+        : `0.125rem solid var(--brand-blue)`};
   }
 `;
 

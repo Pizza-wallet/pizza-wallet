@@ -29,32 +29,33 @@ const BackdropStyled = styled("div")`
   position: absolute;
   right: 32px;
   top: 8px;
-  height: 117px;
-  width: 215px;
-  border: 1.5px solid #3e389f;
+  height: 7.3125rem;
+  width: 13.4375rem;
+  border: 0.125rem solid #3e389f;
   background-color: var(--layout-white);
-  border-radius: 15px;
+  border-radius: 0.9375rem;
 `;
 
 const BalanceContainerStyled = styled("div")`
-  width: 220px;
-  height: 120px;
-  border: 1.5px solid #3e389f;
-  border-radius: 15px;
+  width: 13.75rem;
+  height: 7.5rem;
+  border: 0.125rem solid #3e389f;
+  border-radius: 0.9375rem;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   background-color: var(--layout-white);
-  margin-top: 35px;
+  margin-top: 2.1875rem;
 `;
 
 const BalanceTitleStyled = styled("div")`
-  height: 40px;
+  height: 2.5rem;
   background-color: rgba(77, 195, 89, 0.7);
-  border-top-left-radius: 13px;
-  border-top-right-radius: 13px;
-  border: 1px solid #3e389f;
-  border-bottom: 2.5px solid #3e389f;
+  border-top-left-radius: 0.9375rem;
+  border-top-right-radius: 0.9375rem;
+  border: 0.125rem solid #3e389f;
+  border-bottom: 0.125rem solid #3e389f;
+  margin: -0.125rem;
 `;
 
 const BalanceTextStyled = styled("p")`
