@@ -20,24 +20,21 @@ const AccountContainer = styled("div")`
 `;
 
 const Card = styled("div")`
-  width: 26.8em;
-  height: 39em;
+  width: 26.75em;
   margin-left: auto;
   margin-right: auto;
-  border: 2px solid #3e389f;
+  border: 0.125rem solid #3e389f;
   background-color: #f8f2ed;
-  border-radius: 44px;
-  padding: 6.8px;
+  border-radius: 2.75rem;
+  padding: 0.425rem;
 `;
 
 const InnerCard = styled("div")`
   position: relative;
-  border: 2px solid #3e389f;
+  border: 0.125rem solid #3e389f;
   background-color: #f8f2ed;
-  border-radius: 41px;
-  padding: 20px;
-  width: 25.6em;
-  height: 31em;
+  border-radius: 2.5625rem;
+  padding: 1.25rem;
 `;
 
 const FlexContainerCenter = styled("div")`
@@ -51,7 +48,7 @@ const LoginTitle = styled("p")`
   font-family: "Gloria Hallelujah", sans-serif;
   color: var(--brand-blue);
   font-size: 1.62rem;
-  line-height: 52px;
+  line-height: 3.25rem;
   letter-spacing: 0.04em;
   -webkit-text-stroke: thin;
   margin-bottom: 2em;
@@ -66,9 +63,9 @@ const LoginTitle = styled("p")`
 const TextStyled = styled(Text)`
   font-family: "Rubik", sans-serif;
   font-size: 0.93rem;
-  line-height: 18px;
+  line-height: 1.125rem;
   letter-spacing: 0.04em;
-  margin-bottom: 3px;
+  margin-bottom: 0.1875rem;
 `;
 
 const Divider = styled("div")`
@@ -81,17 +78,17 @@ const DividerText = styled("p")`
   font-style: normal;
   font-weight: 400;
   font-size: 1.25rem;
-  line-height: 24px;
+  line-height: 1.5rem;
   letter-spacing: 0.04em;
   width: 100%;
   text-align: center;
-  border-bottom: 2px solid #3e389f;
+  border-bottom: 0.125rem solid #3e389f;
   line-height: 0.1em;
 `;
 
 const DividerSpan = styled("span")`
   background: #f8f2ed;
-  padding: 0 10px;
+  padding: 0 0.625rem;
 `;
 
 const ButtonCard = styled("div")`
