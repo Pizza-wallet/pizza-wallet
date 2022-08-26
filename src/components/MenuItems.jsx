@@ -2,7 +2,7 @@ import { useLocation } from "react-router";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import MenuButton from "./reusable/MenuButton";
+import { MenuButton } from "./reusable/Buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTableColumns,
