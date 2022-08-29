@@ -13,27 +13,36 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const MenuListItem = styled("li")`
-  padding-left: 24px;
+  padding-left: 1.5rem;
   display: flex;
   align-items: center;
-  height: 50px;
-  margin-bottom: 20px;
+  height: 3.125rem;
+  margin-bottom: 1.0625rem;
 `;
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
-  font-size: 30px;
+  font-size: 1.75rem;
 `;
 
 const ButtonFlexContainer = styled("div")`
   display: flex;
   position: absolute;
-  top: 9px;
-  left: 6px;
+  top: 0.375rem;
+  left: 0.375rem;
 `;
 
 const ButtonText = styled("p")`
-  margin-top: 12px;
-  margin-left: 15px;
+  margin-top: 0.65rem;
+  margin-left: 0.9375rem;
+`;
+
+const StyledMenu = styled(Menu)`
+  background-color: #f8f2ed;
+  margin-top: 2.1875rem !important;
+`;
+
+const IconContainer = styled("div")`
+  width: 50px;
 `;
 
 function MenuItems() {
@@ -45,9 +54,9 @@ function MenuItems() {
     return (
       <MenuButton selected={selected} pathname={pathname}>
         <ButtonFlexContainer>
-          <div style={{ width: "50px" }}>
+          <IconContainer>
             <FontAwesomeIconStyled icon={icon} />
-          </div>
+          </IconContainer>
           <ButtonText>{text}</ButtonText>
         </ButtonFlexContainer>
       </MenuButton>
@@ -55,19 +64,7 @@ function MenuItems() {
   };
 
   return (
-    <Menu
-      mode="inline"
-      style={{
-        fontSize: "17px",
-        fontWeight: "500",
-        height: "100%",
-        paddingTop: "10px",
-        justifyContent: "center",
-        border: "none",
-        backgroundColor: "#F8F2ED",
-        marginTop: "35px",
-      }}
-    >
+    <StyledMenu mode="inline">
       <MenuListItem>
         <Link to="/dashboard">
           {menuItemButton("Dashboard", faTableColumns, "/dashboard")}
@@ -91,7 +88,7 @@ function MenuItems() {
           {menuItemButton("History", faClockRotateLeft, "/activity")}
         </Link>
       </MenuListItem>
-    </Menu>
+    </StyledMenu>
   );
 }
 

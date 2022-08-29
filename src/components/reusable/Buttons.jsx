@@ -95,8 +95,8 @@ export const MenuButton = styled("button")`
   border: none;
   display: inline-block;
   border-radius: 1.0625rem;
-  width: 14.18rem;
-  height: 3.125rem;
+  width: 13.75rem;
+  height: 2.625rem;
   transform: rotate(-1deg);
   margin: 0.625rem;
   -webkit-text-stroke: thin;
@@ -112,9 +112,10 @@ export const MenuButton = styled("button")`
     background: ${(props) =>
       props.selected ? "var(--brand-blue)" : "var(--layout-white)"};
     z-index: -1;
-    border-radius: 1.0625rem;
-    width: 14.18rem;
-    height: 3.125rem;
+    border-radius: 0.9375rem;
+
+    width: 13.75rem;
+    height: 2.625rem;
     border: 0.1875rem solid var(--brand-blue);
   }
   &:after {
@@ -122,7 +123,7 @@ export const MenuButton = styled("button")`
     content: "";
     background: white;
     background: ${(props) =>
-      props.selected ? `var(--brand-blue-80)` : `url(${btnStripe})`};
+      props.selected ? `#8B88C3` : `url(${btnStripe})`};
     background-repeat: round;
     background-origin: border-box;
     display: block;
@@ -130,12 +131,14 @@ export const MenuButton = styled("button")`
     height: 100%;
     left: 0;
     top: 0;
-    transform: translate(4px, 5px);
+    // transform: translate(4px, 5px);
+    transform: ${(props) =>
+      props.selected ? `translate(5px, 6px)` : `translate(4px, 5px)`};
     width: 100%;
     z-index: -2;
-    border-radius: 1.0625rem;
-    width: 14.18rem;
-    height: 3.125rem;
+    border-radius: 0.9375rem;
+    width: 13.75rem;
+    height: 2.625rem;
     border: ${(props) =>
       props.selected
         ? `0.1875rem solid #3E389F;`
