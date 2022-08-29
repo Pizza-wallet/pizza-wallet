@@ -164,12 +164,12 @@ function Transfer() {
           }}
         />
         <Controls>
-          <ButtonContainer width={"11em"} height={"51px"}>
+          <ButtonContainer width={"11em"} height={"3.1875rem"}>
             <Link to="/dashboard">
               <SecondaryButton>Cancel</SecondaryButton>
             </Link>
           </ButtonContainer>
-          <ButtonContainer width={"11em"} height={"51px"}>
+          <ButtonContainer width={"11em"} height={"3.1875rem"}>
             <PrimaryButton
               loading={isPending}
               onClick={() => transfer()}

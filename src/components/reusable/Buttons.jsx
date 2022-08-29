@@ -56,7 +56,7 @@ export const PrimaryButton = styled("button")`
     height: 100%;
     left: 0;
     top: 0;
-    transform: translate(5px, 5.5px);
+    transform: translate(0.3125rem, 0.34375rem);
     z-index: -2;
     border-radius: 0.9375rem;
     width: 100%;
@@ -131,9 +131,10 @@ export const MenuButton = styled("button")`
     height: 100%;
     left: 0;
     top: 0;
-    // transform: translate(4px, 5px);
     transform: ${(props) =>
-      props.selected ? `translate(5px, 6px)` : `translate(4px, 5px)`};
+      props.selected
+        ? `translate(0.3125rem, 0.375rem)`
+        : `translate(0.25rem, 0.3125rem)`};
     width: 100%;
     z-index: -2;
     border-radius: 0.9375rem;

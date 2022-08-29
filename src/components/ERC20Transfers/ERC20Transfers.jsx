@@ -67,7 +67,7 @@ function ERC20Transfers() {
       </Skeleton> */}
       <div
         style={{
-          margin: "0 50px 50px 50px",
+          margin: "0 3.125rem 3.125rem 3.125rem",
           height: "100%",
         }}
       >

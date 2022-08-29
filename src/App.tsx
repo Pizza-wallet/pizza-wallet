@@ -27,8 +27,8 @@ const { Header, Sider, Content } = Layout;
 
 const BackdropStyled = styled("div")`
   position: absolute;
-  right: 32px;
-  top: 8px;
+  right: 2rem;
+  top: 0.5rem;
   height: 7.3125rem;
   width: 13.4375rem;
   border: 0.125rem solid #3e389f;
@@ -78,7 +78,7 @@ const LoginLayout = styled(Layout)`
 
 const StyledContent = styled(Content)`
   overflow-y: auto;
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
   &::-webkit-scrollbar {
     -webkit-appearance: none;
   }
@@ -86,7 +86,7 @@ const StyledContent = styled(Content)`
 
 const styles = {
   content: {
-    padding: "10px",
+    padding: "0.625rem",
     width: "100%",
   },
   header: {
@@ -96,13 +96,13 @@ const styles = {
     justifyContent: "space-between",
     alignItems: "center",
     fontFamily: "Roboto, sans-serif",
-    padding: "0 10px",
+    padding: "0 0.625rem",
   },
   headerRight: {
     float: "right",
-    gap: "8px",
+    gap: "0.5rem",
 
-    fontSize: "15px",
+    fontSize: "0.9375rem",
     fontWeight: "600",
   },
   errorDiv: {
@@ -174,7 +174,7 @@ const App = () => {
               zIndex: "1",
               height: "100vh",
               position: "fixed",
-              width: "293px",
+              width: "18.3125rem",
               backgroundColor: "#F8F2ED",
               left: 0,
               top: 0,
@@ -203,12 +203,12 @@ const App = () => {
           >
             <Header
               style={{
-                marginTop: "32px",
+                marginTop: "2rem",
                 padding: 0,
                 backgroundColor: "#2F2A75",
               }}
             >
-              <div style={{ float: "right", marginRight: "10px" }}>
+              <div style={{ float: "right", marginRight: "0.625rem" }}>
                 <Account />
               </div>
             </Header>
@@ -260,11 +260,11 @@ export const Logo = () => (
   <div
     style={{
       display: "flex",
-      padding: "10px",
-      width: "235px",
+      padding: "0.625rem",
+      width: "14.6875rem",
       marginLeft: "auto",
       marginRight: "auto",
-      marginTop: "25px",
+      marginTop: "1.5625rem",
     }}
   >
     <img src={PizzaWalletLogo} alt="logo" />

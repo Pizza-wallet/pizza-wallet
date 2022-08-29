@@ -58,10 +58,10 @@ function ERC20Balance(props) {
           <img
             src={logo || "https://etherscan.io/images/main/empty-token.png"}
             alt="nologo"
-            width="28px"
-            height="28px"
+            width="1.75rem"
+            height="1.75rem"
           />
-          <div style={{ marginLeft: "10px", marginTop: "5px" }}>
+          <div style={{ marginLeft: "0.625rem", marginTop: "0.3125rem" }}>
             {item.name}
           </div>
         </div>
@@ -105,7 +105,7 @@ function ERC20Balance(props) {
     // </div>
     <div
       style={{
-        margin: "0 50px 50px 50px",
+        margin: "0 3.125rem 3.125rem 3.125rem",
       }}
     >
       <Table tableData={assets} columns={columns} tableTitle={"Token"} />

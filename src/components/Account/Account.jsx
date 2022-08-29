@@ -29,15 +29,15 @@ const styles = {
     justifyContent: "center",
     marginLeft: "auto",
     marginRight: "auto",
-    padding: "20px 5px",
+    padding: "1.25rem 0.3125rem",
     cursor: "pointer",
   },
   icon: {
     alignSelf: "center",
     fill: "rgb(40, 13, 95)",
     flexShrink: "0",
-    marginBottom: "8px",
-    height: "30px",
+    marginBottom: "0.5rem",
+    height: "1.875rem",
   },
 };
 
@@ -64,24 +64,24 @@ function Account() {
           footer={null}
           onCancel={() => setIsAuthModalVisible(false)}
           bodyStyle={{
-            padding: "15px",
-            fontSize: "17px",
+            padding: "0.9375rem",
+            fontSize: "1.0625rem",
             fontWeight: "500",
           }}
           style={{
-            fontSize: "16px",
+            fontSize: "1rem",
             fontWeight: "500",
           }}
-          width="340px"
+          width="21.25rem"
           className="custom-modal-style"
         >
           <div
             style={{
-              padding: "10px",
+              padding: "0.625rem",
               display: "flex",
               justifyContent: "center",
               fontWeight: "700",
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
           >
             <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
@@ -106,7 +106,7 @@ function Account() {
                 }}
               >
                 <img src={icon} alt={title} style={styles.icon} />
-                <Text style={{ fontSize: "14px" }}>{title}</Text>
+                <Text style={{ fontSize: "0.875rem" }}>{title}</Text>
               </div>
             ))}
           </div>
@@ -125,28 +125,28 @@ function Account() {
         footer={null}
         onCancel={() => setIsModalVisible(false)}
         bodyStyle={{
-          padding: "15px",
-          fontSize: "17px",
+          padding: "0.9375rem",
+          fontSize: "1.0625rem",
           fontWeight: "500",
         }}
-        style={{ fontSize: "16px", fontWeight: "500" }}
-        width="400px"
+        style={{ fontSize: "1rem", fontWeight: "500" }}
+        width="25rem"
       >
         Account
         <Card
           style={{
-            marginTop: "10px",
+            marginTop: "0.625rem",
             borderRadius: "1rem",
           }}
-          bodyStyle={{ padding: "15px" }}
+          bodyStyle={{ padding: "0.9375rem" }}
         >
           <Address
             avatar="left"
             size={6}
             copyable
-            style={{ fontSize: "20px" }}
+            style={{ fontSize: "1.25rem" }}
           />
-          <div style={{ marginTop: "10px", padding: "0 10px" }}>
+          <div style={{ marginTop: "0.625rem", padding: "0 0.625rem" }}>
             <a
               href={`${getExplorer(chainId)}/address/${account}`}
               target="_blank"
@@ -154,7 +154,7 @@ function Account() {
               style={{ color: "#3e389f" }}
             >
               <SelectOutlined
-                style={{ marginRight: "5px", color: "#3e389f" }}
+                style={{ marginRight: "0.3125rem", color: "#3e389f" }}
               />
               View on Explorer
             </a>
@@ -165,9 +165,9 @@ function Account() {
           type="primary"
           style={{
             width: "100%",
-            marginTop: "10px",
+            marginTop: "0.625rem",
             borderRadius: "0.5rem",
-            fontSize: "16px",
+            fontSize: "1rem",
             fontWeight: "500",
             backgroundColor: "#3e389f",
             border: "0px",

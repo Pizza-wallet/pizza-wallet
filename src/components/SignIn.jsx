@@ -144,16 +144,16 @@ export default function SignIn() {
           <div>
             <ButtonCard>
               <SocialIcons onClick={handleCustomLogin}>
-                <CustomImg margin={"0 0 4px 0"} src={apple} alt="logo" />
+                <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
                 <img src={facebook} alt="logo" />
                 <img src={google} alt="logo" />
                 <img src={twitter} alt="logo" />
                 <TextStyled>and more</TextStyled>
               </SocialIcons>
               <ButtonContainer
-                width={"230px"}
-                height={"51px"}
-                margin={"20px 0 0 0"}
+                width={"14.375rem"}
+                height={"3.1875rem"}
+                margin={"1.25rem 0 0 0"}
               >
                 <PrimaryButton onClick={handleCustomLogin}>
                   Social Login
@@ -169,9 +169,9 @@ export default function SignIn() {
 
             <FlexContainerCenter>
               <ButtonContainer
-                width={"230px"}
-                height={"51px"}
-                margin={"0 0 65px 0"}
+                width={"14.375rem"}
+                height={"3.1875rem"}
+                margin={"0 0 4.0625rem 0"}
               >
                 <PrimaryButton>
                   {/* Connect wallet */}

@@ -42,7 +42,7 @@ const StyledMenu = styled(Menu)`
 `;
 
 const IconContainer = styled("div")`
-  width: 50px;
+  width: 3.125rem;
 `;
 
 function MenuItems() {

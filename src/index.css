@@ -107,10 +107,10 @@ table {
   background-color: var(--layout-white);
   width: 80%;
   height: 80%;
-  padding: 10px 20px 10px 20px;
-  border: 2px solid var(--brand-blue);
+  padding: 0.625rem 1.25rem 0.625rem 1.25rem;
+  border: 0.125rem solid var(--brand-blue);
   border-collapse: separate;
-  border-radius: 41px;
+  border-radius: 2.5625rem;
   border-spacing: 0px;
   margin: 0 auto;
 }
@@ -131,7 +131,7 @@ tr {
 
 th,
 td {
-  padding: 5px 4px 6px 4px;
+  padding: 0.3125rem 0.25rem 0.375rem 0.25rem;
   text-align: left;
   vertical-align: top;
   color: var(--brand-blue);
@@ -146,11 +146,11 @@ td {
 
 thead:first-child tr:first-child th:first-child,
 tbody:first-child tr:first-child td:first-child {
-  border-radius: 4px 0 0 0;
+  border-radius: 0.25rem 0 0 0;
 }
 thead:last-child tr:last-child th:first-child,
 tbody:last-child tr:last-child td:first-child {
-  border-radius: 0 0 0 4px;
+  border-radius: 0 0 0 0.25rem;
 }
 
 .scrollable-table {
@@ -161,10 +161,10 @@ tbody:last-child tr:last-child td:first-child {
   font-family: "Gloria Hallelujah", sans-serif;
   color: #3e389f;
   font-size: 1.875rem;
-  margin: 0 0 5px 15px;
+  margin: 0 0 0.3125rem 0.9375rem;
   -webkit-text-stroke: thin;
 }
 
 .ant-select-selector {
-  border-radius: 13px !important;
+  border-radius: 0.8125rem !important;
 }
