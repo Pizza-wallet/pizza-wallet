@@ -76,10 +76,17 @@ const LoginLayout = styled(Layout)`
   background: var(--layout-blue);
 `;
 
+const StyledContent = styled(Content)`
+  overflow-y: auto;
+  padding-bottom: 20px;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+`;
+
 const styles = {
   content: {
     padding: "10px",
-    height: "100vh",
     width: "100%",
   },
   header: {
@@ -205,13 +212,7 @@ const App = () => {
                 <Account />
               </div>
             </Header>
-            <Content
-              style={{
-                overflowY: "scroll",
-                height: "100vh",
-                paddingBottom: "20px",
-              }}
-            >
+            <StyledContent>
               {authError && (
                 <div style={styles.errorDiv}>
                   <Alert message={authError.message} type="error" closable />
@@ -247,7 +248,7 @@ const App = () => {
                   </Route>
                 </Switch>
               </div>
-            </Content>
+            </StyledContent>
           </Layout>
         </Router>
       </Layout>

@@ -106,7 +106,6 @@ function ERC20Balance(props) {
     <div
       style={{
         margin: "0 50px 50px 50px",
-        height: "100%",
       }}
     >
       <Table tableData={assets} columns={columns} tableTitle={"Token"} />
