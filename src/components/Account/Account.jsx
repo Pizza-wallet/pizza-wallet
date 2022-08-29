@@ -1,7 +1,5 @@
 import { useMoralis } from "react-moralis";
 import { Spin, Alert } from "antd";
-import { getEllipsisTxt } from "../../helpers/formatters";
-import Blockie from "../Blockie";
 import { Button, Card, Modal } from "antd";
 import { useState } from "react";
 import Address from "../Address/Address";
@@ -9,21 +7,16 @@ import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "../../helpers/networks";
 import Text from "antd/lib/typography/Text";
 import { connectors } from "./config";
+import { CustomImg } from "../reusable/CustomImg";
+import AccountLogo from "../../assets/account-logo.svg";
+import styled from "styled-components";
+
+const AccountLogoContainer = styled("div")`
+  cursor: pointer;
+  margin-right: 3.125rem;
+`;
 
 const styles = {
-  account: {
-    height: "42px",
-    padding: "0 15px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "fit-content",
-    borderRadius: "12px",
-    backgroundColor: "#2C2A51",
-    border: "1px solid #F8F2ED",
-    color: "#F8F2ED",
-    cursor: "pointer",
-  },
   text: {
     color: "#ffffff",
     cursor: "pointer",
@@ -124,12 +117,9 @@ function Account() {
 
   return (
     <>
-      <div style={styles.account} onClick={() => setIsModalVisible(true)}>
-        <p style={{ marginRight: "5px", ...styles.text }}>
-          {getEllipsisTxt(account, 6)}
-        </p>
-        <Blockie currentWallet scale={3} />
-      </div>
+      <AccountLogoContainer onClick={() => setIsModalVisible(true)}>
+        <CustomImg width={"2.4375rem"} height={"2.4375rem"} src={AccountLogo} />
+      </AccountLogoContainer>
       <Modal
         visible={isModalVisible}
         footer={null}

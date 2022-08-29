@@ -26,7 +26,7 @@ const Card = styled("div")`
   border: 0.125rem solid #3e389f;
   background-color: #f8f2ed;
   border-radius: 2.75rem;
-  padding: 0.425rem;
+  padding: 0 0.425rem 0.425rem 0.425rem;
 `;
 
 const InnerCard = styled("div")`
@@ -132,7 +132,7 @@ export default function SignIn() {
           <CustomImg
             height={"70%"}
             width={"70%"}
-            margin={"1.4em"}
+            margin={"1.4375rem 0 1.0625rem 0"}
             src={LoginLogo}
           />
         </FlexContainerCenter>
