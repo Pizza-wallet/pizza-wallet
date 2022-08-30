@@ -1,4 +1,4 @@
-// import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { SecondaryButton } from "./Buttons";
 import { Link } from "react-router-dom";
@@ -36,7 +36,9 @@ const ButtonContainer = styled("div")`
   height: 57px;
 `;
 
-function Table({ tableData, columns, tableTitle }) {
+function Table({ tableData, columns, tableTitle, expandableRow }) {
+  const [expandableRows, setShowExpandableRows] = useState([]);
+
   const renderRows = () => {
     return tableData.map((data, i) => {
       return (
@@ -46,6 +48,46 @@ function Table({ tableData, columns, tableTitle }) {
             return <td key={j}>{column.render(info, data)}</td>;
           })}
         </tr>
+      );
+    });
+  };
+
+  const toggleDropdown = (rowId) => {
+    if (expandableRows.includes(rowId)) {
+      const newRows = expandableRows.filter((e) => e !== rowId);
+      setShowExpandableRows(newRows);
+    } else {
+      setShowExpandableRows([...expandableRows, rowId]);
+    }
+  };
+
+  const renderRowsExpandable = () => {
+    return tableData.map((data) => {
+      return (
+        <>
+          <tr
+            key={data.id}
+            id={data.id}
+            style={{ cursor: "pointer" }}
+            onClick={() => toggleDropdown(data.id)}
+          >
+            {columns.map((column, j) => {
+              let info = data[column.dataIndex];
+              return <td key={j}>{column.render(info, data)}</td>;
+            })}
+          </tr>
+          {expandableRows.includes(data.id) &&
+            data.tokens.map((token, k) => {
+              return (
+                <tr key={k} id={data.id}>
+                  {columns.map((column, l) => {
+                    let info = token[column.dataIndex];
+                    return <td key={l}>{column.render(info, token)}</td>;
+                  })}
+                </tr>
+              );
+            })}
+        </>
       );
     });
   };
@@ -68,7 +110,6 @@ function Table({ tableData, columns, tableTitle }) {
             </table>
           </Container2>
           <ButtonContainer>
-            {/* <PrimaryButton>Add tokens</PrimaryButton> */}
             {tableTitle === "Token" ? (
               <Link to="/onramper">
                 <SecondaryButton>Buy tokens</SecondaryButton>
@@ -82,6 +123,22 @@ function Table({ tableData, columns, tableTitle }) {
         </Container3>
       </>
     );
+  else if (expandableRow) {
+    return (
+      <>
+        <Container>
+          <p className="tabControls">{tableTitle}</p>
+
+          <table style={{ width: "100%" }}>
+            <thead>
+              <tr>{renderHeader()}</tr>
+            </thead>
+            {renderRowsExpandable()}
+          </table>
+        </Container>
+      </>
+    );
+  }
   return (
     <>
       <Container>
