@@ -112,7 +112,7 @@ export default function SignIn() {
       provider: "web3Auth",
       clientId:
         "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-      rpcTarget: 
+      rpcTarget:
         "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
       chainId: `${chain}` || "0x1",
       appLogo: "pizza.png",
