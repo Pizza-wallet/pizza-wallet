@@ -82,7 +82,11 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
                 <tr key={k} id={data.id}>
                   {columns.map((column, l) => {
                     let info = token[column.dataIndex];
-                    return <td key={l}>{column.render(info, token)}</td>;
+                    return (
+                      <td style={{ marginTop: "0.625rem" }} key={l}>
+                        {column.render(info, token)}
+                      </td>
+                    );
                   })}
                 </tr>
               );

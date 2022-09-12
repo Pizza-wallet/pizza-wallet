@@ -1,58 +1,47 @@
 import { useERC20Balances } from "react-moralis";
-// import { Skeleton, Table } from "antd";
-// import { getEllipsisTxt } from "../helpers/formatters";
 import Table from "./reusable/Table";
 import styled from "styled-components";
 
-const CustomTableData = styled("div")`
-  position: ${(props) => (props.type ? "absolute" : "relative")};
-  margin-left: ${(props) => (props.type ? "10px" : "0")};
-  padding-left: ${(props) => (props.type ? "80px" : "0")};
-  border-left: ${(props) => (props.type ? "1px solid black" : "0")};
-  display: flex;
-
-  ${(props) =>
-    props.type &&
-    ` &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 40%;
-    border-top: 1px solid black;
-  }`}
+const AbsoluteImgContainer = styled("div")`
+  position: absolute;
+  top: -0.3125rem;
 `;
 
 function ERC20Balance(props) {
   const { data: assets } = useERC20Balances(props);
-  // const { Moralis } = useMoralis();
 
   const columns = [
     {
       title: "Asset",
       dataIndex: "logo",
       key: "logo",
-      render: (logo, item) => (
-        <div
-          style={{
-            display: "flex",
-            position: "relative",
-          }}
-        >
-          <CustomTableData type={item.type === "token"}>
-            <img
-              src={logo || "https://etherscan.io/images/main/empty-token.png"}
-              alt="nologo"
-              width="28px"
-              height="28px"
-            />
-            <div style={{ marginLeft: "10px", marginTop: "5px" }}>
-              {item.name}
+      render: (logo, item) => {
+        const isToken = item.type === "token";
+        return (
+          <div
+            style={{
+              display: "flex",
+              position: "relative",
+              margin: isToken && "auto",
+              width: isToken && "50%",
+            }}
+          >
+            <div>
+              <AbsoluteImgContainer>
+                <img
+                  src={
+                    logo || "https://etherscan.io/images/main/empty-token.png"
+                  }
+                  alt="nologo"
+                  width="28px"
+                  height="28px"
+                />
+              </AbsoluteImgContainer>
+              <div style={{ marginLeft: "1.875rem" }}>{item.name}</div>
             </div>
-          </CustomTableData>
-        </div>
-      ),
+          </div>
+        );
+      },
     },
     {
       title: "Balance",
@@ -79,10 +68,11 @@ function ERC20Balance(props) {
 
   const mockData = [
     {
-      name: "Bitcoin",
+      name: "BTC",
       logo: "",
       price: 9028,
       value: 8028,
+      balance: 3,
       id: "bit",
       type: "chain",
       tokens: [
@@ -97,10 +87,11 @@ function ERC20Balance(props) {
       ],
     },
     {
-      name: "Ethereum",
+      name: "ETH",
       id: "eth",
       price: 900,
       value: 5000,
+      balance: 6,
       type: "chain",
       tokens: [
         {
@@ -113,8 +104,8 @@ function ERC20Balance(props) {
         },
         {
           type: "token",
-          name: "BAT",
-          balance: 200,
+          name: "Eth",
+          balance: 4,
           logo: "",
           price: 0.5,
           value: 100,
