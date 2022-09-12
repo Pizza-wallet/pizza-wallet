@@ -48,13 +48,13 @@ body {
   font-size: 100%;
 }
 
-@media only screen and (max-width: 1250px) {
+@media only screen and (max-width: 78.125em) {
   body {
     font-size: 87.5%;
   }
 }
 
-@media only screen and (max-width: 380px) {
+@media only screen and (max-width: 23.75em) {
   body {
     font-size: 75%;
   }
