@@ -5,7 +5,7 @@ function Onramper() {
             src="https://widget.onramper.com?color=266677&apiKey=pk_test_RfO_G0PdwKduZb6yWataPBMbTyKItJ6DTvEpzrQfuWk0"
             height="660px"
             width="482px"
-            title="Onramper widget"
+            title="Onramper"
             frameBorder="0"
             allow="accelerometer; autoplay; camera; gyroscope; payment"
         ></iframe>
