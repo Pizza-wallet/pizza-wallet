@@ -6,7 +6,7 @@ function Onramper() {
             height="660px"
             width="482px"
             title="Onramper"
-            frameborder="0"
+            frameBorder="0"
             allow="accelerometer; autoplay; camera; gyroscope; payment"
         ></iframe>
     );
