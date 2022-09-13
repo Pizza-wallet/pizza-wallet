@@ -94,20 +94,6 @@ select {
   font: inherit;
 }
 
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  background-color: var(--layout-white);
-  width: 80%;
-  height: 80%;
-  padding: 20px 20px 10px 40px;
-  border: 2px solid var(--brand-blue);
-  border-collapse: separate;
-  border-radius: 41px;
-  border-spacing: 0px;
-  margin: 0 auto;
-}
-
 thead {
   display: table-header-group;
   vertical-align: middle;

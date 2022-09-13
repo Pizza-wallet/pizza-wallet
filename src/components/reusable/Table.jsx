@@ -36,6 +36,21 @@ const ButtonContainer = styled("div")`
   height: 57px;
 `;
 
+const StyledTable = styled("table")`
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--layout-white);
+  width: 100%;
+  height: 80%;
+  padding: 20px 20px 10px 40px;
+  border: 2px solid var(--brand-blue);
+  border-collapse: separate;
+  border-radius: 41px;
+  border-spacing: 0px;
+  margin: 0 auto;
+  ${(props) => props.fixed && "table-layout: fixed"};
+`;
+
 function Table({ tableData, columns, tableTitle, expandableRow }) {
   const [expandableRows, setShowExpandableRows] = useState([]);
 
@@ -100,18 +115,20 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
     return columns.map((val, i) => <th key={i}>{val.title}</th>);
   };
 
-  if (!tableData)
+  if (!tableData || !tableData.length)
     return (
       <>
         <Container3>
           <Container2>
             <p className="tabControls">{tableTitle}</p>
-            <table style={{ width: "100%", height: "100%", opcaity: "0.5" }}>
+            <StyledTable
+              style={{ width: "100%", height: "100%", opacity: "0.5" }}
+            >
               <thead>
                 <tr>{renderHeader()}</tr>
               </thead>
               <tr style={{ height: "250px" }}></tr>
-            </table>
+            </StyledTable>
           </Container2>
           <ButtonContainer>
             {tableTitle === "Token" ? (
@@ -133,12 +150,12 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
         <Container>
           <p className="tabControls">{tableTitle}</p>
 
-          <table style={{ width: "100%" }}>
+          <StyledTable fixed={true}>
             <thead>
               <tr>{renderHeader()}</tr>
             </thead>
             {renderRowsExpandable()}
-          </table>
+          </StyledTable>
         </Container>
       </>
     );
@@ -148,12 +165,12 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
       <Container>
         <p className="tabControls">{tableTitle}</p>
 
-        <table style={{ width: "100%" }}>
+        <StyledTable>
           <thead>
             <tr>{renderHeader()}</tr>
           </thead>
           {renderRows()}
-        </table>
+        </StyledTable>
       </Container>
     </>
   );
