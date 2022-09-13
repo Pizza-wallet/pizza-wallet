@@ -16,6 +16,14 @@ export const c2 = new Intl.NumberFormat("en-us", {
   maximumFractionDigits: 2,
 });
 
+export const formatNumber = (digits, number) => {
+  return new Intl.NumberFormat("en-us", {
+    // maximumSignificantDigits: digits,
+    maximumFractionDigits: digits,
+    minimumFractionDigits: 2,
+  }).format(number);
+};
+
 /**
  * Returns a string of form "abc...xyz"
  * @param {string} str string to string

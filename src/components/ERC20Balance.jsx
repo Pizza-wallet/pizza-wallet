@@ -1,6 +1,7 @@
-import { useERC20Balances } from "react-moralis";
+import { useERC20Balances, useMoralis } from "react-moralis";
 import Table from "./reusable/Table";
 import styled from "styled-components";
+import { formatNumber } from "../helpers/formatters";
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
@@ -8,6 +9,7 @@ const AbsoluteImgContainer = styled("div")`
 `;
 
 function ERC20Balance(props) {
+  const { Moralis } = useMoralis();
   const { data: assets } = useERC20Balances(props);
 
   const columns = [
@@ -47,22 +49,21 @@ function ERC20Balance(props) {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      // render: (value, item) =>
-      //   parseFloat(Moralis?.Units?.FromWei(value, item.decimals)).toFixed(6),
-      render: (value) => value,
+      render: (value) =>
+        parseFloat(Moralis?.Units?.FromWei(value, 18)).toFixed(7),
     },
     {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (price) => price,
+      render: (value) => formatNumber(6, value),
     },
 
     {
       title: "Value",
       dataIndex: "value",
       key: "value",
-      render: (value) => value,
+      render: (value) => formatNumber(6, value),
     },
   ];
 
@@ -70,45 +71,45 @@ function ERC20Balance(props) {
     {
       name: "BTC",
       logo: "",
-      price: 9028,
-      value: 8028,
-      balance: 3,
+      price: 178152000,
+      value: 22269,
+      balance: "800000000000000000",
       id: "bit",
       type: "chain",
       tokens: [
         {
           type: "token",
           name: "Btc",
-          balance: 3,
+          balance: "10000000000000000000",
           logo: "",
-          price: 20000,
-          value: 60000,
+          price: 178152000,
+          value: 22269,
         },
       ],
     },
     {
       name: "ETH",
       id: "eth",
-      price: 900,
-      value: 5000,
-      balance: 6,
+      price: 1714.3,
+      value: 15428.7,
+      balance: "600000000000000000",
       type: "chain",
       tokens: [
         {
           type: "token",
           name: "Eth",
-          balance: 2,
+          balance: "3000000000000000000",
           logo: "",
-          price: 2000,
-          value: 4000,
+          price: 1714.3,
+          value: 5142.9,
         },
         {
           type: "token",
           name: "Eth",
-          balance: 4,
+          balance: "3000000000000000000",
           logo: "",
-          price: 0.5,
-          value: 100,
+          price: 1714.3,
+          value: 5142.9,
         },
       ],
     },
