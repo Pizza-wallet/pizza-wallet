@@ -50,7 +50,7 @@ function ERC20Balance(props) {
       dataIndex: "balance",
       key: "balance",
       render: (value) =>
-        parseFloat(Moralis?.Units?.FromWei(value, 18)).toFixed(7),
+        parseFloat(Moralis?.Units?.FromWei(value.toString(), 18)).toFixed(7),
     },
     {
       title: "Price",
@@ -73,14 +73,14 @@ function ERC20Balance(props) {
       logo: "",
       price: 6,
       value: 60000,
-      balance: "800000000000000000",
+      balance: 800000000000000000,
       id: "bit",
       type: "chain",
       tokens: [
         {
           type: "token",
           name: "Btc",
-          balance: "10000000000000000000",
+          balance: 10000000000000000000,
           logo: "",
           price: 1781520,
           value: 0.5,
@@ -92,13 +92,13 @@ function ERC20Balance(props) {
       id: "eth",
       price: 1714.3,
       value: 15428.7,
-      balance: "600000000000000000",
+      balance: 600000000000000000,
       type: "chain",
       tokens: [
         {
           type: "token",
           name: "Eth",
-          balance: "3000000000000000000",
+          balance: 3000000000000000000,
           logo: "",
           price: 1714.3,
           value: 5142.9,
@@ -106,7 +106,7 @@ function ERC20Balance(props) {
         {
           type: "token",
           name: "Eth",
-          balance: "3000000000000000000",
+          balance: 3000000000000000000,
           logo: "",
           price: 1714.3,
           value: 5142.9,
@@ -114,6 +114,16 @@ function ERC20Balance(props) {
       ],
     },
   ];
+
+  const sumBalanceAndValuesForChains = (data) => {
+    return data.map((chain) => {
+      return {
+        ...chain,
+        balance: chain.tokens.reduce((acc, obj) => (acc += obj.balance), 0),
+        value: chain.tokens.reduce((acc, obj) => (acc += obj.value), 0),
+      };
+    });
+  };
 
   console.log("assets - ", assets);
   return (
@@ -136,7 +146,7 @@ function ERC20Balance(props) {
       }}
     >
       <Table
-        tableData={mockData}
+        tableData={sumBalanceAndValuesForChains(mockData)}
         columns={columns}
         tableTitle={"Token"}
         expandableRow={true}
