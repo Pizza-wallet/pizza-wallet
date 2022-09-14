@@ -1,7 +1,7 @@
 import { useERC20Balances, useMoralis } from "react-moralis";
 import Table from "./reusable/Table";
 import styled from "styled-components";
-import { formatNumber } from "../helpers/formatters";
+import { limitDigits } from "../helpers/formatters";
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
@@ -56,63 +56,63 @@ function ERC20Balance(props) {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (value) => formatNumber(6, value),
+      render: (value) => limitDigits(7, value),
     },
 
     {
       title: "Value",
       dataIndex: "value",
       key: "value",
-      render: (value) => formatNumber(6, value),
+      render: (value) => limitDigits(7, value),
     },
   ];
 
   const mockData = [
-    // {
-    //   name: "BTC",
-    //   logo: "",
-    //   price: 178152000,
-    //   value: 22269,
-    //   balance: "800000000000000000",
-    //   id: "bit",
-    //   type: "chain",
-    //   tokens: [
-    //     {
-    //       type: "token",
-    //       name: "Btc",
-    //       balance: "10000000000000000000",
-    //       logo: "",
-    //       price: 178152000,
-    //       value: 22269,
-    //     },
-    //   ],
-    // },
-    // {
-    //   name: "ETH",
-    //   id: "eth",
-    //   price: 1714.3,
-    //   value: 15428.7,
-    //   balance: "600000000000000000",
-    //   type: "chain",
-    //   tokens: [
-    //     {
-    //       type: "token",
-    //       name: "Eth",
-    //       balance: "3000000000000000000",
-    //       logo: "",
-    //       price: 1714.3,
-    //       value: 5142.9,
-    //     },
-    //     {
-    //       type: "token",
-    //       name: "Eth",
-    //       balance: "3000000000000000000",
-    //       logo: "",
-    //       price: 1714.3,
-    //       value: 5142.9,
-    //     },
-    //   ],
-    // },
+    {
+      name: "BTC",
+      logo: "",
+      price: 6,
+      value: 60000,
+      balance: "800000000000000000",
+      id: "bit",
+      type: "chain",
+      tokens: [
+        {
+          type: "token",
+          name: "Btc",
+          balance: "10000000000000000000",
+          logo: "",
+          price: 1781520,
+          value: 0.5,
+        },
+      ],
+    },
+    {
+      name: "ETH",
+      id: "eth",
+      price: 1714.3,
+      value: 15428.7,
+      balance: "600000000000000000",
+      type: "chain",
+      tokens: [
+        {
+          type: "token",
+          name: "Eth",
+          balance: "3000000000000000000",
+          logo: "",
+          price: 1714.3,
+          value: 5142.9,
+        },
+        {
+          type: "token",
+          name: "Eth",
+          balance: "3000000000000000000",
+          logo: "",
+          price: 1714.3,
+          value: 5142.9,
+        },
+      ],
+    },
   ];
 
   console.log("assets - ", assets);

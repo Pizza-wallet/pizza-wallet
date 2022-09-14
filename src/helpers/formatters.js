@@ -16,12 +16,30 @@ export const c2 = new Intl.NumberFormat("en-us", {
   maximumFractionDigits: 2,
 });
 
-export const formatNumber = (digits, number) => {
-  return new Intl.NumberFormat("en-us", {
-    // maximumSignificantDigits: digits,
-    maximumFractionDigits: digits,
-    minimumFractionDigits: 2,
-  }).format(number);
+function commaSeparateNumber(val) {
+  // trim the number decimal point if it exists
+  let num = val.toString().includes(".")
+    ? val.toString().split(".")[0]
+    : val.toString();
+  while (/(\d+)(\d{3})/.test(num.toString())) {
+    // insert comma to 4th last position to the match number
+    num = num.toString().replace(/(\d+)(\d{3})/, "$1" + "," + "$2");
+  }
+  // add number after decimal point
+  if (val.toString().includes(".")) {
+    num = num + "." + val.toString().split(".")[1];
+  }
+
+  return num;
+}
+
+export const limitDigits = (digits, number) => {
+  let num;
+  num = number.toPrecision(digits);
+  if (num.length > digits) {
+    num = num.slice(0, 8);
+  }
+  return commaSeparateNumber(num);
 };
 
 /**
