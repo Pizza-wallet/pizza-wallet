@@ -145,4 +145,11 @@ export const MenuButton = styled("button")`
         ? `0.1875rem solid #3E389F;`
         : `0.1875rem solid var(--brand-blue)`};
   }
+
+  &:active {
+    &:before {
+      left: 5px;
+      top: 5px;
+    }
+  }
 `;

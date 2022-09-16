@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLocation } from "react-router";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
@@ -29,6 +30,8 @@ const ButtonFlexContainer = styled("div")`
   position: absolute;
   top: 0.375rem;
   left: 0.375rem;
+  top: ${(props) => props.mouseDown && `0.675rem`};
+  left: ${(props) => props.mouseDown && `0.675rem`};
 `;
 
 const ButtonText = styled("p")`
@@ -48,18 +51,36 @@ const IconContainer = styled("div")`
 function MenuItems() {
   // use pathname to highlight selected menu item
   const { pathname } = useLocation();
+  const [mouseDown, setMouseDown] = useState("");
+
+  const handleClick = (event) => {
+    const id = event.currentTarget.id;
+    if (event.type === "mousedown") {
+      setMouseDown(id);
+    } else {
+      setMouseDown("");
+    }
+  };
 
   const menuItemButton = (text, icon, route) => {
     const selected = route === pathname;
     return (
-      <MenuButton selected={selected} pathname={pathname}>
-        <ButtonFlexContainer>
-          <IconContainer>
-            <FontAwesomeIconStyled icon={icon} />
-          </IconContainer>
-          <ButtonText>{text}</ButtonText>
-        </ButtonFlexContainer>
-      </MenuButton>
+      <div id={text}>
+        <MenuButton
+          onMouseDown={(e) => handleClick(e)}
+          onMouseUp={(e) => handleClick(e)}
+          selected={selected}
+          pathname={pathname}
+          id={text}
+        >
+          <ButtonFlexContainer mouseDown={mouseDown === text && true}>
+            <IconContainer>
+              <FontAwesomeIconStyled icon={icon} />
+            </IconContainer>
+            <ButtonText>{text}</ButtonText>
+          </ButtonFlexContainer>
+        </MenuButton>
+      </div>
     );
   };
 
