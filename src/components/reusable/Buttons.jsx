@@ -148,8 +148,8 @@ export const MenuButton = styled("button")`
 
   &:active {
     &:before {
-      left: 5px;
-      top: 5px;
+      left: 0.3125rem;
+      top: 0.3125rem;
     }
   }
 `;
