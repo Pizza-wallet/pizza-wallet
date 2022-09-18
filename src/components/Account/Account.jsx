@@ -9,6 +9,7 @@ import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "../../helpers/networks";
 import Text from "antd/lib/typography/Text";
 import { connectors } from "./config";
+import {SignClient }from "@walletconnect/sign-client";
 
 const styles = {
   account: {
@@ -48,6 +49,55 @@ const styles = {
   },
 };
 
+//The necessary parts to connect to a Dapp with the URI input of the desired site, this part is used from the Wallet Connect document.
+async function wl(uri){
+   const signClient = await SignClient.init({
+    projectId: "2c0ac2fce55be6677c4c5329273ddfac"
+  });
+  console.log(uri);
+  try {
+     await signClient.pair({ uri })
+  } catch (err) {
+    alert(err)
+  } 
+
+// Approve session proposal, use id from session proposal event and respond with namespace(s) that satisfy dapps request and contain approved accounts
+const { topic, acknowledged } = await signClient.approve({
+  id: 123,
+  namespaces: {
+    eip155: {
+      accounts: ["eip155:1:0x0000000000..."],
+      methods: ["personal_sign", "eth_sendTransaction"],
+      events: ["accountsChanged"],
+      extension: [
+        {
+          accounts: ["eip:137"],
+          methods: ["eth_sign"],
+          events: [],
+        },
+      ],
+    },
+  },
+});
+
+// Optionally await acknowledgement from dapp
+const session = await acknowledged();
+
+// Or reject session proposal
+await signClient.reject({ 
+  id: 123,  
+  reason: {
+    code: 1,
+    message: "rejected", 
+  },
+});
+
+// signClient.on("session_proposal", (event) => {
+//   // Show session proposal data to the user i.e. in a modal with options to approve / reject it
+//   console.log("connected");
+  
+// });
+}
 function Account() {
   const {
     authenticate,
@@ -100,12 +150,19 @@ function Account() {
                 key={key}
                 onClick={async () => {
                   try {
-                    await authenticate({
-                      provider: connectorId,
-                      signingMessage: "Pizza Authentication",
-                    });
-                    window.localStorage.setItem("connectorId", connectorId);
-                    setIsAuthModalVisible(false);
+                    if(connectorId=="walletconnect"){
+                      wl("wc:98ba1b0e-4337-4355-a203-30957cdbd5b7@1?bridge=https%3A%2F%2Fj.bridge.walletconnect.org&key=e3de16ef8fbbcd59736f3a8bc2fe5ffac768b669fa67cbadb2132e0680792669");//if connectId is walletconnect execute wl function with a example uri , input can change
+
+                    }
+                    else{
+                        await authenticate({
+                          provider: connectorId,
+                          signingMessage: "Pizza Authentication",
+                        });
+                        window.localStorage.setItem("connectorId", connectorId);
+                        setIsAuthModalVisible(false);
+                    }
+                  
                   } catch (e) {
                     console.log(e);
                     <Alert message={e.message} type="warning" closable />;
