@@ -131,7 +131,7 @@ const App = () => {
     const chainId = Number(window.localStorage.getItem("chainId"));
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
       enableWeb3({
-        provider: connectorId, 
+        provider: connectorId,
         clientId:
           "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
         // rpcTarget:
