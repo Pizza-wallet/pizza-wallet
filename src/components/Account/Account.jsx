@@ -3,12 +3,13 @@ import { Spin, Alert } from "antd";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import Blockie from "../Blockie";
 import { Button, Card, Modal } from "antd";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import Address from "../Address/Address";
 import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "../../helpers/networks";
 import Text from "antd/lib/typography/Text";
 import { connectors } from "./config";
+import { WalletContext } from "../../utils/WalletContext";
 
 const styles = {
   account: {
@@ -57,78 +58,90 @@ function Account() {
     chainId,
     logout,
   } = useMoralis();
+
+  const { wallet, setWallet } = useContext(WalletContext);
+  const [walletAddress, setWalletAddress] = useState(account);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
 
-  if (!isAuthenticated || !account) {
-    return (
-      <>
-        <div onClick={() => setIsAuthModalVisible(true)}>
-          <p style={styles.text}>Connect Wallet</p>
-        </div>
-        <Modal
-          visible={isAuthModalVisible}
-          footer={null}
-          onCancel={() => setIsAuthModalVisible(false)}
-          bodyStyle={{
-            padding: "15px",
-            fontSize: "17px",
-            fontWeight: "500",
-          }}
-          style={{
-            fontSize: "16px",
-            fontWeight: "500",
-          }}
-          width="340px"
-          className="custom-modal-style"
-        >
-          <div
-            style={{
-              padding: "10px",
-              display: "flex",
-              justifyContent: "center",
-              fontWeight: "700",
-              fontSize: "20px",
+  useEffect(() => {
+    if (wallet) {
+      setWalletAddress(wallet.address); //update walletAddress when wallet changes.
+    }
+  }, [wallet]);
+
+  if (!wallet) {
+    //if wallet is not null, don't need to show connect wallet.
+    if (!isAuthenticated || !account) {
+      return (
+        <>
+          <div onClick={() => setIsAuthModalVisible(true)}>
+            <p style={styles.text}>Connect Wallet</p>
+          </div>
+          <Modal
+            visible={isAuthModalVisible}
+            footer={null}
+            onCancel={() => setIsAuthModalVisible(false)}
+            bodyStyle={{
+              padding: "15px",
+              fontSize: "17px",
+              fontWeight: "500",
             }}
+            style={{
+              fontSize: "16px",
+              fontWeight: "500",
+            }}
+            width="340px"
+            className="custom-modal-style"
           >
-            <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-            {connectors.map(({ title, icon, connectorId }, key) => (
-              <div
-                style={styles.connector}
-                key={key}
-                onClick={async () => {
-                  try {
-                    await authenticate({
-                      provider: connectorId,
-                      signingMessage: "Pizza Authentication",
-                    });
-                    window.localStorage.setItem("connectorId", connectorId);
-                    setIsAuthModalVisible(false);
-                  } catch (e) {
-                    console.log(e);
-                    <Alert message={e.message} type="warning" closable />;
-                  }
-                }}
-              >
-                <img src={icon} alt={title} style={styles.icon} />
-                <Text style={{ fontSize: "14px" }}>{title}</Text>
-              </div>
-            ))}
-          </div>
-        </Modal>
-      </>
-    );
+            <div
+              style={{
+                padding: "10px",
+                display: "flex",
+                justifyContent: "center",
+                fontWeight: "700",
+                fontSize: "20px",
+              }}
+            >
+              <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+              {connectors.map(({ title, icon, connectorId }, key) => (
+                <div
+                  style={styles.connector}
+                  key={key}
+                  onClick={async () => {
+                    try {
+                      await authenticate({
+                        provider: connectorId,
+                        signingMessage: "Pizza Authentication",
+                      });
+                      window.localStorage.setItem("connectorId", connectorId);
+                      setIsAuthModalVisible(false);
+                    } catch (e) {
+                      console.log(e);
+                      <Alert message={e.message} type="warning" closable />;
+                    }
+                  }}
+                >
+                  <img src={icon} alt={title} style={styles.icon} />
+                  <Text style={{ fontSize: "14px" }}>{title}</Text>
+                </div>
+              ))}
+            </div>
+          </Modal>
+        </>
+      );
+    }
   }
 
   return (
     <>
       <div style={styles.account} onClick={() => setIsModalVisible(true)}>
         <p style={{ marginRight: "5px", ...styles.text }}>
-          {getEllipsisTxt(account, 6)}
+          {getEllipsisTxt(walletAddress, 6)}
         </p>
-        <Blockie currentWallet scale={3} />
+        <Blockie address={walletAddress} scale={3} />
       </div>
       <Modal
         visible={isModalVisible}
@@ -158,7 +171,7 @@ function Account() {
           />
           <div style={{ marginTop: "10px", padding: "0 10px" }}>
             <a
-              href={`${getExplorer(chainId)}/address/${account}`}
+              href={`${getExplorer(chainId)}/address/${walletAddress}`}
               target="_blank"
               rel="noreferrer"
               style={{ color: "#3e389f" }}
@@ -187,6 +200,12 @@ function Account() {
             await logout();
             window.localStorage.removeItem("connectorId");
             setIsModalVisible(false);
+            if (wallet) {
+              //remove all wallet object when logout.
+              setWallet(null);
+              window.localStorage.removeItem("walletType");
+              window.localStorage.removeItem("privateText");
+            }
           }}
         >
           Disconnect Wallet

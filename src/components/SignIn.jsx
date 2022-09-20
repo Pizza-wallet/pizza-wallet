@@ -12,6 +12,7 @@ import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import { CustomImg } from "./reusable/CustomImg";
+import Seed from "./Seed/Seed";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -167,11 +168,28 @@ export default function SignIn() {
               <ButtonContainer
                 width={"239px"}
                 height={"57px"}
-                margin={"0 0 65px 0"}
+                margin={"0 0 0 0"}
               >
                 <PrimaryButton>
                   {/* Connect wallet */}
                   <Account />
+                </PrimaryButton>
+              </ButtonContainer>
+            </FlexContainerCenter>
+            <Divider>
+              <DividerText>
+                <DividerSpan>OR</DividerSpan>
+              </DividerText>
+            </Divider>
+            <FlexContainerCenter>
+              <ButtonContainer
+                width={"239px"}
+                height={"57px"}
+                margin={"0 0 65px 0"}
+              >
+                <PrimaryButton>
+                  {/* Import wallet from seed or private key */}
+                  <Seed />
                 </PrimaryButton>
               </ButtonContainer>
             </FlexContainerCenter>

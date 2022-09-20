@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import {
   HashRouter as Router,
@@ -22,6 +22,8 @@ import "./style.css";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
+import { WalletContext } from "./utils/WalletContext";
+import { ethers } from "ethers";
 
 const { Header, Sider, Content } = Layout;
 
@@ -121,6 +123,7 @@ const App = () => {
     authError,
   } = useMoralis();
 
+  const { wallet, setWallet } = useContext(WalletContext);
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
   // const [viewSwitched, setViewSwitched] = useState(false);
 
@@ -141,7 +144,23 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated) {
+  useEffect(() => {
+    //load from wallet object from storage when project is started.
+    const provider = ethers.getDefaultProvider();
+    const walletType = window.localStorage.getItem("walletType");
+    const privateText = window.localStorage.getItem("privateText");
+    if (privateText) {
+      if (walletType === "private") {
+        const _wallet = new ethers.Wallet(privateText, provider);
+        setWallet(_wallet);
+      } else if (walletType === "seed") {
+        const _wallet = ethers.Wallet.fromMnemonic(privateText);
+        setWallet(_wallet);
+      }
+    }
+  }, []);
+
+  if (!(isAuthenticated || wallet)) {
     return (
       <LoginLayout>
         <SignIn />
