@@ -117,12 +117,13 @@ export default function SignIn() {
       provider: "web3Auth",
       clientId:
         "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-      rpcTarget: "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
-      chainId: `${chain}` || "0x2a",
+      rpcTarget:
+        "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
+      chainId: `${chain}` || "0x1",
       appLogo: "pizza.png",
     });
     window.localStorage.setItem("connectorId", "web3Auth");
-    window.localStorage.setItem("chainId", chain || "0x2a");
+    window.localStorage.setItem("chainId", chain || "0x1");
   };
 
   return (
