@@ -26,15 +26,15 @@ A self custodial user focused wallet with built in DeFi features.
 ### Supported Chains
 
 - Ethereum
-- Binance Smart Chain
-- Avalanche
-- Polygon
-- Optimism
-- Arbitrum
 - Fantom
-- Moonriver
+- Polygon
+- Avalanche
+- Arbitrum
+- Optimism
+- Binance
+- Harmony
 - Gnosis
-- Heco
+- Celo
 
 ## Development Guide
 
