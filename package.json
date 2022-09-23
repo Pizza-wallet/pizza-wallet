@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "homepage": ".",
   "dependencies": {
+    "@alch/alchemy-web3": "^1.4.6",
     "@ant-design/icons": "^4.7.0",
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
     "@fortawesome/free-solid-svg-icons": "^6.1.2",
