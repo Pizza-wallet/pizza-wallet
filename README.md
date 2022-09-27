@@ -8,6 +8,7 @@
     - [Requirements](#requirements)
     - [Install all dependencies](#install-all-dependencies)
     - [Create a Moralis Testnet Server](#create-a-moralis-testnet-server)
+    - [Create an Alchemy App](#create-an-alchemy-app)
     - [Start a Development Server](#start-the-webpack-development-server)
     - [Build App](#build-app)
     - [Docker](#docker)
@@ -15,11 +16,11 @@
 
 ## Description
 
-A self custodial user focused wallet with built in DeFi features.
+Self custodial, decentralized, chain agnostic, service aggregator wallet. The one stop shop for web3 users
 
 ### Integrations
 
-- [Moralis](https://moralis.io/) - Web3 Tools
+- [Moralis](https://moralis.io/) - Web3 API for Auth and other Utils
 - [LI.FI](https://li.fi/) - Cross Chain Swap
 - [Onramper](https://onramper.com/) - Fiat Onramp & Offramp
 
@@ -65,20 +66,20 @@ yarn install
 ### Create a Moralis Testnet Server
 
 1. Go to Moralis and create a testnet server with the following test chains: Eth (Kovan), Polygon (Mumbai), Bsc (Testnet), Avax (Testnet)
-
-2. Set Environment variables <br>
-2.1 Click View Details for your newly created instance <br>
-2.2 Copy and save both "Server URL" and "Application ID" <br>
-2.3 Export environment variables
+2. Click View Details for your newly created instance and copy both the "Server URL" and "Application ID" <br>
+3. Create a .env file with the following content<br>
 ```sh
-export REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL] && export REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
-```
-or <br>
-2.4 Create a .env file <br>
-2.5 Edit the .env file <br>
-```shell
 REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL]
 REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
+```
+
+### Create an Alchemy App
+
+1. Go to Alchemy and create an app on the Goerli testnet
+2. Click View Key and Copy the HTTPS URL
+3. Add it to your .env file <br>
+```sh
+REACT_APP_PROVIDER_URL=[Insert your App URL]
 ```
 
 ### Start the Webpack Development Server:
@@ -108,10 +109,13 @@ docker-compose -f docker-compose-dev.yml up --build
 - We love builders! Here's how you can help.
 
 #### The Builder:
-- Contact `info@pizzawallet.io` to see where you can be the most useful.
-    
-#### The Bug Fixer:
-- Check github's [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues) to see what needs to be fixed.
+- Check github's [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues) to see what needs to be done.
+
+##### Want to be more involved?
+- Either contact `info@pizzawallet.io` or `nunomiguelcg#9270` on Discord to see where you can be the most useful.
+
+### Request new feature
+- We'd love to hear your idea! Submit a feature request [here](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues/new?assignees=&labels=&template=feature_request.md&title=).
 
 #### The Bug Hunter:
-- Found a bug? Either contact us at `info@pizzawallet.io` or create a new [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues).
+- Found a bug? Either contact us at `info@pizzawallet.io` or create a new issue [here](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues/new?assignees=&labels=&template=bug_report.md&title=).
