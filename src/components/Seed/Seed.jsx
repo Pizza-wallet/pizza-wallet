@@ -1,8 +1,8 @@
-import { Input, Modal, Select, Spin, notification } from "antd";
+import { Input, Modal, Spin, notification } from "antd";
 import { useContext, useState } from "react";
-import Text from "antd/lib/typography/Text";
 import styled from "styled-components";
 import { ethers } from "ethers";
+import * as bip39 from "bip39";
 
 import { PrimaryButton } from "../reusable/Buttons";
 import { WalletContext } from "../../utils/WalletContext";
@@ -53,35 +53,33 @@ const InnerCard = styled("div")`
   padding: 20px;
 `;
 
-const StyledSelect = styled(Select)`
-  border: 2px solid #3e389f;
-  border-radius: 15px;
-  width: 100%;
-`;
-
 const StyledInput = styled(Input)`
   border: 2px solid #3e389f;
   border-radius: 15px;
   margin-bottom: 15px;
 `;
 
-const selectTextArray = ["Private Key", "Seed Phrase"];
-
 function Seed() {
   const { setWallet } = useContext(WalletContext);
-  const [isPvKey, setIsPvKey] = useState(true);
-  const [privateText, setPrivateText] = useState("");
-  const [isPvKeyModalVisible, setIsPvKeyModalVisible] = useState(false);
+  const [mnemonic, setMnemonic] = useState("");
+  const [isImportModalVisible, setImportModalVisible] = useState(false);
+
+  const isPrivateKeyType = () => {
+    if (mnemonic.startsWith("0x")) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <>
-      <div onClick={() => setIsPvKeyModalVisible(true)}>
+      <div onClick={() => setImportModalVisible(true)}>
         <p style={styles.text}>Import Wallet</p>
       </div>
       <Modal
-        visible={isPvKeyModalVisible}
+        open={isImportModalVisible}
         footer={null}
-        onCancel={() => setIsPvKeyModalVisible(false)}
+        onCancel={() => setImportModalVisible(false)}
         bodyStyle={{
           padding: "15px",
           fontSize: "17px",
@@ -106,56 +104,47 @@ function Seed() {
           <Spin spinning={false}>Import Wallet</Spin>
         </div>
         <InnerCard>
-          <Text strong>Import Type:</Text>
-          <StyledSelect
-            onChange={(value) => {
-              if (value === 0) {
-                setIsPvKey(true);
-              } else {
-                setIsPvKey(false);
-              }
-            }}
-            value={isPvKey ? 0 : 1}
-            size="large"
-          >
-            {selectTextArray.map((item, index) => (
-              <Select.Option value={index} key={index}>
-                <p>{item}</p>
-              </Select.Option>
-            ))}
-          </StyledSelect>
-          <Text strong>{isPvKey ? "Private key" : "Seed Phrase"}</Text>
           <StyledInput
             size="large"
-            placeholder={isPvKey ? "Private key" : "Seed Phrase"}
+            placeholder={"Private key or seed phrase"}
             autoFocus
             onChange={(e) => {
-              setPrivateText(e.target.value);
+              setMnemonic(e.target.value);
             }}
-            value={privateText}
+            value={mnemonic}
           />
           <PrimaryButton
             onClick={() => {
+              if (mnemonic.length === 0) {
+                notification["error"]({
+                  message: "Please input private key or seed phase",
+                  style: {
+                    backgroundColor: "#3e389f",
+                    fontFamily: '"Gloria Hallelujah", sans-serif',
+                    fontSize: "22px",
+                  },
+                });
+              }
               const provider = ethers.getDefaultProvider();
               let wallet;
+              const isPrivateKey = !bip39.validateMnemonic(mnemonic);
               try {
-                if (isPvKey) {
-                  //private key import methode.
-                  wallet = new ethers.Wallet(privateText, provider); // create wallet from private key
+                if (isPrivateKey) {
+                  //private key import method.
+                  wallet = new ethers.Wallet(mnemonic, provider); // create wallet from private key
                   window.localStorage.setItem("walletType", "private");
-                  window.localStorage.setItem("privateText", privateText);
+                  window.localStorage.setItem("mnemonic", mnemonic);
                 } else {
-                  //seed phrase import methode.
-                  wallet = ethers.Wallet.fromMnemonic(privateText); // create wallet from seed phrase
+                  //seed phrase import method.
+                  wallet = ethers.Wallet.fromMnemonic(mnemonic); // create wallet from seed phrase
                   window.localStorage.setItem("walletType", "seed");
-                  window.localStorage.setItem("privateText", privateText);
+                  window.localStorage.setItem("mnemonic", mnemonic);
                 }
               } catch (e) {
-                console.log(e);
                 notification["error"]({
-                  message: isPvKey
-                    ? "Please check private key"
-                    : "Please check seed phrase",
+                  message: isPrivateKeyType(mnemonic)
+                    ? "Private key is invalid."
+                    : "Seed phrase is invalid.",
                   style: {
                     backgroundColor: "#3e389f",
                     fontFamily: '"Gloria Hallelujah", sans-serif',
@@ -165,7 +154,7 @@ function Seed() {
               }
               if (wallet) {
                 setWallet(wallet); //setup wallet.
-                setIsPvKeyModalVisible(false);
+                setImportModalVisible(false);
                 notification["success"]({
                   message: "Imported wallet",
                   style: {

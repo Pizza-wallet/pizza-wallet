@@ -148,13 +148,13 @@ const App = () => {
     //load from wallet object from storage when project is started.
     const provider = ethers.getDefaultProvider();
     const walletType = window.localStorage.getItem("walletType");
-    const privateText = window.localStorage.getItem("privateText");
-    if (privateText) {
+    const mnemonic = window.localStorage.getItem("mnemonic");
+    if (mnemonic) {
       if (walletType === "private") {
-        const _wallet = new ethers.Wallet(privateText, provider);
+        const _wallet = new ethers.Wallet(mnemonic, provider);
         setWallet(_wallet);
       } else if (walletType === "seed") {
-        const _wallet = ethers.Wallet.fromMnemonic(privateText);
+        const _wallet = ethers.Wallet.fromMnemonic(mnemonic);
         setWallet(_wallet);
       }
     }

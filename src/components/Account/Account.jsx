@@ -204,7 +204,7 @@ function Account() {
               //remove all wallet object when logout.
               setWallet(null);
               window.localStorage.removeItem("walletType");
-              window.localStorage.removeItem("privateText");
+              window.localStorage.removeItem("mnemonic");
             }
           }}
         >
