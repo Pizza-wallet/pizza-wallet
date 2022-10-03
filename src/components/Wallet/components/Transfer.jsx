@@ -1,7 +1,7 @@
 import { CreditCardOutlined } from "@ant-design/icons";
 import { Input, notification } from "antd";
 import { useEffect, useState } from "react";
-import { useMoralis } from "react-moralis";
+//import { useMoralis } from "react-moralis";
 import AddressInput from "../../AddressInput";
 import AssetSelector from "./AssetSelector";
 import styled from "styled-components";
@@ -61,8 +61,9 @@ const StyledInput = styled(Input)`
 `;
 
 function Transfer() {
-  const { account } = useMoralis();
-  const { web3 } = useWeb3();
+  //const { account } = useMoralis();
+  const { web3, account } = useWeb3();
+  console.log("account", account);
   const [receiver, setReceiver] = useState();
   const [asset, setAsset] = useState();
   const [gas, setGas] = useState();
@@ -90,17 +91,19 @@ function Transfer() {
   };
 
   const handleGas = async (e) => {
-    if (e.target.value >= gas) {
+    let input = e.target.value;
+    if (input >= gas) {
       //setTx(!tx);
+
       setGasFlag(true);
       alert("Good to go");
       setGasFlag(true);
-      setGas(e.target.value);
+      setGas(input);
       web3.eth.getMaxPriorityFeePerGas().then((res) => setMaxFee(Number(res)));
 
       let gasprice = await web3.eth.getGasPrice();
 
-      let gasInEther = web3.utils.fromWei(e.target.value.toString(), "ether");
+      let gasInEther = web3.utils.fromWei(input, "ether");
 
       setGasPrice(gasInEther * gasprice);
     } else {

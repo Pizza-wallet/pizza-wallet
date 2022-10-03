@@ -32,7 +32,7 @@ export const useVerifyMetadata = () => {
    */
   async function getMetadata(NFT) {
     //Validate URI
-    if (!NFT.token_uri || !NFT.token_uri.includes("://")) {
+    if (!NFT.token_uri || !NFT?.token_uri?.includes("://")) {
       console.log("getMetadata() Invalid URI", { URI: NFT.token_uri, NFT });
       return;
     }
@@ -50,7 +50,7 @@ export const useVerifyMetadata = () => {
         //Handle Setbacks
         else if (
           metadata?.detail &&
-          metadata.detail.includes("Request was throttled")
+          metadata?.detail?.includes("Request was throttled")
         ) {
           //Log
           console.warn(
