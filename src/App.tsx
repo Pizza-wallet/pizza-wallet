@@ -133,9 +133,7 @@ const App = () => {
   // const [viewSwitched, setViewSwitched] = useState(false);
 
   useEffect(() => {
-    type Web3ProviderType = any;
-    const connectorId: Web3ProviderType =
-      window.localStorage.getItem("connectorId");
+    const connectorId: any = window.localStorage.getItem("connectorId");
     const chainId: number = Number(window.localStorage.getItem("chainId"));
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
       enableWeb3({
