@@ -27,7 +27,7 @@
     "yarn": "^1.22.17"
   },
   "scripts": {
-    "start": "FAST_REFRESH=false CHOKIDAR_USEPOLLING=true react-app-rewired start",
+    "start": "GENERATE_SOURCEMAP=false FAST_REFRESH=false CHOKIDAR_USEPOLLING=true react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "node scripts/test.js",
     "eject": "react-app-rewired eject",
