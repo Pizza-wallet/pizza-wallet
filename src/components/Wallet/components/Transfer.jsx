@@ -107,7 +107,7 @@ function Transfer() {
 
       setGasPrice(gasInEther * gasprice);
     } else {
-      //alert("Oops less gas");
+      alert("Oops less gas");
       const { amount, receiver, asset } = tx;
       // Set recipient address and transfer value first.
       let to_address = receiver;
@@ -260,6 +260,8 @@ function Transfer() {
           onChange={(e) => {
             setAmount(`${e.target.value}`);
           }}
+          type="text"
+          maxLength="3"
         />
         <Text strong>Gas:</Text>
         <StyledInput
