@@ -54,7 +54,10 @@ function Table({ tableData, columns, tableTitle }) {
     return columns.map((val, i) => <th key={i}>{val.title}</th>);
   };
 
-  if (!tableData)
+  const dataLoading = !tableData;
+  const noDataReturned = Array.isArray(tableData) && !tableData.length;
+  if (dataLoading) return <></>;
+  if (noDataReturned)
     return (
       <>
         <Container3>
