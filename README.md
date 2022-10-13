@@ -111,11 +111,11 @@ docker-compose -f docker-compose-dev.yml up --build
 #### The Builder:
 - Check github's [issues](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues) to see what needs to be done.
 
-##### Want to be more involved?
-- Either contact `info@pizzawallet.io` or `nunomiguelcg#9270` on Discord to see where you can be the most useful.
-
-### Request new feature
-- We'd love to hear your idea! Submit a feature request [here](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues/new?assignees=&labels=&template=feature_request.md&title=).
-
 #### The Bug Hunter:
 - Found a bug? Either contact us at `info@pizzawallet.io` or create a new issue [here](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues/new?assignees=&labels=&template=bug_report.md&title=).
+
+#### Request new feature
+- We'd love to hear your idea! Submit a feature request [here](https://github.com/Pizza-Wallet-Development-team/pizza-wallet/issues/new?assignees=&labels=&template=feature_request.md&title=).
+
+#### Want to be more involved?
+- Either contact `info@pizzawallet.io` or `nunomiguelcg#9270` on Discord to see where you can be the most useful.
