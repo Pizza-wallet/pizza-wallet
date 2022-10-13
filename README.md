@@ -67,7 +67,7 @@ yarn install
 
 1. Go to Moralis and create a testnet server with the following test chains: Eth (Kovan), Polygon (Mumbai), Bsc (Testnet), Avax (Testnet)
 2. Click View Details for your newly created instance and copy both the "Server URL" and "Application ID" <br>
-3. Create a .env file with the following content<br>
+3. Create a .env.local file with the following content<br>
 ```sh
 REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL]
 REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
@@ -77,7 +77,7 @@ REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
 
 1. Go to Alchemy and create an app on the Goerli testnet
 2. Click View Key and Copy the HTTPS URL
-3. Add it to your .env file <br>
+3. Add it to your .env.local file <br>
 ```sh
 REACT_APP_PROVIDER_URL=[Insert your App URL]
 ```
