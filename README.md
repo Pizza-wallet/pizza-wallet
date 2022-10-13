@@ -21,6 +21,10 @@ Self custodial, decentralized, chain agnostic, service aggregator wallet. The on
 ### Integrations
 
 - [Moralis](https://moralis.io/) - Web3 API for Auth and other Utils
+- [Web3Auth](https://web3auth.io/) - Social and Email Login <br>
+    Note: For security reasons, web3auth only authorizes requests from our app's domain (app.pizzawallet.io). If you need to use web3auth in remote development environments, you need to create your own web3auth key.
+    1. Go here to generate a key: https://dashboard.web3auth.io/
+    2. Replace the value in "clientId" in both of this components: App.tsx and SignIn.jsx
 - [LI.FI](https://li.fi/) - Cross Chain Swap
 - [Onramper](https://onramper.com/) - Fiat Onramp & Offramp
 
