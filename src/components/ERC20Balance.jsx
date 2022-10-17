@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import { useERC20Balances, useMoralis } from "react-moralis";
 import Table from "./reusable/Table";
 import styled from "styled-components";
 import { limitDigits } from "../helpers/formatters";
+import { getBalances } from "../balances/getBalances";
+import { useGetTokenListToQuery } from "../hooks/useGetTokenListToQuery.tsx";
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
@@ -9,8 +12,24 @@ const AbsoluteImgContainer = styled("div")`
 `;
 
 function ERC20Balance(props) {
-  const { Moralis } = useMoralis();
+  const { Moralis, account } = useMoralis();
   const { data: assets } = useERC20Balances(props);
+  const tokenList = useGetTokenListToQuery();
+
+  useEffect(() => {
+    console.log("calling useEffect!");
+    const getBalancesAsync = async () => {
+      const balances = await getBalances(account, tokenList.ethereum);
+      const balancesAboveZero = balances.filter(
+        (token) => token.amount !== "0",
+      );
+      console.log("balances - ", balancesAboveZero);
+    };
+
+    if (tokenList && account) {
+      getBalancesAsync();
+    }
+  }, [tokenList, account]);
 
   const columns = [
     {

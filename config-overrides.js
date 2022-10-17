@@ -18,5 +18,18 @@ module.exports = function override(config) {
       Buffer: ["buffer", "Buffer"],
     }),
   ]);
+
+  // fixing error for axios (adding rule for mjs files in webpack)
+  config.module.rules.push({
+    test: /\.(js|mjs|jsx)$/,
+    enforce: "pre",
+    loader: require.resolve("source-map-loader"),
+    resolve: {
+      fullySpecified: false,
+    },
+  });
+
+  // Note: this is a temporary patch until 5.0.1 is released.
+  config.ignoreWarnings = [/Failed to parse source map/];
   return config;
 };
