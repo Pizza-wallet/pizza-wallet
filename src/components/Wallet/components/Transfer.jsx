@@ -13,50 +13,50 @@ import {
 import { Link } from "react-router-dom";
 
 const Card = styled("div")`
-  width: 428px;
+  width: 26.8em;
   margin-left: auto;
   margin-right: auto;
-  border: 2px solid #3e389f;
+  border: 0.125rem solid #3e389f;
   background-color: #f8f2ed;
-  border-radius: 44px;
-  padding: 6.8px;
+  border-radius: 2.75rem;
+  padding: 0.425rem;
 `;
 
 const InnerCard = styled("div")`
   position: relative;
-  border: 2px solid #3e389f;
+  border: 0.125rem solid #3e389f;
   background-color: #f8f2ed;
-  border-radius: 41px;
-  padding: 20px;
-  width: 411px;
+  border-radius: 2.5625rem;
+  padding: 1.25rem;
+  width: 25.6em;
 `;
 
 const Header = styled("div")`
   color: #3e389f;
   font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 24px;
-  padding: 10px 0 10px 20px;
+  font-size: 1.5rem;
+  padding: 0.625rem 0 0.625rem 1.25rem;
   -webkit-text-stroke: thin;
 `;
 
 const Text = styled("p")`
   color: black;
   font-family: "Rubik", sans-serif;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
   letter-spacing: 0.02em;
-  margin: 20px 0 10px 0;
+  margin: 1.25rem 0 0.625rem 0;
 `;
 
 const Controls = styled("div")`
   display: flex;
   justify-content: space-between;
-  margin-top: 37px;
+  margin-top: 2.3125rem;
 `;
 
 const StyledInput = styled(Input)`
-  border: 2px solid #3e389f;
-  border-radius: 15px;
+  border: 0.125rem solid #3e389f;
+  border-radius: 0.9375rem;
 `;
 
 function Transfer() {
@@ -164,12 +164,12 @@ function Transfer() {
           }}
         />
         <Controls>
-          <ButtonContainer width={"167px"} height={"51px"}>
+          <ButtonContainer width={"11em"} height={"3.1875rem"}>
             <Link to="/dashboard">
               <SecondaryButton>Cancel</SecondaryButton>
             </Link>
           </ButtonContainer>
-          <ButtonContainer width={"172px"} height={"51px"}>
+          <ButtonContainer width={"11em"} height={"3.1875rem"}>
             <PrimaryButton
               loading={isPending}
               onClick={() => transfer()}

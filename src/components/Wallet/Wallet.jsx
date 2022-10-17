@@ -7,21 +7,21 @@ import { Card } from "antd";
 // TODO: We can use this component for our new wallet implementation or delete it and start over.
 const styles = {
   title: {
-    fontSize: "30px",
+    fontSize: "1.875rem",
     fontWeight: "600",
   },
   header: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "5px",
+    gap: "0.3125rem",
   },
   card: {
     // boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
     border: "none",
     borderRadius: "1rem",
-    width: "450px",
-    fontSize: "16px",
+    width: "28.125rem",
+    fontSize: "1rem",
     fontWeight: "500",
     marginTop: "-3em",
     marginRight: "auto",

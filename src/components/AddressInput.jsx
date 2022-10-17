@@ -7,8 +7,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 
 const StyledInput = styled(Input)`
-  border: 2px solid #3e389f;
-  border-radius: 15px;
+  border: 0.125rem solid #3e389f;
+  border-radius: 0.9375rem;
 `;
 
 function AddressInput(props) {
@@ -115,7 +115,7 @@ function AddressInput(props) {
       disabled={validatedAddress}
       style={
         validatedAddress
-          ? { ...props?.style, border: "1px solid rgb(33, 191, 150)" }
+          ? { ...props?.style, border: "0.0625rem solid rgb(33, 191, 150)" }
           : { ...props?.style }
       }
     />

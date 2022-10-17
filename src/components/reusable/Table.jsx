@@ -5,17 +5,17 @@ import { Link } from "react-router-dom";
 
 const Container = styled("div")`
   width: 100%;
-  padding: 20px 15px 20px 15px;
+  padding: 1.25rem 0.9375rem 1.25rem 0.9375rem;
   background-color: #f8f2ed;
-  border-radius: 44px;
+  border-radius: 2.75rem;
   position: relative;
   overflow-x: auto;
 `;
 const Container2 = styled("div")`
   width: 100%;
-  padding: 20px 15px 20px 15px;
+  padding: 1.25rem 0.9375rem 1.25rem 0.9375rem;
   background-color: #f8f2ed;
-  border-radius: 44px;
+  border-radius: 2.75rem;
   position: relative;
   overflow-x: auto;
   opacity: 0.5;
@@ -32,8 +32,8 @@ const ButtonContainer = styled("div")`
   top: 50%;
   margin-left: auto;
   margin-right: auto;
-  width: 239px;
-  height: 57px;
+  width: 14.9375rem;
+  height: 3.5625rem;
 `;
 
 const StyledTable = styled("table")`
@@ -115,7 +115,10 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
     return columns.map((val, i) => <th key={i}>{val.title}</th>);
   };
 
-  if (!tableData || !tableData.length)
+  const dataLoading = !tableData;
+  const noDataReturned = Array.isArray(tableData) && !tableData.length;
+  if (dataLoading) return <></>;
+  if (noDataReturned)
     return (
       <>
         <Container3>
@@ -127,7 +130,8 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
               <thead>
                 <tr>{renderHeader()}</tr>
               </thead>
-              <tr style={{ height: "250px" }}></tr>
+
+              <tr style={{ height: "15.625rem" }}></tr>
             </StyledTable>
           </Container2>
           <ButtonContainer>

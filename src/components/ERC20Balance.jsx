@@ -126,23 +126,11 @@ function ERC20Balance(props) {
   };
 
   console.log("assets - ", assets);
+
   return (
-    // <div style={{ width: "65vw", padding: "15px" }}>
-    //   <h1>Token Balances</h1>
-    //   <Skeleton active loading={!assets}>
-    //     <AntDTableStyled
-    //       dataSource={assets}
-    //       columns={columns}
-    //       rowKey={(record) => {
-    //         return record.token_address;
-    //       }}
-    //     />
-    //   </Skeleton>
-    // </div>
     <div
       style={{
-        margin: "0 50px 50px 50px",
-        height: "100%",
+        margin: "0 3.125rem 3.125rem 3.125rem",
       }}
     >
       <Table

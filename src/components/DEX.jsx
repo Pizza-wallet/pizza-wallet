@@ -4,7 +4,7 @@ function DEX() {
       style={{ display: "flex", justifyContent: "center", paddingTop: "70px" }}
     >
       <iframe
-        src="https://transferto.xyz/embed"
+        src="https://transferto.xyz/swap"
         title="lifi"
         className="iframe"
         frameBorder="no"
