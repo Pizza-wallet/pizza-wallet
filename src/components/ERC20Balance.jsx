@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { limitDigits } from "../helpers/formatters";
 import { getBalances } from "../balances/getBalances";
 import { useGetTokenListToQuery } from "../hooks/useGetTokenListToQuery.tsx";
+import axios from "axios";
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
@@ -17,19 +18,89 @@ function ERC20Balance(props) {
   const tokenList = useGetTokenListToQuery();
 
   useEffect(() => {
-    console.log("calling useEffect!");
     const getBalancesAsync = async () => {
-      const balances = await getBalances(account, tokenList.ethereum);
-      const balancesAboveZero = balances.filter(
-        (token) => token.amount !== "0",
-      );
-      console.log("balances - ", balancesAboveZero);
+      // refactor later to abstract logic from this component
+      // get balances with tokenlist and multicall contract
+      const balancesEth = await getBalances(account, tokenList.ethereum);
+      const balancesPolygon = await getBalances(account, tokenList.polygon);
+
+      // get tokens with balance above 0
+      const balancesAboveZeroEth = returnBalancesAboveZero(balancesEth);
+      const balancesAboveZeroPolygon = returnBalancesAboveZero(balancesPolygon);
+
+      if (balancesEth && balancesPolygon) {
+        // get price information for each token
+        const balancesWithPriceInfo = await getPriceInformation(
+          balancesAboveZeroEth,
+          balancesAboveZeroPolygon,
+        );
+        console.log("balancesWithPriceInfo - ", balancesWithPriceInfo);
+      }
     };
 
     if (tokenList && account) {
       getBalancesAsync();
     }
   }, [tokenList, account]);
+
+  const returnBalancesAboveZero = (balances) => {
+    return balances.filter((token) => token.amount !== "0");
+  };
+
+  const getPriceInformation = async (balancesEth, balancesPolygon) => {
+    // Get coingecko chain data so we can query their api
+    const url = "https://api.coingecko.com/api/v3/asset_platforms";
+    let chainsWithId = await axios.get(url);
+    const coinGeckoIdEth = chainsWithId.data.filter(
+      (chain) => balancesEth[0].chainId === chain.chain_identifier,
+    )[0].id;
+    const coinGeckoIdPoly = chainsWithId.data.filter(
+      (chain) => balancesPolygon[0].chainId === chain.chain_identifier,
+    )[0].id;
+
+    // list of token addresses for eth and polygon
+    const ethTokenAddresses = balancesEth
+      .reduce((arr, token) => {
+        arr.push(token.address);
+        return arr;
+      }, [])
+      .join(",");
+
+    const polyTokenAddresses = balancesPolygon
+      .reduce((arr, token) => {
+        arr.push(token.address);
+        return arr;
+      }, [])
+      .join(",");
+
+    // call api to get price information
+    const ethPrices = await axios.get(
+      `https://api.coingecko.com/api/v3/simple/token_price/${coinGeckoIdEth}?contract_addresses=${ethTokenAddresses}&vs_currencies=usd,eur,gbp`,
+    );
+    const polyPrices = await axios.get(
+      `https://api.coingecko.com/api/v3/simple/token_price/${coinGeckoIdPoly}?contract_addresses=${polyTokenAddresses}&vs_currencies=usd,eur,gbp`,
+    );
+
+    // add price information and return values
+    const ethBalancesWithValues = balancesEth.map((token) => {
+      return {
+        ...token,
+        value: ethPrices.data[token.address],
+      };
+    });
+
+    const polyBalancesWithValues = balancesPolygon.map((token) => {
+      return {
+        ...token,
+        value: polyPrices.data[token.address],
+      };
+    });
+
+    return {
+      ethereum: ethBalancesWithValues,
+      polygon: polyBalancesWithValues,
+    };
+  };
 
   const columns = [
     {
@@ -135,6 +206,7 @@ function ERC20Balance(props) {
   ];
 
   const sumBalanceAndValuesForChains = (data) => {
+    // balance should be balance x value
     return data.map((chain) => {
       return {
         ...chain,

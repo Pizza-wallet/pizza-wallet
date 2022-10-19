@@ -25,14 +25,17 @@
     "sourceType": "module"
   },
   "plugins": ["react"],
+  "parser": "@typescript-eslint/parser",
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "react/jsx-key": "off",
     "react/no-unescaped-entities": "off",
     "linebreak-style": 0,
-    "@typescript-eslint/no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars-experimental": "error",
+    // "@typescript-eslint/no-unused-vars": "off",
+    // "@typescript-eslint/no-unused-vars-experimental": "error",
+    // below is a temporary fix
+    "no-unused-vars": "off",
     "prettier/prettier": [
       "warn",
       {
