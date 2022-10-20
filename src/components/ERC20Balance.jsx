@@ -1,11 +1,14 @@
-import { useEffect } from "react";
-import { useERC20Balances, useMoralis } from "react-moralis";
+import { useEffect, useState } from "react";
+import { useMoralis } from "react-moralis";
 import Table from "./reusable/Table";
 import styled from "styled-components";
 import { limitDigits } from "../helpers/formatters";
 import { getBalances } from "../balances/getBalances";
 import { useGetTokenListToQuery } from "../hooks/useGetTokenListToQuery.tsx";
-import axios from "axios";
+import {
+  getPricesForTokens,
+  getCoinGeckoChains,
+} from "../services/PriceService";
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
@@ -13,9 +16,9 @@ const AbsoluteImgContainer = styled("div")`
 `;
 
 function ERC20Balance(props) {
-  const { Moralis, account } = useMoralis();
-  const { data: assets } = useERC20Balances(props);
+  const { account } = useMoralis();
   const tokenList = useGetTokenListToQuery();
+  const [balances, setBalances] = useState([]);
 
   useEffect(() => {
     const getBalancesAsync = async () => {
@@ -34,7 +37,31 @@ function ERC20Balance(props) {
           balancesAboveZeroEth,
           balancesAboveZeroPolygon,
         );
-        console.log("balancesWithPriceInfo - ", balancesWithPriceInfo);
+
+        const chainNameMap = {
+          1: "ethereum",
+          137: "polygon",
+          56: "Binance smart chain",
+          42161: "Arbitrum",
+        };
+
+        const balances = balancesWithPriceInfo.map((tokens) => {
+          return {
+            chainId: tokens[0].chainId,
+            name: chainNameMap[tokens[0].chainId],
+            type: "chain",
+            id: chainNameMap[tokens[0].chainId],
+            balance: tokens.reduce(
+              (acc, obj) => (acc += Number(obj.amount)),
+              0,
+            ),
+            value: tokens.reduce((acc, obj) => (acc += obj.value), 0),
+            tokens: tokens,
+          };
+        });
+
+        console.log("balances - ", balances);
+        setBalances(balances);
       }
     };
 
@@ -47,10 +74,22 @@ function ERC20Balance(props) {
     return balances.filter((token) => token.amount !== "0");
   };
 
+  const updateTokensWithPriceInfo = (balances, priceInfo) => {
+    return balances.map((token) => {
+      return {
+        ...token,
+        price: priceInfo[token.address].usd,
+        value: Number(token.amount) * priceInfo[token.address].usd,
+        prices: priceInfo[token.address],
+        balance: Number(token.amount),
+        type: "token",
+      };
+    });
+  };
+
   const getPriceInformation = async (balancesEth, balancesPolygon) => {
     // Get coingecko chain data so we can query their api
-    const url = "https://api.coingecko.com/api/v3/asset_platforms";
-    let chainsWithId = await axios.get(url);
+    let chainsWithId = await getCoinGeckoChains();
     const coinGeckoIdEth = chainsWithId.data.filter(
       (chain) => balancesEth[0].chainId === chain.chain_identifier,
     )[0].id;
@@ -74,32 +113,26 @@ function ERC20Balance(props) {
       .join(",");
 
     // call api to get price information
-    const ethPrices = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/token_price/${coinGeckoIdEth}?contract_addresses=${ethTokenAddresses}&vs_currencies=usd,eur,gbp`,
+    const ethPrices = await getPricesForTokens(
+      coinGeckoIdEth,
+      ethTokenAddresses,
     );
-    const polyPrices = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/token_price/${coinGeckoIdPoly}?contract_addresses=${polyTokenAddresses}&vs_currencies=usd,eur,gbp`,
+    const polyPrices = await getPricesForTokens(
+      coinGeckoIdPoly,
+      polyTokenAddresses,
     );
 
     // add price information and return values
-    const ethBalancesWithValues = balancesEth.map((token) => {
-      return {
-        ...token,
-        value: ethPrices.data[token.address],
-      };
-    });
+    const ethBalancesWithValues = updateTokensWithPriceInfo(
+      balancesEth,
+      ethPrices.data,
+    );
+    const polyBalancesWithValues = updateTokensWithPriceInfo(
+      balancesPolygon,
+      polyPrices.data,
+    );
 
-    const polyBalancesWithValues = balancesPolygon.map((token) => {
-      return {
-        ...token,
-        value: polyPrices.data[token.address],
-      };
-    });
-
-    return {
-      ethereum: ethBalancesWithValues,
-      polygon: polyBalancesWithValues,
-    };
+    return [ethBalancesWithValues, polyBalancesWithValues];
   };
 
   const columns = [
@@ -139,14 +172,13 @@ function ERC20Balance(props) {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      render: (value) =>
-        parseFloat(Moralis?.Units?.FromWei(value.toString(), 18)).toFixed(7),
+      render: (value) => limitDigits(7, value),
     },
     {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (value) => limitDigits(7, value),
+      render: (value) => value,
     },
 
     {
@@ -205,19 +237,6 @@ function ERC20Balance(props) {
     },
   ];
 
-  const sumBalanceAndValuesForChains = (data) => {
-    // balance should be balance x value
-    return data.map((chain) => {
-      return {
-        ...chain,
-        balance: chain.tokens.reduce((acc, obj) => (acc += obj.balance), 0),
-        value: chain.tokens.reduce((acc, obj) => (acc += obj.value), 0),
-      };
-    });
-  };
-
-  console.log("assets - ", assets);
-
   return (
     <div
       style={{
@@ -225,7 +244,7 @@ function ERC20Balance(props) {
       }}
     >
       <Table
-        tableData={sumBalanceAndValuesForChains(mockData)}
+        tableData={balances && balances}
         columns={columns}
         tableTitle={"Token"}
         expandableRow={true}

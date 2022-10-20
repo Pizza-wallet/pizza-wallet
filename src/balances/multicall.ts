@@ -10,7 +10,6 @@ const MAX_MULTICALL_SIZE = 100;
 export type MultiCallData = {
   address: string;
   name: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params?: any[];
 };
 
