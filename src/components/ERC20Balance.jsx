@@ -142,6 +142,7 @@ function ERC20Balance(props) {
       key: "logo",
       render: (logo, item) => {
         const isToken = item.type === "token";
+        const logoURI = item.logoURI ? item.logoURI : "";
         return (
           <div
             style={{
@@ -155,7 +156,8 @@ function ERC20Balance(props) {
               <AbsoluteImgContainer>
                 <img
                   src={
-                    logo || "https://etherscan.io/images/main/empty-token.png"
+                    logoURI ||
+                    "https://etherscan.io/images/main/empty-token.png"
                   }
                   alt="nologo"
                   width="28px"

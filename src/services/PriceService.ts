@@ -5,7 +5,6 @@ export async function getPricesForTokens(chainId: string, addressList: string) {
     const prices = await axios.get(
       `https://api.coingecko.com/api/v3/simple/token_price/${chainId}?contract_addresses=${addressList}&vs_currencies=usd,eur,gbp`,
     );
-    console.log("prices - ", prices);
     return prices;
   } catch (e) {
     // TODO: Hook up to some sort of error alert
