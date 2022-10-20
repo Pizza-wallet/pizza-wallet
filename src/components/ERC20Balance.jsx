@@ -189,54 +189,6 @@ function ERC20Balance(props) {
     },
   ];
 
-  const mockData = [
-    {
-      name: "BTC",
-      logo: "",
-      price: 6,
-      value: 60000,
-      balance: 800000000000000000,
-      id: "bit",
-      type: "chain",
-      tokens: [
-        {
-          type: "token",
-          name: "Btc",
-          balance: 10000000000000000000,
-          logo: "",
-          price: 1781520,
-          value: 0.5,
-        },
-      ],
-    },
-    {
-      name: "ETH",
-      id: "eth",
-      price: 1714.3,
-      value: 15428.7,
-      balance: 600000000000000000,
-      type: "chain",
-      tokens: [
-        {
-          type: "token",
-          name: "Eth",
-          balance: 3000000000000000000,
-          logo: "",
-          price: 1714.3,
-          value: 5142.9,
-        },
-        {
-          type: "token",
-          name: "Eth",
-          balance: 3000000000000000000,
-          logo: "",
-          price: 1714.3,
-          value: 5142.9,
-        },
-      ],
-    },
-  ];
-
   return (
     <div
       style={{

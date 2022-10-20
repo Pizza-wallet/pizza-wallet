@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { SecondaryButton } from "./Buttons";
 import { Link } from "react-router-dom";
@@ -77,9 +77,9 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
   };
 
   const renderRowsExpandable = () => {
-    return tableData.map((data) => {
+    return tableData.map((data, i) => {
       return (
-        <>
+        <React.Fragment key={i}>
           <tr
             key={data.id}
             id={data.id}
@@ -106,7 +106,7 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
                 </tr>
               );
             })}
-        </>
+        </React.Fragment>
       );
     });
   };
@@ -130,8 +130,9 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
               <thead>
                 <tr>{renderHeader()}</tr>
               </thead>
-
-              <tr style={{ height: "15.625rem" }}></tr>
+              <tbody>
+                <tr style={{ height: "15.625rem" }}></tr>
+              </tbody>
             </StyledTable>
           </Container2>
           <ButtonContainer>
@@ -158,7 +159,7 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
             <thead>
               <tr>{renderHeader()}</tr>
             </thead>
-            {renderRowsExpandable()}
+            <tbody>{renderRowsExpandable()}</tbody>
           </StyledTable>
         </Container>
       </>
@@ -173,7 +174,7 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
           <thead>
             <tr>{renderHeader()}</tr>
           </thead>
-          {renderRows()}
+          <tbody>{renderRows()}</tbody>
         </StyledTable>
       </Container>
     </>
