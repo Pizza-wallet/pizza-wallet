@@ -9,6 +9,7 @@ import {
   getPricesForTokens,
   getCoinGeckoChains,
 } from "../services/PriceService";
+import { getChainDetails } from "../helpers/getChainDetails";
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
@@ -24,33 +25,37 @@ function ERC20Balance(props) {
     const getBalancesAsync = async () => {
       // refactor later to abstract logic from this component
       // get balances with tokenlist and multicall contract
-      const balancesEth = await getBalances(account, tokenList.ethereum);
-      const balancesPolygon = await getBalances(account, tokenList.polygon);
+      let balances = {};
+      // get balances for tokens on each chain
+      for (let chain in tokenList) {
+        console.log("tokenlist chain - ", tokenList[chain]);
+        const balanceAwaited = await getBalances(account, tokenList[chain]);
+        balances[chain] = balanceAwaited;
+      }
 
+      console.log("looped and got balances - ", balances);
       // get tokens with balance above 0
-      const balancesAboveZeroEth = returnBalancesAboveZero(balancesEth);
-      const balancesAboveZeroPolygon = returnBalancesAboveZero(balancesPolygon);
+      const balancesAboveZeroEth = returnBalancesAboveZero(balances.ethereum);
+      const balancesAboveZeroPolygon = returnBalancesAboveZero(
+        balances.polygon,
+      );
 
-      if (balancesEth && balancesPolygon) {
+      if (balancesAboveZeroEth && balancesAboveZeroPolygon) {
         // get price information for each token
         const balancesWithPriceInfo = await getPriceInformation(
           balancesAboveZeroEth,
           balancesAboveZeroPolygon,
         );
 
-        const chainNameMap = {
-          1: "ethereum",
-          137: "polygon",
-          56: "Binance smart chain",
-          42161: "Arbitrum",
-        };
-
         const balances = balancesWithPriceInfo.map((tokens) => {
+          const name = getChainDetails(tokens[0].chainId).name;
+          const logoUri = getChainDetails(tokens[0].chainId).logoUri;
           return {
             chainId: tokens[0].chainId,
-            name: chainNameMap[tokens[0].chainId],
+            name: name,
             type: "chain",
-            id: chainNameMap[tokens[0].chainId],
+            id: name,
+            logoURI: logoUri,
             balance: tokens.reduce(
               (acc, obj) => (acc += Number(obj.amount)),
               0,
@@ -190,6 +195,8 @@ function ERC20Balance(props) {
       render: (value) => limitDigits(7, value),
     },
   ];
+
+  console.log("format of token list - ", tokenList);
 
   return (
     <div

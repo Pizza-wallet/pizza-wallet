@@ -43,7 +43,7 @@ export const getBalances = async (walletAddress, tokens) => {
   });
 
   const multicallAddress = process.env.REACT_APP_MULTICALL_ADDRESS;
-  if (tokens.length > 1) {
+  if (tokens.length > 0) {
     return executeMulticall(walletAddress, tokens, multicallAddress, chainId);
   }
   // else {
