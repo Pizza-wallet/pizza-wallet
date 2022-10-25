@@ -3,14 +3,15 @@ import { useMoralis } from "react-moralis";
 import Table from "../reusable/Table";
 import styled from "styled-components";
 import { limitDigits } from "../../helpers/formatters";
-import { getBalances } from "./balanceMethods/getBalances";
+import { getBalanceAndPriceInformation } from "./balanceMethods/getBalances";
 import { useGetTokenListToQuery } from "../../hooks/useGetTokenListToQuery.tsx";
-import { getChainDetails } from "../../helpers/getChainDetails";
-import { getPriceInformation } from "./balanceMethods/getPriceInformation";
+import { CustomImg } from "../reusable/CustomImg";
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
   top: -0.3125rem;
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
 `;
 
 function ERC20Balance(props) {
@@ -22,46 +23,14 @@ function ERC20Balance(props) {
   useEffect(() => {
     setLoading(true);
     const getBalancesAsync = async () => {
-      // TODO: optimize this code to reduce load time
       // get balances with tokenlist and multicall contract
-      let balances = {};
-      for (let chain in tokenList) {
-        // get and set balances above zero
-        balances[chain] = returnBalancesAboveZero(
-          await getBalances(account, tokenList[chain]),
-        );
-      }
+      // get price info with coingecko api
+      const userBalances = await getBalanceAndPriceInformation(
+        account,
+        tokenList,
+      );
 
-      // Get price info for each token
-      const balancesWithPriceInfo = [];
-
-      for (let chain in balances) {
-        const userHasTokensOnChain = balances[chain].length;
-        if (userHasTokensOnChain) {
-          const chainId = balances[chain][0].chainId;
-          balancesWithPriceInfo.push(
-            await getPriceInformation(balances[chain], chainId),
-          );
-        }
-      }
-
-      // Set chain information and then save in state
-      const usersBalances = balancesWithPriceInfo.map((tokens) => {
-        const name = getChainDetails(tokens[0].chainId).name;
-        const logoUri = getChainDetails(tokens[0].chainId).logoUri;
-        return {
-          chainId: tokens[0].chainId,
-          name: name,
-          type: "chain",
-          id: name,
-          logoURI: logoUri,
-          balance: tokens.reduce((acc, obj) => (acc += Number(obj.amount)), 0),
-          value: tokens.reduce((acc, obj) => (acc += obj.value), 0),
-          tokens: tokens,
-        };
-      });
-
-      setBalances(usersBalances);
+      setBalances(userBalances);
       setLoading(false);
     };
 
@@ -70,8 +39,10 @@ function ERC20Balance(props) {
     }
   }, [tokenList, account]);
 
-  const returnBalancesAboveZero = (balances) => {
-    return balances.filter((token) => token.amount !== "0");
+  const displayChainIconsForToken = (chainIcons) => {
+    return chainIcons.map((icon) => (
+      <CustomImg src={icon} height={"20px"} width={"20px"} />
+    ));
   };
 
   const columns = [
@@ -92,7 +63,7 @@ function ERC20Balance(props) {
             }}
           >
             <div>
-              <AbsoluteImgContainer>
+              <AbsoluteImgContainer top={"-0.3125rem"}>
                 <img
                   src={
                     logoURI ||
@@ -103,7 +74,24 @@ function ERC20Balance(props) {
                   height="28px"
                 />
               </AbsoluteImgContainer>
-              <div style={{ marginLeft: "1.875rem" }}>{item.name}</div>
+              {isToken ? (
+                <AbsoluteImgContainer left={"1.75rem"} top={"0.9375rem"}>
+                  <CustomImg
+                    src={item.chainLogoUri}
+                    height={"20px"}
+                    width={"20px"}
+                  />
+                </AbsoluteImgContainer>
+              ) : (
+                <AbsoluteImgContainer left={"-0.3125rem"} top={"1.5625rem"}>
+                  <div style={{ display: "flex" }}>
+                    {displayChainIconsForToken(item.chainLogoUri)}
+                  </div>
+                </AbsoluteImgContainer>
+              )}
+              {!isToken && (
+                <div style={{ marginLeft: "1.875rem" }}>{item.name}</div>
+              )}
             </div>
           </div>
         );

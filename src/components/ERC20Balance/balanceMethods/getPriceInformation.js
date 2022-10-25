@@ -2,6 +2,7 @@ import {
   getPricesForTokens,
   getCoinGeckoChains,
 } from "../../../services/PriceService";
+import { getChainDetails } from "../../../helpers/getChainDetails";
 
 const updateTokensWithPriceInfo = (balances, priceInfo) => {
   return balances.map((token) => {
@@ -11,6 +12,7 @@ const updateTokensWithPriceInfo = (balances, priceInfo) => {
       value: Number(token.amount) * priceInfo[token.address].usd,
       prices: priceInfo[token.address],
       balance: Number(token.amount),
+      chainLogoUri: getChainDetails(token.chainId).logoUri,
       type: "token",
     };
   });
@@ -34,6 +36,5 @@ export const getPriceInformation = async (balances, chainId) => {
 
   // add price information and return values
   const balancesWithValues = updateTokensWithPriceInfo(balances, prices);
-
   return balancesWithValues;
 };
