@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { SecondaryButton } from "./Buttons";
 import { Link } from "react-router-dom";
+import { Spin } from "antd";
 
 const Container = styled("div")`
   width: 100%;
@@ -25,7 +26,7 @@ const Container3 = styled("div")`
   position: relative;
 `;
 
-const ButtonContainer = styled("div")`
+const AbsoluteContainer = styled("div")`
   position: absolute;
   left: 0;
   right: 0;
@@ -34,6 +35,13 @@ const ButtonContainer = styled("div")`
   margin-right: auto;
   width: 14.9375rem;
   height: 3.5625rem;
+
+  ${(props) =>
+    props.loadingContainer &&
+    `
+    width: 2.9375rem;
+    height: 3.5625rem;
+    `};
 `;
 
 const StyledTable = styled("table")`
@@ -51,7 +59,7 @@ const StyledTable = styled("table")`
   ${(props) => props.fixed && "table-layout: fixed"};
 `;
 
-function Table({ tableData, columns, tableTitle, expandableRow }) {
+function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
   const [expandableRows, setShowExpandableRows] = useState([]);
 
   const renderRows = () => {
@@ -115,10 +123,8 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
     return columns.map((val, i) => <th key={i}>{val.title}</th>);
   };
 
-  const dataLoading = !tableData;
-  const noDataReturned = Array.isArray(tableData) && !tableData.length;
-  if (dataLoading) return <></>;
-  if (noDataReturned)
+  const noData = (Array.isArray(tableData) && !tableData.length) || !tableData;
+  if (noData)
     return (
       <>
         <Container3>
@@ -135,17 +141,23 @@ function Table({ tableData, columns, tableTitle, expandableRow }) {
               </tbody>
             </StyledTable>
           </Container2>
-          <ButtonContainer>
-            {tableTitle === "Token" ? (
-              <Link to="/onramper">
-                <SecondaryButton>Buy tokens</SecondaryButton>
-              </Link>
-            ) : (
-              <Link to="/dashboard">
-                <SecondaryButton>No history</SecondaryButton>
-              </Link>
-            )}
-          </ButtonContainer>
+          {loading ? (
+            <AbsoluteContainer loadingContainer>
+              <Spin size="large"></Spin>
+            </AbsoluteContainer>
+          ) : (
+            <AbsoluteContainer>
+              {tableTitle === "Token" ? (
+                <Link to="/onramper">
+                  <SecondaryButton>Buy tokens</SecondaryButton>
+                </Link>
+              ) : (
+                <Link to="/dashboard">
+                  <SecondaryButton>No history</SecondaryButton>
+                </Link>
+              )}
+            </AbsoluteContainer>
+          )}
         </Container3>
       </>
     );

@@ -154,3 +154,7 @@ tbody:last-child tr:last-child td:first-child {
 .ant-select-selector {
   border-radius: 0.8125rem !important;
 }
+
+.ant-spin-dot-item {
+  background-color: #2f2a75;
+}

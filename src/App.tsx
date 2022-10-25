@@ -7,7 +7,7 @@ import {
   Redirect,
 } from "react-router-dom";
 import Account from "./components/Account/Account";
-import ERC20Balance from "./components/ERC20Balance";
+import ERC20Balance from "./components/ERC20Balance/ERC20Balance";
 // import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";

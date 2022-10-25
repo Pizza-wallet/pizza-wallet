@@ -46,9 +46,6 @@ export const getBalances = async (walletAddress, tokens) => {
   if (tokens.length > 0) {
     return executeMulticall(walletAddress, tokens, multicallAddress, chainId);
   }
-  // else {
-  //   return getBalancesFromProvider(walletAddress, tokens);
-  // }
 };
 
 const executeMulticall = async (
