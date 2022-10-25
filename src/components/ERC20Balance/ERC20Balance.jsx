@@ -41,7 +41,7 @@ function ERC20Balance(props) {
 
   const displayChainIconsForToken = (chainIcons) => {
     return chainIcons.map((icon) => (
-      <CustomImg src={icon} height={"20px"} width={"20px"} />
+      <CustomImg src={icon} height={"1.25rem"} width={"1.25rem"} />
     ));
   };
 
@@ -78,8 +78,8 @@ function ERC20Balance(props) {
                 <AbsoluteImgContainer left={"1.75rem"} top={"0.9375rem"}>
                   <CustomImg
                     src={item.chainLogoUri}
-                    height={"20px"}
-                    width={"20px"}
+                    height={"1.25rem"}
+                    width={"1.25rem"}
                   />
                 </AbsoluteImgContainer>
               ) : (

@@ -50,10 +50,11 @@ const StyledTable = styled("table")`
   background-color: var(--layout-white);
   width: 100%;
   height: 80%;
-  padding: 20px 20px 10px 40px;
-  border: 2px solid var(--brand-blue);
+  padding: 1.25rem 1.25rem 0.625rem 2.5rem;
+
+  border: 0.125rem solid var(--brand-blue);
   border-collapse: separate;
-  border-radius: 41px;
+  border-radius: 2.5625rem;
   border-spacing: 0px;
   margin: 0 auto;
   ${(props) => props.fixed && "table-layout: fixed"};
