@@ -127,6 +127,7 @@ const App = () => {
     isAuthenticated,
     isWeb3EnableLoading,
     authError,
+    account,
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
@@ -147,7 +148,7 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !account) {
     return (
       <LoginLayout>
         <SignIn />
