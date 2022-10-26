@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import Table from "../reusable/Table";
 import styled from "styled-components";
@@ -40,8 +40,15 @@ function ERC20Balance(props) {
   }, [tokenList, account]);
 
   const displayChainIconsForToken = (chainIcons) => {
-    return chainIcons.map((icon) => (
-      <CustomImg src={icon} height={"1.25rem"} width={"1.25rem"} />
+    return chainIcons.map((icon, i) => (
+      <React.Fragment key={i}>
+        <CustomImg
+          src={icon}
+          height={"1.25rem"}
+          width={"1.25rem"}
+          borderRadius={"50%"}
+        />
+      </React.Fragment>
     ));
   };
 
@@ -75,11 +82,12 @@ function ERC20Balance(props) {
                 />
               </AbsoluteImgContainer>
               {isToken ? (
-                <AbsoluteImgContainer left={"1.75rem"} top={"0.9375rem"}>
+                <AbsoluteImgContainer left={"1.45rem"} top={"0.9375rem"}>
                   <CustomImg
                     src={item.chainLogoUri}
                     height={"1.25rem"}
                     width={"1.25rem"}
+                    borderRadius={"50%"}
                   />
                 </AbsoluteImgContainer>
               ) : (

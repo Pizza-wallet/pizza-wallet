@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { fetchDataUsingMulticall } from "./multicall";
 import { getPriceInformation } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
+import { mockBalances } from "./mockData";
 
 const balanceAbi = [
   {
@@ -115,7 +116,6 @@ const fetchViaMulticall = async (calls, abi, chainId, multicallAddress) => {
 };
 
 export const getBalanceAndPriceInformation = async (account, tokenList) => {
-  // TODO: optimize this code to reduce load time
   // get balances with tokenlist and multicall contract
   let balances = {};
   for (let chain in tokenList) {

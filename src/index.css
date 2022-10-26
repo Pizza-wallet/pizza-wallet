@@ -115,9 +115,17 @@ tr {
   border-color: inherit;
 }
 
-th,
+th {
+  padding: 0.625rem 0.25rem 0.625rem 0.25rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--brand-blue);
+  font-family: "Gloria Hallelujah", sans-serif;
+  -webkit-text-stroke: thin;
+}
+
 td {
-  padding: 0.625rem 0.25rem 1.875rem 0.25rem;
+  padding: 0.625rem 0.25rem 2.5rem 0.25rem;
   text-align: left;
   vertical-align: top;
   color: var(--brand-blue);
