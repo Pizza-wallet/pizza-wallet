@@ -109,7 +109,7 @@ function ERC20Balance(props) {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      render: (value) => limitDigits(7, value),
+      render: (value) => limitDigits(value),
     },
     {
       title: "Price",
@@ -122,7 +122,7 @@ function ERC20Balance(props) {
       title: "Value",
       dataIndex: "value",
       key: "value",
-      render: (value) => limitDigits(7, value),
+      render: (value) => limitDigits(value),
     },
   ];
 

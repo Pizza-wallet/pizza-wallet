@@ -16,30 +16,20 @@ export const c2 = new Intl.NumberFormat("en-us", {
   maximumFractionDigits: 2,
 });
 
-function commaSeparateNumber(val) {
-  // trim the number decimal point if it exists
-  let num = val.toString().includes(".")
-    ? val.toString().split(".")[0]
-    : val.toString();
-  while (/(\d+)(\d{3})/.test(num.toString())) {
-    // insert comma to 4th last position to the match number
-    num = num.toString().replace(/(\d+)(\d{3})/, "$1" + "," + "$2");
+export const limitDigits = (number) => {
+  if (number > 1) {
+    // it's a positive number show with two digits
+    return number.toFixed(2);
   }
-  // add number after decimal point
-  if (val.toString().includes(".")) {
-    num = num + "." + val.toString().split(".")[1];
+  // next check number has integer straight after decimal
+  // if so show with 6 digits
+  const decimalStr = number.toString().split(".")[1];
+  if (decimalStr[0] !== "0") {
+    return number.toFixed(6);
   }
 
-  return num;
-}
-
-export const limitDigits = (digits, number) => {
-  let num;
-  num = number.toPrecision(digits);
-  if (num.length > digits) {
-    num = num.slice(0, 8);
-  }
-  return commaSeparateNumber(num);
+  // else show with 8 digits
+  return number.toFixed(8);
 };
 
 /**

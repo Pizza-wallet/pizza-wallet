@@ -5,7 +5,7 @@ export const mockBalances = {
       chainId: 43114,
       address: "0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB",
       name: "Wrapped Ether",
-      amount: "1.456",
+      amount: "0.456",
       symbol: "WETH",
       decimals: 18,
       logoURI:
@@ -40,7 +40,7 @@ export const mockBalances = {
       chainId: 1,
       address: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
       name: "Wrapped Ether",
-      amount: "11.865292",
+      amount: "0.000058949",
       symbol: "WETH",
       decimals: 18,
       logoURI:
