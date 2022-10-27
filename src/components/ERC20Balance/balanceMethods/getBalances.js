@@ -164,6 +164,7 @@ export const getBalanceAndPriceInformation = async (account, tokenList) => {
     return {
       name: tokenInfo.name,
       type: "chain",
+      symbol: tokenInfo.symbol,
       id: tokenInfo.name,
       chainLogoUri: chainLogoUri,
       logoURI: tokenInfo.logoURI,

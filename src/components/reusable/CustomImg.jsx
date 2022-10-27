@@ -5,4 +5,5 @@ export const CustomImg = styled("img")`
   width: ${(props) => props.width};
   margin: ${(props) => props.margin};
   border-radius: ${(props) => props.borderRadius};
+  display: ${(props) => props.display};
 `;
