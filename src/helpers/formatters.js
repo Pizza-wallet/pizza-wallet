@@ -17,7 +17,7 @@ export const c2 = new Intl.NumberFormat("en-us", {
 });
 
 export const limitDigits = (number) => {
-  if (number > 1) {
+  if (number >= 1) {
     // it's a positive number show with two digits
     return number.toFixed(2);
   }

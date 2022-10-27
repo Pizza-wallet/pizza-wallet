@@ -115,14 +115,14 @@ function ERC20Balance(props) {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (value) => value,
+      render: (value) => `$${limitDigits(value)}`,
     },
 
     {
       title: "Value",
       dataIndex: "value",
       key: "value",
-      render: (value) => limitDigits(value),
+      render: (value) => `$${limitDigits(value)}`,
     },
   ];
 
