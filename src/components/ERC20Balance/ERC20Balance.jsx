@@ -63,6 +63,22 @@ function ERC20Balance(props) {
     });
   };
 
+  const centerChainLogos = (logoAmount) => {
+    // TODO: figure out a better way to center these icons
+    switch (logoAmount) {
+      case 1:
+        return "0.4rem";
+      case 2:
+        return "-0rem";
+      case 3:
+        return "-0.4rem";
+      case 4:
+        return "-1rem";
+      case 5:
+        return "-1.25rem";
+    }
+  };
+
   const columns = [
     {
       title: "Asset",
@@ -71,6 +87,7 @@ function ERC20Balance(props) {
       render: (logo, item) => {
         const isToken = item.type === "token";
         const logoURI = item.logoURI ? item.logoURI : "";
+        const chainLogosForToken = item.chainLogoUri;
         return (
           <div
             style={{
@@ -103,7 +120,7 @@ function ERC20Balance(props) {
                 </AbsoluteImgContainer>
               ) : (
                 <AbsoluteImgContainer
-                  left={"-0.1rem"}
+                  left={centerChainLogos(chainLogosForToken.length)}
                   top={"2.2rem"}
                   width={"35px"}
                 >
@@ -114,7 +131,7 @@ function ERC20Balance(props) {
                       alignItems: "center",
                     }}
                   >
-                    {displayChainIconsForToken(item.chainLogoUri)}
+                    {displayChainIconsForToken(chainLogosForToken)}
                   </div>
                 </AbsoluteImgContainer>
               )}
