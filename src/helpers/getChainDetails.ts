@@ -50,6 +50,6 @@ const chainDetails: ChainInterface = {
   },
 };
 
-export const getChainDetails = (chainId: any) => {
+export const getChainDetails = (chainId: number) => {
   return chainDetails[chainId as keyof ChainInterface];
 };

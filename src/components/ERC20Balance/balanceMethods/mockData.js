@@ -1,5 +1,16 @@
 export const mockBalances = {
-  arbitrum: [],
+  arbitrum: [
+    {
+      address: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
+      amount: "4.225249",
+      blockNumber: 34814401,
+      chainId: 42161,
+      decimals: 6,
+      logoURI: "https://wallet-asset.matic.network/img/tokens/usdc.svg",
+      name: "USD Coin",
+      symbol: "USDC",
+    },
+  ],
   avalnche: [
     {
       chainId: 43114,
@@ -47,7 +58,18 @@ export const mockBalances = {
         "https://storageapi.fleek.co/d1921602-c1d0-4d59-82e9-e36a2947b855-bucket/App/static/token-icons/weth.png",
     },
   ],
-  fantom: [],
+  fantom: [
+    {
+      address: "0x04068da6c83afcfa0e13ba15a6696662335d5b75",
+      amount: "204.225249",
+      blockNumber: 34814401,
+      chainId: 250,
+      decimals: 6,
+      logoURI: "https://wallet-asset.matic.network/img/tokens/usdc.svg",
+      name: "USD Coin",
+      symbol: "USDC",
+    },
+  ],
   polygon: [
     {
       address: "0x0000000000000000000000000000000000001010",

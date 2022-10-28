@@ -44,28 +44,21 @@ function ERC20Balance(props) {
 
   const displayChainIconsForToken = (chainIcons) => {
     // Logic to overlap icon images
-    let rem;
+    let num = 0;
     return chainIcons.map((icon, i) => {
-      if (i === 1) {
-        rem = -0.1;
-      } else {
-        rem = rem - 1;
+      if (i > 0) {
+        num = num - 5;
       }
       return (
-        <React.Fragment key={i}>
-          <AbsoluteImgContainer
-            right={i === 0 ? `` : `${rem}rem`}
-            bottom={"-0.985rem"}
-          >
-            <CustomImg
-              src={icon}
-              height={"1.25rem"}
-              width={"1.25rem"}
-              borderRadius={"50%"}
-              display={"inline-block"}
-            />
-          </AbsoluteImgContainer>
-        </React.Fragment>
+        <div key={i} style={{ transform: `translateX(${num}px)` }}>
+          <CustomImg
+            src={icon}
+            height={"1.25rem"}
+            width={"1.25rem"}
+            borderRadius={"50%"}
+            display={"inline-block"}
+          />
+        </div>
       );
     });
   };
@@ -114,7 +107,13 @@ function ERC20Balance(props) {
                   top={"2.2rem"}
                   width={"35px"}
                 >
-                  <div style={{ textAlign: "center", minWidth: "max-content" }}>
+                  <div
+                    style={{
+                      minWidth: "max-content",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
                     {displayChainIconsForToken(item.chainLogoUri)}
                   </div>
                 </AbsoluteImgContainer>
