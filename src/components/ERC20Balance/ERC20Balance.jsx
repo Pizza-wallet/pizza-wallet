@@ -76,6 +76,8 @@ function ERC20Balance(props) {
         return "-1rem";
       case 5:
         return "-1.25rem";
+      default:
+        return "-1.25rem";
     }
   };
 
