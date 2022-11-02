@@ -130,7 +130,7 @@ const App = () => {
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
-  // const [viewSwitched, setViewSwitched] = useState(false);
+  const [totalBalance, setTotalBalance] = useState();
 
   useEffect(() => {
     const connectorId: any = window.localStorage.getItem("connectorId");
@@ -188,7 +188,7 @@ const App = () => {
                 <BalanceTitleStyled>
                   <BalanceTextStyled>Balance</BalanceTextStyled>
                 </BalanceTitleStyled>
-                <NativeBalance />
+                <NativeBalance totalBalance={totalBalance} />
               </BalanceContainerStyled>
             </div>
             <MenuItems />
@@ -219,7 +219,7 @@ const App = () => {
               <div style={styles.content}>
                 <Switch>
                   <Route path="/dashboard">
-                    <ERC20Balance />
+                    <ERC20Balance setTotalBalance={setTotalBalance} />
                   </Route>
                   <Route path="/transfer">
                     <Transfer />

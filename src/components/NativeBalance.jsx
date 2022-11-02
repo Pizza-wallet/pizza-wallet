@@ -1,9 +1,9 @@
 import { Spin } from "antd";
-import { useMoralis, useNativeBalance } from "react-moralis";
+import { useMoralis } from "react-moralis";
 
 function NativeBalance(props) {
-  const { data: balance, isLoading } = useNativeBalance(props);
   const { account, isAuthenticated } = useMoralis();
+  const isLoading = !props.totalBalance;
   if (!account || !isAuthenticated) return null;
   if (isLoading)
     return (
@@ -22,7 +22,7 @@ function NativeBalance(props) {
         fontWeight: "bold",
       }}
     >
-      {balance.formatted}
+      ${props.totalBalance}
     </div>
   );
 }

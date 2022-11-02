@@ -17,7 +17,7 @@ const AbsoluteImgContainer = styled("div")`
   width: ${(props) => props.width};
 `;
 
-function ERC20Balance(props) {
+function ERC20Balance({ setTotalBalance }) {
   const { account } = useMoralis();
   const tokenList = useGetTokenListToQuery();
   const [balances, setBalances] = useState([]);
@@ -33,6 +33,13 @@ function ERC20Balance(props) {
         tokenList,
       );
 
+      const totalBalance = limitDigits(
+        userBalances.reduce((total, val) => {
+          total += val.value;
+          return total;
+        }, 0),
+      );
+      setTotalBalance(totalBalance);
       setBalances(userBalances);
       setLoading(false);
     };
@@ -67,11 +74,11 @@ function ERC20Balance(props) {
     // TODO: figure out a better way to center these icons
     switch (logoAmount) {
       case 1:
-        return "0.4rem";
+        return "0.6rem";
       case 2:
         return "-0rem";
       case 3:
-        return "-0.4rem";
+        return "-0.3rem";
       case 4:
         return "-1rem";
       case 5:
@@ -90,6 +97,8 @@ function ERC20Balance(props) {
         const isToken = item.type === "token";
         const logoURI = item.logoURI ? item.logoURI : "";
         const chainLogosForToken = item.chainLogoUri;
+        const emptyTokenLogo =
+          "https://etherscan.io/images/main/empty-token.png";
         return (
           <div
             style={{
@@ -101,20 +110,17 @@ function ERC20Balance(props) {
           >
             <div>
               <AbsoluteImgContainer top={"-0.3125rem"}>
-                <img
-                  src={
-                    logoURI ||
-                    "https://etherscan.io/images/main/empty-token.png"
-                  }
+                <CustomImg
+                  src={logoURI || emptyTokenLogo}
                   alt="nologo"
-                  width="35px"
-                  height="35px"
+                  width="2.5rem"
+                  height="2.5rem"
                 />
               </AbsoluteImgContainer>
               {isToken ? (
-                <AbsoluteImgContainer left={"2.15rem"} top={"0.9375rem"}>
+                <AbsoluteImgContainer left={"2.35rem"} top={"1.2375rem"}>
                   <CustomImg
-                    src={item.chainLogoUri}
+                    src={item.chainLogoUri || emptyTokenLogo}
                     height={"1.25rem"}
                     width={"1.25rem"}
                     borderRadius={"50%"}
@@ -124,7 +130,7 @@ function ERC20Balance(props) {
                 <AbsoluteImgContainer
                   left={centerChainLogos(chainLogosForToken.length)}
                   top={"2.2rem"}
-                  width={"35px"}
+                  width={"2.1875rem"}
                 >
                   <div
                     style={{
@@ -138,7 +144,15 @@ function ERC20Balance(props) {
                 </AbsoluteImgContainer>
               )}
               {!isToken && (
-                <div style={{ marginLeft: "2.8125rem" }}>{item.symbol}</div>
+                <div
+                  style={{
+                    marginLeft: "2.8125rem",
+                    fontSize: "1.5625rem",
+                    lineHeight: "2.25rem",
+                  }}
+                >
+                  {item.symbol}
+                </div>
               )}
             </div>
           </div>
