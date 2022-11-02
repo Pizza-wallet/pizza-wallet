@@ -106,7 +106,7 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
                 <tr key={k} id={data.id}>
                   {columns.map((column, l) => {
                     let info = token[column.dataIndex];
-                    return <td key={l}>{column.render(info, token)}</td>;
+                    return <td key={l}>{column.render(info, token, k)}</td>;
                   })}
                 </tr>
               );

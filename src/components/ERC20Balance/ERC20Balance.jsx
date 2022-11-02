@@ -93,7 +93,7 @@ function ERC20Balance({ setTotalBalance }) {
       title: "Asset",
       dataIndex: "logo",
       key: "logo",
-      render: (logo, item) => {
+      render: (logo, item, num) => {
         const isToken = item.type === "token";
         const logoURI = item.logoURI ? item.logoURI : "";
         const chainLogosForToken = item.chainLogoUri;
@@ -109,7 +109,10 @@ function ERC20Balance({ setTotalBalance }) {
             }}
           >
             <div>
-              <AbsoluteImgContainer top={"-0.3125rem"}>
+              <AbsoluteImgContainer
+                left={isToken ? "5px" : ""}
+                top={"-0.3125rem"}
+              >
                 <CustomImg
                   src={logoURI || emptyTokenLogo}
                   alt="nologo"
@@ -117,8 +120,24 @@ function ERC20Balance({ setTotalBalance }) {
                   height="2.5rem"
                 />
               </AbsoluteImgContainer>
+              {isToken && (
+                <div style={{ position: "relative" }}>
+                  <div
+                    style={{
+                      borderBottom: "0.1875rem solid #a6a6a6",
+                      borderLeft: "0.1875rem solid #a6a6a6",
+                      height: num > 0 ? "4.6875rem" : "2.8125rem",
+                      marginLeft: "1.25rem",
+                      position: "absolute",
+                      top: num > 0 ? "-3.0625rem" : "-1.25rem",
+                      left: "-2.6875rem",
+                      width: "-webkit-fill-available",
+                    }}
+                  ></div>
+                </div>
+              )}
               {isToken ? (
-                <AbsoluteImgContainer left={"2.35rem"} top={"1.2375rem"}>
+                <AbsoluteImgContainer left={"2.6875rem"} top={"1.2375rem"}>
                   <CustomImg
                     src={item.chainLogoUri || emptyTokenLogo}
                     height={"1.25rem"}
