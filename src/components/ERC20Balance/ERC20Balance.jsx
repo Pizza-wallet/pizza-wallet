@@ -110,7 +110,7 @@ function ERC20Balance({ setTotalBalance }) {
           >
             <div>
               <AbsoluteImgContainer
-                left={isToken ? "5px" : ""}
+                left={isToken ? "1.5625rem" : ""}
                 top={"-0.3125rem"}
               >
                 <CustomImg
@@ -126,18 +126,17 @@ function ERC20Balance({ setTotalBalance }) {
                     style={{
                       borderBottom: "0.1875rem solid #a6a6a6",
                       borderLeft: "0.1875rem solid #a6a6a6",
-                      height: num > 0 ? "4.6875rem" : "2.8125rem",
-                      marginLeft: "1.25rem",
+                      height: num > 0 ? "4.7875rem" : "2.5rem",
                       position: "absolute",
-                      top: num > 0 ? "-3.0625rem" : "-1.25rem",
-                      left: "-2.6875rem",
-                      width: "-webkit-fill-available",
+                      top: num > 0 ? "-3.5625rem" : "-1.25rem",
+                      left: "-1.7125rem",
+                      width: "2.375rem",
                     }}
                   ></div>
                 </div>
               )}
               {isToken ? (
-                <AbsoluteImgContainer left={"2.6875rem"} top={"1.2375rem"}>
+                <AbsoluteImgContainer left={"3.9875rem"} top={"1.2375rem"}>
                   <CustomImg
                     src={item.chainLogoUri || emptyTokenLogo}
                     height={"1.25rem"}
@@ -165,7 +164,7 @@ function ERC20Balance({ setTotalBalance }) {
               {!isToken && (
                 <div
                   style={{
-                    marginLeft: "2.8125rem",
+                    marginLeft: "3.125rem",
                     fontSize: "1.5625rem",
                     lineHeight: "2.25rem",
                   }}
