@@ -1,6 +1,9 @@
 import axios from "axios";
 
-export async function getPricesForTokens(chainId: string, addressList: string) {
+export async function getPricesForTokens(
+  chainId: string,
+  addressList?: string,
+) {
   try {
     const prices = await axios.get(
       `https://api.coingecko.com/api/v3/simple/token_price/${chainId}?contract_addresses=${addressList}&vs_currencies=usd,eur,gbp`,
