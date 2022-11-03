@@ -60,6 +60,26 @@ const StyledTable = styled("table")`
   ${(props) => props.fixed && "table-layout: fixed"};
 `;
 
+const CustomTableHeader = styled("th")`
+  // padding: 0.625rem 0.25rem 0.625rem 0.25rem;
+  // padding: 10px 15px 10px 15px;
+  padding: 30px;
+  text-align: left;
+  vertical-align: top;
+  color: var(--brand-blue);
+  font-family: "Gloria Hallelujah", sans-serif;
+  -webkit-text-stroke: thin;
+`;
+
+const CustomTableData = styled("td")`
+  padding: 0.625rem 1rem 2.5rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--brand-blue);
+  // font-family: "Gloria Hallelujah", sans-serif;
+  -webkit-text-stroke: thin;
+`;
+
 function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
   const [expandableRows, setShowExpandableRows] = useState([]);
 
@@ -69,7 +89,11 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
         <tr key={i}>
           {columns.map((column, j) => {
             let info = data[column.dataIndex];
-            return <td key={j}>{column.render(info, data)}</td>;
+            return (
+              <CustomTableData key={j}>
+                {column.render(info, data)}
+              </CustomTableData>
+            );
           })}
         </tr>
       );
@@ -118,6 +142,12 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
 
   const renderHeader = () => {
     return columns.map((val, i) => <th key={i}>{val.title}</th>);
+  };
+
+  const renderHeaderCustom = () => {
+    return columns.map((val, i) => (
+      <CustomTableHeader key={i}>{val.title}</CustomTableHeader>
+    ));
   };
 
   const noData = (Array.isArray(tableData) && !tableData.length) || !tableData;
@@ -181,7 +211,7 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
 
         <StyledTable>
           <thead>
-            <tr>{renderHeader()}</tr>
+            <tr>{renderHeaderCustom()}</tr>
           </thead>
           <tbody>{renderRows()}</tbody>
         </StyledTable>
