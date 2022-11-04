@@ -4,16 +4,6 @@ import {
 } from "../../../services/PriceService";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 
-// interface IBalance {
-//   address: string;
-//   amount: string;
-//   blockNumber: number;
-//   chainId: number;
-//   decimals: number;
-//   logoURI: string;
-//   name: string;
-//   symbol: string;
-// }
 interface IToken {
   chainId: number;
   address: string;
@@ -39,15 +29,25 @@ interface IPrice {
 }
 type IPriceInfo = Record<string, IPrice>;
 
+const getXOrHandleError = async (apiCall?: any) => {
+  try {
+    return await apiCall();
+  } catch (e) {
+    // handle error
+    console.log("coin gecko getPricesForTokens failed", e);
+    return {};
+  }
+};
+
 const updateTokensWithPriceInfo = (
   balances?: IToken[],
   priceInfo?: IPriceInfo,
 ) => {
   return balances?.map((token) => {
-    const price = priceInfo?.[token.address.toLowerCase()].usd;
+    const price = priceInfo?.[token.address.toLowerCase()]?.usd;
     return {
       ...token,
-      price: price,
+      price: price ? price : 0,
       value: price ? Number(token.amount) * price : 0,
       prices: priceInfo?.[token.address],
       balance: Number(token.amount),
@@ -62,11 +62,12 @@ export const getPriceInformation = async (
   chainId?: number,
 ) => {
   let chainsWithId: IChainsWithId[] = await getCoinGeckoChains();
-  console.log("chainWithId - ", chainsWithId);
+
   if (!chainsWithId.length) {
-    console.log("coin gecko api failed");
-    return;
+    console.log("getCoinGeckoChains failed!");
+    return updateTokensWithPriceInfo(balances, {});
   }
+
   const coinGeckoId = chainsWithId.filter(
     (chain) => chainId === chain.chain_identifier,
   )[0].id;
@@ -79,8 +80,9 @@ export const getPriceInformation = async (
     .join(",");
 
   // call api to get price information
-  console.log("get prices for tokens");
-  const prices = await getPricesForTokens(coinGeckoId, tokenAddresses);
+  const prices = await getXOrHandleError(() => {
+    return getPricesForTokens(coinGeckoId, tokenAddresses);
+  });
 
   // add price information and return values
   const balancesWithValues = updateTokensWithPriceInfo(balances, prices);

@@ -22,7 +22,7 @@ function NativeBalance(props) {
         fontWeight: "bold",
       }}
     >
-      ${props.totalBalance}
+      {props.totalBalance === -1 ? "Not available" : `$${props.totalBalance}`}
     </div>
   );
 }

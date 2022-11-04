@@ -39,7 +39,7 @@ function ERC20Balance({ setTotalBalance }) {
           return total;
         }, 0),
       );
-      setTotalBalance(totalBalance);
+      setTotalBalance(totalBalance === 0 ? -1 : totalBalance);
       setBalances(userBalances);
       setLoading(false);
     };
@@ -187,14 +187,14 @@ function ERC20Balance({ setTotalBalance }) {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (value) => `$${limitDigits(value)}`,
+      render: (value) => (value ? `$${limitDigits(value)}` : "Not available"),
     },
 
     {
       title: "Value",
       dataIndex: "value",
       key: "value",
-      render: (value) => `$${limitDigits(value)}`,
+      render: (value) => (value ? `$${limitDigits(value)}` : "Not available"),
     },
   ];
 
