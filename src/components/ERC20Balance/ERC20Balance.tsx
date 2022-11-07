@@ -1,26 +1,46 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, Dispatch } from "react";
 import { useMoralis } from "react-moralis";
 import Table from "../reusable/Table";
 import styled from "styled-components";
 import { limitDigits } from "../../helpers/formatters";
 import { getBalanceAndPriceInformation } from "./balanceMethods/getBalances";
-import { useGetTokenListToQuery } from "../../hooks/useGetTokenListToQuery.tsx";
+import { useGetTokenListToQuery } from "../../hooks/useGetTokenListToQuery";
 import { CustomImg } from "../reusable/CustomImg";
+
+interface IAbsoluteImgContainer {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  width?: string;
+}
 
 const AbsoluteImgContainer = styled("div")`
   position: absolute;
   top: -0.3125rem;
-  top: ${(props) => props.top};
+  top: ${(props: IAbsoluteImgContainer) => props.top};
   bottom: ${(props) => props.bottom};
   left: ${(props) => props.left};
   right: ${(props) => props.right};
   width: ${(props) => props.width};
 `;
 
-function ERC20Balance({ setTotalBalance }) {
+interface IToken {
+  name: string;
+  symbol: string;
+  logoURI: string;
+  amount?: string;
+  value: number;
+}
+
+function ERC20Balance({
+  setTotalBalance,
+}: {
+  setTotalBalance: Dispatch<number | undefined>;
+}) {
   const { account } = useMoralis();
   const tokenList = useGetTokenListToQuery();
-  const [balances, setBalances] = useState([]);
+  const [balances, setBalances] = useState<IToken[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,17 +48,18 @@ function ERC20Balance({ setTotalBalance }) {
     const getBalancesAsync = async () => {
       // get balances with tokenlist and multicall contract
       // get price info with coingecko api
-      const userBalances = await getBalanceAndPriceInformation(
-        account,
-        tokenList,
+      const userBalances: IToken[] = await getBalanceAndPriceInformation(
+        account!,
+        tokenList!,
       );
 
       const totalBalance = limitDigits(
-        userBalances.reduce((total, val) => {
+        userBalances.reduce((total: number, val: IToken) => {
           total += val.value;
           return total;
         }, 0),
       );
+
       setTotalBalance(totalBalance === 0 ? -1 : totalBalance);
       setBalances(userBalances);
       setLoading(false);
@@ -49,7 +70,7 @@ function ERC20Balance({ setTotalBalance }) {
     }
   }, [tokenList, account]);
 
-  const displayChainIconsForToken = (chainIcons) => {
+  const displayChainIconsForToken = (chainIcons: string[]) => {
     // Logic to overlap icon images
     let num = 0;
     return chainIcons.map((icon, i) => {
@@ -70,7 +91,7 @@ function ERC20Balance({ setTotalBalance }) {
     });
   };
 
-  const centerChainLogos = (logoAmount) => {
+  const centerChainLogos = (logoAmount: number) => {
     // TODO: figure out a better way to center these icons
     switch (logoAmount) {
       case 1:
@@ -93,7 +114,8 @@ function ERC20Balance({ setTotalBalance }) {
       title: "Asset",
       dataIndex: "logo",
       key: "logo",
-      render: (logo, item, num) => {
+      render: (logo: any, item: any, num: number) => {
+        console.log("logo here - ", logo);
         const isToken = item.type === "token";
         const logoURI = item.logoURI ? item.logoURI : "";
         const chainLogosForToken = item.chainLogoUri;
@@ -104,8 +126,8 @@ function ERC20Balance({ setTotalBalance }) {
             style={{
               display: "flex",
               position: "relative",
-              margin: isToken && "auto",
-              width: isToken && "50%",
+              margin: isToken ? "auto" : "0",
+              width: isToken ? "50%" : "auto",
             }}
           >
             <div>
@@ -181,20 +203,22 @@ function ERC20Balance({ setTotalBalance }) {
       title: "Balance",
       dataIndex: "balance",
       key: "balance",
-      render: (value) => limitDigits(value),
+      render: (value: number) => limitDigits(value),
     },
     {
       title: "Price",
       dataIndex: "price",
       key: "price",
-      render: (value) => (value ? `$${limitDigits(value)}` : "Not available"),
+      render: (value: number) =>
+        value ? `$${limitDigits(value)}` : "Not available",
     },
 
     {
       title: "Value",
       dataIndex: "value",
       key: "value",
-      render: (value) => (value ? `$${limitDigits(value)}` : "Not available"),
+      render: (value: number) =>
+        value ? `$${limitDigits(value)}` : "Not available",
     },
   ];
 

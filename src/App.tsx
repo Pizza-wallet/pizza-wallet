@@ -130,7 +130,7 @@ const App = () => {
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
-  const [totalBalance, setTotalBalance] = useState();
+  const [totalBalance, setTotalBalance] = useState<number>();
 
   useEffect(() => {
     const connectorId: any = window.localStorage.getItem("connectorId");
