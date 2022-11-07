@@ -115,7 +115,7 @@ const executeMulticall = async (
   return tokens.map((token, i) => {
     // usd coin showing decimals as 18 on eth chain even though it is 6
     // figure out coins that dont have 18 decimals and test here
-    const decimals = token.name === "USD Coin" ? 6 : 18;
+    const decimals = token.decimals;
     const amount: any = new BigNumber(res[i].amount.toString() || "0")
       .shiftedBy(-decimals)
       .toFixed();
