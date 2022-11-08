@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import {
   HashRouter as Router,
@@ -6,24 +6,25 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import Account from "./components/Account/Account";
-import ERC20Balance from "./components/ERC20Balance";
-// import NFTBalance from "./components/NFTBalance";
-import ERC20Transfers from "./components/ERC20Transfers";
-import DEX from "./components/DEX";
-// import Wallet from "./components/Wallet";
-import Transfer from "./components/Wallet/components/Transfer";
-import SignIn from "./components/SignIn";
-import Onramper from "./components/Onramper";
-import { Layout, Alert } from "antd";
+import { Layout, Alert, Spin } from "antd";
 import "antd/dist/antd.css";
-import NativeBalance from "./components/NativeBalance";
 import "./style.css";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
 
 const { Header, Sider, Content } = Layout;
+
+const ERC20Transfers = React.lazy(() => import("./components/ERC20Transfers"));
+const ERC20Balance = React.lazy(() => import("./components/ERC20Balance"));
+const DEX = React.lazy(() => import("./components/DEX"));
+const Account = React.lazy(() => import("./components/Account/Account"));
+const Transfer = React.lazy(
+  () => import("./components/Wallet/components/Transfer"),
+);
+const Onramper = React.lazy(() => import("./components/Onramper"));
+const NativeBalance = React.lazy(() => import("./components/NativeBalance"));
+const SignIn = React.lazy(() => import("./components/SignIn"));
 
 const BackdropStyled = styled("div")`
   position: absolute;
@@ -68,7 +69,7 @@ const BalanceTextStyled = styled("p")`
   -webkit-text-stroke: thin;
 `;
 
-const LoginLayout = styled(Layout)`
+const GridLayout = styled(Layout)`
   height: 100vh;
   display: grid;
   align-items: center;
@@ -128,10 +129,11 @@ const App = () => {
     isWeb3EnableLoading,
     authError,
     account,
+    isInitialized,
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
-  // const [viewSwitched, setViewSwitched] = useState(false);
+  const [showDashBoard, setShowDashboard] = useState(true);
 
   useEffect(() => {
     const connectorId: any = window.localStorage.getItem("connectorId");
@@ -148,108 +150,128 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated || !account) {
+  useEffect(() => {
+    const isAuth = () =>
+      !isAuthenticated ? setShowDashboard(false) : setShowDashboard(true);
+    isInitialized && isAuth();
+  }, [isInitialized, isAuthenticated]);
+
+  if (!showDashBoard || !account) {
     return (
-      <LoginLayout>
-        <SignIn />
-      </LoginLayout>
+      <GridLayout>
+        <React.Suspense
+          fallback={<Spin size="large" style={{ color: "#3e389f" }}></Spin>}
+        >
+          <SignIn />
+        </React.Suspense>
+      </GridLayout>
     );
   } else {
     return (
       <Layout style={{ height: "100vh" }} hasSider>
-        <Router>
-          <Sider
-            width={293}
-            breakpoint="md"
-            collapsedWidth="0"
-            onBreakpoint={(broken) => {
-              console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-              setCollapsedSideBar(!collapsedSideBar);
-            }}
-            style={{
-              zIndex: "1",
-              height: "100vh",
-              position: "fixed",
-              width: "18.3125rem",
-              backgroundColor: "#F8F2ED",
-              left: 0,
-              top: 0,
-              bottom: 0,
-            }}
-          >
-            <div style={{ display: "flex" }}>
-              <Logo />
-            </div>
-            <div style={{ position: "relative" }}>
-              <BackdropStyled></BackdropStyled>
-              <BalanceContainerStyled>
-                <BalanceTitleStyled>
-                  <BalanceTextStyled>Balance</BalanceTextStyled>
-                </BalanceTitleStyled>
-                <NativeBalance />
-              </BalanceContainerStyled>
-            </div>
-            <MenuItems />
-          </Sider>
-          <Layout
-            style={{
-              marginLeft: collapsedSideBar ? 0 : 293,
-              backgroundColor: "#2F2A75",
-            }}
-          >
-            <Header
+        <React.Suspense
+          fallback={
+            <GridLayout>
+              <Spin size="large" style={{ color: "#3e389f" }}></Spin>
+            </GridLayout>
+          }
+        >
+          <Router>
+            <Sider
+              width={293}
+              breakpoint="md"
+              collapsedWidth="0"
+              onBreakpoint={(broken) => {
+                console.log(broken);
+              }}
+              onCollapse={(collapsed, type) => {
+                console.log(collapsed, type);
+                setCollapsedSideBar(!collapsedSideBar);
+              }}
               style={{
-                marginTop: "2rem",
-                padding: 0,
+                zIndex: "1",
+                height: "100vh",
+                position: "fixed",
+                width: "18.3125rem",
+                backgroundColor: "#F8F2ED",
+                left: 0,
+                top: 0,
+                bottom: 0,
+              }}
+            >
+              <div style={{ display: "flex" }}>
+                <Logo />
+              </div>
+              <div style={{ position: "relative" }}>
+                <BackdropStyled></BackdropStyled>
+                <BalanceContainerStyled>
+                  <BalanceTitleStyled>
+                    <BalanceTextStyled>Balance</BalanceTextStyled>
+                  </BalanceTitleStyled>
+                  <NativeBalance />
+                </BalanceContainerStyled>
+              </div>
+              <MenuItems />
+            </Sider>
+            <Layout
+              style={{
+                marginLeft: collapsedSideBar ? 0 : 293,
                 backgroundColor: "#2F2A75",
               }}
             >
-              <div style={{ float: "right", marginRight: "0.625rem" }}>
-                <Account />
-              </div>
-            </Header>
-            <StyledContent>
-              {authError && (
-                <div style={styles.errorDiv}>
-                  <Alert message={authError.message} type="error" closable />
+              <Header
+                style={{
+                  marginTop: "2rem",
+                  padding: 0,
+                  backgroundColor: "#2F2A75",
+                }}
+              >
+                <div style={{ float: "right", marginRight: "0.625rem" }}>
+                  <Account />
                 </div>
-              )}
-              <div style={styles.content}>
-                <Switch>
-                  <Route path="/dashboard">
-                    <ERC20Balance />
-                  </Route>
-                  <Route path="/transfer">
-                    <Transfer />
-                  </Route>
-                  <Route path="/activity">
-                    <ERC20Transfers />
-                  </Route>
-                  <Route path="/dex">
-                    <DEX />
-                  </Route>
-                  <Route path="/onramper">
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      <Onramper />
-                    </div>
-                  </Route>
-                  <Route path="/">
-                    <Redirect to="/dashboard" />
-                  </Route>
-                  <Route path="/home">
-                    <Redirect to="/dashboard" />
-                  </Route>
-                  <Route path="/nonauthenticated">
-                    <>Please login using the "Authenticate" button</>
-                  </Route>
-                </Switch>
-              </div>
-            </StyledContent>
-          </Layout>
-        </Router>
+              </Header>
+              <StyledContent>
+                {authError && (
+                  <div style={styles.errorDiv}>
+                    <Alert message={authError.message} type="error" closable />
+                  </div>
+                )}
+                <div style={styles.content}>
+                  <Switch>
+                    <Route path="/dashboard">
+                      <ERC20Balance />
+                    </Route>
+                    <Route path="/transfer">
+                      <Transfer />
+                    </Route>
+                    <Route path="/activity">
+                      <ERC20Transfers />
+                    </Route>
+                    <Route path="/dex">
+                      <DEX />
+                    </Route>
+                    <Route path="/onramper">
+                      <div
+                        style={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <Onramper />
+                      </div>
+                    </Route>
+                    <Route path="/">
+                      <Redirect to="/dashboard" />
+                    </Route>
+                    <Route path="/home">
+                      <Redirect to="/dashboard" />
+                    </Route>
+                    <Route path="/nonauthenticated">
+                      <>Please login using the "Authenticate" button</>
+                    </Route>
+                  </Switch>
+                </div>
+              </StyledContent>
+            </Layout>
+          </Router>
+        </React.Suspense>
       </Layout>
     );
   }
