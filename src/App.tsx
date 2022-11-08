@@ -24,43 +24,44 @@ const { Header, Sider, Content } = Layout;
 
 const BackdropStyled = styled("div")`
   position: absolute;
-  right: 32px;
-  top: 8px;
-  height: 117px;
-  width: 215px;
-  border: 1.5px solid #3e389f;
+  right: 2rem;
+  top: 0.5rem;
+  height: 7.3125rem;
+  width: 13.4375rem;
+  border: 0.125rem solid #3e389f;
   background-color: var(--layout-white);
-  border-radius: 15px;
+  border-radius: 0.9375rem;
 `;
 
 const BalanceContainerStyled = styled("div")`
-  width: 220px;
-  height: 120px;
-  border: 1.5px solid #3e389f;
-  border-radius: 15px;
+  width: 13.75rem;
+  height: 7.5rem;
+  border: 0.125rem solid #3e389f;
+  border-radius: 0.9375rem;
   margin-left: auto;
   margin-right: auto;
   position: relative;
   background-color: var(--layout-white);
-  margin-top: 35px;
+  margin-top: 2.1875rem;
 `;
 
 const BalanceTitleStyled = styled("div")`
-  height: 40px;
+  height: 2.5rem;
   background-color: rgba(77, 195, 89, 0.7);
-  border-top-left-radius: 13px;
-  border-top-right-radius: 13px;
-  border: 1px solid #3e389f;
-  border-bottom: 2.5px solid #3e389f;
+  border-top-left-radius: 0.9375rem;
+  border-top-right-radius: 0.9375rem;
+  border: 0.125rem solid #3e389f;
+  border-bottom: 0.125rem solid #3e389f;
+  margin: -0.125rem;
 `;
 
 const BalanceTextStyled = styled("p")`
   font-weight: bold;
   font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 24px;
+  font-size: 1.5rem;
   color: #3e389f;
-  padding-top: 2px;
-  padding-left: 15px;
+  padding-top: 0.125em;
+  padding-left: 0.5375em;
   -webkit-text-stroke: thin;
 `;
 
@@ -72,10 +73,17 @@ const LoginLayout = styled(Layout)`
   background: var(--layout-blue);
 `;
 
+const StyledContent = styled(Content)`
+  overflow-y: auto;
+  padding-bottom: 1.25rem;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+`;
+
 const styles = {
   content: {
-    padding: "10px",
-    height: "100vh",
+    padding: "0.625rem",
     width: "100%",
   },
   errorDiv: {
@@ -93,14 +101,13 @@ const App = () => {
     isAuthenticated,
     isWeb3EnableLoading,
     authError,
+    account,
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
 
   useEffect(() => {
-    type Web3ProviderType = any;
-    const connectorId: Web3ProviderType =
-      window.localStorage.getItem("connectorId");
+    const connectorId: any = window.localStorage.getItem("connectorId");
     const chainId: number = Number(window.localStorage.getItem("chainId"));
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
       enableWeb3({
@@ -112,7 +119,7 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !account) {
     return (
       <LoginLayout>
         <SignIn />
@@ -124,7 +131,7 @@ const App = () => {
         <Router>
           <Sider
             width={293}
-            breakpoint="sm"
+            breakpoint="md"
             collapsedWidth="0"
             onBreakpoint={(broken) => {
               console.log(broken);
@@ -137,7 +144,7 @@ const App = () => {
               zIndex: "1",
               height: "100vh",
               position: "fixed",
-              width: "293px",
+              width: "18.3125rem",
               backgroundColor: "#F8F2ED",
               left: 0,
               top: 0,
@@ -166,22 +173,16 @@ const App = () => {
           >
             <Header
               style={{
-                marginTop: "32px",
+                marginTop: "2rem",
                 padding: 0,
                 backgroundColor: "#2F2A75",
               }}
             >
-              <div style={{ float: "right", marginRight: "10px" }}>
+              <div style={{ float: "right", marginRight: "0.625rem" }}>
                 <Account />
               </div>
             </Header>
-            <Content
-              style={{
-                overflowY: "scroll",
-                height: "100vh",
-                paddingBottom: "20px",
-              }}
-            >
+            <StyledContent>
               {authError && (
                 <div style={styles.errorDiv}>
                   <Alert message={authError.message} type="error" closable />
@@ -217,7 +218,7 @@ const App = () => {
                   </Route>
                 </Switch>
               </div>
-            </Content>
+            </StyledContent>
           </Layout>
         </Router>
       </Layout>
@@ -229,11 +230,11 @@ export const Logo = () => (
   <div
     style={{
       display: "flex",
-      padding: "10px",
-      width: "235px",
+      padding: "0.625rem",
+      width: "14.6875rem",
       marginLeft: "auto",
       marginRight: "auto",
-      marginTop: "25px",
+      marginTop: "1.5625rem",
     }}
   >
     <img src={PizzaWalletLogo} alt="logo" />

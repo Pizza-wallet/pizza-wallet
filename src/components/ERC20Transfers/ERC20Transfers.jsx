@@ -54,14 +54,14 @@ function ERC20Transfers() {
     <div>
       <div
         style={{
-          margin: "0 50px 50px 50px",
+          margin: "0 3.125rem 3.125rem 3.125rem",
           height: "100%",
         }}
       >
         <Table
           tableData={ERC20Transfers}
           columns={columns}
-          tableTitle={"Transfers History"}
+          tableTitle={"Transactions History"}
         />
       </div>
     </div>

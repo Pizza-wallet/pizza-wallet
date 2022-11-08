@@ -5,8 +5,8 @@ import { useMemo } from "react";
 import styled from "styled-components";
 
 const StyledSelect = styled(Select)`
-  border: 2px solid #3e389f;
-  border-radius: 15px;
+  border: 0.125rem solid #3e389f;
+  border-radius: 0.9375rem;
 `;
 
 export default function AssetSelector({ setAsset, style }) {
@@ -52,7 +52,7 @@ export default function AssetSelector({ setAsset, style }) {
                   display: "flex",
                   alignItems: "center",
                   width: "100%",
-                  gap: "8px",
+                  gap: "0.5rem",
                 }}
               >
                 <Image
@@ -61,10 +61,10 @@ export default function AssetSelector({ setAsset, style }) {
                     "https://etherscan.io/images/main/empty-token.png"
                   }
                   alt="nologo"
-                  width="24px"
-                  height="24px"
+                  width="1.5rem"
+                  height="1.5rem"
                   preview={false}
-                  style={{ borderRadius: "15px" }}
+                  style={{ borderRadius: "0.9375rem" }}
                 />
                 <div
                   style={{
