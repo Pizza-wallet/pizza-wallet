@@ -1,0 +1,103 @@
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.ant-modal-content {
+  overflow: auto;
+  border-radius: 1rem;
+}
+
+#internal {
+  background: rgb(2, 0, 36);
+  background: radial-gradient(
+    circle,
+    rgba(0, 112, 135, 1) 0%,
+    rgba(1, 64, 93, 1) 0%,
+    rgba(2, 0, 36, 1) 49%
+  );
+  border-top-left-radius: 2em;
+  overflow: auto;
+}
+
+.ant-table {
+  background: rgba(14, 13, 13, 0.35);
+  backdrop-filter: blur(0.25rem);
+  -webkit-backdrop-filter: blur(0.25rem);
+  border-radius: 0.5em;
+}
+
+.floater {
+  background: rgba(14, 13, 13, 0.35);
+  backdrop-filter: blur(0.25rem);
+  -webkit-backdrop-filter: blur(0.25rem);
+  border-radius: 0.625rem;
+  position: relative;
+  transition: box-shadow 300ms linear;
+}
+
+.floater:hover,
+.floater:focus,
+#floater-dex:hover,
+#floater-dex:focus {
+  box-shadow: 0 0.5rem 2rem 0 rgba(31, 38, 135, 0.37);
+}
+
+.floater::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: rgb(1, 64, 93);
+  top: 70%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(12em) rotateX(40deg) scale(1, 0.25);
+  filter: blur(5em);
+  opacity: 0.5;
+  transition: opacity 300ms linear;
+}
+
+.floater:hover::before,
+.floater:focus::before,
+#floater-dex:hover::before,
+#floater-dex:focus::before {
+  opacity: 0.9;
+}
+
+#floater-dex {
+  background: rgba(14, 13, 13, 0.35);
+  backdrop-filter: blur(0.25rem);
+  -webkit-backdrop-filter: blur(0.25rem);
+  border-radius: 1em;
+  position: relative;
+  transition: box-shadow 300ms linear;
+}
+
+#floater-dex::before {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  background: rgb(1, 64, 93);
+  top: 75%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+
+  transform: perspective(12em) rotateX(40deg) scale(1, 0.3);
+  filter: blur(5em);
+  opacity: 0.5;
+  transition: opacity 300ms linear;
+}
+
+html,
+body {
+  background: #103658;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}

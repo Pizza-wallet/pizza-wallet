@@ -19,6 +19,7 @@ import NativeBalance from "./components/NativeBalance";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
+import "./styles.css";
 
 const { Header, Sider, Content } = Layout;
 
