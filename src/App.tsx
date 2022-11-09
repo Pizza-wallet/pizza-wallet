@@ -9,22 +9,74 @@ import {
 import { Layout, Alert, Spin } from "antd";
 import "antd/dist/antd.css";
 import "./style.css";
-import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
 
 const { Header, Sider, Content } = Layout;
 
-const ERC20Transfers = React.lazy(() => import("./components/ERC20Transfers"));
-const ERC20Balance = React.lazy(() => import("./components/ERC20Balance"));
-const DEX = React.lazy(() => import("./components/DEX"));
-const Account = React.lazy(() => import("./components/Account/Account"));
-const Transfer = React.lazy(
-  () => import("./components/Wallet/components/Transfer"),
+const ERC20Transfers = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'ERC20Transfers'*/
+      /*webpackPrefetch: true */ "./components/ERC20Transfers"
+    ),
 );
-const Onramper = React.lazy(() => import("./components/Onramper"));
-const NativeBalance = React.lazy(() => import("./components/NativeBalance"));
-const SignIn = React.lazy(() => import("./components/SignIn"));
+const ERC20Balance = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'ERC20Balance'*/
+      /*webpackPrefetch: true */ "./components/ERC20Balance"
+    ),
+);
+const DEX = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'DEX'*/
+      /*webpackPrefetch: true */ "./components/DEX"
+    ),
+);
+const Account = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'Account'*/
+      /*webpackPrefetch: true */ "./components/Account/Account"
+    ),
+);
+const Transfer = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'Transfers'*/
+      /*webpackPrefetch: true */ "./components/Wallet/components/Transfer"
+    ),
+);
+const Onramper = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'Onramper'*/
+      /*webpackPrefetch: true */ "./components/Onramper"
+    ),
+);
+const NativeBalance = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'NativeBalance'*/
+      /*webpackPrefetch: true */ "./components/NativeBalance"
+    ),
+);
+const SignIn = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'SignIn'*/
+      /*webpackPrefetch: true */ "./components/SignIn"
+    ),
+);
+const MenuItems = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'MenuItems'*/
+      /*webpackPrefetch: true */ "./components/MenuItems"
+    ),
+);
 
 const BackdropStyled = styled("div")`
   position: absolute;

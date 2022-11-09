@@ -1,8 +1,9 @@
 const webpack = require("webpack");
-const CompressionPlugin = require("compression-webpack-plugin");
-const BrotliPlugin = require("brotli-webpack-plugin");
+// const CompressionPlugin = require("compression-webpack-plugin");
+// const BrotliPlugin = require("brotli-webpack-plugin");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const rewireCompressionPlugin = require("react-app-rewire-compression-plugin");
 
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
@@ -22,25 +23,31 @@ module.exports = function override(config) {
       Buffer: ["buffer", "Buffer"],
     }),
   ]);
-  config.plugins.push(
-    new CompressionPlugin({
-      filename: "[name].gz[query]",
-      algorithm: "gzip",
-      test: /\.(js|css|html|svg)$/,
-      threshold: 8192,
-      minRatio: 0.8,
-    }),
-  );
+  // config.plugins.push(
+  //   new CompressionPlugin({
+  //     filename: "[name].gz[query]",
+  //     algorithm: "gzip",
+  //     // test: /\.(js|css|html|svg)$/,
+  //     test: /\.js$|\.css$|\.html$/,
+  //     threshold: 8192,
+  //     minRatio: 0.8,
+  //   }),
+  // );
 
-  config.plugins.push(
-    new BrotliPlugin({
-      //brotli plugin
-      asset: "[path].br[query]",
-      test: /\.(js|css|html|svg)$/,
-      threshold: 10240,
-      minRatio: 0.8,
-    }),
-  );
+  // config.plugins.push(
+  //   new BrotliPlugin({
+  //     //brotli plugin
+  //     asset: "[path].br[query]",
+  //     // test: /\.(js|css|html|svg)$/,
+  //     test: /\.js$|\.css$|\.html$/,
+  //     threshold: 10240,
+  //     minRatio: 0.8,
+  //   }),
+  // );
   config.plugins.push(new BundleAnalyzerPlugin());
+  config = rewireCompressionPlugin(config, {
+    test: /\.js(\?.*)?$/i,
+    cache: true,
+  });
   return config;
 };
