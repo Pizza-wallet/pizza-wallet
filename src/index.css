@@ -23,6 +23,17 @@ dd {
   margin: 0;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+ul[class],
+ol[class] {
+  padding: 0;
+}
+
 body {
   min-height: 100vh;
   scroll-behavior: smooth;
