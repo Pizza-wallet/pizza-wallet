@@ -3,7 +3,7 @@ const webpack = require("webpack");
 // const BrotliPlugin = require("brotli-webpack-plugin");
 const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const rewireCompressionPlugin = require("react-app-rewire-compression-plugin");
+// const rewireCompressionPlugin = require("react-app-rewire-compression-plugin");
 
 module.exports = function override(config) {
   const fallback = config.resolve.fallback || {};
@@ -44,10 +44,11 @@ module.exports = function override(config) {
   //     minRatio: 0.8,
   //   }),
   // );
+  // config = rewireCompressionPlugin(config, {
+  //   test: /\.js(\?.*)?$/i,
+  //   cache: true,
+  // });
   config.plugins.push(new BundleAnalyzerPlugin());
-  config = rewireCompressionPlugin(config, {
-    test: /\.js(\?.*)?$/i,
-    cache: true,
-  });
+
   return config;
 };
