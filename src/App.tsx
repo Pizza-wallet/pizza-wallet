@@ -204,11 +204,13 @@ const App = () => {
 
   useEffect(() => {
     const isAuth = () =>
-      !isAuthenticated ? setShowDashboard(false) : setShowDashboard(true);
+      !isAuthenticated && !account
+        ? setShowDashboard(false)
+        : setShowDashboard(true);
     isInitialized && isAuth();
   }, [isInitialized, isAuthenticated]);
 
-  if (!showDashBoard || !account) {
+  if (!showDashBoard) {
     return (
       <GridLayout>
         <React.Suspense
