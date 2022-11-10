@@ -1,8 +1,8 @@
 const webpack = require("webpack");
 // const CompressionPlugin = require("compression-webpack-plugin");
 // const BrotliPlugin = require("brotli-webpack-plugin");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin =
+//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 // const rewireCompressionPlugin = require("react-app-rewire-compression-plugin");
 
 module.exports = function override(config) {
@@ -48,7 +48,7 @@ module.exports = function override(config) {
   //   test: /\.js(\?.*)?$/i,
   //   cache: true,
   // });
-  config.plugins.push(new BundleAnalyzerPlugin());
+  // config.plugins.push(new BundleAnalyzerPlugin());
 
   return config;
 };
