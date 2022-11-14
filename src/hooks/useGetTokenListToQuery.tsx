@@ -65,15 +65,6 @@ export function useGetTokenListToQuery() {
           name: "Matic Token",
           symbol: "MATIC",
         },
-        {
-          address: "0x2791bca1f2de4661ed88a30c99a7a9449aa84174",
-          blockNumber: 34611024,
-          chainId: 137,
-          decimals: 6,
-          logoURI: "https://wallet-asset.matic.network/img/tokens/usdc.svg",
-          name: "USD Coin",
-          symbol: "USDC",
-        },
       ];
 
       const tokenList = [...res.data.tokens, ...testTokens];
