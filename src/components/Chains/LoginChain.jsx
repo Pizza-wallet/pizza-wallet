@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Menu, Dropdown, Button } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { AvaxLogo, PolygonLogo, BSCLogo, ETHLogo } from "./Logos";
-// import { useChain, useMoralis } from "react-moralis";
 
 const styles = {
   item: {
@@ -48,13 +47,10 @@ function LoginChain() {
   const [selected, setSelected] = useState({});
   const [chain, setchain] = useState("");
 
-  console.log("chain", chain);
-
   useEffect(() => {
     if (!chain) return null;
     const newSelected = menuItems.find((item) => item.key === chain);
     setSelected(newSelected);
-    console.log("current chainId: ", chain);
   }, [chain]);
 
   const handleMenuClick = (e) => {
