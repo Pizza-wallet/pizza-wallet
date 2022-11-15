@@ -8,17 +8,14 @@ import {
 } from "react-router-dom";
 import Account from "./components/Account/Account";
 import ERC20Balance from "./components/ERC20Balance";
-// import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
-// import Wallet from "./components/Wallet";
 import Transfer from "./components/Wallet/components/Transfer";
 import SignIn from "./components/SignIn";
 import Onramper from "./components/Onramper";
 import { Layout, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
-import "./style.css";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
