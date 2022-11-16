@@ -115,7 +115,7 @@ export default function SignIn() {
     await authenticate({
       provider: "web3Auth",
       clientId:
-        "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
+        "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
       rpcTarget:
         "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
       chainId: `${chain}` || "0x1",
