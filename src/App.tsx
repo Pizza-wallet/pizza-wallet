@@ -113,7 +113,7 @@ const App = () => {
       enableWeb3({
         provider: connectorId,
         clientId:
-          "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
+          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
         chainId: chainId,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
