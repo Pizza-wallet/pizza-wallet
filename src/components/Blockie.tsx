@@ -8,21 +8,28 @@ import { useMoralis } from "react-moralis";
  * @returns <Blockies> JSX Elemenet
  */
 
-function Blockie(props) {
+interface IBlockie {
+  currentWallet: boolean;
+  address?: string;
+  scale: number;
+  style: boolean;
+  avatar: boolean;
+}
+
+function Blockie(props: IBlockie) {
   const { account, isAuthenticated } = useMoralis();
   if (!props.address && (!account || !isAuthenticated))
     return <Skeleton.Avatar active size={40} />;
 
+  const generateSeed = () => {
+    if (props.currentWallet && account) {
+      return account.toLowerCase();
+    } else {
+      props.address?.toLowerCase();
+    }
+  };
   return (
-    <Blockies
-      seed={
-        props.currentWallet
-          ? account.toLowerCase()
-          : props.address.toLowerCase()
-      }
-      className="identicon"
-      {...props}
-    />
+    <Blockies seed={generateSeed() || ""} className="identicon" {...props} />
   );
 }
 

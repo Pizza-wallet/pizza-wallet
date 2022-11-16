@@ -11,7 +11,7 @@ interface IBalance {
   balance: string;
 }
 
-export const useERC20Balance = (params: any) => {
+export const useERC20Balance = (params?: any) => {
   const { account } = useMoralisWeb3Api();
   const { isInitialized, chainId, account: walletAddress } = useMoralis();
 

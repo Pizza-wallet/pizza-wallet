@@ -9,7 +9,13 @@ const StyledSelect = styled(Select)`
   border-radius: 0.9375rem;
 `;
 
-export default function AssetSelector({ setAsset, style }) {
+export default function AssetSelector({
+  setAsset,
+  style,
+}: {
+  setAsset: any;
+  style: any;
+}) {
   const { assets } = useERC20Balance();
   const { data: nativeBalance, nativeToken } = useNativeBalance();
   const { Moralis } = useMoralis();
@@ -20,10 +26,11 @@ export default function AssetSelector({ setAsset, style }) {
       return [
         ...assets,
         {
-          balance: nativeBalance.balance || 0,
-          decimals: nativeToken.decimals || 18,
-          name: nativeToken.name,
-          symbol: nativeToken.symbol,
+          balance: nativeBalance?.balance || 0,
+          decimals: nativeToken?.decimals || 18,
+          name: nativeToken?.name,
+          symbol: nativeToken?.symbol,
+          logo: "",
           token_address: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
         },
       ];
@@ -32,8 +39,8 @@ export default function AssetSelector({ setAsset, style }) {
     }
   }, [assets, nativeBalance, nativeToken]);
 
-  function handleChange(value) {
-    const token = fullBalance.find((token) => token.token_address === value);
+  function handleChange(value: any) {
+    const token = fullBalance?.find((token) => token.token_address === value);
     setAsset(token);
   }
 
@@ -77,7 +84,10 @@ export default function AssetSelector({ setAsset, style }) {
                   <p style={{ alignSelf: "right" }}>
                     (
                     {parseFloat(
-                      Moralis?.Units?.FromWei(item.balance, item.decimals),
+                      Moralis?.Units?.FromWei(
+                        item.balance,
+                        Number(item.decimals),
+                      ),
                     )?.toFixed(6)}
                     )
                   </p>

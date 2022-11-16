@@ -1,6 +1,6 @@
 import { CreditCardOutlined } from "@ant-design/icons";
 import { Input, notification } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import AddressInput from "../../AddressInput";
 import AssetSelector from "./AssetSelector";
@@ -11,6 +11,7 @@ import {
   SecondaryButton,
 } from "../../reusable/Buttons";
 import { Link } from "react-router-dom";
+import { BigNumber } from "@ethersproject/bignumber";
 
 const Card = styled("div")`
   width: 26.8em;
@@ -59,19 +60,70 @@ const StyledInput = styled(Input)`
   border-radius: 0.9375rem;
 `;
 
+export interface Transaction {
+  hash?: string;
+  to?: string;
+  from?: string;
+  nonce: number;
+  gasLimit: BigNumber;
+  gasPrice?: BigNumber;
+  data: string;
+  value: BigNumber;
+  chainId: number;
+  r?: string;
+  s?: string;
+  v?: number;
+  // Typed-Transaction features
+  type?: number | null;
+  // EIP-1559; Type 2
+  maxPriorityFeePerGas?: BigNumber;
+  maxFeePerGas?: BigNumber;
+  wait?: () => { status: string; to: string; error: string };
+}
+
+// This could be made into a re-usable type - Token?
+interface IAsset {
+  token_address: string;
+  decimals: number;
+}
+
+interface ITransaction {
+  receiver?: string;
+  asset?: IAsset;
+  amount?: string;
+}
+
+interface Iresult {
+  status: string;
+  to: string;
+  error: string;
+}
+
 function Transfer() {
   const { Moralis } = useMoralis();
-  const [receiver, setReceiver] = useState();
-  const [asset, setAsset] = useState();
-  const [tx, setTx] = useState();
-  const [amount, setAmount] = useState();
-  const [isPending, setIsPending] = useState(false);
+  const [receiver, setReceiver] = useState<string>();
+  const [asset, setAsset] = useState<IAsset>();
+  const [tx, setTx] = useState<ITransaction>({
+    amount: "",
+    receiver: "",
+    asset: { token_address: "", decimals: 0 },
+  });
+  const [amount, setAmount] = useState<string>();
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   useEffect(() => {
-    asset && amount && receiver ? setTx({ amount, receiver, asset }) : setTx();
+    asset && amount && receiver
+      ? setTx({ amount, receiver, asset })
+      : setTx({});
   }, [asset, amount, receiver]);
 
-  const openNotification = ({ message, description }) => {
+  const openNotification = ({
+    message,
+    description,
+  }: {
+    message: string;
+    description: string;
+  }) => {
     notification.open({
       placement: "bottomRight",
       message,
@@ -86,12 +138,12 @@ function Transfer() {
     const { amount, receiver, asset } = tx;
 
     let options = {};
-
-    switch (asset.token_address) {
+    const transactionAmount = amount ? amount : "";
+    switch (asset?.token_address) {
       case "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee":
         options = {
           native: "native",
-          amount: Moralis.Units.ETH(amount),
+          amount: Moralis.Units.ETH(transactionAmount),
           receiver,
           awaitReceipt: false,
         };
@@ -99,9 +151,9 @@ function Transfer() {
       default:
         options = {
           type: "erc20",
-          amount: Moralis.Units.Token(amount, asset.decimals),
+          amount: Moralis.Units.Token(transactionAmount, asset?.decimals),
           receiver,
-          contractAddress: asset.token_address,
+          contractAddress: asset?.token_address,
           awaitReceipt: false,
         };
     }
@@ -109,8 +161,11 @@ function Transfer() {
     setIsPending(true);
 
     try {
-      const txStatus = await Moralis.transfer(options);
-      const result = await txStatus.wait();
+      const txStatus: Transaction = await Moralis.transfer(options);
+
+      const result: Iresult = txStatus.wait
+        ? await txStatus.wait()
+        : { status: "", to: "", error: "Error waiting on result" };
 
       switch (result.status) {
         case "1":
@@ -127,7 +182,7 @@ function Transfer() {
           });
           setIsPending(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       openNotification({
         message: "📃 Error",
         description: `${error.message}`,
@@ -143,18 +198,19 @@ function Transfer() {
         <p>Transfer Assets</p>
       </Header>
       <InnerCard>
-        <Text strong>Send to:</Text>
+        <Text>Send to:</Text>
         <AddressInput autoFocus onChange={setReceiver} />
 
-        <Text strong>Asset:</Text>
+        <Text>Asset:</Text>
         <AssetSelector setAsset={setAsset} style={{ width: "100%" }} />
 
-        <Text strong>Amount:</Text>
+        <Text>Amount:</Text>
         <StyledInput
           size="large"
           prefix={<CreditCardOutlined />}
-          onChange={(e) => {
-            setAmount(`${e.target.value}`);
+          onChange={(e: React.FormEvent<HTMLInputElement>) => {
+            const target = e.target as HTMLInputElement;
+            setAmount(`${target.value}`);
           }}
         />
         <Controls>
@@ -165,7 +221,8 @@ function Transfer() {
           </ButtonContainer>
           <ButtonContainer width={"11em"} height={"3.1875rem"}>
             <PrimaryButton
-              loading={isPending}
+              // need to add loading animation to buttons
+              // loading={isPending}
               onClick={() => transfer()}
               disabled={!tx}
             >

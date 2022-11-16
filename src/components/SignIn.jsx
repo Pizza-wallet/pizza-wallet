@@ -109,8 +109,6 @@ export default function SignIn() {
   const { authenticate, authError } = useMoralis();
   const [chain] = useState("");
 
-  console.log("chain", chain);
-
   const handleCustomLogin = async () => {
     await authenticate({
       provider: "web3Auth",
@@ -137,49 +135,51 @@ export default function SignIn() {
           />
         </FlexContainerCenter>
         <InnerCard>
-          <FlexContainerCenter>
-            <LoginTitle>Login</LoginTitle>
-          </FlexContainerCenter>
-          {authError && alert(JSON.stringify(authError.message))}
-          <div>
-            <ButtonCard>
-              <SocialIcons onClick={handleCustomLogin}>
-                <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
-                <img src={facebook} alt="logo" />
-                <img src={google} alt="logo" />
-                <img src={twitter} alt="logo" />
-                <TextStyled>and more</TextStyled>
-              </SocialIcons>
-              <ButtonContainer
-                width={"14.375rem"}
-                height={"3.1875rem"}
-                margin={"1.25rem 0 0 0"}
-              >
-                <PrimaryButton onClick={handleCustomLogin}>
-                  Social Login
-                </PrimaryButton>
-              </ButtonContainer>
-            </ButtonCard>
-
-            <Divider>
-              <DividerText>
-                <DividerSpan>OR</DividerSpan>
-              </DividerText>
-            </Divider>
-
+          <>
             <FlexContainerCenter>
-              <ButtonContainer
-                width={"14.375rem"}
-                height={"3.1875rem"}
-                margin={"0 0 4.0625rem 0"}
-              >
-                <PrimaryButton>
-                  {/* Connect wallet */}
-                  <Account />
-                </PrimaryButton>
-              </ButtonContainer>
+              <LoginTitle>Login</LoginTitle>
             </FlexContainerCenter>
-          </div>
+            {authError && alert(JSON.stringify(authError.message))}
+            <div>
+              <ButtonCard>
+                <SocialIcons onClick={handleCustomLogin}>
+                  <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
+                  <img src={facebook} alt="logo" />
+                  <img src={google} alt="logo" />
+                  <img src={twitter} alt="logo" />
+                  <TextStyled>and more</TextStyled>
+                </SocialIcons>
+                <ButtonContainer
+                  width={"14.375rem"}
+                  height={"3.1875rem"}
+                  margin={"1.25rem 0 0 0"}
+                >
+                  <PrimaryButton onClick={handleCustomLogin}>
+                    Social Login
+                  </PrimaryButton>
+                </ButtonContainer>
+              </ButtonCard>
+
+              <Divider>
+                <DividerText>
+                  <DividerSpan>OR</DividerSpan>
+                </DividerText>
+              </Divider>
+
+              <FlexContainerCenter>
+                <ButtonContainer
+                  width={"14.375rem"}
+                  height={"3.1875rem"}
+                  margin={"0 0 4.0625rem 0"}
+                >
+                  <PrimaryButton>
+                    {/* Connect wallet */}
+                    <Account />
+                  </PrimaryButton>
+                </ButtonContainer>
+              </FlexContainerCenter>
+            </div>
+          </>
         </InnerCard>
       </Card>
     </AccountContainer>
