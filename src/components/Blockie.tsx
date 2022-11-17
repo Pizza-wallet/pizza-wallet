@@ -9,11 +9,12 @@ import { useMoralis } from "react-moralis";
  */
 
 interface IBlockie {
-  currentWallet: boolean;
+  currentWallet?: boolean;
   address?: string;
-  scale: number;
-  style: boolean;
-  avatar: boolean;
+  scale?: number;
+  style?: boolean;
+  avatar?: boolean;
+  size?: number;
 }
 
 function Blockie(props: IBlockie) {

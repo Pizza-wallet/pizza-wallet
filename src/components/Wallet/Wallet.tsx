@@ -30,7 +30,7 @@ function Wallet() {
       title={
         <StyledHeader>
           <Blockie scale={5} avatar currentWallet style />
-          <Address size="6" copyable />
+          <Address size={6} copyable />
           <NativeBalance />
         </StyledHeader>
       }

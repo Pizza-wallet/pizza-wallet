@@ -16,6 +16,18 @@ const AccountLogoContainer = styled("div")`
   margin-right: 3.125rem;
 `;
 
+const StyledConnector = styled("div")`
+  alignitems: center;
+  display: flex;
+  flexdirection: column;
+  height: auto;
+  justifycontent: center;
+  marginleft: auto;
+  marginright: auto;
+  padding: 1.25rem 0.3125rem;
+  cursor: pointer;
+`;
+
 const styles = {
   text: {
     color: "#ffffff",
@@ -87,28 +99,30 @@ function Account() {
             <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-            {connectors.map(({ title, icon, connectorId }, key) => (
-              <div
-                style={styles.connector}
-                key={key}
-                onClick={async () => {
-                  try {
-                    await authenticate({
-                      provider: connectorId,
-                      signingMessage: "Pizza Authentication",
-                    });
-                    window.localStorage.setItem("connectorId", connectorId);
-                    setIsAuthModalVisible(false);
-                  } catch (e) {
-                    console.log(e);
-                    <Alert message={e.message} type="warning" closable />;
-                  }
-                }}
-              >
-                <img src={icon} alt={title} style={styles.icon} />
-                <Text style={{ fontSize: "0.875rem" }}>{title}</Text>
-              </div>
-            ))}
+            {connectors.map(({ title, icon, connectorId }, key) => {
+              const provider: any = connectorId;
+              return (
+                <StyledConnector
+                  key={key}
+                  onClick={async () => {
+                    try {
+                      await authenticate({
+                        provider: provider,
+                        signingMessage: "Pizza Authentication",
+                      });
+                      window.localStorage.setItem("connectorId", connectorId);
+                      setIsAuthModalVisible(false);
+                    } catch (e: any) {
+                      console.log(e);
+                      <Alert message={e.message} type="warning" closable />;
+                    }
+                  }}
+                >
+                  <img src={icon} alt={title} style={styles.icon} />
+                  <Text style={{ fontSize: "0.875rem" }}>{title}</Text>
+                </StyledConnector>
+              );
+            })}
           </div>
         </Modal>
       </>
@@ -148,7 +162,7 @@ function Account() {
           />
           <div style={{ marginTop: "0.625rem", padding: "0 0.625rem" }}>
             <a
-              href={`${getExplorer(chainId)}/address/${account}`}
+              href={`${getExplorer(chainId ? chainId : "")}/address/${account}`}
               target="_blank"
               rel="noreferrer"
               style={{ color: "#3e389f" }}
