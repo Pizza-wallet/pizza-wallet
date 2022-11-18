@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import Text from "antd/lib/typography/Text";
@@ -11,6 +10,7 @@ import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import { CustomImg } from "./reusable/CustomImg";
+import { useAuthenticateUser } from "../hooks/useAuthenticateUser";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -106,21 +106,22 @@ const SocialIcons = styled("div")`
 `;
 
 export default function SignIn() {
-  const { authenticate, authError } = useMoralis();
-  const [chain] = useState("");
+  const { authError } = useMoralis();
+  const { authenticateUser } = useAuthenticateUser();
 
   const handleCustomLogin = async () => {
-    await authenticate({
-      provider: "web3Auth",
-      clientId:
-        "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-      rpcTarget:
-        "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
-      chainId: `${chain}` || "0x1",
-      appLogo: "pizza.png",
-    });
-    window.localStorage.setItem("connectorId", "web3Auth");
-    window.localStorage.setItem("chainId", chain || "0x1");
+    await authenticateUser(
+      {
+        provider: "web3Auth",
+        clientId:
+          "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
+        rpcTarget:
+          "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
+        chainId: "0x1",
+        appLogo: "pizza.png",
+      },
+      "web3Auth",
+    );
   };
 
   return (

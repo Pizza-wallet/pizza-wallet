@@ -10,6 +10,7 @@ import { connectors } from "./config";
 import { CustomImg } from "../reusable/CustomImg";
 import AccountLogo from "../../assets/account-logo.svg";
 import styled from "styled-components";
+import { useAuthenticateUser } from "../../hooks/useAuthenticateUser";
 
 const AccountLogoContainer = styled("div")`
   cursor: pointer;
@@ -54,14 +55,9 @@ const styles = {
 };
 
 function Account() {
-  const {
-    authenticate,
-    isAuthenticated,
-    isAuthenticating,
-    account,
-    chainId,
-    logout,
-  } = useMoralis();
+  const { isAuthenticated, isAuthenticating, account, chainId, logout } =
+    useMoralis();
+  const { authenticateUser } = useAuthenticateUser();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
 
@@ -106,11 +102,14 @@ function Account() {
                   key={key}
                   onClick={async () => {
                     try {
-                      await authenticate({
-                        provider: provider,
-                        signingMessage: "Pizza Authentication",
-                      });
-                      window.localStorage.setItem("connectorId", connectorId);
+                      await authenticateUser(
+                        {
+                          provider: provider,
+                          signingMessage: "Pizza Authentication",
+                        },
+                        connectorId,
+                      );
+
                       setIsAuthModalVisible(false);
                     } catch (e: any) {
                       console.log(e);
