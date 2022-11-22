@@ -8,17 +8,14 @@ import {
 } from "react-router-dom";
 import Account from "./components/Account/Account";
 import ERC20Balance from "./components/ERC20Balance/ERC20Balance";
-// import NFTBalance from "./components/NFTBalance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
-// import Wallet from "./components/Wallet";
 import Transfer from "./components/Wallet/components/Transfer";
 import SignIn from "./components/SignIn";
 import Onramper from "./components/Onramper";
 import { Layout, Alert } from "antd";
 import "antd/dist/antd.css";
 import NativeBalance from "./components/NativeBalance";
-import "./style.css";
 import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
@@ -89,34 +86,11 @@ const styles = {
     padding: "0.625rem",
     width: "100%",
   },
-  header: {
-    zIndex: 1,
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    fontFamily: "Roboto, sans-serif",
-    padding: "0 0.625rem",
-  },
-  headerRight: {
-    float: "right",
-    gap: "0.5rem",
-
-    fontSize: "0.9375rem",
-    fontWeight: "600",
-  },
   errorDiv: {
     width: "100%",
     display: "flex",
     marginTop: "1em",
     justifyContent: "center",
-  },
-  bglogin: {
-    height: "100vh",
-    display: "grid",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
   },
 };
 
@@ -127,6 +101,7 @@ const App = () => {
     isAuthenticated,
     isWeb3EnableLoading,
     authError,
+    account,
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
@@ -139,15 +114,13 @@ const App = () => {
       enableWeb3({
         provider: connectorId,
         clientId:
-          "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-        // rpcTarget:
-        //   "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
+          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
         chainId: chainId,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !account) {
     return (
       <LoginLayout>
         <SignIn />
