@@ -55,6 +55,8 @@ interface MultiCallData {
 export const isZeroAddress = (address: string) => {
   if (address === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
     return true;
+  } else if (address === "0x0000000000000000000000000000000000000000") {
+    return true;
   }
   return false;
 };
@@ -113,9 +115,7 @@ const executeMulticall = async (
   }
 
   return tokens.map((token, i) => {
-    // usd coin showing decimals as 18 on eth chain even though it is 6
-    // figure out coins that dont have 18 decimals and test here
-    const decimals = token.name === "USD Coin" ? 6 : 18;
+    const decimals = token.decimals;
     const amount: any = new BigNumber(res[i].amount.toString() || "0")
       .shiftedBy(-decimals)
       .toFixed();
@@ -186,7 +186,8 @@ export const getBalanceAndPriceInformation = async (
   // group tokens together by token name -
   const groupByTokenName = tokensWithPriceInfo.reduce(
     (group: any, token: any) => {
-      const name = token?.name;
+      // QUESTION: should we group by name or symbol here??
+      const name = token?.symbol;
       group[name] = group[name] ?? [];
       group[name].push(token);
       return group;

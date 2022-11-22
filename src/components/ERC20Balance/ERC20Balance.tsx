@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { limitDigits } from "../../helpers/formatters";
 import { getBalanceAndPriceInformation } from "./balanceMethods/getBalances";
 import { useGetTokenListToQuery } from "../../hooks/useGetTokenListToQuery";
+import { useChainsTokensTools } from "../../providers/chainsTokensToolsProvider";
 import { CustomImg } from "../reusable/CustomImg";
 
 interface IAbsoluteImgContainer {
@@ -40,6 +41,7 @@ function ERC20Balance({
 }) {
   const { account } = useMoralis();
   const tokenList = useGetTokenListToQuery();
+  const { tokens } = useChainsTokensTools();
   const [balances, setBalances] = useState<IToken[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -48,9 +50,21 @@ function ERC20Balance({
     const getBalancesAsync = async () => {
       // get balances with tokenlist and multicall contract
       // get price info with coingecko api
+      console.log("tokens here 2 - ", tokens);
+      console.log("our token list - ", tokenList);
+
+      // picking the chains we want to support
+      const testTokenList: any = {
+        arbitrum: tokens.arb,
+        avalanche: tokens.ava,
+        binance: tokens.bsc,
+        ethereum: tokens.eth,
+        fantom: tokens.ftm,
+        polygon: tokens.pol,
+      };
       const userBalances: IToken[] = await getBalanceAndPriceInformation(
         account!,
-        tokenList!,
+        testTokenList!,
       );
 
       const totalBalance = limitDigits(
@@ -65,10 +79,11 @@ function ERC20Balance({
       setLoading(false);
     };
 
-    if (tokenList && account) {
+    console.log("tokens here 1 - ", tokens);
+    if (tokenList && account && tokens) {
       getBalancesAsync();
     }
-  }, [tokenList, account]);
+  }, [tokenList, account, tokens]);
 
   const displayChainIconsForToken = (chainIcons: string[]) => {
     // Logic to overlap icon images
@@ -140,6 +155,7 @@ function ERC20Balance({
                   alt="nologo"
                   width="2.5rem"
                   height="2.5rem"
+                  borderRadius={"50%"}
                 />
               </AbsoluteImgContainer>
               {isToken && (
