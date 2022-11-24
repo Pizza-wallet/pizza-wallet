@@ -63,6 +63,8 @@ function ERC20Balance({
         testTokenList!,
       );
 
+      console.log("what we are returning for token table - ", userBalances);
+
       const totalBalance = limitDigits(
         userBalances.reduce((total: number, val: IToken) => {
           total += val.value;

@@ -230,8 +230,10 @@ export const getBalanceAndPriceInformation = async (
     };
   });
 
-  console.log("what we are returning for token table - ", usersBalances);
-  return usersBalances;
+  const sortTokensByLargestValue = usersBalances.sort(
+    (a, b) => b.value - a.value,
+  );
+  return sortTokensByLargestValue;
 };
 
 const returnBalancesAboveZero = (balances: IToken[] | undefined) => {
