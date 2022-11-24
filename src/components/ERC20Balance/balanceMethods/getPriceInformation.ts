@@ -1,6 +1,8 @@
 import {
   getPricesForTokens,
   getCoinGeckoChains,
+  getCoinGeckoTokens,
+  getIndividualTokenPrice,
 } from "../../../services/PriceService";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 
@@ -57,6 +59,18 @@ const updateTokensWithPriceInfo = (
   });
 };
 
+const getNativeTokenPrice = async (nativeToken: IToken) => {
+  // get token list to get id's
+  const coinGeckoTokenList: any = await getCoinGeckoTokens();
+  const tokenWithId = coinGeckoTokenList.find(
+    (token: any) => token.symbol === nativeToken.symbol.toLowerCase(),
+  );
+
+  // get price for native token and return
+  const getNativeTokenPrice = await getIndividualTokenPrice(tokenWithId.id);
+  return getNativeTokenPrice[tokenWithId.id];
+};
+
 export const getPriceInformation = async (
   balances?: IToken[],
   chainId?: number,
@@ -79,13 +93,25 @@ export const getPriceInformation = async (
     }, [])
     .join(",");
 
+  const userHasNativeToken = balances?.filter(
+    (val) => val.address === "0x0000000000000000000000000000000000000000",
+  );
+
   // call api to get price information
   const prices = await getXOrHandleError(() => {
     return getPricesForTokens(coinGeckoId, tokenAddresses);
   });
 
+  // If user has native tokens they need to be fetched in a different way (coin gecko)
+  if (userHasNativeToken?.length) {
+    // get native token price here
+    const nativeToken = userHasNativeToken[0];
+    const nativeTokenPrice = await getNativeTokenPrice(nativeToken);
+    prices[nativeToken.address] = nativeTokenPrice;
+  }
+
+  console.log("prices from coingecko api - ", prices);
   // add price information and return values
   const balancesWithValues = updateTokensWithPriceInfo(balances, prices);
-  console.log("balancesWith Values - ", balancesWithValues);
   return balancesWithValues;
 };

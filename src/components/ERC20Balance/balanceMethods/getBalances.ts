@@ -76,7 +76,9 @@ export const getBalances = async (walletAddress: string, tokens: IToken[]) => {
 
   const multicallAddress = process.env.REACT_APP_MULTICALL_ADDRESS || "";
   if (tokens.length > 0) {
-    return executeMulticall(walletAddress, tokens, multicallAddress, chainId);
+    return returnBalancesAboveZero(
+      await executeMulticall(walletAddress, tokens, multicallAddress, chainId),
+    );
   }
 };
 
@@ -158,9 +160,7 @@ export const getBalanceAndPriceInformation = async (
     // get and set balances above zero
     const tokens: IToken[] | undefined = tokenList[chain as keyof ITokenList];
     if (tokens) {
-      balances[chain as keyof ITokenList] = returnBalancesAboveZero(
-        await getBalances(account, tokens),
-      );
+      balances[chain as keyof ITokenList] = await getBalances(account, tokens);
     }
   }
 

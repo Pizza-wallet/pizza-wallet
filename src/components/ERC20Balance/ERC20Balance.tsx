@@ -48,11 +48,6 @@ function ERC20Balance({
   useEffect(() => {
     setLoading(true);
     const getBalancesAsync = async () => {
-      // get balances with tokenlist and multicall contract
-      // get price info with coingecko api
-      console.log("tokens here 2 - ", tokens);
-      console.log("our token list - ", tokenList);
-
       // picking the chains we want to support
       const testTokenList: any = {
         arbitrum: tokens.arb,
@@ -62,6 +57,7 @@ function ERC20Balance({
         fantom: tokens.ftm,
         polygon: tokens.pol,
       };
+      // get balances with tokenlist and multicall contract
       const userBalances: IToken[] = await getBalanceAndPriceInformation(
         account!,
         testTokenList!,
@@ -79,8 +75,8 @@ function ERC20Balance({
       setLoading(false);
     };
 
-    console.log("tokens here 1 - ", tokens);
-    if (tokenList && account && tokens) {
+    const tokensLoaded = Object.keys(tokens).length !== 0;
+    if (account && tokensLoaded) {
       getBalancesAsync();
     }
   }, [tokenList, account, tokens]);
