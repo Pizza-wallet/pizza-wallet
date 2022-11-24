@@ -4,7 +4,6 @@ import Table from "../reusable/Table";
 import styled from "styled-components";
 import { limitDigits } from "../../helpers/formatters";
 import { getBalanceAndPriceInformation } from "./balanceMethods/getBalances";
-import { useGetTokenListToQuery } from "../../hooks/useGetTokenListToQuery";
 import { useChainsTokensTools } from "../../providers/chainsTokensToolsProvider";
 import { CustomImg } from "../reusable/CustomImg";
 
@@ -40,7 +39,6 @@ function ERC20Balance({
   setTotalBalance: Dispatch<number | undefined>;
 }) {
   const { account } = useMoralis();
-  const tokenList = useGetTokenListToQuery();
   const { tokens } = useChainsTokensTools();
   const [balances, setBalances] = useState<IToken[]>([]);
   const [loading, setLoading] = useState(true);
@@ -81,7 +79,7 @@ function ERC20Balance({
     if (account && tokensLoaded) {
       getBalancesAsync();
     }
-  }, [tokenList, account, tokens]);
+  }, [account, tokens]);
 
   const displayChainIconsForToken = (chainIcons: string[]) => {
     // Logic to overlap icon images

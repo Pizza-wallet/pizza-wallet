@@ -3,7 +3,6 @@ import { fetchDataUsingMulticall } from "./multicall";
 import { getPriceInformation } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 import { Fragment, JsonFragment } from "@ethersproject/abi";
-import { mockBalances } from "./mockData";
 
 const balanceAbi = [
   {
@@ -118,7 +117,7 @@ const executeMulticall = async (
 
   return tokens.map((token, i) => {
     const decimals = token.decimals;
-    const amount: any = new BigNumber(res[i].amount.toString() || "0")
+    const amount: any = new BigNumber(res[i]?.amount.toString() || "0")
       .shiftedBy(-decimals)
       .toFixed();
 
