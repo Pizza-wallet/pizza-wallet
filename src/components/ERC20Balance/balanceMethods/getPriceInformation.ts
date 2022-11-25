@@ -5,17 +5,7 @@ import {
   getIndividualTokenPrice,
 } from "../../../services/PriceService";
 import { getChainDetails } from "../../../helpers/getChainDetails";
-
-interface IToken {
-  chainId: number;
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  logoURI: string;
-  amount?: string;
-  value?: number;
-}
+import { IToken } from "../../../types";
 
 interface IChainsWithId {
   chain_identifier?: number;
@@ -46,11 +36,12 @@ const updateTokensWithPriceInfo = (
   priceInfo?: IPriceInfo,
 ) => {
   return balances?.map((token) => {
-    const price = priceInfo?.[token.address.toLowerCase()]?.usd;
+    // const price = priceInfo?.[token.address.toLowerCase()]?.usd;
+    const priceUSD = Number(token.priceUSD);
     return {
       ...token,
-      price: price ? price : 0,
-      value: price ? Number(token.amount) * price : 0,
+      price: priceUSD ? priceUSD : 0,
+      value: priceUSD ? Number(token.amount) * priceUSD : 0,
       prices: priceInfo?.[token.address],
       balance: Number(token.amount),
       chainLogoUri: getChainDetails(token.chainId)?.logoUri,

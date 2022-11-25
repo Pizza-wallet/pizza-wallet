@@ -6,6 +6,7 @@ import { limitDigits } from "../../helpers/formatters";
 import { getBalanceAndPriceInformation } from "./balanceMethods/getBalances";
 import { useChainsTokensTools } from "../../providers/chainsTokensToolsProvider";
 import { CustomImg } from "../reusable/CustomImg";
+import { IGroupedToken } from "../../types";
 
 interface IAbsoluteImgContainer {
   top?: string;
@@ -25,26 +26,22 @@ const AbsoluteImgContainer = styled("div")`
   width: ${(props) => props.width};
 `;
 
-interface IToken {
-  name: string;
-  symbol: string;
-  logoURI: string;
-  amount?: string;
-  value: number;
-}
-
 function ERC20Balance({
   setTotalBalance,
+  setBalances,
+  balances,
 }: {
   setTotalBalance: Dispatch<number | undefined>;
+  setBalances: Dispatch<IGroupedToken[]>;
+  balances: IGroupedToken[];
 }) {
   const { account } = useMoralis();
   const { tokens } = useChainsTokensTools();
-  const [balances, setBalances] = useState<IToken[]>([]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(balances.length ? false : true);
     const getBalancesAsync = async () => {
       // picking the chains we want to support
       const testTokenList: any = {
@@ -56,7 +53,7 @@ function ERC20Balance({
         polygon: tokens.pol,
       };
       // get balances with tokenlist and multicall contract
-      const userBalances: IToken[] = await getBalanceAndPriceInformation(
+      const userBalances: IGroupedToken[] = await getBalanceAndPriceInformation(
         account!,
         testTokenList!,
       );
@@ -64,8 +61,8 @@ function ERC20Balance({
       console.log("what we are returning for token table - ", userBalances);
 
       const totalBalance = limitDigits(
-        userBalances.reduce((total: number, val: IToken) => {
-          total += val.value;
+        userBalances.reduce((total: number, val: IGroupedToken) => {
+          total += val?.value;
           return total;
         }, 0),
       );

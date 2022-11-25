@@ -3,6 +3,7 @@ import { fetchDataUsingMulticall } from "./multicall";
 import { getPriceInformation } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 import { Fragment, JsonFragment } from "@ethersproject/abi";
+import { IToken, IGroupedToken } from "../../../types";
 
 const balanceAbi = [
   {
@@ -24,17 +25,6 @@ const balanceAbi = [
     type: "function",
   },
 ];
-
-interface IToken {
-  chainId: number;
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  logoURI: string;
-  amount?: string;
-  value?: number;
-}
 
 interface ITokenList {
   ethereum?: IToken[];
@@ -124,7 +114,7 @@ const executeMulticall = async (
     return {
       ...token,
       amount: amount || "0",
-      blockNumber: res[i].blockNumber,
+      blockNumber: res[i]?.blockNumber,
     };
   });
 };
@@ -151,7 +141,7 @@ const fetchViaMulticall = async (
 export const getBalanceAndPriceInformation = async (
   account: string,
   tokenList: ITokenList,
-) => {
+): Promise<IGroupedToken[]> => {
   // get balances with tokenlist and multicall contract
   let balances: ITokenList = {};
 
@@ -211,11 +201,14 @@ export const getBalanceAndPriceInformation = async (
 
     return {
       name: tokenInfo.name,
-      type: "chain",
+      type: "groupedTokens",
       symbol: tokenInfo.symbol,
       id: tokenInfo.name,
       chainLogoUri: chainLogoUri,
       logoURI: tokenInfo.logoURI,
+      chainId: tokenInfo.chainId,
+      decimals: tokenInfo.decimals,
+      address: "",
       price: tokenInfo.price,
       balance: tokens.reduce(
         (acc: number, obj: IToken) => (acc += Number(obj.amount)),

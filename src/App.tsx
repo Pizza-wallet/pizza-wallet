@@ -20,6 +20,7 @@ import MenuItems from "./components/MenuItems";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
 import { ChainsTokensToolsProvider } from "./providers/chainsTokensToolsProvider";
+import { IGroupedToken } from "./types";
 
 const { Header, Sider, Content } = Layout;
 
@@ -107,6 +108,7 @@ const App = () => {
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
   const [totalBalance, setTotalBalance] = useState<number>();
+  const [balances, setBalances] = useState<IGroupedToken[]>([]);
 
   useEffect(() => {
     const connectorId: any = window.localStorage.getItem("connectorId");
@@ -194,7 +196,11 @@ const App = () => {
                 <div style={styles.content}>
                   <Switch>
                     <Route path="/dashboard">
-                      <ERC20Balance setTotalBalance={setTotalBalance} />
+                      <ERC20Balance
+                        setTotalBalance={setTotalBalance}
+                        setBalances={setBalances}
+                        balances={balances}
+                      />
                     </Route>
                     <Route path="/transfer">
                       <Transfer />

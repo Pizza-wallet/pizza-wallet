@@ -110,7 +110,7 @@ export const fetchDataUsingMulticall = async (
           .map((data) => {
             return {
               data: data[0],
-              blockNumber: blockNumber.toNumber(),
+              blockNumber: blockNumber?.toNumber(),
             };
           });
       } catch (e) {
