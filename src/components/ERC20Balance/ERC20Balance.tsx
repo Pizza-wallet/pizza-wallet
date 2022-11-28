@@ -4,7 +4,10 @@ import styled from "styled-components";
 import Table from "../reusable/Table";
 import { limitDigits } from "../../helpers/formatters";
 import { columns } from "./balanceTableColumns";
-import { getBalanceAndPriceInformation } from "./balanceMethods/getBalances";
+import {
+  getTokenBalanceForEachChain,
+  groupTokensWithPriceInfo,
+} from "./balanceMethods/getBalances";
 import { useChainsTokensTools } from "../../providers/chainsTokensToolsProvider";
 import { IGroupedToken } from "../../types";
 
@@ -39,9 +42,13 @@ function ERC20Balance({
         binance: tokens.bsc,
       };
       // get balances with tokenlist and multicall contract
-      const userBalances: IGroupedToken[] = await getBalanceAndPriceInformation(
+      const balanceForEachChain: any = await getTokenBalanceForEachChain(
         account!,
         supportedChains!,
+      );
+
+      const userBalances: IGroupedToken[] = await groupTokensWithPriceInfo(
+        balanceForEachChain,
       );
 
       console.log("what we are returning for token table - ", userBalances);

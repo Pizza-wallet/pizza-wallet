@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { fetchDataUsingMulticall } from "./multicall";
-import { getPriceInformation } from "./getPriceInformation";
+import { updateTokensWithPriceInfo } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 import { Fragment, JsonFragment } from "@ethersproject/abi";
 import { IToken, IGroupedToken } from "../../../types";
@@ -33,6 +33,7 @@ interface ITokenList {
   fantom?: IToken[];
   binance?: IToken[];
   arbitrum?: IToken[];
+  optimism?: IToken[];
 }
 
 interface MultiCallData {
@@ -48,6 +49,24 @@ export const isZeroAddress = (address: string) => {
     return true;
   }
   return false;
+};
+
+export const getTokenBalanceForEachChain = async (
+  account: string,
+  tokenList: ITokenList,
+) => {
+  // get balances with tokenlist and multicall contract
+  let balances: ITokenList = {};
+
+  for (let chain in tokenList) {
+    // get and set balances above zero
+    const tokens: IToken[] | undefined = tokenList[chain as keyof ITokenList];
+    if (tokens) {
+      balances[chain as keyof ITokenList] = await getBalances(account, tokens);
+    }
+  }
+
+  return balances;
 };
 
 export const getBalances = async (walletAddress: string, tokens: IToken[]) => {
@@ -138,31 +157,19 @@ const fetchViaMulticall = async (
   }));
 };
 
-export const getBalanceAndPriceInformation = async (
-  account: string,
-  tokenList: ITokenList,
+export const groupTokensWithPriceInfo = async (
+  balances: ITokenList,
 ): Promise<IGroupedToken[]> => {
-  // get balances with tokenlist and multicall contract
-  let balances: ITokenList = {};
-
-  for (let chain in tokenList) {
-    // get and set balances above zero
-    const tokens: IToken[] | undefined = tokenList[chain as keyof ITokenList];
-    if (tokens) {
-      balances[chain as keyof ITokenList] = await getBalances(account, tokens);
-    }
-  }
-
   // Get price info for each token
   const tokensWithPriceInfo: any = [];
 
   for (let chain in balances) {
     const userHasTokensOnChain = balances[chain as keyof ITokenList]?.length;
     if (userHasTokensOnChain) {
-      const chainId = balances[chain as keyof ITokenList]?.[0].chainId;
-      const tokenInfo = await getPriceInformation(
+      // const chainId = balances[chain as keyof ITokenList]?.[0].chainId;
+      const tokenInfo = await updateTokensWithPriceInfo(
         balances[chain as keyof ITokenList],
-        chainId,
+        // chainId,
       );
       // we need to spread each array in to tokensWithPriceInfo
       tokenInfo?.forEach((token) => {
