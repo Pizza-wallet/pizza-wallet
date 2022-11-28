@@ -29,18 +29,19 @@ function ERC20Balance({
     setLoading(balances.length ? false : true);
     const getBalancesAsync = async () => {
       // picking the chains we want to support
-      const testTokenList: any = {
-        arbitrum: tokens.arb,
-        avalanche: tokens.ava,
-        binance: tokens.bsc,
+      const supportedChains: any = {
         ethereum: tokens.eth,
         fantom: tokens.ftm,
         polygon: tokens.pol,
+        avalanche: tokens.ava,
+        arbitrum: tokens.arb,
+        optimism: tokens.opt,
+        binance: tokens.bsc,
       };
       // get balances with tokenlist and multicall contract
       const userBalances: IGroupedToken[] = await getBalanceAndPriceInformation(
         account!,
-        testTokenList!,
+        supportedChains!,
       );
 
       console.log("what we are returning for token table - ", userBalances);
