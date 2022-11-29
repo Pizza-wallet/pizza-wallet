@@ -3,7 +3,7 @@ import { fetchDataUsingMulticall } from "./multicall";
 import { updateTokensWithPriceInfo } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 import { Fragment, JsonFragment } from "@ethersproject/abi";
-import { IToken, IGroupedToken } from "../../../types";
+import { IToken, IGroupedToken, ITokenList } from "../../../types";
 
 const balanceAbi = [
   {
@@ -25,16 +25,6 @@ const balanceAbi = [
     type: "function",
   },
 ];
-
-interface ITokenList {
-  ethereum?: IToken[];
-  polygon?: IToken[];
-  avalanche?: IToken[];
-  fantom?: IToken[];
-  binance?: IToken[];
-  arbitrum?: IToken[];
-  optimism?: IToken[];
-}
 
 interface MultiCallData {
   address: string;
@@ -166,10 +156,8 @@ export const groupTokensWithPriceInfo = async (
   for (let chain in balances) {
     const userHasTokensOnChain = balances[chain as keyof ITokenList]?.length;
     if (userHasTokensOnChain) {
-      // const chainId = balances[chain as keyof ITokenList]?.[0].chainId;
       const tokenInfo = await updateTokensWithPriceInfo(
         balances[chain as keyof ITokenList],
-        // chainId,
       );
       // we need to spread each array in to tokensWithPriceInfo
       tokenInfo?.forEach((token) => {

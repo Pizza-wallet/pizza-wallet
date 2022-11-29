@@ -9,7 +9,7 @@ import {
   groupTokensWithPriceInfo,
 } from "./balanceMethods/getBalances";
 import { useChainsTokensTools } from "../../providers/chainsTokensToolsProvider";
-import { IGroupedToken } from "../../types";
+import { IGroupedToken, ITokenList } from "../../types";
 
 const TableContainer = styled("div")`
   margin: 0 3.125rem 3.125rem 3.125rem;
@@ -42,7 +42,7 @@ function ERC20Balance({
         binance: tokens.bsc,
       };
       // get balances with tokenlist and multicall contract
-      const balanceForEachChain: any = await getTokenBalanceForEachChain(
+      const balanceForEachChain: ITokenList = await getTokenBalanceForEachChain(
         account!,
         supportedChains!,
       );

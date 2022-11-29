@@ -29,3 +29,13 @@ export interface IGroupedToken {
   value: number;
   tokens: IToken[];
 }
+
+export interface ITokenList {
+  ethereum?: IToken[];
+  polygon?: IToken[];
+  avalanche?: IToken[];
+  fantom?: IToken[];
+  binance?: IToken[];
+  arbitrum?: IToken[];
+  optimism?: IToken[];
+}
