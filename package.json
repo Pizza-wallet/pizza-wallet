@@ -32,6 +32,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --collectCoverage",
     "eject": "react-app-rewired eject",
     "devchain": "node Truffle/scripts/devChain.js",
     "connect": "moralis-admin-cli connect-local-devchain",

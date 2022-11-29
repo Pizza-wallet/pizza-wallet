@@ -1,6 +1,61 @@
-import { groupTokensWithPriceInfo } from "../components/ERC20Balance/balanceMethods/getBalances";
+import {
+  groupTokensWithPriceInfo,
+  getTokenBalanceForEachChain,
+} from "../components/ERC20Balance/balanceMethods/getBalances";
 
-it("Groups tokens with price info", async () => {
+it("getBalances/getTokenBalanceForEachChain - Get token balance for each chain from a list", async () => {
+  const mockTokenList = {
+    ethereum: [
+      {
+        address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        chainId: 1,
+        coinKey: "USDC",
+        decimals: 6,
+        value: 0,
+        logoURI:
+          "https://static.debank.com/image/coin/logo_url/usdc/e87790bfe0b3f2ea855dc29069b38818.png",
+        name: "USD Coin",
+        priceUSD: "1",
+        symbol: "USDC",
+      },
+    ],
+    polygon: [
+      {
+        address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+        chainId: 137,
+        coinKey: "USDC",
+        decimals: 6,
+        value: 0,
+        logoURI:
+          "https://static.debank.com/image/coin/logo_url/usdc/e87790bfe0b3f2ea855dc29069b38818.png",
+        name: "USD Coin",
+        priceUSD: "1",
+        symbol: "USDC",
+      },
+    ],
+  };
+
+  // This should be an environment variable with a test account
+  const account = process.env.REACT_APP_TEST_ACCOUNT || "";
+  const testBalanceForEachChain = await getTokenBalanceForEachChain(
+    account,
+    mockTokenList,
+  );
+
+  // Check that amount and blockNumber are returned for both tokens
+  const firstAmount = testBalanceForEachChain?.ethereum?.[0].amount;
+  const firstBlockNumber = testBalanceForEachChain?.ethereum?.[0].blockNumber;
+
+  const secondAmount = testBalanceForEachChain?.polygon?.[0].amount;
+  const secondBlockNumber = testBalanceForEachChain?.polygon?.[0].blockNumber;
+  expect(typeof firstAmount).toMatch("string");
+  expect(typeof firstBlockNumber).toMatch("number");
+
+  expect(typeof secondAmount).toMatch("string");
+  expect(typeof secondBlockNumber).toMatch("number");
+});
+
+it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async () => {
   const mockTokenList = {
     ethereum: [
       {
