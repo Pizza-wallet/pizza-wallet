@@ -5,11 +5,12 @@ interface Chain {
 }
 interface ChainInterface {
   1: Chain;
-  137?: Chain;
-  56?: Chain;
-  42161?: Chain;
-  43114?: Chain;
   250?: Chain;
+  137?: Chain;
+  43114?: Chain;
+  42161?: Chain;
+  10?: Chain;
+  56?: Chain;
 }
 
 const chainDetails: ChainInterface = {
@@ -17,36 +18,43 @@ const chainDetails: ChainInterface = {
     rpc: process.env.REACT_APP_RPC_PROVIDER_ETH,
     name: "Ethereum",
     logoUri:
-      "https://storageapi.fleek.co/d1921602-c1d0-4d59-82e9-e36a2947b855-bucket/App/static/token-icons/weth.png",
-  },
-  137: {
-    rpc: process.env.REACT_APP_RPC_PROVIDER_POLYGON,
-    name: "Polygon",
-    logoUri: "https://wallet-asset.matic.network/img/tokens/matic.svg",
-  },
-  56: {
-    rpc: process.env.REACT_APP_RPC_PROVIDER_BSC,
-    name: "Binance smart chain",
-    logoUri:
-      "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_binance.jpg&w=32&q=75",
-  },
-  42161: {
-    rpc: process.env.REACT_APP_RPC_PROVIDER_ARBITRUM,
-    name: "Arbitrum",
-    logoUri:
-      "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_arbitrum.jpg&w=32&q=75",
-  },
-  43114: {
-    rpc: process.env.REACT_APP_RPC_PROVIDER_AVALANCHE,
-    name: "Avalanche",
-    logoUri:
-      "https://chainlist.org/_next/image?url=https%3A%2F%2Fdefillama.com%2Fchain-icons%2Frsz_avalanche.jpg&w=32&q=75",
+      "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
   },
   250: {
     rpc: process.env.REACT_APP_RPC_PROVIDER_FANTOM,
     name: "Fantom",
     logoUri:
-      "https://assets.coingecko.com/coins/images/4001/thumb/Fantom.png?1558015016",
+      "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/fantom.webp",
+  },
+  137: {
+    rpc: process.env.REACT_APP_RPC_PROVIDER_POLYGON,
+    name: "Polygon",
+    logoUri:
+      "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/polygon.webp",
+  },
+  43114: {
+    rpc: process.env.REACT_APP_RPC_PROVIDER_AVALANCHE,
+    name: "Avalanche",
+    logoUri:
+      "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/avalanche.webp",
+  },
+  42161: {
+    rpc: process.env.REACT_APP_RPC_PROVIDER_ARBITRUM,
+    name: "Arbitrum",
+    logoUri:
+      "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/arbitrum.webp",
+  },
+  10: {
+    rpc: process.env.REACT_APP_RPC_PROVIDER_OPTIMISM,
+    name: "Optimism",
+    logoUri:
+      "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/optimism.webp",
+  },
+  56: {
+    rpc: process.env.REACT_APP_RPC_PROVIDER_BSC,
+    name: "Binance smart chain",
+    logoUri:
+      "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/bsc.jpg",
   },
 };
 
