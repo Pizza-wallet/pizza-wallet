@@ -10,7 +10,6 @@
   - [Install all dependencies](#install-all-dependencies)
   - [Create a Moralis Testnet Server](#create-a-moralis-testnet-server-deprecating-soon)
   - [Environment Variables](#environment-variables)
-  - [Create an Alchemy App](#create-an-alchemy-app)
   - [Start a Development Server](#start-the-webpack-development-server)
   - [Build App](#build-app)
   - [Docker](#docker)
@@ -92,16 +91,6 @@ REACT_APP_RPC_PROVIDER_AVALANCHE=[Avalanche RPC]
 REACT_APP_RPC_PROVIDER_ARBITRUM=[Arbitrum RPC]
 REACT_APP_RPC_PROVIDER_OPTIMISM=[Optimism RPC]
 REACT_APP_RPC_PROVIDER_BSC=[BSC RPC]
-```
-
-### Create an Alchemy App
-
-1. Go to Alchemy and create an app on the Goerli testnet
-2. Click View Key and Copy the HTTPS URL
-3. Add it to your .env.local file
-
-```sh
-REACT_APP_PROVIDER_URL=[Insert your App URL]
 ```
 
 ### Start the Webpack Development Server
