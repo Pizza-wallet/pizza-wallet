@@ -79,7 +79,7 @@ yarn install
 
 ### Environment Variables
 
-1. Rename ``.env.local.template`` to ``env.local`` and add your variables.REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL]
+1. Rename ``.env.local.template`` to ``env.local`` and add your variables.
 
 ```sh
 REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL]
