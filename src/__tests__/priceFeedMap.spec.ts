@@ -12,7 +12,6 @@ it("priceFeeds/priceFeedMap - returns price feed address for token", async () =>
   expect(priceFeedAddress).toEqual(
     "0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419",
   );
-  0xc929ad75b72593967de83e7f7cda0493458261d9;
   expect(priceFeedAddress2).toEqual(
     "0xc929ad75B72593967DE83E7F7Cda0493458261D9",
   );
