@@ -38,9 +38,10 @@ function ERC20Balance({
         polygon: tokens.pol,
         avalanche: tokens.ava,
         arbitrum: tokens.arb,
-        optimism: tokens.opt,
+        // optimism: tokens.opt,
         binance: tokens.bsc,
       };
+
       // get balances with tokenlist and multicall contract
       const balanceForEachChain: ITokenList = await getTokenBalanceForEachChain(
         account!,

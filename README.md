@@ -26,7 +26,7 @@ Self custodial, decentralized, chain agnostic, service aggregator wallet. The on
   Note: For security reasons, web3auth only authorizes requests from our app's domain.
   If you need to use web3auth in remote development environments, you need to create your own web3auth key.
   1. Go [here](https://dashboard.web3auth.io/) to generate a key.
-  2. Replace the value in "clientId" in both of this components: ``App.tsx`` and ``SignIn.jsx``
+  2. Replace the value in "clientId" in both of this components: `App.tsx` and `SignIn.jsx`
 - [LI.FI SDK](https://li.fi/sdk/) - Cross Chain Swap
 - [Onramper Widget](https://onramper.com/) - Fiat Onramp & Offramp
 

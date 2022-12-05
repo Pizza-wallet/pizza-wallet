@@ -5,6 +5,7 @@
 //   getIndividualTokenPrice,
 // } from "../../../services/PriceService";
 import { getChainDetails } from "../../../helpers/getChainDetails";
+import { getPriceFeed } from "../priceFeeds/getPriceFeed";
 import { IToken } from "../../../types";
 
 // interface IChainsWithId {
@@ -31,26 +32,7 @@ import { IToken } from "../../../types";
 //   }
 // };
 
-export const updateTokensWithPriceInfo = (
-  balances?: IToken[],
-  // priceInfo?: IPriceInfo,
-) => {
-  return balances?.map((token) => {
-    // const price = priceInfo?.[token.address.toLowerCase()]?.usd;
-    const priceUSD = Number(token.priceUSD);
-    return {
-      ...token,
-      price: priceUSD ? priceUSD : 0,
-      value: priceUSD ? Number(token.amount) * priceUSD : 0,
-      // prices: priceInfo?.[token.address],
-      balance: Number(token.amount),
-      chainLogoUri: getChainDetails(token.chainId)?.logoUri,
-      type: "token",
-    };
-  });
-};
-
-// NOTE: we are using LIFI price information for now
+// NOTE: we are using LIFI and Chainlink price information for now
 // keeping below coin gecko api price implementation in case we need it
 // eventually we will be implementing chainlink price feeds
 
@@ -110,3 +92,37 @@ export const updateTokensWithPriceInfo = (
 //   const balancesWithValues = updateTokensWithPriceInfo(balances, prices);
 //   return balancesWithValues;
 // };
+
+// NOTE: we are using LIFI price information for now
+// keeping below coin gecko api price implementation in case we need it
+// eventually we will be implementing chainlink price feeds
+
+export const getPriceInformation = async (
+  balances: IToken[],
+  chainId: number,
+) => {
+  let balancesWithPriceInfo: IToken[] = [];
+
+  for (let i = 0; i < balances.length; i++) {
+    const tokenSymbol = balances[i].symbol;
+    const priceFeed = await getPriceFeed(chainId, tokenSymbol);
+    let token = balances[i];
+    token.price = priceFeed;
+
+    balancesWithPriceInfo.push(token);
+  }
+
+  // add price information from chainlink or LIFI and return values
+  return balances?.map((token) => {
+    const price = token.price ? Number(token.price) : Number(token.priceUSD);
+    return {
+      ...token,
+      price: price ? price : 0,
+      value: price ? Number(token.amount) * price : 0,
+      // prices: priceInfo?.[token.address],
+      balance: Number(token.amount),
+      chainLogoUri: getChainDetails(token.chainId)?.logoUri,
+      type: "token",
+    };
+  });
+};

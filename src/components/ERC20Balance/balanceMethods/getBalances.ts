@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import { fetchDataUsingMulticall } from "./multicall";
-import { updateTokensWithPriceInfo } from "./getPriceInformation";
+import { getPriceInformation } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 import { Fragment, JsonFragment } from "@ethersproject/abi";
 import { IToken, IGroupedToken, ITokenList } from "../../../types";
@@ -51,6 +51,8 @@ export const getTokenBalanceForEachChain = async (
   for (let chain in tokenList) {
     // get and set balances above zero
     const tokens: IToken[] | undefined = tokenList[chain as keyof ITokenList];
+    console.log("chain - ", chain);
+    console.log("tokens - ", tokens);
     if (tokens) {
       balances[chain as keyof ITokenList] = await getBalances(account, tokens);
     }
@@ -156,14 +158,16 @@ export const groupTokensWithPriceInfo = async (
   for (let chain in balances) {
     const userHasTokensOnChain = balances[chain as keyof ITokenList]?.length;
     if (userHasTokensOnChain) {
-      const tokenInfo = await updateTokensWithPriceInfo(
-        balances[chain as keyof ITokenList],
+      const chainId = balances[chain as keyof ITokenList]?.[0].chainId;
+      const tokenInfo = await getPriceInformation(
+        balances[chain as keyof ITokenList]!,
+        chainId!,
       );
-      // we need to spread each array in to tokensWithPriceInfo
+
+      // we need to spread each array in to tokensWithPriceInfo (spread operator not working here)
       tokenInfo?.forEach((token) => {
         tokensWithPriceInfo.push(token);
       });
-      // tokensWithPriceInfo.push(...tokenInfo);
     }
   }
 
