@@ -6,9 +6,8 @@ const LiFi = new LIFI({
   // defaultRouteOptions: {
   //   integrator: 'transferto.xyz',
   // },
-
   // Testnets are only enabled on the staging environment
-  apiUrl: "https://staging.li.quest/v1/",
+  // apiUrl: "https://staging.li.quest/v1/",
 });
 
 export default LiFi;

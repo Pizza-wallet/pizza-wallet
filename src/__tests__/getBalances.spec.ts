@@ -94,11 +94,12 @@ it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async
     balance: 40,
     chainId: 1,
     chainLogoUri: [
-      "https://storageapi.fleek.co/d1921602-c1d0-4d59-82e9-e36a2947b855-bucket/App/static/token-icons/weth.png",
-      "https://wallet-asset.matic.network/img/tokens/matic.svg",
+      "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
+      "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/polygon.webp",
     ],
     decimals: 6,
     id: "USD Coin",
+
     logoURI:
       "https://static.debank.com/image/coin/logo_url/usdc/e87790bfe0b3f2ea855dc29069b38818.png",
     name: "USD Coin",
@@ -111,7 +112,7 @@ it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async
         balance: 15,
         chainId: 1,
         chainLogoUri:
-          "https://storageapi.fleek.co/d1921602-c1d0-4d59-82e9-e36a2947b855-bucket/App/static/token-icons/weth.png",
+          "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
         coinKey: "USDC",
         decimals: 6,
         logoURI:
@@ -128,7 +129,8 @@ it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async
         amount: "25",
         balance: 25,
         chainId: 137,
-        chainLogoUri: "https://wallet-asset.matic.network/img/tokens/matic.svg",
+        chainLogoUri:
+          "https://gateway.pinata.cloud/ipfs/Qme7UTgWc2AF5fBPcuyWA96WsULUrqa2soQa8EsGq1sHkW/media/chainLogos/polygon.webp",
         coinKey: "USDC",
         decimals: 6,
         logoURI:

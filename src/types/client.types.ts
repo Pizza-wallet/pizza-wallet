@@ -15,6 +15,7 @@ export interface IToken {
   value: number;
   priceUSD: string;
   blockNumber?: number;
+  price?: number;
 }
 
 export interface IGroupedToken {
