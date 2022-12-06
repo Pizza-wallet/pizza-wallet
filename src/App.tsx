@@ -142,34 +142,11 @@ const styles = {
     padding: "0.625rem",
     width: "100%",
   },
-  header: {
-    zIndex: 1,
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    fontFamily: "Roboto, sans-serif",
-    padding: "0 0.625rem",
-  },
-  headerRight: {
-    float: "right",
-    gap: "0.5rem",
-
-    fontSize: "0.9375rem",
-    fontWeight: "600",
-  },
   errorDiv: {
     width: "100%",
     display: "flex",
     marginTop: "1em",
     justifyContent: "center",
-  },
-  bglogin: {
-    height: "100vh",
-    display: "grid",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
   },
 };
 
@@ -194,9 +171,7 @@ const App = () => {
       enableWeb3({
         provider: connectorId,
         clientId:
-          "BKHvc6j0wd4pp3KVIMfHBjGPkz-4gQo5HA7LjLzRmzxV2cWVkjf1gyhmZwQAIKmezaq5mVhnphnkK-H29vrAEY4",
-        // rpcTarget:
-        //   "https://kovan.infura.io/v3/f79f2eecc6f1408692098c78dcbdf228",
+          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
         chainId: chainId,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
