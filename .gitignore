@@ -7,6 +7,7 @@
 
 # variables
 .env.local
+.env.test.local
 
 # testing
 coverage.json
