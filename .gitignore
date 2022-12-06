@@ -7,6 +7,7 @@
 
 # variables
 .env.local
+.env.test.local
 
 # testing
 coverage.json
@@ -14,6 +15,7 @@ coverage.json
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store
