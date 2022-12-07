@@ -17,6 +17,20 @@ it("priceFeeds/priceFeedMap - returns price feed address for token", async () =>
   );
 });
 
+it("priceFeeds/priceFeedMap - returns price feed address for polygon token", async () => {
+  const priceFeedAddress = await priceFeedMap("BAT", 137);
+
+  console.log("priceFeedAddress - ", priceFeedAddress);
+  if (!priceFeedAddress) {
+    console.log("Use LIFI / coingecko price info");
+  } else {
+    console.log("Call priceFeed contract to get price info");
+  }
+  expect(priceFeedAddress).toEqual(
+    "0x2346Ce62bd732c62618944E51cbFa09D985d86D2",
+  );
+});
+
 it("priceFeeds/priceFeedMap - returns undefined if we don't have address", async () => {
   const priceFeedAddress = await priceFeedMap("XRPL", 1);
   console.log("priceFeedAddress - ", priceFeedAddress);

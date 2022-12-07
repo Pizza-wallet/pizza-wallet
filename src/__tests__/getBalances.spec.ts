@@ -69,6 +69,7 @@ it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async
           "https://static.debank.com/image/coin/logo_url/usdc/e87790bfe0b3f2ea855dc29069b38818.png",
         name: "USD Coin",
         priceUSD: "1",
+        price: 1,
         symbol: "USDC",
       },
     ],
@@ -84,6 +85,7 @@ it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async
           "https://static.debank.com/image/coin/logo_url/usdc/e87790bfe0b3f2ea855dc29069b38818.png",
         name: "USD Coin",
         priceUSD: "1",
+        price: 1,
         symbol: "USDC",
       },
     ],
@@ -148,5 +150,15 @@ it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async
   };
 
   const testBalanceAndPriceInfo = await groupTokensWithPriceInfo(mockTokenList);
+
+  // Fixing the price and value as these will fluctuate (it's calling price feeds in the test)
+  expectedOutput.price = testBalanceAndPriceInfo[0].tokens[0].price!;
+  expectedOutput.value = testBalanceAndPriceInfo[0].value;
+  expectedOutput.tokens[0].price = testBalanceAndPriceInfo[0].tokens[0].price!;
+  expectedOutput.tokens[1].price = testBalanceAndPriceInfo[0].tokens[1].price!;
+
+  expectedOutput.tokens[0].value = testBalanceAndPriceInfo[0].tokens[0].value!;
+  expectedOutput.tokens[1].value = testBalanceAndPriceInfo[0].tokens[1].value!;
+
   expect(testBalanceAndPriceInfo[0]).toEqual(expectedOutput);
 });

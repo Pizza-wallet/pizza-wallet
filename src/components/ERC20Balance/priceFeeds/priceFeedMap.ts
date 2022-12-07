@@ -1,6 +1,10 @@
 import {
   ethereumMainnet,
   polygonMainnet,
+  binanceSmartChain,
+  arbitrumOne,
+  avalanche,
+  fantom,
   IPriceFeedAddress,
 } from "./priceFeedAddresses";
 
@@ -16,12 +20,12 @@ interface PriceFeedInterface {
 // TOKEN - USD PRICE FEEDS
 const priceFeedAddress = {
   1: ethereumMainnet,
-  // initialize the rest as empty for now
   137: polygonMainnet,
-  56: polygonMainnet,
-  42161: polygonMainnet,
-  43114: polygonMainnet,
-  250: polygonMainnet,
+  // initialize the rest as empty for now
+  56: binanceSmartChain,
+  42161: arbitrumOne,
+  43114: avalanche,
+  250: fantom,
 };
 
 // Given the symbol of a token and the chainId returns price feed contract address
