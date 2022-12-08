@@ -15,15 +15,17 @@ const TableContainer = styled("div")`
   margin: 0 3.125rem 3.125rem 3.125rem;
 `;
 
+interface IERC20Balance {
+  setTotalBalance: Dispatch<number | undefined>;
+  setBalances: Dispatch<IGroupedToken[]>;
+  balances: IGroupedToken[];
+}
+
 function ERC20Balance({
   setTotalBalance,
   setBalances,
   balances,
-}: {
-  setTotalBalance: Dispatch<number | undefined>;
-  setBalances: Dispatch<IGroupedToken[]>;
-  balances: IGroupedToken[];
-}) {
+}: IERC20Balance) {
   const { account } = useMoralis();
   const { tokens } = useChainsTokensTools();
   const [loading, setLoading] = useState(true);
