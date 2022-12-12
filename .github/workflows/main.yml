@@ -1,0 +1,64 @@
+name: "Build, Test and Upload"
+
+on: [push]
+
+jobs:
+  build_app_job:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: build
+        run: |
+          yarn && yarn build
+  run_tests_job:
+    needs: build_app_job
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: test
+        run: |
+          yarn && yarn test:unit
+  upload_spheron_job:
+    if: jobs.run_tests_job.outputs.acceptance-rate >= 90
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        node-version: [16.x]
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
+    name: Upload to Spheron
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn build
+        run: |
+          yarn && yarn build
+      - name: upload to spheron
+        id: upload
+        uses: argoapp-live/spheron-upload-action@v1
+        with:
+          spheron-api-key: ${{ secrets.SPHERON_API_KEY }}
+          spheron-project-name: ${{ secrets.SPHERON_PROJECT_NAME }}
+          spheron-organization-id: ${{ secrets.SPHERON_ORGANIZATION_ID }}
+          spheron-upload-folder: "build"
+          spheron-protocol: "filecoin-pinata"
+      - name: get the url of the deployment
+        run: echo "**spheron-project-name**${{ steps.upload.outputs.site }}"

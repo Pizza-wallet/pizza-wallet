@@ -8,10 +8,6 @@
 # variables
 .env.local
 
-# testing
-coverage.json
-/coverage
-
 # production
 /build
 
@@ -24,7 +20,3 @@ yarn.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-#Truffle files
-/Truffle/build
-/Truffle/data
