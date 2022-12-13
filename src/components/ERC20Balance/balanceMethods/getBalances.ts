@@ -51,8 +51,7 @@ export const getTokenBalanceForEachChain = async (
   for (let chain in tokenList) {
     // get and set balances above zero
     const tokens: IToken[] | undefined = tokenList[chain as keyof ITokenList];
-    console.log("chain - ", chain);
-    console.log("tokens - ", tokens);
+
     if (tokens) {
       balances[chain as keyof ITokenList] = await getBalances(account, tokens);
     }
@@ -149,6 +148,22 @@ const fetchViaMulticall = async (
   }));
 };
 
+export const checkWrappedToken = (symbol: string, tokens: IToken[]) => {
+  const firstLetter = symbol[0];
+  if (firstLetter.toLowerCase() !== "w") return symbol;
+  const symbolFirstLetterRemoved = symbol.slice(1);
+
+  // If it is a wrapped token and user also has native token then group together
+  const userHasNativeToken: boolean =
+    tokens.filter((val: any) => {
+      if (val.symbol === symbolFirstLetterRemoved) {
+        return val;
+      }
+    }).length > 0;
+
+  return userHasNativeToken ? symbolFirstLetterRemoved : symbol;
+};
+
 export const groupTokensWithPriceInfo = async (
   balances: ITokenList,
 ): Promise<IGroupedToken[]> => {
@@ -174,8 +189,8 @@ export const groupTokensWithPriceInfo = async (
   // group tokens together by token name -
   const groupByTokenName = tokensWithPriceInfo.reduce(
     (group: any, token: any) => {
-      // QUESTION: should we group by name or symbol here??
-      const name = token?.symbol;
+      // Check if wrapped token here and group with native tokens
+      const name = checkWrappedToken(token?.symbol, tokensWithPriceInfo);
       group[name] = group[name] ?? [];
       group[name].push(token);
       return group;
@@ -192,11 +207,15 @@ export const groupTokensWithPriceInfo = async (
   const usersBalances = balancesWithPriceInfo.map((tokens) => {
     const tokenInfo = tokens[0];
 
-    const chainLogoUri: string[] = [];
-    tokens.forEach((val: IToken) => {
-      const chainId = val.chainId;
-      chainLogoUri.push(getChainDetails(chainId)!.logoUri);
-    });
+    const chainLogoUri: any[] = [
+      ...new Set(
+        tokens.map((val: IToken) => {
+          const chainId = val.chainId;
+          const logoUri = getChainDetails(chainId)!.logoUri;
+          return logoUri;
+        }),
+      ),
+    ];
 
     return {
       name: tokenInfo.name,

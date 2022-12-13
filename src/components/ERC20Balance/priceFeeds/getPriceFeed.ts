@@ -87,6 +87,6 @@ export const getPriceFeed = async (
   const hexString = price.answer._hex;
   const bigNumberFromHexString = BigNumber.from(hexString);
   const fixedPrice = ethers.utils.formatUnits(bigNumberFromHexString, 8);
-  console.log("fixed price from chainlink - ", fixedPrice);
+  console.log(`fixed price from chainlink for ${symbol} - `, fixedPrice);
   return Number(fixedPrice);
 };

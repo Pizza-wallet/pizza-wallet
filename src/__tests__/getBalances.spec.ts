@@ -1,6 +1,7 @@
 import {
   groupTokensWithPriceInfo,
   getTokenBalanceForEachChain,
+  checkWrappedToken,
 } from "../components/ERC20Balance/balanceMethods/getBalances";
 
 it("getBalances/getTokenBalanceForEachChain - Get token balance for each chain from a list", async () => {
@@ -161,4 +162,52 @@ it("getBalances/groupTokensWithPriceInfo - Groups tokens with price info", async
   expectedOutput.tokens[1].value = testBalanceAndPriceInfo[0].tokens[1].value!;
 
   expect(testBalanceAndPriceInfo[0]).toEqual(expectedOutput);
+});
+
+it("getBalances/checkWrappedToken - Check symbol, if wrapped check if user has native token if so return native token symbol", async () => {
+  const mockTokens = [
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      amount: "0.00351057073462642",
+      balance: 0.00351057073462642,
+      blockNumber: 16167914,
+      chainId: 1,
+      chainLogoUri:
+        "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
+      coinKey: "ETH",
+      decimals: 18,
+      logoURI:
+        "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+      name: "ETH",
+      price: 1252.18,
+      priceUSD: "1250.52",
+      symbol: "ETH",
+      type: "token",
+      value: 4.395866462484511,
+    },
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      amount: "0.00351057073462642",
+      balance: 0.00351057073462642,
+      blockNumber: 16167914,
+      chainId: 1,
+      chainLogoUri:
+        "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
+      coinKey: "DAI",
+      decimals: 18,
+      logoURI:
+        "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+      name: "DAI",
+      price: 1252.18,
+      priceUSD: "1250.52",
+      symbol: "DAI",
+      type: "token",
+      value: 4.395866462484511,
+    },
+  ];
+
+  const symbol = checkWrappedToken("WETH", [mockTokens[0]]);
+  const symbol2 = checkWrappedToken("WETH", [mockTokens[1]]);
+  expect(symbol).toEqual("ETH");
+  expect(symbol2).toEqual("WETH");
 });

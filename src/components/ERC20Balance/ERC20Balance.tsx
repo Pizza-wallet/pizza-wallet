@@ -43,10 +43,10 @@ function ERC20Balance({
         optimism: tokens.opt,
         binance: tokens.bsc,
       };
-
       // get balances with tokenlist and multicall contract
       const balanceForEachChain: ITokenList = await getTokenBalanceForEachChain(
-        account!,
+        // account!
+        process.env.REACT_APP_TEST_ACCOUNT || "",
         supportedChains!,
       );
 
@@ -69,7 +69,7 @@ function ERC20Balance({
     };
 
     const tokensLoaded = Object.keys(tokens).length !== 0;
-    if (account && tokensLoaded) {
+    if (tokensLoaded) {
       getBalancesAsync();
     }
   }, [account, tokens]);
