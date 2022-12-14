@@ -87,13 +87,17 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
 
   const renderRowsExpandable = () => {
     return tableData.map((data, i) => {
+      // if user has more than one token on each chain allow them to toggle row.
+      const allowUserToToggleRow = data.tokens.length > 1;
       return (
         <React.Fragment key={i}>
           <tr
             key={data.id}
             id={data.id}
-            style={{ cursor: "pointer" }}
-            onClick={() => toggleDropdown(data.id)}
+            style={allowUserToToggleRow ? { cursor: "pointer" } : {}}
+            onClick={
+              allowUserToToggleRow ? () => toggleDropdown(data.id) : null
+            }
           >
             {columns.map((column, j) => {
               let info = data[column.dataIndex];
