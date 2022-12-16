@@ -1,8 +1,8 @@
 import {
   groupTokensWithPriceInfo,
   getTokenBalanceForEachChain,
-  checkWrappedToken,
 } from "../components/ERC20Balance/balanceMethods/getBalances";
+import { checkVariants } from "../components/ERC20Balance/balanceMethods/checkVariants";
 
 it("getBalances/getTokenBalanceForEachChain - Get token balance for each chain from a list", async () => {
   const mockTokenList = {
@@ -174,14 +174,14 @@ it("getBalances/checkWrappedToken - Check symbol, if wrapped check if user has n
       chainId: 1,
       chainLogoUri:
         "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
-      coinKey: "ETH",
+      coinKey: "WETH",
       decimals: 18,
       logoURI:
         "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
-      name: "ETH",
+      name: "WETH",
       price: 1252.18,
       priceUSD: "1250.52",
-      symbol: "ETH",
+      symbol: "WETH",
       type: "token",
       value: 4.395866462484511,
     },
@@ -204,10 +204,50 @@ it("getBalances/checkWrappedToken - Check symbol, if wrapped check if user has n
       type: "token",
       value: 4.395866462484511,
     },
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      amount: "0.00351057073462642",
+      balance: 0.00351057073462642,
+      blockNumber: 16167914,
+      chainId: 1,
+      chainLogoUri:
+        "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
+      coinKey: "ETH",
+      decimals: 18,
+      logoURI:
+        "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+      name: "ETH",
+      price: 1252.18,
+      priceUSD: "1250.52",
+      symbol: "ETH",
+      type: "token",
+      value: 4.395866462484511,
+    },
+    {
+      address: "0x0000000000000000000000000000000000000000",
+      amount: "0.00351057073462642",
+      balance: 0.00351057073462642,
+      blockNumber: 16167914,
+      chainId: 1,
+      chainLogoUri:
+        "https://gateway.pinata.cloud/ipfs/QmcZFEnPv3ah7rbuf5FsaFZYjePHeUMAA2ESJG5miASzDd/media/chainLogos/ethereum.png",
+      coinKey: "stETH",
+      decimals: 18,
+      logoURI:
+        "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+      name: "stETH",
+      price: 1252.18,
+      priceUSD: "1250.52",
+      symbol: "stETH",
+      type: "token",
+      value: 4.395866462484511,
+    },
   ];
 
-  const symbol = checkWrappedToken("WETH", [mockTokens[0]]);
-  const symbol2 = checkWrappedToken("WETH", [mockTokens[1]]);
+  const symbol = checkVariants(mockTokens[0], mockTokens);
+  const symbol2 = checkVariants(mockTokens[1], mockTokens);
+  const symbol3 = checkVariants(mockTokens[3], mockTokens);
   expect(symbol).toEqual("ETH");
-  expect(symbol2).toEqual("WETH");
+  expect(symbol2).toEqual("DAI");
+  expect(symbol3).toEqual("ETH");
 });

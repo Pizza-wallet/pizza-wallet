@@ -4,6 +4,7 @@ import { getPriceInformation } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 import { Fragment, JsonFragment } from "@ethersproject/abi";
 import { IToken, IGroupedToken, ITokenList } from "../../../types";
+import { checkVariants } from "./checkVariants";
 
 const balanceAbi = [
   {
@@ -148,22 +149,6 @@ const fetchViaMulticall = async (
   }));
 };
 
-export const checkWrappedToken = (symbol: string, tokens: IToken[]) => {
-  const firstLetter = symbol[0];
-  if (firstLetter.toLowerCase() !== "w") return symbol;
-  const symbolFirstLetterRemoved = symbol.slice(1);
-
-  // If it is a wrapped token and user also has native token then group together
-  const userHasNativeToken: boolean =
-    tokens.filter((val: any) => {
-      if (val.symbol === symbolFirstLetterRemoved) {
-        return val;
-      }
-    }).length > 0;
-
-  return userHasNativeToken ? symbolFirstLetterRemoved : symbol;
-};
-
 export const groupTokensWithPriceInfo = async (
   balances: ITokenList,
 ): Promise<IGroupedToken[]> => {
@@ -190,9 +175,9 @@ export const groupTokensWithPriceInfo = async (
   const groupByTokenName = tokensWithPriceInfo.reduce(
     (group: any, token: any) => {
       // Check if wrapped token here and group with native tokens
-      const name = checkWrappedToken(token?.symbol, tokensWithPriceInfo);
-      group[name] = group[name] ?? [];
-      group[name].push(token);
+      const symbol = checkVariants(token, tokensWithPriceInfo);
+      group[symbol] = group[symbol] ?? [];
+      group[symbol].push(token);
       return group;
     },
     {},

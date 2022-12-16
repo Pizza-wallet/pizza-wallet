@@ -50,21 +50,21 @@ function ERC20Balance({
         supportedChains!,
       );
 
-      const userBalances: IGroupedToken[] = await groupTokensWithPriceInfo(
+      const groupedTokens: IGroupedToken[] = await groupTokensWithPriceInfo(
         balanceForEachChain,
       );
 
-      console.log("what we are returning for token table - ", userBalances);
+      console.log("what we are returning for token table - ", groupedTokens);
 
       const totalBalance = limitDigits(
-        userBalances.reduce((total: number, val: IGroupedToken) => {
+        groupedTokens.reduce((total: number, val: IGroupedToken) => {
           total += val?.value;
           return total;
         }, 0),
       );
 
       setTotalBalance(totalBalance === 0 ? -1 : totalBalance);
-      setBalances(userBalances);
+      setBalances(groupedTokens);
       setLoading(false);
     };
 
