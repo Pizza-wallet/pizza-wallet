@@ -47,7 +47,7 @@ const centerChainLogos = (logoAmount: number) => {
     case 1:
       return "0.6rem";
     case 2:
-      return "-0rem";
+      return "0.1rem";
     case 3:
       return "-0.3rem";
     case 4:
