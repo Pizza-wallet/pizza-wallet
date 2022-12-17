@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, Ref } from "react";
 import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import { getEllipsisTxt } from "../helpers/formatters";
 import Blockie from "./Blockie";
@@ -11,8 +11,10 @@ const StyledInput = styled(Input)`
   border-radius: 0.9375rem;
 `;
 
-function AddressInput(props) {
-  const input = useRef(null);
+function AddressInput(props: any) {
+  // const input = useRef<HTMLInputElement>();
+  const input = useRef<any>(null);
+  // const input = useRef() as MutableRefObject<HTMLInputElement>;
   const { web3 } = useMoralis();
   const [address, setAddress] = useState("");
   const [validatedAddress, setValidatedAddress] = useState("");
@@ -21,18 +23,19 @@ function AddressInput(props) {
     resolve: { resolveDomain },
   } = useMoralisWeb3Api();
 
+  const web3Provider: any = web3;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (validatedAddress) props.onChange(isDomain ? validatedAddress : address);
   }, [props, validatedAddress, isDomain, address]);
 
   const updateAddress = useCallback(
-    async (value) => {
+    async (value: string) => {
       setAddress(value);
       if (isSupportedDomain(value)) {
-        const processPromise = function (promise) {
+        const processPromise = function (promise: any) {
           promise
-            .then((addr) => {
+            .then((addr: string) => {
               setValidatedAddress(addr);
               setIsDomain(true);
             })
@@ -41,7 +44,7 @@ function AddressInput(props) {
             });
         };
         if (value.endsWith(".eth")) {
-          processPromise(web3?.eth?.ens?.getAddress(value));
+          processPromise(web3Provider?.eth?.ens?.getAddress(value));
         } else {
           processPromise(
             resolveDomain({
@@ -57,7 +60,7 @@ function AddressInput(props) {
         setIsDomain(false);
       }
     },
-    [resolveDomain, web3?.eth?.ens],
+    [resolveDomain, web3Provider?.eth?.ens],
   );
 
   const Cross = () => (
@@ -75,7 +78,7 @@ function AddressInput(props) {
         setValidatedAddress("");
         setIsDomain(false);
         setTimeout(function () {
-          input.current.focus();
+          input?.current?.focus();
         });
       }}
       style={{ cursor: "pointer" }}
@@ -112,7 +115,7 @@ function AddressInput(props) {
       onChange={(e) => {
         updateAddress(e.target.value);
       }}
-      disabled={validatedAddress}
+      disabled={!!validatedAddress}
       style={
         validatedAddress
           ? { ...props?.style, border: "0.0625rem solid rgb(33, 191, 150)" }
@@ -122,7 +125,7 @@ function AddressInput(props) {
   );
 }
 
-function isSupportedDomain(domain) {
+function isSupportedDomain(domain: string) {
   return [
     ".eth",
     ".crypto",

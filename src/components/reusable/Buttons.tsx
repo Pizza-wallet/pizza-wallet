@@ -1,8 +1,19 @@
 import styled from "styled-components";
 import btnStripe from "../../assets/stripes.png";
 
+interface IButtonContainer {
+  width?: string;
+  height?: string;
+  margin?: string;
+}
+
+interface IButton {
+  selected?: boolean;
+  pathname?: string;
+}
+
 export const ButtonContainer = styled("div")`
-  width: ${(props) => props.width};
+  width: ${(props: IButtonContainer) => props.width};
   height: ${(props) => props.height};
   margin: ${(props) => props.margin};
 `;
@@ -85,7 +96,7 @@ export const MenuButton = styled("button")`
   padding: 0.75rem 1.5rem;
   font-size: 1.5rem;
   line-height: 0.625rem;
-  color: ${(props) =>
+  color: ${(props: IButton) =>
     props.selected ? "var(--dirty-white-2)" : "var(--brand-blue)"};
   position: relative;
   text-align: center;
