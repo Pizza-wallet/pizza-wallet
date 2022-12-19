@@ -16,7 +16,7 @@ const TableContainer = styled("div")`
 `;
 
 interface IERC20Balance {
-  setTotalBalance: Dispatch<number | undefined>;
+  setTotalBalance: Dispatch<string | undefined>;
   setBalances: Dispatch<IGroupedToken[]>;
   balances: IGroupedToken[];
 }
@@ -63,7 +63,7 @@ function ERC20Balance({
         }, 0),
       );
 
-      setTotalBalance(totalBalance === 0 ? -1 : totalBalance);
+      setTotalBalance(totalBalance === 0 ? "Not Available" : totalBalance);
       setBalances(groupedTokens);
       setLoading(false);
     };

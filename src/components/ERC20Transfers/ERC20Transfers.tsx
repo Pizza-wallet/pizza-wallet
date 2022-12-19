@@ -64,6 +64,7 @@ function ERC20Transfers() {
           tableData={ERC20Transfers}
           columns={columns}
           tableTitle={"Transactions History"}
+          expandableRow={false}
         />
       </div>
     </div>

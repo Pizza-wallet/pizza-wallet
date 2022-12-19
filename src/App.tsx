@@ -107,7 +107,7 @@ const App = () => {
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
-  const [totalBalance, setTotalBalance] = useState<number>();
+  const [totalBalance, setTotalBalance] = useState<string>();
   const [balances, setBalances] = useState<IGroupedToken[]>([]);
 
   useEffect(() => {

@@ -1,12 +1,14 @@
 import { Spin } from "antd";
 import { useMoralis } from "react-moralis";
 
+interface INativeBalance {
+  totalBalance?: string;
+}
 
-function NativeBalance(props) {
-  const { data: balance, isLoading } = useNativeBalance();
+function NativeBalance(props: INativeBalance) {
   const { account, isAuthenticated } = useMoralis();
   const isLoading = !props.totalBalance;
-  
+
   if (!account || !isAuthenticated) return null;
   if (isLoading)
     return (
@@ -25,7 +27,7 @@ function NativeBalance(props) {
         fontWeight: "bold",
       }}
     >
-      {props.totalBalance === -1 ? "Not available" : `$${props.totalBalance}`}
+      {props.totalBalance === "Not available" ? "Not available" : `$${props.totalBalance}`}
     </div>
   );
 }
