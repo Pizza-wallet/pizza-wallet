@@ -16,13 +16,13 @@ const Application = () => {
     throw new Error(
       "Missing Moralis Application ID or Server URL. Make sure to set your .env file.",
     );
-  if (isServerInfo)
+  if (isServerInfo) {
     return (
       <MoralisProvider appId={APP_ID} serverUrl={SERVER_URL}>
-        <App />
+        <App />{" "}
       </MoralisProvider>
     );
-  else {
+  } else {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Wallet />

@@ -1,9 +1,12 @@
 import { Spin } from "antd";
 import { useMoralis } from "react-moralis";
 
+
 function NativeBalance(props) {
+  const { data: balance, isLoading } = useNativeBalance();
   const { account, isAuthenticated } = useMoralis();
   const isLoading = !props.totalBalance;
+  
   if (!account || !isAuthenticated) return null;
   if (isLoading)
     return (

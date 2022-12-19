@@ -10,10 +10,23 @@ import { connectors } from "./config";
 import { CustomImg } from "../reusable/CustomImg";
 import AccountLogo from "../../assets/account-logo.svg";
 import styled from "styled-components";
+import { useAuthenticateUser } from "../../hooks/useAuthenticateUser";
 
 const AccountLogoContainer = styled("div")`
   cursor: pointer;
   margin-right: 3.125rem;
+`;
+
+const StyledConnector = styled("div")`
+  alignitems: center;
+  display: flex;
+  flexdirection: column;
+  height: auto;
+  justifycontent: center;
+  marginleft: auto;
+  marginright: auto;
+  padding: 1.25rem 0.3125rem;
+  cursor: pointer;
 `;
 
 const styles = {
@@ -42,14 +55,9 @@ const styles = {
 };
 
 function Account() {
-  const {
-    authenticate,
-    isAuthenticated,
-    isAuthenticating,
-    account,
-    chainId,
-    logout,
-  } = useMoralis();
+  const { isAuthenticated, isAuthenticating, account, chainId, logout } =
+    useMoralis();
+  const { authenticateUser } = useAuthenticateUser();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
 
@@ -87,28 +95,33 @@ function Account() {
             <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-            {connectors.map(({ title, icon, connectorId }, key) => (
-              <div
-                style={styles.connector}
-                key={key}
-                onClick={async () => {
-                  try {
-                    await authenticate({
-                      provider: connectorId,
-                      signingMessage: "Pizza Authentication",
-                    });
-                    window.localStorage.setItem("connectorId", connectorId);
-                    setIsAuthModalVisible(false);
-                  } catch (e) {
-                    console.log(e);
-                    <Alert message={e.message} type="warning" closable />;
-                  }
-                }}
-              >
-                <img src={icon} alt={title} style={styles.icon} />
-                <Text style={{ fontSize: "0.875rem" }}>{title}</Text>
-              </div>
-            ))}
+            {connectors.map(({ title, icon, connectorId }, key) => {
+              const provider: any = connectorId;
+              return (
+                <StyledConnector
+                  key={key}
+                  onClick={async () => {
+                    try {
+                      await authenticateUser(
+                        {
+                          provider: provider,
+                          signingMessage: "Pizza Authentication",
+                        },
+                        connectorId,
+                      );
+
+                      setIsAuthModalVisible(false);
+                    } catch (e: any) {
+                      console.log(e);
+                      <Alert message={e.message} type="warning" closable />;
+                    }
+                  }}
+                >
+                  <img src={icon} alt={title} style={styles.icon} />
+                  <Text style={{ fontSize: "0.875rem" }}>{title}</Text>
+                </StyledConnector>
+              );
+            })}
           </div>
         </Modal>
       </>
@@ -148,7 +161,7 @@ function Account() {
           />
           <div style={{ marginTop: "0.625rem", padding: "0 0.625rem" }}>
             <a
-              href={`${getExplorer(chainId)}/address/${account}`}
+              href={`${getExplorer(chainId ? chainId : "")}/address/${account}`}
               target="_blank"
               rel="noreferrer"
               style={{ color: "#3e389f" }}

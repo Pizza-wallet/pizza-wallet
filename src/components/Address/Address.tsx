@@ -18,9 +18,17 @@ const styles = {
   },
 };
 
-function Address(props) {
+interface IAddressProps {
+  address?: string;
+  avatar?: string;
+  size?: number;
+  copyable: boolean;
+  style?: {};
+}
+
+function Address(props: IAddressProps) {
   const { account, isAuthenticated } = useMoralis();
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState<any>();
   const [isClicked, setIsClicked] = useState(false);
 
   useEffect(() => {

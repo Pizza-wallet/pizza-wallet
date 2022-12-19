@@ -1,30 +1,81 @@
+interface Network {
+  currencySymbol?: string;
+  blockExplorerUrl?: string;
+  wrapped?: string;
+  chainName?: string;
+  currencyName?: string;
+  chainId?: string;
+  rpcUrl?: string;
+}
+
+interface NetworkConfigInterface {
+  "0x1": Network;
+  "0x3": Network;
+  "0x4": Network;
+  "0x2a": Network;
+  "0x5": Network;
+  "0x539": Network;
+  "0xa86a": Network;
+  "0x38": Network;
+  "0x61": Network;
+  "0x89": Network;
+  "0x13881": Network;
+}
+
 export const networkConfigs = {
   "0x1": {
     currencySymbol: "ETH",
     blockExplorerUrl: "https://etherscan.io/",
     wrapped: "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    chainId: 0,
+    chainName: "",
+    currencyName: "",
+    rpcUrl: "",
   },
   "0x3": {
     currencySymbol: "ETH",
     blockExplorerUrl: "https://ropsten.etherscan.io/",
+    chainId: 0,
+    chainName: "",
+    currencyName: "",
+    rpcUrl: "",
+    wrapped: "",
   },
   "0x4": {
     currencySymbol: "ETH",
     blockExplorerUrl: "https://kovan.etherscan.io/",
+    chainId: 0,
+    chainName: "",
+    currencyName: "",
+    rpcUrl: "",
+    wrapped: "",
   },
   "0x2a": {
     currencySymbol: "ETH",
     blockExplorerUrl: "https://rinkeby.etherscan.io/",
+    chainId: 0,
+    chainName: "",
+    currencyName: "",
+    rpcUrl: "",
+    wrapped: "",
   },
   "0x5": {
     currencySymbol: "ETH",
     blockExplorerUrl: "https://goerli.etherscan.io/",
+    chainId: 0,
+    chainName: "",
+    currencyName: "",
+    rpcUrl: "",
+    wrapped: "",
   },
   "0x539": {
+    chainId: 0,
     chainName: "Local Chain",
     currencyName: "ETH",
     currencySymbol: "ETH",
     rpcUrl: "http://127.0.0.1:7545",
+    blockExplorerUrl: "",
+    wrapped: "",
   },
   "0xa86a": {
     chainId: 43114,
@@ -33,6 +84,7 @@ export const networkConfigs = {
     currencySymbol: "AVAX",
     rpcUrl: "https://api.avax.network/ext/bc/C/rpc",
     blockExplorerUrl: "https://cchain.explorer.avax.network/",
+    wrapped: "",
   },
   "0x38": {
     chainId: 56,
@@ -50,6 +102,7 @@ export const networkConfigs = {
     currencySymbol: "BNB",
     rpcUrl: "https://data-seed-prebsc-1-s1.binance.org:8545/",
     blockExplorerUrl: "https://testnet.bscscan.com/",
+    wrapped: "",
   },
   "0x89": {
     chainId: 137,
@@ -67,15 +120,19 @@ export const networkConfigs = {
     currencySymbol: "MATIC",
     rpcUrl: "https://rpc-mumbai.matic.today/",
     blockExplorerUrl: "https://mumbai.polygonscan.com/",
+    wrapped: "",
   },
 };
 
-export const getNativeByChain = (chain) =>
-  networkConfigs[chain]?.currencySymbol || "NATIVE";
+export const getNativeByChain = (chain: string) =>
+  networkConfigs[chain as keyof NetworkConfigInterface]?.currencySymbol ||
+  "NATIVE";
 
-export const getChainById = (chain) => networkConfigs[chain]?.chainId || null;
+export const getChainById = (chain: string) =>
+  networkConfigs[chain as keyof NetworkConfigInterface]?.chainId || null;
 
-export const getExplorer = (chain) => networkConfigs[chain]?.blockExplorerUrl;
+export const getExplorer = (chain: string) =>
+  networkConfigs[chain as keyof NetworkConfigInterface]?.blockExplorerUrl;
 
-export const getWrappedNative = (chain) =>
-  networkConfigs[chain]?.wrapped || null;
+export const getWrappedNative = (chain: string) =>
+  networkConfigs[chain as keyof NetworkConfigInterface]?.wrapped || null;

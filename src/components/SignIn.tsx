@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import Text from "antd/lib/typography/Text";
-import Account from "./Account/Account.jsx";
+import Account from "./Account/Account";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
@@ -11,6 +10,7 @@ import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import { CustomImg } from "./reusable/CustomImg";
+import { useAuthenticateUser } from "../hooks/useAuthenticateUser";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -106,23 +106,22 @@ const SocialIcons = styled("div")`
 `;
 
 export default function SignIn() {
-  const { authenticate, authError } = useMoralis();
-  const [chain] = useState("");
-
-  console.log("chain", chain);
+  const { authError } = useMoralis();
+  const { authenticateUser } = useAuthenticateUser();
 
   const handleCustomLogin = async () => {
-    await authenticate({
-      provider: "web3Auth",
-      clientId:
-        "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
-      rpcTarget:
-        "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
-      chainId: `${chain}` || "0x1",
-      appLogo: "pizza.png",
-    });
-    window.localStorage.setItem("connectorId", "web3Auth");
-    window.localStorage.setItem("chainId", chain || "0x1");
+    await authenticateUser(
+      {
+        provider: "web3Auth",
+        clientId:
+          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
+        rpcTarget:
+          "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
+        chainId: "0x1",
+        appLogo: "pizza.png",
+      },
+      "web3Auth",
+    );
   };
 
   return (
@@ -137,49 +136,51 @@ export default function SignIn() {
           />
         </FlexContainerCenter>
         <InnerCard>
-          <FlexContainerCenter>
-            <LoginTitle>Login</LoginTitle>
-          </FlexContainerCenter>
-          {authError && alert(JSON.stringify(authError.message))}
-          <div>
-            <ButtonCard>
-              <SocialIcons onClick={handleCustomLogin}>
-                <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
-                <img src={facebook} alt="logo" />
-                <img src={google} alt="logo" />
-                <img src={twitter} alt="logo" />
-                <TextStyled>and more</TextStyled>
-              </SocialIcons>
-              <ButtonContainer
-                width={"14.375rem"}
-                height={"3.1875rem"}
-                margin={"1.25rem 0 0 0"}
-              >
-                <PrimaryButton onClick={handleCustomLogin}>
-                  Social Login
-                </PrimaryButton>
-              </ButtonContainer>
-            </ButtonCard>
-
-            <Divider>
-              <DividerText>
-                <DividerSpan>OR</DividerSpan>
-              </DividerText>
-            </Divider>
-
+          <>
             <FlexContainerCenter>
-              <ButtonContainer
-                width={"14.375rem"}
-                height={"3.1875rem"}
-                margin={"0 0 4.0625rem 0"}
-              >
-                <PrimaryButton>
-                  {/* Connect wallet */}
-                  <Account />
-                </PrimaryButton>
-              </ButtonContainer>
+              <LoginTitle>Login</LoginTitle>
             </FlexContainerCenter>
-          </div>
+            {authError && alert(JSON.stringify(authError.message))}
+            <div>
+              <ButtonCard>
+                <SocialIcons onClick={handleCustomLogin}>
+                  <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
+                  <img src={facebook} alt="logo" />
+                  <img src={google} alt="logo" />
+                  <img src={twitter} alt="logo" />
+                  <TextStyled>and more</TextStyled>
+                </SocialIcons>
+                <ButtonContainer
+                  width={"14.375rem"}
+                  height={"3.1875rem"}
+                  margin={"1.25rem 0 0 0"}
+                >
+                  <PrimaryButton onClick={handleCustomLogin}>
+                    Social Login
+                  </PrimaryButton>
+                </ButtonContainer>
+              </ButtonCard>
+
+              <Divider>
+                <DividerText>
+                  <DividerSpan>OR</DividerSpan>
+                </DividerText>
+              </Divider>
+
+              <FlexContainerCenter>
+                <ButtonContainer
+                  width={"14.375rem"}
+                  height={"3.1875rem"}
+                  margin={"0 0 4.0625rem 0"}
+                >
+                  <PrimaryButton>
+                    {/* Connect wallet */}
+                    <Account />
+                  </PrimaryButton>
+                </ButtonContainer>
+              </FlexContainerCenter>
+            </div>
+          </>
         </InnerCard>
       </Card>
     </AccountContainer>

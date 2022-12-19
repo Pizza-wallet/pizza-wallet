@@ -1,10 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLocation } from "react-router";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { MenuButton } from "./reusable/Buttons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   faTableColumns,
   faArrowsRotate,
@@ -12,6 +13,10 @@ import {
   faClockRotateLeft,
   faArrowsTurnRight,
 } from "@fortawesome/free-solid-svg-icons";
+
+interface IStyled {
+  mouseDown: boolean;
+}
 
 const MenuListItem = styled("li")`
   padding-left: 1.5rem;
@@ -30,7 +35,7 @@ const ButtonFlexContainer = styled("div")`
   position: absolute;
   top: 0.375rem;
   left: 0.375rem;
-  top: ${(props) => props.mouseDown && `0.675rem`};
+  top: ${(props: IStyled) => props.mouseDown && `0.675rem`};
   left: ${(props) => props.mouseDown && `0.675rem`};
 `;
 
@@ -53,7 +58,7 @@ function MenuItems() {
   const { pathname } = useLocation();
   const [mouseDown, setMouseDown] = useState("");
 
-  const handleClick = (event) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     const id = event.currentTarget.id;
     if (event.type === "mousedown") {
       setMouseDown(id);
@@ -62,13 +67,13 @@ function MenuItems() {
     }
   };
 
-  const menuItemButton = (text, icon, route) => {
+  const menuItemButton = (text: string, icon: IconProp, route: string) => {
     const selected = route === pathname;
     return (
       <div id={text}>
         <MenuButton
-          onMouseDown={(e) => handleClick(e)}
-          onMouseUp={(e) => handleClick(e)}
+          onMouseDown={(e: React.MouseEvent<HTMLElement>) => handleClick(e)}
+          onMouseUp={(e: React.MouseEvent<HTMLElement>) => handleClick(e)}
           selected={selected}
           pathname={pathname}
           id={text}

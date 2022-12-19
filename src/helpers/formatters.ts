@@ -39,14 +39,14 @@ export const limitDigits = (number) => {
  * @param {number} n number of chars to keep at front/end
  * @returns {string}
  */
-export const getEllipsisTxt = (str, n = 6) => {
+export const getEllipsisTxt = (str: string, n = 6) => {
   if (str) {
     return `${str.slice(0, n)}...${str.slice(str.length - n)}`;
   }
   return "";
 };
 
-export const tokenValue = (value, decimals) =>
+export const tokenValue = (value: number, decimals: number) =>
   decimals ? value / Math.pow(10, decimals) : value;
 
 /**
@@ -56,5 +56,8 @@ export const tokenValue = (value, decimals) =>
  * @param {string} symbol token symbol
  * @returns {string}
  */
-export const tokenValueTxt = (value, decimals, symbol) =>
-  `${n4.format(tokenValue(value, decimals))} ${symbol}`;
+export const tokenValueTxt = (
+  value: number,
+  decimals: number,
+  symbol: string,
+) => `${n4.format(tokenValue(value, decimals))} ${symbol}`;
