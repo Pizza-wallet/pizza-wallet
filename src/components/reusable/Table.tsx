@@ -3,6 +3,12 @@ import styled from "styled-components";
 import { SecondaryButton } from "./Buttons";
 import { Link } from "react-router-dom";
 import { Spin } from "antd";
+import { IToken } from "../../types";
+
+interface ITableStyles {
+  loadingContainer?: boolean;
+  fixed?: boolean;
+}
 
 const Container = styled("div")`
   width: 100%;
@@ -36,7 +42,7 @@ const AbsoluteContainer = styled("div")`
   width: 14.9375rem;
   height: 3.5625rem;
 
-  ${(props) =>
+  ${(props: ITableStyles) =>
     props.loadingContainer &&
     `
     width: 2.9375rem;
@@ -57,17 +63,40 @@ const StyledTable = styled("table")`
   border-radius: 2.5625rem;
   border-spacing: 0px;
   margin: 0 auto;
-  ${(props) => props.fixed && "table-layout: fixed"};
+  ${(props: ITableStyles) => props.fixed && "table-layout: fixed"};
 `;
 
-function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
-  const [expandableRows, setShowExpandableRows] = useState([]);
+interface ITable {
+  tableData: any;
+  columns: Column;
+  tableTitle: string;
+  expandableRow: boolean;
+  loading: boolean;
+}
+
+interface IColumnData {
+  title: string;
+  dataIndex: string;
+  key: string;
+  render: any;
+}
+
+type Column = Array<IColumnData>;
+
+function Table({
+  tableData,
+  columns,
+  tableTitle,
+  expandableRow,
+  loading,
+}: ITable) {
+  const [expandableRows, setShowExpandableRows] = useState<string[]>([]);
 
   const renderRows = () => {
-    return tableData.map((data, i) => {
+    return tableData.map((data: any, i: number) => {
       return (
         <tr key={i}>
-          {columns.map((column, j) => {
+          {columns.map((column: IColumnData, j: number) => {
             let info = data[column.dataIndex];
             return <td key={j}>{column.render(info, data)}</td>;
           })}
@@ -76,7 +105,8 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
     });
   };
 
-  const toggleDropdown = (rowId) => {
+  const toggleDropdown = (rowId: string) => {
+    if (!rowId) return;
     if (expandableRows.includes(rowId)) {
       const newRows = expandableRows.filter((e) => e !== rowId);
       setShowExpandableRows(newRows);
@@ -86,7 +116,7 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
   };
 
   const renderRowsExpandable = () => {
-    return tableData.map((data, i) => {
+    return tableData.map((data: any, i: number) => {
       // if user has more than one token on each chain allow them to toggle row.
       const allowUserToToggleRow = data.tokens.length > 1;
       return (
@@ -95,21 +125,21 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
             key={data.id}
             id={data.id}
             style={allowUserToToggleRow ? { cursor: "pointer" } : {}}
-            onClick={
-              allowUserToToggleRow ? () => toggleDropdown(data.id) : null
+            onClick={() =>
+              toggleDropdown(allowUserToToggleRow ? data.id : null)
             }
           >
-            {columns.map((column, j) => {
+            {columns.map((column: IColumnData, j: number) => {
               let info = data[column.dataIndex];
               return <td key={j}>{column.render(info, data)}</td>;
             })}
           </tr>
           {expandableRows.includes(data.id) &&
-            data.tokens.map((token, k) => {
+            data.tokens.map((token: IToken, k: number) => {
               return (
                 <tr key={k} id={data.id}>
-                  {columns.map((column, l) => {
-                    let info = token[column.dataIndex];
+                  {columns.map((column: IColumnData, l: number) => {
+                    let info: any = token[column.dataIndex as keyof IToken];
                     return <td key={l}>{column.render(info, token, k)}</td>;
                   })}
                 </tr>
@@ -121,7 +151,9 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
   };
 
   const renderHeader = () => {
-    return columns.map((val, i) => <th key={i}>{val.title}</th>);
+    return columns.map((val: IColumnData, i: number) => (
+      <th key={i}>{val.title}</th>
+    ));
   };
 
   const noData = (Array.isArray(tableData) && !tableData.length) || !tableData;
@@ -143,7 +175,7 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
             </StyledTable>
           </Container2>
           {loading ? (
-            <AbsoluteContainer loadingContainer>
+            <AbsoluteContainer loadingContainer={true}>
               <Spin size="large"></Spin>
             </AbsoluteContainer>
           ) : (
