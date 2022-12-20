@@ -1,6 +1,4 @@
 import { useMoralis } from "react-moralis";
-import "antd/dist/antd.css";
-import Text from "antd/lib/typography/Text";
 import Account from "./Account/Account";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -59,7 +57,7 @@ const LoginTitle = styled("p")`
   }
 `;
 
-const TextStyled = styled(Text)`
+const TextStyled = styled("p")`
   font-family: "Rubik", sans-serif;
   font-size: 0.93rem;
   line-height: 1.125rem;
