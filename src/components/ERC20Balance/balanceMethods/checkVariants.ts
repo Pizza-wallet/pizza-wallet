@@ -123,12 +123,14 @@ export const checkVariants = (token: IToken, tokens: IToken[]) => {
       // user has native token so group with this if the price is similar
       const currentTokenPrice = Number(token.priceUSD);
       const nativeTokenPrice = Number(userHasNativeToken[0].priceUSD);
-      // check price is within 5 dollars either side
-      const priceIsSimilar = between(
-        currentTokenPrice,
-        nativeTokenPrice - 10,
-        nativeTokenPrice + 10,
-      );
+      // check price is within 2% either side
+      const priceVariance = (nativeTokenPrice / 100) * 2;
+      const priceIsSimilar =
+        between(
+          currentTokenPrice,
+          nativeTokenPrice - priceVariance,
+          nativeTokenPrice + priceVariance,
+        ) || currentTokenPrice == nativeTokenPrice;
       if (priceIsSimilar) {
         // price is similar likely to be variant
         return nativeSymbol[0];
