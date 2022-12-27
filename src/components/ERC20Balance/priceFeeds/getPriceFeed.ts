@@ -1,5 +1,5 @@
 import { ethers, BigNumber } from "ethers";
-import { getChainDetails } from "../../../helpers/getChainDetails";
+import { getRpcProvider } from "../../../helpers/getChainDetails";
 import { priceFeedMap } from "./priceFeedMap";
 
 const aggregatorV3InterfaceABI = [
@@ -57,8 +57,9 @@ export const getPriceFeed = async (
   symbol: string,
 ): Promise<number | undefined> => {
   // chain details would need to be passed in
-  const rpcProvider = getChainDetails(chainId)?.rpc;
-  const provider = new ethers.providers.JsonRpcProvider(rpcProvider);
+  const provider = new ethers.providers.JsonRpcProvider(
+    getRpcProvider(chainId),
+  );
 
   // Map symbol of token and chainId to priceFeed contract address
   const addr = priceFeedMap(symbol, chainId);

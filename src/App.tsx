@@ -57,11 +57,11 @@ const Onramper = React.lazy(
       /*webpackPrefetch: true */ "./components/Onramper"
     ),
 );
-const NativeBalance = React.lazy(
+const TotalBalance = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'NativeBalance'*/
-      /*webpackPrefetch: true */ "./components/NativeBalance"
+      /*webpackPrefetch: true */ "./components/TotalBalance"
     ),
 );
 const SignIn = React.lazy(
@@ -239,7 +239,7 @@ const App = () => {
                   <BalanceTitleStyled>
                     <BalanceTextStyled>Balance</BalanceTextStyled>
                   </BalanceTitleStyled>
-                  <NativeBalance totalBalance={totalBalance} />
+                  <TotalBalance totalBalance={totalBalance} />
                 </BalanceContainerStyled>
               </div>
               <MenuItems />

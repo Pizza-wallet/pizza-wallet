@@ -1,5 +1,5 @@
 import Transfer from "./components/Transfer";
-import NativeBalance from "../NativeBalance";
+import NativeBalance from "../TotalBalance";
 import Address from "../Address/Address";
 import Blockie from "../Blockie";
 import { Card } from "antd";

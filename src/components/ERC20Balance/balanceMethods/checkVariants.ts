@@ -115,7 +115,6 @@ export const checkVariants = (token: IToken, tokens: IToken[]) => {
   });
 
   if (nativeSymbol.length > 0) {
-    // the current way will only group if they have the native token as well.
     const userHasNativeToken: IToken[] = tokens.filter((val: any) => {
       return val.symbol === nativeSymbol[0];
     });
@@ -127,8 +126,8 @@ export const checkVariants = (token: IToken, tokens: IToken[]) => {
       // check price is within 5 dollars either side
       const priceIsSimilar = between(
         currentTokenPrice,
-        nativeTokenPrice - 5,
-        nativeTokenPrice + 5,
+        nativeTokenPrice - 10,
+        nativeTokenPrice + 10,
       );
       if (priceIsSimilar) {
         // price is similar likely to be variant

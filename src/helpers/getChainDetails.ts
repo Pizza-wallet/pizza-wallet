@@ -61,3 +61,7 @@ const chainDetails: ChainInterface = {
 export const getChainDetails = (chainId: number) => {
   return chainDetails[chainId as keyof ChainInterface];
 };
+
+export const getRpcProvider = (chainId: number) => {
+  return getChainDetails(chainId)?.rpc;
+};
