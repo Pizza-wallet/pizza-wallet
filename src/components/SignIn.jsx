@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMoralis } from "react-moralis";
 import "antd/dist/antd.css";
 import Text from "antd/lib/typography/Text";
-import Account from "./Account/Account.jsx";
+import Account from "./Account/Accouunt.jsx";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
