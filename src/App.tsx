@@ -11,7 +11,7 @@ import ERC20Balance from "./components/ERC20Balance";
 import ERC20Transfers from "./components/ERC20Transfers";
 import DEX from "./components/DEX";
 import Transfer from "./components/Wallet/components/Transfer";
-import SignIn from "./components/SignIn";
+// import SignIn from "./components/SignIn";
 import Onramper from "./components/Onramper";
 import { Layout, Alert } from "antd";
 import "antd/dist/antd.css";
@@ -65,13 +65,13 @@ const BalanceTextStyled = styled("p")`
   -webkit-text-stroke: thin;
 `;
 
-const LoginLayout = styled(Layout)`
-  height: 100vh;
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  background: var(--layout-blue);
-`;
+// const LoginLayout = styled(Layout)`
+//   height: 100vh;
+//   display: grid;
+//   align-items: center;
+//   justify-content: center;
+//   background: var(--layout-blue);
+// `;
 
 const StyledContent = styled(Content)`
   overflow-y: auto;
@@ -101,7 +101,7 @@ const App = () => {
     isAuthenticated,
     isWeb3EnableLoading,
     authError,
-    account,
+    // account,
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
@@ -119,112 +119,109 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated || !account) {
-    return (
-      <LoginLayout>
-        <SignIn />
-      </LoginLayout>
-    );
-  } else {
-    return (
-      <Layout style={{ height: "100vh" }} hasSider>
-        <Router>
-          <Sider
-            width={293}
-            breakpoint="md"
-            collapsedWidth="0"
-            onBreakpoint={(broken) => {
-              console.log(broken);
-            }}
-            onCollapse={(collapsed, type) => {
-              console.log(collapsed, type);
-              setCollapsedSideBar(!collapsedSideBar);
-            }}
+  // if (!isAuthenticated || !account) {
+  //   return <LoginLayout>{/* <SignIn /> */}</LoginLayout>;
+  // } else {
+  return (
+    <Layout style={{ height: "100vh" }} hasSider>
+      <Router>
+        <Sider
+          width={293}
+          breakpoint="md"
+          collapsedWidth="0"
+          onBreakpoint={(broken) => {
+            console.log(broken);
+          }}
+          onCollapse={(collapsed, type) => {
+            console.log(collapsed, type);
+            setCollapsedSideBar(!collapsedSideBar);
+          }}
+          style={{
+            zIndex: "1",
+            height: "100vh",
+            position: "fixed",
+            width: "18.3125rem",
+            backgroundColor: "#F8F2ED",
+            left: 0,
+            top: 0,
+            bottom: 0,
+          }}
+        >
+          <div style={{ display: "flex" }}>
+            <Logo />
+          </div>
+          <div style={{ position: "relative" }}>
+            <BackdropStyled></BackdropStyled>
+            <BalanceContainerStyled>
+              <BalanceTitleStyled>
+                <BalanceTextStyled>Balance</BalanceTextStyled>
+              </BalanceTitleStyled>
+              <NativeBalance />
+            </BalanceContainerStyled>
+          </div>
+          <MenuItems />
+        </Sider>
+        <Layout
+          style={{
+            marginLeft: collapsedSideBar ? 0 : 293,
+            backgroundColor: "#2F2A75",
+          }}
+        >
+          <Header
             style={{
-              zIndex: "1",
-              height: "100vh",
-              position: "fixed",
-              width: "18.3125rem",
-              backgroundColor: "#F8F2ED",
-              left: 0,
-              top: 0,
-              bottom: 0,
-            }}
-          >
-            <div style={{ display: "flex" }}>
-              <Logo />
-            </div>
-            <div style={{ position: "relative" }}>
-              <BackdropStyled></BackdropStyled>
-              <BalanceContainerStyled>
-                <BalanceTitleStyled>
-                  <BalanceTextStyled>Balance</BalanceTextStyled>
-                </BalanceTitleStyled>
-                <NativeBalance />
-              </BalanceContainerStyled>
-            </div>
-            <MenuItems />
-          </Sider>
-          <Layout
-            style={{
-              marginLeft: collapsedSideBar ? 0 : 293,
+              marginTop: "2rem",
+              padding: 0,
               backgroundColor: "#2F2A75",
             }}
           >
-            <Header
-              style={{
-                marginTop: "2rem",
-                padding: 0,
-                backgroundColor: "#2F2A75",
-              }}
-            >
-              <div style={{ float: "right", marginRight: "0.625rem" }}>
-                <Account />
+            <div style={{ float: "right", marginRight: "0.625rem" }}>
+              <Account />
+              {/* <Lens /> */}
+            </div>
+          </Header>
+          <StyledContent>
+            {authError && (
+              <div style={styles.errorDiv}>
+                <Alert message={authError.message} type="error" closable />
               </div>
-            </Header>
-            <StyledContent>
-              {authError && (
-                <div style={styles.errorDiv}>
-                  <Alert message={authError.message} type="error" closable />
-                </div>
-              )}
-              <div style={styles.content}>
-                <Switch>
-                  <Route path="/dashboard">
-                    <ERC20Balance />
-                  </Route>
-                  <Route path="/transfer">
-                    <Transfer />
-                  </Route>
-                  <Route path="/activity">
-                    <ERC20Transfers />
-                  </Route>
-                  <Route path="/dex">
-                    <DEX />
-                  </Route>
-                  <Route path="/onramper">
-                    <div style={{ display: "flex", justifyContent: "center" }}>
-                      <Onramper />
-                    </div>
-                  </Route>
-                  <Route path="/">
-                    <Redirect to="/dashboard" />
-                  </Route>
-                  <Route path="/home">
-                    <Redirect to="/dashboard" />
-                  </Route>
-                  <Route path="/nonauthenticated">
-                    <>Please login using the "Authenticate" button</>
-                  </Route>
-                </Switch>
-              </div>
-            </StyledContent>
-          </Layout>
-        </Router>
-      </Layout>
-    );
-  }
+            )}
+            <div style={styles.content}>
+              <Switch>
+                <Route path="/dashboard">
+                  <ERC20Balance />
+                </Route>
+                <Route path="/transfer">
+                  <Transfer />
+                </Route>
+                <Route path="/activity">
+                  <ERC20Transfers />
+                </Route>
+                <Route path="/dex">
+                  <DEX />
+                </Route>
+                <Route path="/onramper">
+                  <div style={{ display: "flex", justifyContent: "center" }}>
+                    <Onramper />
+                  </div>
+                </Route>
+                <Route path="/">
+                  <Redirect to="/dashboard" />
+                </Route>
+                <Route path="/home">
+                  <Redirect to="/dashboard" />
+                </Route>
+                <Route path="/nonauthenticated">
+                  <>Please login using the "Authenticate" button</>
+                </Route>
+              </Switch>
+            </div>
+          </StyledContent>
+        </Layout>
+      </Router>
+    </Layout>
+  );
 };
+// };
 
 export const Logo = () => (
   <div
