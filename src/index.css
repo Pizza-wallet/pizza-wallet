@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --brand-blue: #3e389f;
   --brand-blue-80: #645fb2;
