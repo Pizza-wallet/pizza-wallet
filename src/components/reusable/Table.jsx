@@ -1,4 +1,3 @@
-// import { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { SecondaryButton } from "./Buttons";
 import { Link } from "react-router-dom";
@@ -54,7 +53,10 @@ function Table({ tableData, columns, tableTitle }) {
     return columns.map((val, i) => <th key={i}>{val.title}</th>);
   };
 
-  if (!tableData)
+  const dataLoading = !tableData;
+  const noDataReturned = Array.isArray(tableData) && !tableData.length;
+  if (dataLoading) return <></>;
+  if (noDataReturned)
     return (
       <>
         <Container3>
