@@ -1,4 +1,4 @@
-import { ChainId, getChainById } from "@lifinance/sdk";
+import { ChainId, getChainById } from "@lifi/sdk";
 import axios from "axios";
 const API = "https://api.gopluslabs.io/api/v1";
 

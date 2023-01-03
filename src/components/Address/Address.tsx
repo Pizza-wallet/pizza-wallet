@@ -23,7 +23,7 @@ interface IAddressProps {
   avatar?: string;
   size?: number;
   copyable: boolean;
-  style?: {};
+  style?: object;
 }
 
 function Address(props: IAddressProps) {
