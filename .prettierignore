@@ -3,4 +3,4 @@ build/
 yarn.lock
 package-lock.json
 Truffle/
-src/components/Onramp.jsx
+src/components/Onramper.jsx

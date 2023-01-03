@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useMoralis } from "react-moralis";
 import {
   HashRouter as Router,
@@ -6,55 +6,140 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { ChainsTokensToolsProvider } from "./components/Dex/providers/chainsTokensToolsProvider";
-import Account from "./components/Account/Account";
-import Chains from "./components/Chains";
-import ERC20Balance from "./components/ERC20Balance";
-import NFTBalance from "./components/NFTBalance";
-import ERC20Transfers from "./components/ERC20Transfers";
-import DEX from "./components/Dex/DEX";
-import Onramp from "./components/Onramp";
-import Wallet from "./components/Wallet";
-import SignIn from "./components/SignIn";
-import { Layout, Tabs, Alert } from "antd";
+import { Layout, Alert, Spin } from "antd";
 import "antd/dist/antd.css";
-import NativeBalance from "./components/NativeBalance";
-import "./style.css";
-import Text from "antd/lib/typography/Text";
-import MenuItems from "./components/MenuItems";
+import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
+import styled from "styled-components";
+
 const { Header, Sider, Content } = Layout;
+
+const ERC20Transfers = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'ERC20Transfers'*/
+      /*webpackPrefetch: true */ "./components/ERC20Transfers"
+    ),
+);
+const ERC20Balance = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'ERC20Balance'*/
+      /*webpackPrefetch: true */ "./components/ERC20Balance"
+    ),
+);
+const DEX = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'DEX'*/
+      /*webpackPrefetch: true */ "./components/Dex/DEX"
+    ),
+);
+const Account = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'Account'*/
+      /*webpackPrefetch: true */ "./components/Account/Account"
+    ),
+);
+const Transfer = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'Transfers'*/
+      /*webpackPrefetch: true */ "./components/Wallet/components/Transfer"
+    ),
+);
+const Onramper = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'Onramper'*/
+      /*webpackPrefetch: true */ "./components/Onramper"
+    ),
+);
+const NativeBalance = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'NativeBalance'*/
+      /*webpackPrefetch: true */ "./components/NativeBalance"
+    ),
+);
+const SignIn = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'SignIn'*/
+      /*webpackPrefetch: true */ "./components/SignIn"
+    ),
+);
+const MenuItems = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: 'MenuItems'*/
+      /*webpackPrefetch: true */ "./components/MenuItems"
+    ),
+);
+
+const BackdropStyled = styled("div")`
+  position: absolute;
+  right: 2rem;
+  top: 0.5rem;
+  height: 7.3125rem;
+  width: 13.4375rem;
+  border: 0.125rem solid #3e389f;
+  background-color: var(--layout-white);
+  border-radius: 0.9375rem;
+`;
+
+const BalanceContainerStyled = styled("div")`
+  width: 13.75rem;
+  height: 7.5rem;
+  border: 0.125rem solid #3e389f;
+  border-radius: 0.9375rem;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  background-color: var(--layout-white);
+  margin-top: 2.1875rem;
+`;
+
+const BalanceTitleStyled = styled("div")`
+  height: 2.5rem;
+  background-color: rgba(77, 195, 89, 0.7);
+  border-top-left-radius: 0.9375rem;
+  border-top-right-radius: 0.9375rem;
+  border: 0.125rem solid #3e389f;
+  border-bottom: 0.125rem solid #3e389f;
+  margin: -0.125rem;
+`;
+
+const BalanceTextStyled = styled("p")`
+  font-weight: bold;
+  font-family: "Gloria Hallelujah", sans-serif;
+  font-size: 1.5rem;
+  color: #3e389f;
+  padding-top: 0.125em;
+  padding-left: 0.5375em;
+  -webkit-text-stroke: thin;
+`;
+
+const GridLayout = styled(Layout)`
+  height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  background: var(--layout-blue);
+`;
+
+const StyledContent = styled(Content)`
+  overflow-y: auto;
+  padding-bottom: 1.25rem;
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+`;
 
 const styles = {
   content: {
-    display: "flex",
-    justifyContent: "center",
-    fontFamily: "Roboto, sans-serif",
-    marginTop: "130px",
-    padding: "10px",
-  },
-  header: {
-    zIndex: 1,
+    padding: "0.625rem",
     width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    fontFamily: "Roboto, sans-serif",
-    // borderBottom: "2px solid rgba(0, 0, 0, 0.06)",
-    padding: "0 10px",
-    // boxShadow: "0 1px 10px rgb(151 164 175 / 10%)",
-  },
-  headerRight: {
-    display: "flex",
-    gap: "8px",
-    alignItems: "center",
-    fontSize: "15px",
-    fontWeight: "600",
-  },
-  siderBalance: {
-    margin: "15px",
-    fontSize: "30px",
-    borderRadius: "1em",
-    backgroundColor: "#141414",
   },
   errorDiv: {
     width: "100%",
@@ -62,14 +147,8 @@ const styles = {
     marginTop: "1em",
     justifyContent: "center",
   },
-  bglogin: {
-    height: "100vh",
-    display: "grid",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundImage: "linear-gradient(90deg, #1eb7ef, #b114fb)",
-  },
 };
+
 const App = () => {
   const {
     isWeb3Enabled,
@@ -77,54 +156,107 @@ const App = () => {
     isAuthenticated,
     isWeb3EnableLoading,
     authError,
+    account,
+    isInitialized,
   } = useMoralis();
 
+  const [collapsedSideBar, setCollapsedSideBar] = useState(false);
+  const [showDashBoard, setShowDashboard] = useState(true);
+
   useEffect(() => {
-    type Web3ProviderType = any;
-    const connectorId: Web3ProviderType =
-      window.localStorage.getItem("connectorId");
+    const connectorId: any = window.localStorage.getItem("connectorId");
     const chainId = Number(window.localStorage.getItem("chainId"));
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
       enableWeb3({
         provider: connectorId,
         clientId:
-          "BE2p8-JooSSoekLwDP-cdFgGLrCDGOC_5F-VgtHYY1I7BG0OzuVbDlNQVZJlC-b37ZI_rnVNt4Q2gAVQovvY3CI",
+          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
         chainId: chainId,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
-  if (!isAuthenticated) {
-    return (
-      <Layout className="fade" style={styles.bglogin}>
-        <SignIn />
-      </Layout>
-    );
-  } else {
-    return (
-      <Layout style={{ height: "100vh", overflow: "hidden" }}>
+  useEffect(() => {
+    const isAuth = () =>
+      !isAuthenticated ? setShowDashboard(false) : setShowDashboard(true);
+    isInitialized && isAuth();
+  }, [isInitialized, isAuthenticated]);
+
+  // if (!showDashBoard || !account) {
+  //   return (
+  //     <GridLayout>
+  //       <React.Suspense
+  //         fallback={<Spin size="large" style={{ color: "#3e389f" }}></Spin>}
+  //       >
+  //         <SignIn />
+  //       </React.Suspense>
+  //     </GridLayout>
+  //   );
+  // } else {
+  return (
+    <Layout style={{ height: "100vh" }} hasSider>
+      <React.Suspense
+        fallback={
+          <GridLayout>
+            <Spin size="large" style={{ color: "#3e389f" }}></Spin>
+          </GridLayout>
+        }
+      >
         <Router>
-          <Header className="fade" style={styles.header}>
+          <Sider
+            width={293}
+            breakpoint="md"
+            collapsedWidth="0"
+            onBreakpoint={(broken) => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+              setCollapsedSideBar(!collapsedSideBar);
+            }}
+            style={{
+              zIndex: "1",
+              height: "100vh",
+              position: "fixed",
+              width: "18.3125rem",
+              backgroundColor: "#F8F2ED",
+              left: 0,
+              top: 0,
+              bottom: 0,
+            }}
+          >
             <div style={{ display: "flex" }}>
               <Logo />
-              <p className="logotext">Pizza</p>
             </div>
-            <div style={styles.headerRight}>
-              <Chains />
-              <Account />
-            </div>
-          </Header>
-          <Layout className="fade" style={{ backgroundColor: "#1f1f1f" }}>
-            <Sider width={"16em"}>
-              <div style={styles.siderBalance}>
-                <Text style={{ fontSize: "15px", margin: "10px" }} strong>
-                  Balance
-                </Text>
+            <div style={{ position: "relative" }}>
+              <BackdropStyled></BackdropStyled>
+              <BalanceContainerStyled>
+                <BalanceTitleStyled>
+                  <BalanceTextStyled>Balance</BalanceTextStyled>
+                </BalanceTitleStyled>
                 <NativeBalance />
+              </BalanceContainerStyled>
+            </div>
+            <MenuItems />
+          </Sider>
+          <Layout
+            style={{
+              marginLeft: collapsedSideBar ? 0 : 293,
+              backgroundColor: "#2F2A75",
+            }}
+          >
+            <Header
+              style={{
+                marginTop: "2rem",
+                padding: 0,
+                backgroundColor: "#2F2A75",
+              }}
+            >
+              <div style={{ float: "right", marginRight: "0.625rem" }}>
+                <Account />
               </div>
-              <MenuItems />
-            </Sider>
-            <Content id="internal">
+            </Header>
+            <StyledContent>
               {authError && (
                 <div style={styles.errorDiv}>
                   <Alert message={authError.message} type="error" closable />
@@ -132,29 +264,22 @@ const App = () => {
               )}
               <div style={styles.content}>
                 <Switch>
-                  <Route path="/wallet">
-                    <Wallet />
+                  <Route path="/dashboard">
+                    <ERC20Balance />
                   </Route>
-                  <Route path="/dex">
-                    <ChainsTokensToolsProvider>
-                      <DEX />
-                    </ChainsTokensToolsProvider>
+                  <Route path="/transfer">
+                    <Transfer />
                   </Route>
-                  <Route path="/erc20transfers">
+                  <Route path="/activity">
                     <ERC20Transfers />
                   </Route>
-                  <Route path="/dashboard">
-                    <Tabs defaultActiveKey="1" style={{ alignItems: "center" }}>
-                      <Tabs.TabPane tab={<span>Tokens</span>} key="1">
-                        <ERC20Balance />
-                      </Tabs.TabPane>
-                      <Tabs.TabPane tab={<span>NFTs</span>} key="2">
-                        <NFTBalance />
-                      </Tabs.TabPane>
-                    </Tabs>
+                  <Route path="/dex">
+                    <DEX />
                   </Route>
-                  <Route path="/onramp">
-                    <Onramp />
+                  <Route path="/onramper">
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <Onramper />
+                    </div>
                   </Route>
                   <Route path="/">
                     <Redirect to="/dashboard" />
@@ -167,17 +292,27 @@ const App = () => {
                   </Route>
                 </Switch>
               </div>
-            </Content>
+            </StyledContent>
           </Layout>
         </Router>
-      </Layout>
-    );
-  }
+      </React.Suspense>
+    </Layout>
+  );
+  // }
 };
 
 export const Logo = () => (
-  <div style={{ display: "flex", paddingTop: "4px" }}>
-    <img src="pizza.svg" alt="logo" />
+  <div
+    style={{
+      display: "flex",
+      padding: "0.625rem",
+      width: "14.6875rem",
+      marginLeft: "auto",
+      marginRight: "auto",
+      marginTop: "1.5625rem",
+    }}
+  >
+    <img src={PizzaWalletLogo} alt="logo" />
   </div>
 );
 

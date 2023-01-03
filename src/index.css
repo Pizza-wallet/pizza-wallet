@@ -1,3 +1,11 @@
+:root {
+  --brand-blue: #3e389f;
+  --brand-blue-80: #645fb2;
+  --dirty-white-2: #f2f3f4;
+  --layout-blue: #2f2a75;
+  --layout-white: #f8f2ed;
+}
+
 *,
 *::before,
 *::after {
@@ -28,10 +36,29 @@ dd {
 
 body {
   min-height: 100vh;
-  scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   line-height: 1.5;
-  background-color: white;
+  background-color: #103658;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Below font-size informs em / rem values used in the rest of the app */
+/* 100% = 16px */
+body {
+  font-size: 100%;
+}
+
+@media only screen and (max-width: 78.125em) {
+  body {
+    font-size: 87.5%;
+  }
+}
+
+@media only screen and (max-width: 23.75em) {
+  body {
+    font-size: 75%;
+  }
 }
 
 ul[class],
@@ -39,22 +66,75 @@ ol[class] {
   list-style: none;
 }
 
-a:not([class]) {
-  text-decoration-skip-ink: auto;
-}
-
 img {
   max-width: 100%;
   display: block;
 }
 
-article > * + * {
-  margin-top: 1em;
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--layout-white);
+  width: 80%;
+  height: 80%;
+  padding: 0.625rem 1.25rem 0.625rem 1.25rem;
+  border: 0.125rem solid var(--brand-blue);
+  border-collapse: separate;
+  border-radius: 2.5625rem;
+  border-spacing: 0px;
+  margin: 0 auto;
 }
 
-input,
-button,
-textarea,
-select {
-  font: inherit;
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+  border-collapse: separate;
+  font-size: 1.3rem;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+th,
+td {
+  padding: 0.3125rem 0.25rem 0.375rem 0.25rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--brand-blue);
+  font-family: "Gloria Hallelujah", sans-serif;
+  -webkit-text-stroke: thin;
+}
+
+td {
+  font-size: 1.1em;
+  font-family: "Rubik", sans-serif;
+}
+
+thead:first-child tr:first-child th:first-child,
+tbody:first-child tr:first-child td:first-child {
+  border-radius: 0.25rem 0 0 0;
+}
+thead:last-child tr:last-child th:first-child,
+tbody:last-child tr:last-child td:first-child {
+  border-radius: 0 0 0 0.25rem;
+}
+
+.scrollable-table {
+  overflow-x: auto;
+}
+
+.tabControls {
+  font-family: "Gloria Hallelujah", sans-serif;
+  color: #3e389f;
+  font-size: 1.875rem;
+  margin: 0 0 0.3125rem 0.9375rem;
+  -webkit-text-stroke: thin;
+}
+
+.ant-select-selector {
+  border-radius: 0.8125rem !important;
 }

@@ -1,4 +1,4 @@
-import { TokenWithAmounts } from "@lifinance/sdk";
+import { TokenWithAmounts } from "@lifi/sdk";
 
 // all reusable interfaces here -
 export interface TokenAmountList {
