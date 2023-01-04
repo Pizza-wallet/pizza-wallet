@@ -124,7 +124,7 @@ export const checkVariants = (token: IToken, tokens: IToken[]) => {
       const currentTokenPrice = Number(token.priceUSD);
       const nativeTokenPrice = Number(userHasNativeToken[0].priceUSD);
       // check price is within 2% either side
-      const priceVariance = (nativeTokenPrice / 100) * 2;
+      const priceVariance = (nativeTokenPrice / 100) * 10;
       const priceIsSimilar =
         between(
           currentTokenPrice,
