@@ -10,6 +10,8 @@ import { Layout, Alert, Spin } from "antd";
 import "antd/dist/antd.css";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
+import { ChainsTokensToolsProvider } from "./providers/chainsTokensToolsProvider";
+import { IGroupedToken } from "./types";
 
 const { Header, Sider, Content } = Layout;
 
@@ -24,7 +26,7 @@ const ERC20Balance = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'ERC20Balance'*/
-      /*webpackPrefetch: true */ "./components/ERC20Balance"
+      /*webpackPrefetch: true */ "./components/ERC20Balance/ERC20Balance"
     ),
 );
 const DEX = React.lazy(
@@ -55,11 +57,11 @@ const Onramper = React.lazy(
       /*webpackPrefetch: true */ "./components/Onramper"
     ),
 );
-const NativeBalance = React.lazy(
+const TotalBalance = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'NativeBalance'*/
-      /*webpackPrefetch: true */ "./components/NativeBalance"
+      /*webpackPrefetch: true */ "./components/TotalBalance"
     ),
 );
 const SignIn = React.lazy(
@@ -161,6 +163,8 @@ const App = () => {
   } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
+  const [totalBalance, setTotalBalance] = useState<string>();
+  const [balances, setBalances] = useState<IGroupedToken[]>([]);
   const [showDashBoard, setShowDashboard] = useState(true);
 
   useEffect(() => {
@@ -182,18 +186,19 @@ const App = () => {
     isInitialized && isAuth();
   }, [isInitialized, isAuthenticated]);
 
-  if (!showDashBoard || !account) {
-    return (
-      <GridLayout>
-        <React.Suspense
-          fallback={<Spin size="large" style={{ color: "#3e389f" }}></Spin>}
-        >
-          <SignIn />
-        </React.Suspense>
-      </GridLayout>
-    );
-  } else {
-    return (
+  // if (!showDashBoard || !account) {
+  //   return (
+  //     <GridLayout>
+  //       <React.Suspense
+  //         fallback={<Spin size="large" style={{ color: "#3e389f" }}></Spin>}
+  //       >
+  //         <SignIn />
+  //       </React.Suspense>
+  //     </GridLayout>
+  //   );
+  // }  else {
+  return (
+    <ChainsTokensToolsProvider>
       <Layout style={{ height: "100vh" }} hasSider>
         <React.Suspense
           fallback={
@@ -234,7 +239,7 @@ const App = () => {
                   <BalanceTitleStyled>
                     <BalanceTextStyled>Balance</BalanceTextStyled>
                   </BalanceTitleStyled>
-                  <NativeBalance />
+                  <TotalBalance totalBalance={totalBalance} />
                 </BalanceContainerStyled>
               </div>
               <MenuItems />
@@ -265,7 +270,11 @@ const App = () => {
                 <div style={styles.content}>
                   <Switch>
                     <Route path="/dashboard">
-                      <ERC20Balance />
+                      <ERC20Balance
+                        setTotalBalance={setTotalBalance}
+                        setBalances={setBalances}
+                        balances={balances}
+                      />
                     </Route>
                     <Route path="/transfer">
                       <Transfer />
@@ -299,8 +308,9 @@ const App = () => {
           </Router>
         </React.Suspense>
       </Layout>
-    );
-  }
+    </ChainsTokensToolsProvider>
+  );
+  // }
 };
 
 export const Logo = () => (

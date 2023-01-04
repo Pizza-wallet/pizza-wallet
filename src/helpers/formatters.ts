@@ -16,6 +16,23 @@ export const c2 = new Intl.NumberFormat("en-us", {
   maximumFractionDigits: 2,
 });
 
+export const limitDigits = (number: number) => {
+  if (number === 0) return 0;
+  if (number >= 1) {
+    // it's a positive number show with two digits
+    return number.toFixed(2);
+  }
+  // next check number has integer straight after decimal
+  // if so show with 6 digits
+  const decimalStr = number.toString().split(".")[1];
+  if (decimalStr[0] !== "0") {
+    return number.toFixed(6);
+  }
+
+  // else show with 8 digits
+  return number.toFixed(8);
+};
+
 /**
  * Returns a string of form "abc...xyz"
  * @param {string} str string to string

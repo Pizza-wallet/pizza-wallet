@@ -71,18 +71,15 @@ img {
   display: block;
 }
 
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  background-color: var(--layout-white);
-  width: 80%;
-  height: 80%;
-  padding: 0.625rem 1.25rem 0.625rem 1.25rem;
-  border: 0.125rem solid var(--brand-blue);
-  border-collapse: separate;
-  border-radius: 2.5625rem;
-  border-spacing: 0px;
-  margin: 0 auto;
+article > * + * {
+  margin-top: 1em;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }
 
 thead {
@@ -99,9 +96,17 @@ tr {
   border-color: inherit;
 }
 
-th,
+th {
+  padding: 0.625rem 0.25rem 0.625rem 0.25rem;
+  text-align: left;
+  vertical-align: top;
+  color: var(--brand-blue);
+  font-family: "Gloria Hallelujah", sans-serif;
+  -webkit-text-stroke: thin;
+}
+
 td {
-  padding: 0.3125rem 0.25rem 0.375rem 0.25rem;
+  padding: 0.625rem 0.25rem 2.5rem 0.25rem;
   text-align: left;
   vertical-align: top;
   color: var(--brand-blue);
@@ -137,4 +142,8 @@ tbody:last-child tr:last-child td:first-child {
 
 .ant-select-selector {
   border-radius: 0.8125rem !important;
+}
+
+.ant-spin-dot-item {
+  background-color: #2f2a75;
 }

@@ -1,6 +1,7 @@
 import { useMoralis } from "react-moralis";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import { getExplorer } from "../../helpers/networks";
+import "antd/dist/antd.css";
 import { useERC20Transfers } from "../../hooks/useERC20Transfers";
 import Table from "../reusable/Table";
 
@@ -59,9 +60,11 @@ function ERC20Transfers() {
         }}
       >
         <Table
+          loading={!ERC20Transfers}
           tableData={ERC20Transfers}
           columns={columns}
           tableTitle={"Transactions History"}
+          expandableRow={false}
         />
       </div>
     </div>
