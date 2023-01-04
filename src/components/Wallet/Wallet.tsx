@@ -31,7 +31,7 @@ function Wallet() {
         <StyledHeader>
           <Blockie scale={5} avatar currentWallet style />
           <Address size={6} copyable />
-          <NativeBalance />
+          <NativeBalance totalBalance={""} />
         </StyledHeader>
       }
     >

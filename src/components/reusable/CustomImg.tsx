@@ -4,6 +4,8 @@ interface ICustomImg {
   height?: string;
   width?: string;
   margin?: string;
+  borderRadius?: string;
+  display?: string;
 }
 
 export const CustomImg = styled("img")`
