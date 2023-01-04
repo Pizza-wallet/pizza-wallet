@@ -38,9 +38,7 @@ Self custodial, decentralized, chain agnostic, service aggregator wallet. The on
 - Arbitrum
 - Optimism
 - Binance
-- Harmony
 - Gnosis
-- Celo
 
 ## Development Guide
 
