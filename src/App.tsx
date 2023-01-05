@@ -31,7 +31,7 @@ const DEX = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'DEX'*/
-      /*webpackPrefetch: true */ "./components/DEX"
+      /*webpackPrefetch: true */ "./components/Dex"
     ),
 );
 const Account = React.lazy(
@@ -182,125 +182,123 @@ const App = () => {
     isInitialized && isAuth();
   }, [isInitialized, isAuthenticated]);
 
-  if (!showDashBoard || !account) {
-    return (
-      <GridLayout>
-        <React.Suspense
-          fallback={<Spin size="large" style={{ color: "#3e389f" }}></Spin>}
-        >
-          <SignIn />
-        </React.Suspense>
-      </GridLayout>
-    );
-  } else {
-    return (
-      <Layout style={{ height: "100vh" }} hasSider>
-        <React.Suspense
-          fallback={
-            <GridLayout>
-              <Spin size="large" style={{ color: "#3e389f" }}></Spin>
-            </GridLayout>
-          }
-        >
-          <Router>
-            <Sider
-              width={293}
-              breakpoint="md"
-              collapsedWidth="0"
-              onBreakpoint={(broken) => {
-                console.log(broken);
-              }}
-              onCollapse={(collapsed, type) => {
-                console.log(collapsed, type);
-                setCollapsedSideBar(!collapsedSideBar);
-              }}
+  // if (!showDashBoard || !account) {
+  //   return (
+  //     <GridLayout>
+  //       <React.Suspense
+  //         fallback={<Spin size="large" style={{ color: "#3e389f" }}></Spin>}
+  //       >
+  //         <SignIn />
+  //       </React.Suspense>
+  //     </GridLayout>
+  //   );
+  // } else {
+  return (
+    <Layout style={{ height: "100vh" }} hasSider>
+      <React.Suspense
+        fallback={
+          <GridLayout>
+            <Spin size="large" style={{ color: "#3e389f" }}></Spin>
+          </GridLayout>
+        }
+      >
+        <Router>
+          <Sider
+            width={293}
+            breakpoint="md"
+            collapsedWidth="0"
+            onBreakpoint={(broken) => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+              setCollapsedSideBar(!collapsedSideBar);
+            }}
+            style={{
+              zIndex: "1",
+              height: "100vh",
+              position: "fixed",
+              width: "18.3125rem",
+              backgroundColor: "#F8F2ED",
+              left: 0,
+              top: 0,
+              bottom: 0,
+            }}
+          >
+            <div style={{ display: "flex" }}>
+              <Logo />
+            </div>
+            <div style={{ position: "relative" }}>
+              <BackdropStyled></BackdropStyled>
+              <BalanceContainerStyled>
+                <BalanceTitleStyled>
+                  <BalanceTextStyled>Balance</BalanceTextStyled>
+                </BalanceTitleStyled>
+                <NativeBalance />
+              </BalanceContainerStyled>
+            </div>
+            <MenuItems />
+          </Sider>
+          <Layout
+            style={{
+              marginLeft: collapsedSideBar ? 0 : 293,
+              backgroundColor: "#2F2A75",
+            }}
+          >
+            <Header
               style={{
-                zIndex: "1",
-                height: "100vh",
-                position: "fixed",
-                width: "18.3125rem",
-                backgroundColor: "#F8F2ED",
-                left: 0,
-                top: 0,
-                bottom: 0,
-              }}
-            >
-              <div style={{ display: "flex" }}>
-                <Logo />
-              </div>
-              <div style={{ position: "relative" }}>
-                <BackdropStyled></BackdropStyled>
-                <BalanceContainerStyled>
-                  <BalanceTitleStyled>
-                    <BalanceTextStyled>Balance</BalanceTextStyled>
-                  </BalanceTitleStyled>
-                  <NativeBalance />
-                </BalanceContainerStyled>
-              </div>
-              <MenuItems />
-            </Sider>
-            <Layout
-              style={{
-                marginLeft: collapsedSideBar ? 0 : 293,
+                marginTop: "2rem",
+                padding: 0,
                 backgroundColor: "#2F2A75",
               }}
             >
-              <Header
-                style={{
-                  marginTop: "2rem",
-                  padding: 0,
-                  backgroundColor: "#2F2A75",
-                }}
-              >
-                <div style={{ float: "right", marginRight: "0.625rem" }}>
-                  <Account />
+              <div style={{ float: "right", marginRight: "0.625rem" }}>
+                <Account />
+              </div>
+            </Header>
+            <StyledContent>
+              {authError && (
+                <div style={styles.errorDiv}>
+                  <Alert message={authError.message} type="error" closable />
                 </div>
-              </Header>
-              <StyledContent>
-                {authError && (
-                  <div style={styles.errorDiv}>
-                    <Alert message={authError.message} type="error" closable />
-                  </div>
-                )}
-                <div style={styles.content}>
-                  <Switch>
-                    <Route path="/dashboard">
-                      <ERC20Balance />
-                    </Route>
-                    <Route path="/transfer">
-                      <Transfer />
-                    </Route>
-                    <Route path="/activity">
-                      <ERC20Transfers />
-                    </Route>
-                    <Route path="/dex">
-                      <DEX />
-                    </Route>
-                    <Route path="/onramper">
-                      <div
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <Onramper />
-                      </div>
-                    </Route>
-                    <Route path="/">
-                      <Redirect to="/dashboard" />
-                    </Route>
-                    <Route path="/home">
-                      <Redirect to="/dashboard" />
-                    </Route>
-                    <Route path="/nonauthenticated">
-                      <>Please login using the "Authenticate" button</>
-                    </Route>
-                  </Switch>
-                </div>
-              </StyledContent>
-            </Layout>
-          </Router>
-        </React.Suspense>
-      </Layout>
-    );
-  }
+              )}
+              <div style={styles.content}>
+                <Switch>
+                  <Route path="/dashboard">
+                    <ERC20Balance />
+                  </Route>
+                  <Route path="/transfer">
+                    <Transfer />
+                  </Route>
+                  <Route path="/activity">
+                    <ERC20Transfers />
+                  </Route>
+                  <Route path="/dex">
+                    <DEX />
+                  </Route>
+                  <Route path="/onramper">
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <Onramper />
+                    </div>
+                  </Route>
+                  <Route path="/">
+                    <Redirect to="/dashboard" />
+                  </Route>
+                  <Route path="/home">
+                    <Redirect to="/dashboard" />
+                  </Route>
+                  <Route path="/nonauthenticated">
+                    <>Please login using the "Authenticate" button</>
+                  </Route>
+                </Switch>
+              </div>
+            </StyledContent>
+          </Layout>
+        </Router>
+      </React.Suspense>
+    </Layout>
+  );
+  // }
 };
 
 export const Logo = () => (
