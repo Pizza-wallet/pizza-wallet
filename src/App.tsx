@@ -17,7 +17,7 @@ const ERC20Transfers = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'ERC20Transfers'*/
-      /*webpackPrefetch: true */ "./components/ERC20Transfers"
+      /*webpackPrefetch: true */ "./components/ERC20Transfers/utils"
     ),
 );
 const ERC20Balance = React.lazy(
