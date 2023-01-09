@@ -11,7 +11,7 @@
     "@web3auth/web3auth": "^1.1.4",
     "antd": "^4.16.13",
     "magic-sdk": "^9.0.0",
-    "moralis": "1.5.9",
+    "moralis": "2.11.0",
     "react": "^17.0.2",
     "react-blockies": "^1.4.1",
     "react-dom": "^17.0.2",
