@@ -1,7 +1,6 @@
 import { CreditCardOutlined } from "@ant-design/icons";
 import { Input, notification } from "antd";
 import React, { useEffect, useState } from "react";
-import { useMoralis } from "react-moralis";
 import AddressInput from "../../AddressInput";
 import AssetSelector from "./AssetSelector";
 import styled from "styled-components";
@@ -100,7 +99,6 @@ interface Iresult {
 }
 
 function Transfer() {
-  const { Moralis } = useMoralis();
   const [receiver, setReceiver] = useState<string>();
   const [asset, setAsset] = useState<IAsset>();
   const [tx, setTx] = useState<ITransaction>({
@@ -143,7 +141,8 @@ function Transfer() {
       case "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee":
         options = {
           native: "native",
-          amount: Moralis.Units.ETH(transactionAmount),
+          // todo: replace unit formatter with ethers
+          //amount: Moralis.Units.ETH(transactionAmount),
           receiver,
           awaitReceipt: false,
         };
@@ -151,7 +150,8 @@ function Transfer() {
       default:
         options = {
           type: "erc20",
-          amount: Moralis.Units.Token(transactionAmount, asset?.decimals),
+          // todo: replace unit formatter with ethers
+          //amount: Moralis.Units.Token(transactionAmount, asset?.decimals),
           receiver,
           contractAddress: asset?.token_address,
           awaitReceipt: false,
@@ -160,36 +160,37 @@ function Transfer() {
 
     setIsPending(true);
 
-    try {
-      const txStatus: Transaction = await Moralis.transfer(options);
-
-      const result: Iresult = txStatus.wait
-        ? await txStatus.wait()
-        : { status: "", to: "", error: "Error waiting on result" };
-
-      switch (result.status) {
-        case "1":
-          openNotification({
-            message: "🔊 New Transaction",
-            description: `To: ${result.to}`,
-          });
-          setIsPending(false);
-          break;
-        default:
-          openNotification({
-            message: "📃 Error",
-            description: `${result.error}`,
-          });
-          setIsPending(false);
-      }
-    } catch (error: any) {
-      openNotification({
-        message: "📃 Error",
-        description: `${error.message}`,
-      });
-      setIsPending(false);
-      console.log(error);
-    }
+    // todo: implement transaction notification on submissionb
+    //try {
+    //  const txStatus: Transaction = await Moralis.transfer(options);
+    //
+    //  const result: Iresult = txStatus.wait
+    //    ? await txStatus.wait()
+    //    : { status: "", to: "", error: "Error waiting on result" };
+    //
+    //  switch (result.status) {
+    //    case "1":
+    //      openNotification({
+    //        message: "🔊 New Transaction",
+    //        description: `To: ${result.to}`,
+    //      });
+    //      setIsPending(false);
+    //      break;
+    //    default:
+    //      openNotification({
+    //        message: "📃 Error",
+    //        description: `${result.error}`,
+    //      });
+    //      setIsPending(false);
+    //  }
+    //} catch (error: any) {
+    //  openNotification({
+    //    message: "📃 Error",
+    //    description: `${error.message}`,
+    //  });
+    //  setIsPending(false);
+    //  console.log(error);
+    //}
   }
 
   return (
@@ -202,7 +203,7 @@ function Transfer() {
         <AddressInput autoFocus onChange={setReceiver} />
 
         <Text>Asset:</Text>
-        <AssetSelector setAsset={setAsset} style={{ width: "100%" }} />
+        {/*<AssetSelector setAsset={setAsset} style={{ width: "100%" }} />*/}
 
         <Text>Amount:</Text>
         <StyledInput

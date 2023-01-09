@@ -1,5 +1,3 @@
-import { useMoralis } from "react-moralis";
-
 interface IAuthenticateArgs {
   provider?: string;
   clientId?: string;
@@ -10,18 +8,20 @@ interface IAuthenticateArgs {
 }
 
 export const useAuthenticateUser = () => {
-  const { authenticate } = useMoralis();
+
+  // todo: parse oauth connector function
+  //const authenticate = ();
 
   const authenticateUser = async (
     args: IAuthenticateArgs,
     connectorId: string,
   ) => {
     // can be swapped for web3auth later
-    const auth: any = authenticate;
-    await auth(args);
+    //const auth: any = authenticate;
+    //await auth(args);
     window.localStorage.setItem("connectorId", connectorId);
     window.localStorage.setItem("chainId", "0x1");
   };
 
-  return { authenticateUser };
+  //return { authenticateUser };
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useMoralis } from "react-moralis";
 import {
   HashRouter as Router,
   Switch,
@@ -152,40 +151,17 @@ const styles = {
 };
 
 const App = () => {
-  const {
-    isWeb3Enabled,
-    enableWeb3,
-    isAuthenticated,
-    isWeb3EnableLoading,
-    authError,
-    account,
-    isInitialized,
-  } = useMoralis();
 
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
   const [totalBalance, setTotalBalance] = useState<string>();
   const [balances, setBalances] = useState<IGroupedToken[]>([]);
-  const [showDashBoard, setShowDashboard] = useState(true);
+  //const [showDashBoard, setShowDashboard] = useState(true);
 
-  useEffect(() => {
-    const connectorId: any = window.localStorage.getItem("connectorId");
-    const chainId: number = Number(window.localStorage.getItem("chainId"));
-    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
-      enableWeb3({
-        provider: connectorId,
-        clientId:
-          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
-        chainId: chainId,
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, isWeb3Enabled]);
-
-  useEffect(() => {
-    const isAuth = () =>
-      !isAuthenticated ? setShowDashboard(false) : setShowDashboard(true);
-    isInitialized && isAuth();
-  }, [isInitialized, isAuthenticated]);
-
+  //useEffect(() => {
+  //  const isAuth = () =>
+  //    !isAuthenticated ? setShowDashboard(false) : setShowDashboard(true);
+  //  isInitialized && isAuth();
+  //}, [isInitialized, isAuthenticated]);
   // if (!showDashBoard || !account) {
   //   return (
   //     <GridLayout>
@@ -262,11 +238,12 @@ const App = () => {
                 </div>
               </Header>
               <StyledContent>
-                {authError && (
+                {/*{authError && (
                   <div style={styles.errorDiv}>
                     <Alert message={authError.message} type="error" closable />
                   </div>
                 )}
+                */}
                 <div style={styles.content}>
                   <Switch>
                     <Route path="/dashboard">
