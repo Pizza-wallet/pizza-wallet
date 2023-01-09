@@ -1,5 +1,4 @@
 import { useEffect, useState, Dispatch } from "react";
-import { useMoralis } from "react-moralis";
 import styled from "styled-components";
 import Table from "../reusable/Table";
 import { limitDigits } from "../../helpers/formatters";
@@ -26,7 +25,7 @@ function ERC20Balance({
   setBalances,
   balances,
 }: IERC20Balance) {
-  const { account } = useMoralis();
+  // todo: set authentication state variables
   const { tokens } = useChainsTokensTools();
   const [loading, setLoading] = useState(true);
 
@@ -72,7 +71,8 @@ function ERC20Balance({
     if (tokensLoaded) {
       getBalancesAsync();
     }
-  }, [account, tokens]);
+  // todo: add account state variable to the array
+  }, [tokens]);
 
   return (
     <TableContainer>

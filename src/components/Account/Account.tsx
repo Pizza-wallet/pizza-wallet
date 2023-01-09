@@ -1,4 +1,3 @@
-import { useMoralis } from "react-moralis";
 import { Spin, Alert } from "antd";
 import { Button, Card, Modal } from "antd";
 import { useState } from "react";
@@ -10,7 +9,7 @@ import { connectors } from "./config";
 import { CustomImg } from "../reusable/CustomImg";
 import AccountLogo from "../../assets/account-logo.svg";
 import styled from "styled-components";
-import { useAuthenticateUser } from "../../hooks/useAuthenticateUser";
+// import { useAuthenticateUser } from "../../hooks/useAuthenticateUser";
 
 const AccountLogoContainer = styled("div")`
   cursor: pointer;
@@ -55,13 +54,13 @@ const styles = {
 };
 
 function Account() {
-  const { isAuthenticated, isAuthenticating, account, chainId, logout } =
-    useMoralis();
-  const { authenticateUser } = useAuthenticateUser();
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  //const { authenticateUser } = useAuthenticateUser();
+  // todo: add state variables for authentication
+  //const [isModalVisible, setIsModalVisible] = useState(false);
   const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
+  const [isAuthenticated] = useState(true)
 
-  if (!isAuthenticated || !account) {
+  if (isAuthenticated) {
     return (
       <>
         <div onClick={() => setIsAuthModalVisible(true)}>
@@ -92,7 +91,7 @@ function Account() {
               fontSize: "1.25rem",
             }}
           >
-            <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
+            <Spin spinning> Connect Wallet </Spin>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
             {connectors.map(({ title, icon, connectorId }, key) => {
@@ -101,20 +100,20 @@ function Account() {
                 <StyledConnector
                   key={key}
                   onClick={async () => {
-                    try {
-                      await authenticateUser(
-                        {
-                          provider: provider,
-                          signingMessage: "Pizza Authentication",
-                        },
-                        connectorId,
-                      );
-
-                      setIsAuthModalVisible(false);
-                    } catch (e: any) {
-                      console.log(e);
-                      <Alert message={e.message} type="warning" closable />;
-                    }
+                    //try {
+                    //  await authenticateUser(
+                    //    {
+                    //      provider: provider,
+                    //      signingMessage: "Pizza Authentication",
+                    //    },
+                    //    connectorId,
+                    //  );
+                    //
+                    //  setIsAuthModalVisible(false);
+                    //} catch (e: any) {
+                    //  console.log(e);
+                    //  <Alert message={e.message} type="warning" closable />;
+                    //}
                   }}
                 >
                   <img src={icon} alt={title} style={styles.icon} />
@@ -130,13 +129,14 @@ function Account() {
 
   return (
     <>
-      <AccountLogoContainer onClick={() => setIsModalVisible(true)}>
+      {/* todo: set state variable onClick (onClick={() => setIsModalVisible(true)}) */} 
+      <AccountLogoContainer>
         <CustomImg width={"2.4375rem"} height={"2.4375rem"} src={AccountLogo} />
       </AccountLogoContainer>
       <Modal
-        visible={isModalVisible}
+        //visible={isModalVisible}
         footer={null}
-        onCancel={() => setIsModalVisible(false)}
+        //onCancel={() => setIsModalVisible(false)}
         bodyStyle={{
           padding: "0.9375rem",
           fontSize: "1.0625rem",
@@ -161,7 +161,7 @@ function Account() {
           />
           <div style={{ marginTop: "0.625rem", padding: "0 0.625rem" }}>
             <a
-              href={`${getExplorer(chainId ? chainId : "")}/address/${account}`}
+              //href={`${getExplorer(chainId ? chainId : "")}/address/${account}`}
               target="_blank"
               rel="noreferrer"
               style={{ color: "#3e389f" }}
@@ -186,11 +186,11 @@ function Account() {
             border: "0px",
             color: "white",
           }}
-          onClick={async () => {
-            await logout();
-            window.localStorage.removeItem("connectorId");
-            setIsModalVisible(false);
-          }}
+          //onClick={async () => {
+          //  await logout();
+          //  window.localStorage.removeItem("connectorId");
+          //  setIsModalVisible(false);
+          //}}
         >
           Disconnect Wallet
         </Button>

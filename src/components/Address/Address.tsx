@@ -3,7 +3,6 @@ import { useState } from "react";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import Blockie from "../Blockie";
 import "./identicon.css";
-import { useMoralis } from "react-moralis";
 import { Skeleton } from "antd";
 
 const styles = {
@@ -27,13 +26,13 @@ interface IAddressProps {
 }
 
 function Address(props: IAddressProps) {
-  const { account, isAuthenticated } = useMoralis();
+  // todo: create authentication state variables
   const [address, setAddress] = useState<any>();
   const [isClicked, setIsClicked] = useState(false);
 
-  useEffect(() => {
-    setAddress(props?.address || (isAuthenticated && account));
-  }, [account, isAuthenticated, props]);
+  //useEffect(() => {
+  //  setAddress(props?.address || (isAuthenticated && account));
+  //}, [account, isAuthenticated, props]);
 
   if (!address)
     return (

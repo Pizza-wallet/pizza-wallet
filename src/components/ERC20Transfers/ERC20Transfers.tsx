@@ -1,13 +1,9 @@
-import { useMoralis } from "react-moralis";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import { getExplorer } from "../../helpers/networks";
 import "antd/dist/antd.css";
-import { useERC20Transfers } from "../../hooks/useERC20Transfers";
 import Table from "../reusable/Table";
 
 function ERC20Transfers() {
-  const { ERC20Transfers, chainId } = useERC20Transfers();
-  const { Moralis } = useMoralis();
 
   const columns = [
     {
@@ -28,20 +24,21 @@ function ERC20Transfers() {
       key: "to_address",
       render: (to: string) => getEllipsisTxt(to, 8),
     },
-    {
-      title: "Value",
-      dataIndex: "value",
-      key: "value",
-      render: (value: number, item: { decimals: number }) =>
-        parseFloat(Moralis.Units.FromWei(value, item.decimals)).toFixed(6),
-    },
+    //{
+    //  title: "Value",
+    //  dataIndex: "value",
+    //  key: "value",
+    //  render: (value: number, item: { decimals: number }) =>
+        // todo: replace moralis unit conversion with ethers
+    //  parseFloat(Moralis.Units.FromWei(value, item.decimals)).toFixed(6),
+    //},
     {
       title: "Hash",
       dataIndex: "transaction_hash",
       key: "transaction_hash",
       render: (hash: string) => (
         <a
-          href={`${getExplorer(chainId ? chainId : "")}tx/${hash}`}
+          //href={`${getExplorer(chainId ? chainId : "")}tx/${hash}`}
           target="_blank"
           rel="noreferrer"
         >

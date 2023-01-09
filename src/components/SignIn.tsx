@@ -1,4 +1,3 @@
-import { useMoralis } from "react-moralis";
 import Account from "./Account/Account";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -104,22 +103,22 @@ const SocialIcons = styled("div")`
 `;
 
 export default function SignIn() {
-  const { authError } = useMoralis();
-  const { authenticateUser } = useAuthenticateUser();
+  // todo: add state variable for auth error and create error handling logic and component
+  //const { authenticateUser } = useAuthenticateUser();
 
   const handleCustomLogin = async () => {
-    await authenticateUser(
-      {
-        provider: "web3Auth",
-        clientId:
-          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
-        rpcTarget:
-          "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
-        chainId: "0x1",
-        appLogo: "pizza.png",
-      },
-      "web3Auth",
-    );
+    //await authenticateUser(
+    //  {
+    //    provider: "web3Auth",
+    //    clientId:
+    //      "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
+    //    rpcTarget:
+    //      "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
+    //    chainId: "0x1",
+    //    appLogo: "pizza.png",
+    //  },
+    //  "web3Auth",
+    //);
   };
 
   return (
@@ -138,7 +137,7 @@ export default function SignIn() {
             <FlexContainerCenter>
               <LoginTitle>Login</LoginTitle>
             </FlexContainerCenter>
-            {authError && alert(JSON.stringify(authError.message))}
+            {/*{authError && alert(JSON.stringify(authError.message))}*/}
             <div>
               <ButtonCard>
                 <SocialIcons onClick={handleCustomLogin}>

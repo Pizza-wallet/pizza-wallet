@@ -8,7 +8,6 @@
 - [Development Guide](#development-guide)
   - [Requirements](#requirements)
   - [Install all dependencies](#install-all-dependencies)
-  - [Create a Moralis Testnet Server](#create-a-moralis-testnet-server-deprecating-soon)
   - [Environment Variables](#environment-variables)
   - [Start a Development Server](#start-the-webpack-development-server)
   - [Build App](#build-app)
@@ -21,7 +20,6 @@ Self custodial, decentralized, chain agnostic, service aggregator wallet. The on
 
 ### Integrations
 
-- [Moralis](https://moralis.io/) - Web3 API for Auth and other Utils (Deprecating Soon)
 - [Web3Auth](https://web3auth.io/) - Social and Email Login
   Note: For security reasons, web3auth only authorizes requests from our app's domain.
   If you need to use web3auth in remote development environments, you need to create your own web3auth key.
@@ -73,16 +71,11 @@ yarn install
 
 ### Create a Moralis Testnet Server (Deprecating Soon)
 
-1. Go to Moralis and create a testnet server with the following test chains: Eth (Kovan), Polygon (Mumbai), Bsc (Testnet), Avax (Testnet)
-2. Click View Details for your newly created instance and copy both the "Server URL" and "Application ID"
-
 ### Environment Variables
 
-1. Duplicate ``.env.local.template`` and rename to ``env.local``. Add your variables.
+1. Duplicate `.env.local.template` and rename to `env.local`. Add your variables.
 
 ```sh
-REACT_APP_MORALIS_SERVER_URL=[Insert your Server URL]
-REACT_APP_MORALIS_APPLICATION_ID=[Insert your Application ID]
 REACT_APP_MULTICALL_ADDRESS=[Multicall Contract Address]
 REACT_APP_RPC_PROVIDER_ETH=[Ethereum RPC]
 REACT_APP_RPC_PROVIDER_FANTOM=[Fantom RPC]

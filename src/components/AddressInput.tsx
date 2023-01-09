@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState, Ref } from "react";
-import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import { getEllipsisTxt } from "../helpers/formatters";
 import Blockie from "./Blockie";
 import { Input } from "antd";
@@ -15,53 +14,48 @@ function AddressInput(props: any) {
   // const input = useRef<HTMLInputElement>();
   const input = useRef<any>(null);
   // const input = useRef() as MutableRefObject<HTMLInputElement>;
-  const { web3 } = useMoralis();
   const [address, setAddress] = useState("");
   const [validatedAddress, setValidatedAddress] = useState("");
   const [isDomain, setIsDomain] = useState(false);
-  const {
-    resolve: { resolveDomain },
-  } = useMoralisWeb3Api();
 
-  const web3Provider: any = web3;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (validatedAddress) props.onChange(isDomain ? validatedAddress : address);
   }, [props, validatedAddress, isDomain, address]);
 
-  const updateAddress = useCallback(
-    async (value: string) => {
-      setAddress(value);
-      if (isSupportedDomain(value)) {
-        const processPromise = function (promise: any) {
-          promise
-            .then((addr: string) => {
-              setValidatedAddress(addr);
-              setIsDomain(true);
-            })
-            .catch(() => {
-              setValidatedAddress("");
-            });
-        };
-        if (value.endsWith(".eth")) {
-          processPromise(web3Provider?.eth?.ens?.getAddress(value));
-        } else {
-          processPromise(
-            resolveDomain({
-              domain: value,
-            }).then((r) => r?.address),
-          );
-        }
-      } else if (value.length === 42) {
-        setValidatedAddress(getEllipsisTxt(value, 10));
-        setIsDomain(false);
-      } else {
-        setValidatedAddress("");
-        setIsDomain(false);
-      }
-    },
-    [resolveDomain, web3Provider?.eth?.ens],
-  );
+  //const updateAddress = useCallback(
+  //  async (value: string) => {
+  //    setAddress(value);
+  //    if (isSupportedDomain(value)) {
+  //      const processPromise = function (promise: any) {
+  //        promise
+  //          .then((addr: string) => {
+  //            setValidatedAddress(addr);
+  //            setIsDomain(true);
+  //          })
+  //          .catch(() => {
+  //            setValidatedAddress("");
+  //          });
+  //      };
+  //      if (value.endsWith(".eth")) {
+  //        processPromise(web3Provider?.eth?.ens?.getAddress(value));
+  //      } else {
+  //        processPromise(
+  //          resolveDomain({
+  //           domain: value,
+  //          }).then((r) => r?.address),
+  //        );
+  //      }
+  //   } else if (value.length === 42) {
+  //      setValidatedAddress(getEllipsisTxt(value, 10));
+  //      setIsDomain(false);
+  //    } else {
+  //      setValidatedAddress("");
+  //     setIsDomain(false);
+  //    }
+  //  },
+  //  [resolveDomain, web3Provider?.eth?.ens],
+  //);
 
   const Cross = () => (
     <svg
@@ -112,9 +106,9 @@ function AddressInput(props: any) {
           ? `${address} (${getEllipsisTxt(validatedAddress)})`
           : validatedAddress || address
       }
-      onChange={(e) => {
-        updateAddress(e.target.value);
-      }}
+      //onChange={(e) => {
+      //  updateAddress(e.target.value);
+      //}}
       disabled={!!validatedAddress}
       style={
         validatedAddress
