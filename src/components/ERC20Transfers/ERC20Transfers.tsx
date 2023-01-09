@@ -46,7 +46,7 @@ function ERC20Transfers() {
 
   useEffect(() => {
     handleData();
-  }, [fetchData]);
+  }, []);
 
   const mockData = [
     {
