@@ -1,13 +1,23 @@
+import type { FC, PropsWithChildren } from "react";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom";
+import type { QueryClientProviderProps } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./config/queryClient";
+import { LIFIProvider } from "./providers/LIFIProvider";
 import App from "./App";
 import { MoralisProvider } from "react-moralis";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import Wallet from "./components/Wallet";
+import LIFI from "@lifi/sdk";
 
 const APP_ID = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 const SERVER_URL = process.env.REACT_APP_MORALIS_SERVER_URL;
+
+const QueryProvider = QueryClientProvider as FC<
+  PropsWithChildren<QueryClientProviderProps>
+>;
 
 const Application = () => {
   const isServerInfo = APP_ID && SERVER_URL ? true : false;
@@ -33,7 +43,11 @@ const Application = () => {
 
 ReactDOM.render(
   <StrictMode>
-    <Application />,
+    <QueryProvider client={queryClient}>
+      <LIFIProvider>
+        <Application />,
+      </LIFIProvider>
+    </QueryProvider>
   </StrictMode>,
   document.getElementById("root"),
 );

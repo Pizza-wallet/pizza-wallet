@@ -34,16 +34,23 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   color: #3e389f;
 `;
 
-export const SelectChainAndToken: React.FC = () => {
+interface ISelectChainAndToken {
+  handleSelectToken: any;
+  setFormType: any;
+}
+
+export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
+  handleSelectToken,
+}) => {
   return (
     <>
-      <SelectTokenButton formType={"From"} />
+      <SelectTokenButton handleClick={handleSelectToken} formType={"from"} />
       <IconContainer>
         <IconCircle>
           <FontAwesomeIconStyled icon={faExchange} />
         </IconCircle>
       </IconContainer>
-      <SelectTokenButton formType={"To"} />
+      <SelectTokenButton handleClick={handleSelectToken} formType={"to"} />
     </>
   );
 };
