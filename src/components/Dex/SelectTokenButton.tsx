@@ -31,15 +31,23 @@ const Flex = styled("div")`
 interface ISelectTokenButton {
   formType: string;
   handleClick: any;
+  setFormType: any;
 }
 
 export const SelectTokenButton = ({
   formType,
   handleClick,
+  setFormType,
 }: ISelectTokenButton) => {
   const token = "";
+
+  const handleCardClick = () => {
+    handleClick();
+    setFormType(formType);
+  };
+
   return (
-    <Card onClick={handleClick}>
+    <Card onClick={handleCardClick}>
       <Text>{formType}</Text>
       <Flex>
         {token ? (

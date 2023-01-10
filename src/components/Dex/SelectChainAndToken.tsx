@@ -41,16 +41,25 @@ interface ISelectChainAndToken {
 
 export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
   handleSelectToken,
+  setFormType,
 }) => {
   return (
     <>
-      <SelectTokenButton handleClick={handleSelectToken} formType={"from"} />
+      <SelectTokenButton
+        handleClick={handleSelectToken}
+        setFormType={setFormType}
+        formType={"From"}
+      />
       <IconContainer>
         <IconCircle>
           <FontAwesomeIconStyled icon={faExchange} />
         </IconCircle>
       </IconContainer>
-      <SelectTokenButton handleClick={handleSelectToken} formType={"to"} />
+      <SelectTokenButton
+        handleClick={handleSelectToken}
+        setFormType={setFormType}
+        formType={"To"}
+      />
     </>
   );
 };
