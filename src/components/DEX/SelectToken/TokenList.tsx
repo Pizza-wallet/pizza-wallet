@@ -8,20 +8,26 @@ import { List, Spin } from "antd";
 import styled from "styled-components";
 import { TokenListItem } from "./TokenListItem";
 
-interface ITokenList {
-  formType: string;
-  navigateBack: any;
-}
-
 const CenterLayout = styled("div")`
   display: grid;
   align-items: center;
   justify-content: center;
   margin-top: 10px;
-  // background: var(--layout-blue);
 `;
 
-export const TokenList: FC<ITokenList> = ({ formType, navigateBack }) => {
+interface ITokenList {
+  formType: string;
+  navigateBack: any;
+  setToken: any;
+  selectedChainId: any;
+}
+
+export const TokenList: FC<ITokenList> = ({
+  formType,
+  navigateBack,
+  setToken,
+  selectedChainId,
+}) => {
   const parentRef = useRef(null);
   // const { account } = useWallet();
   // const [selectedChainId] = useWatch({
@@ -34,7 +40,7 @@ export const TokenList: FC<ITokenList> = ({ formType, navigateBack }) => {
 
   console.log("formType -", formType);
 
-  const [selectedChainId, setSelectedChainId] = useState(1);
+  // const [selectedChainId, setSelectedChainId] = useState(1);
 
   const {
     tokens: chainTokens,
@@ -75,8 +81,9 @@ export const TokenList: FC<ITokenList> = ({ formType, navigateBack }) => {
   //   : filteredTokens;
 
   // const handleTokenClick = useTokenSelect(formType, onClick);
-  const handleTokenClick = () => {
+  const handleTokenClick = (tokenAddress: string) => {
     console.log("handle token click!");
+    setToken(tokenAddress);
     // handle token select with formType (from or to) and navigate back.
     navigateBack();
   };

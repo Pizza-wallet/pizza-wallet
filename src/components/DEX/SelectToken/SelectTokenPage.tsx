@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { ChainSelect } from "./ChainSelect";
+import ChainSelect from "./ChainSelect/ChainSelect";
 import { TokenList } from "./TokenList";
 import { SearchTokenInput } from "./SearchTokenInput";
 import { Typography } from "antd";
@@ -19,11 +19,23 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
 interface ISelectTokenPage {
   formType: string;
   navigateBack: any;
+  fromChain: any;
+  setFromChain: any;
+  toChain: any;
+  setToChain: any;
+  setFromToken: any;
+  setToToken: any;
 }
 
 export const SelectTokenPage: FC<ISelectTokenPage> = ({
   formType,
   navigateBack,
+  fromChain,
+  setFromChain,
+  toChain,
+  setToChain,
+  setFromToken,
+  setToToken,
 }) => {
   return (
     <>
@@ -41,10 +53,21 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
         </Title>
       </div>
       <div>
-        <ChainSelect />
-        <SearchTokenInput />
+        <ChainSelect
+          formType={formType}
+          chainId={formType === "From" ? fromChain : toChain}
+          setChain={formType === "From" ? setFromChain : setToChain}
+        />
+        <div style={{ marginTop: "20px", marginBottom: "20px" }}>
+          <SearchTokenInput />
+        </div>
       </div>
-      <TokenList navigateBack={navigateBack} formType={formType} />
+      <TokenList
+        navigateBack={navigateBack}
+        formType={formType}
+        setToken={formType === "From" ? setFromToken : setToToken}
+        selectedChainId={formType === "From" ? fromChain : toChain}
+      />
     </>
   );
 };

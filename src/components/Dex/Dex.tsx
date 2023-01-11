@@ -13,7 +13,6 @@ const Card = styled("div")`
   background-color: #f8f2ed;
   border-radius: 2.75rem;
   padding: 0.425rem;
-  // height: 633px;
 `;
 
 const InnerCard = styled("div")`
@@ -37,6 +36,13 @@ function Dex() {
   const [page, setPage] = useState("main");
   const [formType, setFormType] = useState("");
 
+  // Swap From chain and token
+  const [fromChain, setFromChain] = useState(1);
+  const [fromToken, setFromToken] = useState();
+  // Swap To chain and token
+  const [toChain, setToChain] = useState(1);
+  const [toToken, setToToken] = useState();
+
   return (
     <>
       <Card>
@@ -49,6 +55,10 @@ function Dex() {
               <SelectChainAndToken
                 handleSelectToken={() => setPage("selectToken")}
                 setFormType={setFormType}
+                fromChain={fromChain}
+                toChain={toChain}
+                fromToken={fromToken}
+                toToken={toToken}
               />
               <SwapInput />
               <SwapButton />
@@ -57,6 +67,12 @@ function Dex() {
             <SelectTokenPage
               formType={formType}
               navigateBack={() => setPage("main")}
+              fromChain={fromChain}
+              setFromChain={setFromChain}
+              toChain={toChain}
+              setToChain={setToChain}
+              setFromToken={setFromToken}
+              setToToken={setToToken}
             />
           )}
         </InnerCard>

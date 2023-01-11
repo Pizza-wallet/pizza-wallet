@@ -37,11 +37,20 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
 interface ISelectChainAndToken {
   handleSelectToken: any;
   setFormType: any;
+
+  fromChain: any;
+  toChain: any;
+  fromToken: any;
+  toToken: any;
 }
 
 export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
   handleSelectToken,
   setFormType,
+  fromChain,
+  toChain,
+  fromToken,
+  toToken,
 }) => {
   return (
     <>
@@ -49,6 +58,8 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
         handleClick={handleSelectToken}
         setFormType={setFormType}
         formType={"From"}
+        chainId={fromChain}
+        tokenAddress={fromToken}
       />
       <IconContainer>
         <IconCircle>
@@ -59,6 +70,8 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
         handleClick={handleSelectToken}
         setFormType={setFormType}
         formType={"To"}
+        chainId={toChain}
+        tokenAddress={toToken}
       />
     </>
   );

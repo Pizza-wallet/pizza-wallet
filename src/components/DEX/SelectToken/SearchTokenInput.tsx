@@ -1,9 +1,10 @@
 import { Input } from "antd";
+const { Search } = Input;
 
 export const SearchTokenInput = () => {
   return (
     <>
-      <Input />
+      <Search size={"large"} placeholder="Search your token" />
     </>
   );
 };
