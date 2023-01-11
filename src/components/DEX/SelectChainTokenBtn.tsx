@@ -46,7 +46,7 @@ const Flex = styled("div")`
   justify-content: start;
 `;
 
-interface ISelectTokenButton {
+interface ISelectChainTokenBtn {
   formType: string;
   handleClick: any;
   setFormType: any;
@@ -55,13 +55,13 @@ interface ISelectTokenButton {
   tokenAddress: any;
 }
 
-export const SelectTokenButton = ({
+export const SelectChainTokenBtn = ({
   formType,
   handleClick,
   setFormType,
   chainId,
   tokenAddress,
-}: ISelectTokenButton) => {
+}: ISelectChainTokenBtn) => {
   const { chain, isLoading: isChainLoading } = useChain(chainId);
   const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
 

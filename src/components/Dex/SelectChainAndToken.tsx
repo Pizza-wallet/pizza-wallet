@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { SelectTokenButton } from "./SelectTokenButton";
+import { SelectChainTokenBtn } from "./SelectChainTokenBtn";
 import { faExchange } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -54,7 +54,7 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
 }) => {
   return (
     <>
-      <SelectTokenButton
+      <SelectChainTokenBtn
         handleClick={handleSelectToken}
         setFormType={setFormType}
         formType={"From"}
@@ -66,7 +66,7 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
           <FontAwesomeIconStyled icon={faExchange} />
         </IconCircle>
       </IconContainer>
-      <SelectTokenButton
+      <SelectChainTokenBtn
         handleClick={handleSelectToken}
         setFormType={setFormType}
         formType={"To"}
