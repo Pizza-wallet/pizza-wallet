@@ -83,7 +83,9 @@ export const TokenListItemButton: React.FC<ITokenListItemButton> = ({
           </div>
           {showBalance ? (
             isBalanceLoading ? (
-              <TokenAmountSkeleton />
+              <div style={{ marginLeft: "auto", height: "30px" }}>
+                <TokenAmountSkeleton />
+              </div>
             ) : (
               <div style={{ marginLeft: "auto", height: "30px" }}>
                 {Number(token.amount) ? (
@@ -116,7 +118,8 @@ export const TokenListItemSkeleton = () => {
 export const TokenAmountSkeleton: React.FC = () => {
   return (
     <>
-      <Skeleton active />
+      {/* <Skeleton active /> */}
+      <Skeleton.Button active />
     </>
   );
 };

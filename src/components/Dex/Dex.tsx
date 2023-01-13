@@ -47,7 +47,6 @@ function Dex() {
   const [toChain, setToChain] = useState(1);
   const [toToken, setToToken] = useState("");
 
-  console.log("amount - ", Number(fromTokenAmount));
   return (
     <>
       <div

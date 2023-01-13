@@ -92,6 +92,7 @@ export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
                 <SwapRouteCard
                   toToken={route.toToken}
                   toAmount={route.toAmount}
+                  route={route}
                 />
               </div>
             );
