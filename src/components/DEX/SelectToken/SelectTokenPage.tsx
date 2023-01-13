@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { FC } from "react";
 import ChainSelect from "./ChainSelect/ChainSelect";
 import { TokenList } from "./TokenList";
@@ -37,6 +38,7 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
   setFromToken,
   setToToken,
 }) => {
+  const [tokenSearchFilter, setTokenSearchFilter] = useState("");
   return (
     <>
       <div style={{ display: "inline-block" }}>
@@ -59,14 +61,14 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
           setChain={formType === "From" ? setFromChain : setToChain}
         />
         <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-          <SearchTokenInput />
+          <SearchTokenInput setTokenSearchFilter={setTokenSearchFilter} />
         </div>
       </div>
       <TokenList
         navigateBack={navigateBack}
-        formType={formType}
         setToken={formType === "From" ? setFromToken : setToToken}
         selectedChainId={formType === "From" ? fromChain : toChain}
+        tokenSearchFilter={tokenSearchFilter}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import type { FC } from "react";
 import type { LIFIToken } from "../../../types/client";
 import { useTokenBalances } from "../../../hooks/useTokenBalances";
@@ -16,32 +16,19 @@ const CenterLayout = styled("div")`
 `;
 
 interface ITokenList {
-  formType: string;
   navigateBack: any;
   setToken: any;
   selectedChainId: any;
+  tokenSearchFilter: string;
 }
 
 export const TokenList: FC<ITokenList> = ({
-  formType,
   navigateBack,
   setToken,
   selectedChainId,
+  tokenSearchFilter,
 }) => {
   const parentRef = useRef(null);
-  // const { account } = useWallet();
-  // const [selectedChainId] = useWatch({
-  //   name: [SwapFormKeyHelper.getChainKey(formType)],
-  // });
-  // const [tokenSearchFilter]: string[] = useDebouncedWatch(
-  //   [SwapFormKey.TokenSearchFilter],
-  //   320,
-  // );
-
-  console.log("formType -", formType);
-
-  // const [selectedChainId, setSelectedChainId] = useState(1);
-
   const {
     tokens: chainTokens,
     tokensWithBalance,
@@ -50,47 +37,24 @@ export const TokenList: FC<ITokenList> = ({
   } = useTokenBalances(selectedChainId);
 
   let filteredTokens = (tokensWithBalance ?? chainTokens ?? []) as LIFIToken[];
-  // const searchFilter = tokenSearchFilter?.toUpperCase() ?? "";
-  // filteredTokens = tokenSearchFilter
-  //   ? filteredTokens.filter(
-  //       (token) =>
-  //         token.name.toUpperCase().includes(searchFilter) ||
-  //         token.symbol.toUpperCase().includes(searchFilter) ||
-  //         token.address.toUpperCase().includes(searchFilter),
-  //     )
-  //   : filteredTokens;
-
-  // const tokenSearchEnabled =
-  //   !isTokensLoading &&
-  //   !filteredTokens.length &&
-  //   !!tokenSearchFilter &&
-  //   !!selectedChainId;
-
-  // const { token: searchedToken, isLoading: isSearchedTokenLoading } =
-  //   useTokenSearch(selectedChainId, tokenSearchFilter, tokenSearchEnabled);
-
-  // const isLoading =
-  //   isTokensLoading || (tokenSearchEnabled && isSearchedTokenLoading);
+  const searchFilter = tokenSearchFilter?.toUpperCase() ?? "";
+  filteredTokens = tokenSearchFilter
+    ? filteredTokens.filter(
+        (token) =>
+          token.name.toUpperCase().includes(searchFilter) ||
+          token.symbol.toUpperCase().includes(searchFilter) ||
+          token.address.toUpperCase().includes(searchFilter),
+      )
+    : filteredTokens;
 
   const isLoading = isTokensLoading;
 
-  // const tokens = filteredTokens.length
-  //   ? filteredTokens
-  //   : searchedToken
-  //   ? [searchedToken]
-  //   : filteredTokens;
-
-  // const handleTokenClick = useTokenSelect(formType, onClick);
   const handleTokenClick = (tokenAddress: string) => {
-    console.log("handle token click!");
     setToken(tokenAddress);
-    // handle token select with formType (from or to) and navigate back.
     navigateBack();
   };
 
-  console.log("tokens with balance - ", tokensWithBalance);
-
-  if (filteredTokens.length < 1)
+  if (isLoading)
     return (
       <CenterLayout>
         <Spin size="large" style={{ color: "#3e389f" }}></Spin>

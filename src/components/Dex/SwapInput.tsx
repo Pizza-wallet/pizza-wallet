@@ -1,4 +1,7 @@
-import { Avatar, Image, Input } from "antd";
+import { Avatar, Image, Input, Button } from "antd";
+import { useToken } from "../../hooks/useToken";
+import { useChain } from "../../hooks/useChain";
+import { useTokenBalances } from "../../hooks/useTokenBalances";
 import styled from "styled-components";
 
 const Text = styled("p")`
@@ -12,15 +15,12 @@ const Text = styled("p")`
 
 const Card = styled("div")`
   width: 95%;
-  height: 100px;
+  height: 115px;
   border: 0.125rem solid #3e389f;
   border-radius: 10px;
   cursor: pointer;
   margin: auto;
   margin-top: 30px;
-  &:hover {
-    background: #e8e8e8;
-  }
 `;
 
 const Flex = styled("div")`
@@ -29,28 +29,89 @@ const Flex = styled("div")`
 `;
 
 const StyledInput = styled(Input)`
-  font-size: 24;
+  font-size: 26px;
   font-weight: 700;
   box-shadow: none;
   color: #3e389f;
 `;
 
-export const SwapInput = () => {
-  const token = "";
+const StyledMaxButton = styled(Button)`
+  font-size: 16px;
+  box-shadow: none;
+  border: 0.125rem solid #3e389f;
+  border-radius: 10px;
+  background: none;
+  margin-right: 10px;
+  line-height: 1;
+  margin-top: 5px;
+  color: #3e389f;
+`;
+
+interface ISwapInput {
+  tokenAddress: string;
+  chainId: number;
+  handleChange: any;
+  value: number;
+  selectedChainId: any;
+}
+
+export const SwapInput = ({
+  tokenAddress,
+  chainId,
+  handleChange,
+  value,
+  selectedChainId,
+}: ISwapInput) => {
+  const { chain, isLoading: isChainLoading } = useChain(chainId);
+  const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
+
+  const { tokensWithBalance, isBalanceLoading } =
+    useTokenBalances(selectedChainId);
+
+  console.log("tokens with balance - ", tokensWithBalance);
+
+  const maxAmount = !tokenAddress
+    ? 0
+    : Number(
+        tokensWithBalance?.filter((val) => {
+          return val.address === tokenAddress;
+        })[0].amount,
+      );
+
+  console.log("max amount -", maxAmount);
 
   return (
     <Card>
       <Text>You pay</Text>
       <Flex>
-        {token ? (
-          <Avatar
-            src={
-              <Image
-                src="coin img url here"
-                style={{ width: 32, marginLeft: "20px" }}
+        {token && chain ? (
+          <>
+            <Avatar.Group>
+              <Avatar
+                style={{ marginLeft: "10px" }}
+                src={<Image src={token.logoURI} style={{ width: 32 }} />}
+              >
+                {token.symbol[0]}
+              </Avatar>
+              <Avatar
+                style={{ marginTop: "15px" }}
+                size={20}
+                src={chain.logoURI}
               />
-            }
-          />
+            </Avatar.Group>
+            <StyledInput
+              size="small"
+              autoComplete="off"
+              placeholder="0"
+              bordered={false}
+              onChange={(e: any) => handleChange(Number(e.target.value))}
+              value={value}
+              required
+            />
+            <StyledMaxButton onClick={() => handleChange(maxAmount)}>
+              Max
+            </StyledMaxButton>
+          </>
         ) : (
           <>
             <Avatar
@@ -60,24 +121,14 @@ export const SwapInput = () => {
                 marginLeft: "20px",
               }}
             ></Avatar>
-            <StyledInput
-              size="small"
-              autoComplete="off"
-              placeholder="0"
-              bordered={false}
-              // inputProps={{
-              //   inputMode: "decimal",
-              // }}
-              // onChange={handleChange}
-              // onBlur={handleBlur}
-              // value={value}
-              // name={amountKey}
-              // disabled={disabled}
-              required
-            />
           </>
         )}
       </Flex>
+      <div style={{ marginLeft: "60px", color: "grey" }}>
+        {token && value > 0 ? (
+          <p>${Math.round(value * Number(token.priceUSD))}</p>
+        ) : null}
+      </div>
     </Card>
   );
 };

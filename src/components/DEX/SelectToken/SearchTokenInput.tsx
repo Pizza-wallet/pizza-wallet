@@ -1,10 +1,20 @@
 import { Input } from "antd";
 const { Search } = Input;
 
-export const SearchTokenInput = () => {
+interface ISearchTokenInput {
+  setTokenSearchFilter: any;
+}
+
+export const SearchTokenInput = ({
+  setTokenSearchFilter,
+}: ISearchTokenInput) => {
   return (
     <>
-      <Search size={"large"} placeholder="Search your token" />
+      <Search
+        onChange={(e) => setTokenSearchFilter(e.target.value)}
+        size={"large"}
+        placeholder="Search your token"
+      />
     </>
   );
 };
