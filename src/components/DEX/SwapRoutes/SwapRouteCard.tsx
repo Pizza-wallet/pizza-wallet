@@ -15,17 +15,19 @@ import {
   faLayerGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { StepActions } from "./StepActions";
 
 const Card = styled("div")`
   width: 95%;
-  height: 115px;
   border: 0.125rem solid #3e389f;
   border-radius: 10px;
   padding: 10px;
   cursor: pointer;
   margin: auto;
   margin-top: 30px;
-  height: 200px;
+  &:hover {
+    background: #e8e8e8;
+  }
 `;
 
 const Flex = styled("div")`
@@ -191,6 +193,11 @@ export const SwapRouteCard: React.FC<ISwapRouteCard> = ({
           ) : null}
         </div>
       </Flex>
+      <div>
+        {route.steps.map((step: any) => (
+          <StepActions key={step.id} _step={step} />
+        ))}
+      </div>
     </Card>
   );
 };
