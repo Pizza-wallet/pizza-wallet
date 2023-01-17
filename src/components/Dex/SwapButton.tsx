@@ -1,5 +1,5 @@
 import { ButtonContainer, PrimaryButton } from "../reusable/Buttons";
-export const SwapButton = () =>
+export const SwapButton = ({ page, onClick }: { page: string; onClick: any }) =>
   // {
   //   // onClick,
   //   // currentRoute,
@@ -8,21 +8,19 @@ export const SwapButton = () =>
   //   // loading,
   // },
   {
-    // hardcoded until we have authentication set up.
-    const account = { isActive: false };
-
     const handleSwapButtonClick = async () => {
-      if (!account.isActive) {
-        // option to select wallet or connect
-      } else {
-        // onClick?.();
-        // handle above function (could be option to refuel or swap etc)
+      // check we have users account details then execute swap
+      if (page === "selectedRoute") {
+        onClick?.();
       }
+      // check above user has sufficient gas etc (could be option to refuel or swap etc)
     };
 
     const getButtonText = () => {
-      if (account.isActive) {
-        // various options for text (refuel, swap etc)
+      if (page === "selectedRoute") {
+        return "Start swap";
+      } else if (page === "main") {
+        return "Swap";
       }
       return "Connect wallet";
     };

@@ -8,6 +8,7 @@ import {
   formatTokenPrice,
   limitDigits,
 } from "../../../helpers/formatters";
+import { Token } from "../Token";
 import { getGasCostsBreakdown } from "./utils";
 import {
   faGasPump,
@@ -68,22 +69,17 @@ interface ISwapRouteCard {
   toToken: any;
   toAmount: any;
   route: any;
+  handleSelectRoute: any;
 }
 
 export const SwapRouteCard: React.FC<ISwapRouteCard> = ({
   toToken,
   toAmount,
   route,
+  handleSelectRoute,
 }) => {
   const { chain } = useChain(toToken.chainId);
   const { token, isLoading } = useToken(toToken.chainId, toToken.address);
-
-  const formattedTokenAmount = formatTokenAmount(toAmount, token?.decimals);
-  const formattedTokenPrice = formatTokenPrice(
-    formattedTokenAmount,
-    token?.priceUSD,
-  );
-
   const step = route.steps[0];
   const gasCostUSD = parseFloat(route.gasCostUSD ?? "") || 0.01;
   const gasCosts = getGasCostsBreakdown(route);
@@ -110,8 +106,10 @@ export const SwapRouteCard: React.FC<ISwapRouteCard> = ({
     </span>
   );
 
+  const tokenWithAmount = { ...toToken, amount: toAmount };
+
   return (
-    <Card>
+    <Card onClick={() => handleSelectRoute(route)}>
       <Flex marginBottom={"20px"} justifyContent={"space-between"}>
         <Tag color={tagColor}>{tag}</Tag>
         <Tooltip placement="top" title={gasCostTooltipText}>
@@ -150,49 +148,7 @@ export const SwapRouteCard: React.FC<ISwapRouteCard> = ({
           </div>
         </Tooltip>
       </Flex>
-      <Flex>
-        <Avatar.Group>
-          <Avatar
-            style={{ marginLeft: "10px" }}
-            src={<Image src={token?.logoURI} style={{ width: 32 }} />}
-          >
-            {token?.symbol[0]}
-          </Avatar>
-          <Avatar
-            style={{ marginTop: "15px" }}
-            size={20}
-            src={chain?.logoURI}
-          />
-        </Avatar.Group>
-        <div style={{ marginLeft: "10px", display: "flex" }}>
-          <div>
-            <SymbolText>{formattedTokenAmount}</SymbolText>
-            <Text2>${limitDigits(formattedTokenPrice)}</Text2>
-          </div>
-          {step ? (
-            <Flex marginLeft={"5px"}>
-              <div>
-                <Avatar
-                  src={step.toolDetails.logoURI}
-                  alt={step.toolDetails.name}
-                  size={"small"}
-                >
-                  {step.toolDetails.name[0]}
-                </Avatar>
-              </div>
-              <p
-                style={{
-                  fontSize: "12px",
-                  marginTop: "5px",
-                  color: "grey",
-                }}
-              >
-                {step.toolDetails.name}
-              </p>
-            </Flex>
-          ) : null}
-        </div>
-      </Flex>
+      <Token token={tokenWithAmount} step={step} />
       <div>
         {route.steps.map((step: any) => (
           <StepActions key={step.id} _step={step} />

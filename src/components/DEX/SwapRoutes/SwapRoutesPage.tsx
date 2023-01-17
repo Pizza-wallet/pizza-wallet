@@ -1,17 +1,8 @@
 import React from "react";
-import { Card, Spin, List } from "antd";
-// import { ProgressToNextUpdate } from "../../components/ProgressToNextUpdate";
-// import {
-//   SwapRouteCard,
-//   SwapRouteCardSkeleton,
-//   SwapRouteNotFoundCard,
-// } from "../../components/SwapRouteCard";
+import { Spin, List } from "antd";
 import { useSwapRoutes } from "../../../hooks/useSwapRoutes";
 import styled from "styled-components";
 import { SwapRouteCard } from "./SwapRouteCard";
-// import { navigationRoutes } from "../../utils";
-// import { Stack } from "./SwapRoutes.style";
-// import { useSetRecommendedRoute } from "./useSetRecommendedRoute";
 
 const CenterLayout = styled("div")`
   display: grid;
@@ -27,6 +18,7 @@ interface ISwapRoutes {
   toTokenAddress: any;
   toAddress: any;
   fromAmount: any;
+  handleSelectRoute: any;
 }
 
 export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
@@ -36,6 +28,7 @@ export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
   toTokenAddress,
   toAddress,
   fromAmount,
+  handleSelectRoute,
 }) => {
   const {
     routes,
@@ -69,9 +62,6 @@ export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
   const routeNotFound = !currentRoute && !isLoading && !isFetching;
   // const onlyRecommendedRoute = variant === "refuel" || useRecommendedRoute;
 
-  console.log("routes - ", routes);
-  console.log("current route - ", currentRoute);
-
   if (isLoading)
     return (
       <div style={{ height: 528, overflow: "auto" }}>
@@ -93,83 +83,12 @@ export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
                   toToken={route.toToken}
                   toAmount={route.toAmount}
                   route={route}
+                  handleSelectRoute={handleSelectRoute}
                 />
               </div>
             );
           })}
       </List>
-      {/* <ProgressToNextUpdate
-        updatedAt={dataUpdatedAt || new Date().getTime()}
-        timeToUpdate={refetchTime}
-        isLoading={isFetching}
-        onClick={() => refetch()}
-        sx={{
-          position: "absolute",
-          top: 8,
-          right: 8,
-        }}
-      /> */}
-
-      {/* <Stack
-        direction="row"
-        spacing={2}
-        my={2}
-        ml={2}
-        mr={onlyRecommendedRoute || routeNotFound ? 2 : 1}
-        sx={{
-          borderRightWidth:
-            !onlyRecommendedRoute &&
-            !routeNotFound &&
-            (isFetching || (routes && routes.length > 1))
-              ? 1
-              : 0,
-        }}
-      >
-        {isLoading || isFetching ? (
-          <>
-            <SwapRouteCardSkeleton
-              minWidth={!onlyRecommendedRoute ? "80%" : "100%"}
-              variant="dense"
-            />
-            {!onlyRecommendedRoute ? (
-              <SwapRouteCardSkeleton minWidth="80%" variant="dense" />
-            ) : null}
-          </>
-        ) : !currentRoute ? (
-          <SwapRouteNotFoundCard />
-        ) : (
-          <>
-            <SwapRouteCard
-              minWidth={
-                !onlyRecommendedRoute && routes.length > 1 ? "80%" : "100%"
-              }
-              route={currentRoute}
-              variant="dense"
-              active
-            />
-            {!onlyRecommendedRoute && routes.length > 1 ? (
-              <SwapRouteCard
-                minWidth="80%"
-                route={routes[1]}
-                variant="dense"
-                pointerEvents="none"
-              />
-            ) : null}
-          </>
-        )}
-      </Stack> */}
-
-      {/* {!onlyRecommendedRoute && !routeNotFound ? (
-        <>
-          <IconButton
-            // onClick={handleCardClick}
-            size="medium"
-            disabled={isValidating || !isValid}
-          >
-            <KeyboardArrowRightIcon />
-          </IconButton>
-        </>
-      ) : null} */}
     </div>
   );
 };

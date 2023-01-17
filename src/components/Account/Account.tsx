@@ -11,6 +11,7 @@ import { CustomImg } from "../reusable/CustomImg";
 import AccountLogo from "../../assets/account-logo.svg";
 import styled from "styled-components";
 import { useAuthenticateUser } from "../../hooks/useAuthenticateUser";
+import TemporaryConnectAccount from "./TemporaryConnectAccount";
 
 const AccountLogoContainer = styled("div")`
   cursor: pointer;
@@ -64,8 +65,9 @@ function Account() {
   if (!isAuthenticated || !account) {
     return (
       <>
-        <div onClick={() => setIsAuthModalVisible(true)}>
-          <p style={styles.text}>Connect Wallet</p>
+        <div>
+          <TemporaryConnectAccount chain={1} />
+          {/* <p style={styles.text}>Connect Wallet</p> */}
         </div>
         <Modal
           visible={isAuthModalVisible}

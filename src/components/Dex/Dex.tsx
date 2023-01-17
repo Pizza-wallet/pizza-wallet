@@ -5,6 +5,8 @@ import { SelectTokenPage } from "./SelectToken/SelectTokenPage";
 import { SwapInput } from "./SwapInput";
 import { SwapButton } from "./SwapButton";
 import { SwapRoutesPage } from "./SwapRoutes/SwapRoutesPage";
+import { SelectedRoutePage } from "./SelectedRoutePage";
+import { useWeb3React } from "@web3-react/core";
 
 const Card = styled("div")`
   width: 28em;
@@ -35,6 +37,7 @@ const Header = styled("div")`
 `;
 
 function Dex() {
+  const { account, chainId } = useWeb3React();
   const [page, setPage] = useState("main");
   const [formType, setFormType] = useState("");
 
@@ -46,6 +49,78 @@ function Dex() {
   // Swap To chain and token
   const [toChain, setToChain] = useState(1);
   const [toToken, setToToken] = useState("");
+
+  // Swap route
+  const [selectedRoute, setSelectedRoute] = useState("");
+
+  // ui state
+  const [openSwapRoutes, setOpenSwapRoutes] = useState(false);
+
+  const handleSelectRoute = (route: any) => {
+    console.log("route selected - ", route);
+    setSelectedRoute(route);
+    setOpenSwapRoutes(false);
+    setPage("selectedRoute");
+  };
+
+  const handleSetFromTokenAmount = (val: any) => {
+    setFromTokenAmount(val);
+    setOpenSwapRoutes(true);
+  };
+
+  const executeSwap = () => {
+    console.log("execute swap!");
+  };
+
+  const renderCorrectPage = () => {
+    if (page === "main") {
+      return (
+        <>
+          <SelectChainAndToken
+            handleSelectToken={() => setPage("selectToken")}
+            setFormType={setFormType}
+            fromChain={fromChain}
+            toChain={toChain}
+            fromToken={fromToken}
+            toToken={toToken}
+          />
+          <SwapInput
+            tokenAddress={fromToken}
+            chainId={fromChain}
+            value={fromTokenAmount}
+            handleChange={(val: number) => handleSetFromTokenAmount(val)}
+            selectedChainId={fromChain}
+          />
+          <SwapButton page={page} onClick={() => {}} />
+        </>
+      );
+    } else if (page === "selectedRoute") {
+      return (
+        <>
+          <SelectedRoutePage
+            route={selectedRoute}
+            // toAddress={process.env.REACT_APP_TEST_ACCOUNT}
+          />{" "}
+          <SwapButton page={page} onClick={executeSwap} />
+        </>
+      );
+    } else {
+      return (
+        <SelectTokenPage
+          formType={formType}
+          navigateBack={() => setPage("main")}
+          fromChain={fromChain}
+          setFromChain={setFromChain}
+          toChain={toChain}
+          setToChain={setToChain}
+          setFromToken={setFromToken}
+          setToToken={setToToken}
+        />
+      );
+    }
+  };
+
+  console.log("account here? - ", account);
 
   return (
     <>
@@ -60,41 +135,9 @@ function Dex() {
           <Header>
             <p>Swap</p>
           </Header>
-          <InnerCard>
-            {page === "main" ? (
-              <>
-                <SelectChainAndToken
-                  handleSelectToken={() => setPage("selectToken")}
-                  setFormType={setFormType}
-                  fromChain={fromChain}
-                  toChain={toChain}
-                  fromToken={fromToken}
-                  toToken={toToken}
-                />
-                <SwapInput
-                  tokenAddress={fromToken}
-                  chainId={fromChain}
-                  value={fromTokenAmount}
-                  handleChange={(val: number) => setFromTokenAmount(val)}
-                  selectedChainId={fromChain}
-                />
-                <SwapButton />
-              </>
-            ) : (
-              <SelectTokenPage
-                formType={formType}
-                navigateBack={() => setPage("main")}
-                fromChain={fromChain}
-                setFromChain={setFromChain}
-                toChain={toChain}
-                setToChain={setToChain}
-                setFromToken={setFromToken}
-                setToToken={setToToken}
-              />
-            )}
-          </InnerCard>
+          <InnerCard>{renderCorrectPage()}</InnerCard>
         </Card>
-        {Number(fromTokenAmount) > 0 ? (
+        {openSwapRoutes ? (
           <Card>
             <Header>
               <p>Swap routes</p>
@@ -107,6 +150,7 @@ function Dex() {
                 toTokenAddress={toToken}
                 toAddress={""}
                 fromAmount={fromTokenAmount}
+                handleSelectRoute={handleSelectRoute}
               />
             </InnerCard>
           </Card>
