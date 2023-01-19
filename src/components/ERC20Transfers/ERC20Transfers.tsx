@@ -39,13 +39,20 @@ function ERC20Transfers() {
   // new implement
   const [fetchData, setFetchData] = useState({});
 
+  const [loading, setLoading] = useState(false);
+
+  // it will flatten all the data into one
+  const allData = Object.values(fetchData).flat();
+
   const handleData = async () => {
     const data = await fetchNftData();
     setFetchData(data);
   };
 
   useEffect(() => {
+    setLoading(true);
     handleData();
+    setLoading(false);
   }, []);
 
   const mockData = [
@@ -70,18 +77,32 @@ function ERC20Transfers() {
     },
   ];
 
-  const columns2 = [
+  // Multiple Blockchain Links
+  // Todo this part for multiple blockchain explorer link
+  // const explorerLinks = {
+  //   Ethereum: "https://etherscan.io/tx/",
+  //   Polygon: "https://polygonscan.com/tx/",
+  //   Binance: "https://bscscan.com/tx/",
+  //   Fantom: "https://ftmscan.com/tx/tx/",
+  //   Gnosis: "https://gnosisscan.io/tx/",
+  //   Avalanche: "https://snowtrace.io/tx/",
+  //   Arbitrum: "https://arbiscan.io/tx/",
+  //   Optimism: "https://optimistic.etherscan.io/tx/",
+  //
+  // };
+
+  const columns = [
     {
       title: "Timestamp",
       dataIndex: "block_timestamp",
       key: "block_timestamp",
       render: () => {
-        if (!Array.isArray(fetchData)) {
+        if (!Array.isArray(allData)) {
           return null;
         }
         return (
           <div>
-            {fetchData.map((item) => {
+            {allData.map((item) => {
               const timestamp = item.timeStamp;
               const date = new Date(timestamp * 1000);
 
@@ -89,7 +110,7 @@ function ERC20Transfers() {
               const month = date.getMonth() + 1;
               const day = date.getDate();
 
-              const formattedDate = `${year}-${month}-${day}`;
+              const formattedDate = `${day}-${month}-${year}`;
 
               return (
                 <p
@@ -121,13 +142,13 @@ function ERC20Transfers() {
       dataIndex: "token",
       key: "token",
       render: () => {
-        if (!Array.isArray(fetchData)) {
+        if (!Array.isArray(allData)) {
           return null;
         }
 
         return (
           <div>
-            {fetchData.map((item) => {
+            {allData.map((item) => {
               return (
                 <div
                   style={{
@@ -159,14 +180,14 @@ function ERC20Transfers() {
       dataIndex: "value",
       key: "value",
       render: () => {
-        // Make sure fetchData is defined and is an array
-        if (!Array.isArray(fetchData)) {
+        // Make sure allData is defined and is an array
+        if (!Array.isArray(allData)) {
           return null;
         }
 
         return (
           <div>
-            {fetchData.map((item) => {
+            {allData.map((item) => {
               return (
                 <div>
                   <p
@@ -193,13 +214,13 @@ function ERC20Transfers() {
       dataIndex: "from_address",
       key: "from_address",
       render: () => {
-        if (!Array.isArray(fetchData)) {
+        if (!Array.isArray(allData)) {
           return null;
         }
 
         return (
           <div>
-            {fetchData.map((item) => {
+            {allData.map((item) => {
               const shortFromAddress = `${item.from.substring(
                 0,
                 6,
@@ -231,13 +252,13 @@ function ERC20Transfers() {
       dataIndex: "to_address",
       key: "to_address",
       render: () => {
-        if (!Array.isArray(fetchData)) {
+        if (!Array.isArray(allData)) {
           return null;
         }
 
         return (
           <div>
-            {fetchData.map((item) => {
+            {allData.map((item) => {
               const shortTo =
                 item.to.substring(0, 6) +
                 "..." +
@@ -269,14 +290,14 @@ function ERC20Transfers() {
       dataIndex: "transaction_hash",
       key: "transaction_hash",
       render: () => {
-        // Make sure fetchData is defined and is an array
-        if (!Array.isArray(fetchData)) {
+        // Make sure allData is defined and is an array
+        if (!Array.isArray(allData)) {
           return null;
         }
 
         return (
           <div>
-            {fetchData.map((item) => {
+            {allData.map((item) => {
               return (
                 <div style={{ display: "block" }}>
                   <a
@@ -286,6 +307,14 @@ function ERC20Transfers() {
                   >
                     Explorer
                   </a>
+                  {/* Todo multiple blockchain part */}
+                  {/* <a
+                    href={`${explorerLinks[]}${item.hash}`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Explorer
+                  </a> */}
                 </div>
               );
             })}
@@ -304,11 +333,13 @@ function ERC20Transfers() {
         }}
       >
         <Table
-          loading={!mockData}
+          // loading={!mockData}
           tableData={mockData}
-          columns={columns2}
+          columns={columns}
           tableTitle={"Transactions History"}
           expandableRow={false}
+          // tableData={undefined}
+          loading={loading}
         />
       </div>
     </div>
