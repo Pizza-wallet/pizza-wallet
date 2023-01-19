@@ -1,0 +1,80 @@
+import React from "react";
+import type { Step } from "@lifi/sdk";
+import { useEffect, useState } from "react";
+import { useTimer } from "react-timer-hook";
+
+const getExpiryTimestamp = (step: Step) =>
+  new Date(
+    (step.execution?.process[0]?.startedAt ?? Date.now()) +
+      step.estimate.executionDuration * 1000,
+  );
+
+export const StepTimer: React.FC<{ step: Step; hideInProgress?: boolean }> = ({
+  step,
+  hideInProgress,
+}) => {
+  const [isExpired, setExpired] = useState(false);
+  const [isExecutionStarted, setExecutionStarted] = useState(!!step.execution);
+  const [expiryTimestamp] = useState(() => getExpiryTimestamp(step));
+  const { seconds, minutes, isRunning, pause, resume, restart } = useTimer({
+    autoStart: false,
+    expiryTimestamp,
+    onExpire: () => setExpired(true),
+  });
+
+  useEffect(() => {
+    if (isExpired || !step.execution) {
+      return;
+    }
+    if (!isExecutionStarted) {
+      setExecutionStarted(true);
+      restart(getExpiryTimestamp(step));
+    }
+    const shouldBePaused = step.execution.process.some(
+      (process) =>
+        process.status === "ACTION_REQUIRED" || process.status === "FAILED",
+    );
+    if (isRunning && shouldBePaused) {
+      pause();
+    } else if (!isRunning && !shouldBePaused) {
+      resume();
+    }
+  }, [
+    expiryTimestamp,
+    isExecutionStarted,
+    isExpired,
+    isRunning,
+    pause,
+    restart,
+    resume,
+    step,
+  ]);
+
+  if (!isExecutionStarted) {
+    return (
+      <>
+        <div style={{ display: "flex" }}>
+          <p>Estimated time</p>
+          <p>{Math.ceil(step.estimate.executionDuration / 60)}</p>
+        </div>
+      </>
+    );
+  }
+
+  const isTimerExpired = isExpired || (!minutes && !seconds);
+
+  if (
+    step.execution?.status === "DONE" ||
+    step.execution?.status === "FAILED" ||
+    (isTimerExpired && hideInProgress)
+  ) {
+    return null;
+  }
+
+  return isTimerExpired ? (
+    <>Swap in progress</>
+  ) : (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>{`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}</>
+  );
+};

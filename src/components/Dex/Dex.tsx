@@ -6,7 +6,9 @@ import { SwapInput } from "./SwapInput";
 import { SwapButton } from "./SwapButton";
 import { SwapRoutesPage } from "./SwapRoutes/SwapRoutesPage";
 import { SelectedRoutePage } from "./SelectedRoutePage";
-import { useWeb3React } from "@web3-react/core";
+import { useRouteExecution } from "../../hooks/useRouteExecution";
+import type { Route } from "@lifi/sdk";
+import { getStepList } from "./StepList/StepList";
 
 const Card = styled("div")`
   width: 28em;
@@ -37,7 +39,6 @@ const Header = styled("div")`
 `;
 
 function Dex() {
-  const { account, chainId } = useWeb3React();
   const [page, setPage] = useState("main");
   const [formType, setFormType] = useState("");
 
@@ -51,10 +52,16 @@ function Dex() {
   const [toToken, setToToken] = useState("");
 
   // Swap route
-  const [selectedRoute, setSelectedRoute] = useState("");
+  const [selectedRoute, setSelectedRoute] = useState<Route>();
 
-  // ui state
+  // UI state
   const [openSwapRoutes, setOpenSwapRoutes] = useState(false);
+
+  const { route, status, executeRoute, restartRoute, deleteRoute } =
+    useRouteExecution({
+      routeId: selectedRoute?.id || "",
+      // onAcceptExchangeRateUpdate: exchangeRateBottomSheetRef.current?.open,
+    });
 
   const handleSelectRoute = (route: any) => {
     console.log("route selected - ", route);
@@ -70,6 +77,9 @@ function Dex() {
 
   const executeSwap = () => {
     console.log("execute swap!");
+    if (route) {
+      executeRoute();
+    }
   };
 
   const renderCorrectPage = () => {
@@ -97,11 +107,16 @@ function Dex() {
     } else if (page === "selectedRoute") {
       return (
         <>
-          <SelectedRoutePage
-            route={selectedRoute}
-            // toAddress={process.env.REACT_APP_TEST_ACCOUNT}
-          />{" "}
-          <SwapButton page={page} onClick={executeSwap} />
+          {!status && <SelectedRoutePage route={selectedRoute} />}
+          {route && status ? (
+            <div style={{ marginTop: "20px" }}>{getStepList(route)}</div>
+          ) : null}
+          <SwapButton
+            page={page}
+            statusOfSwap={status}
+            navigateBack={() => setPage("main")}
+            onClick={executeSwap}
+          />
         </>
       );
     } else {
@@ -120,7 +135,9 @@ function Dex() {
     }
   };
 
-  console.log("account here? - ", account);
+  console.log("Selectedroute from Dex component -> ", selectedRoute);
+  console.log("Route from Dex component -> ", route);
+  console.log("Status -> ", status);
 
   return (
     <>

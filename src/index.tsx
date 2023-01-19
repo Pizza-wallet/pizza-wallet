@@ -10,8 +10,8 @@ import { MoralisProvider } from "react-moralis";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import Wallet from "./components/Wallet";
-import { Web3ReactProvider } from "@web3-react/core";
 import connectors from "./components/Account/connectors";
+import { Web3ReactProvider } from "@web3-react/core";
 
 const APP_ID = process.env.REACT_APP_MORALIS_APPLICATION_ID;
 const SERVER_URL = process.env.REACT_APP_MORALIS_SERVER_URL;

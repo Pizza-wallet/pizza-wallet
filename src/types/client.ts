@@ -1,4 +1,5 @@
 import type { TokenAmount } from "@lifi/sdk";
+export * from "@lifi/sdk";
 
 export interface LIFIToken extends TokenAmount {
   featured?: boolean;
