@@ -29,7 +29,7 @@ export const SwapButton = ({
 
   const getButtonText = () => {
     if (hasEnumFlag(statusOfSwap as any, RouteExecutionStatus.Done)) {
-      return "Go back";
+      return "Done";
     }
     if (hasEnumFlag(statusOfSwap as any, RouteExecutionStatus.Pending)) {
       return (

@@ -9,10 +9,8 @@ import styled from "styled-components";
 
 const Card = styled("div")`
   width: 95%;
-  // height: 100px;
   border: 0.125rem solid #3e389f;
   border-radius: 10px;
-  // cursor: pointer;
   margin: auto;
   margin-top: 30px;
   padding: 20px;

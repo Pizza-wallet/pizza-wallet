@@ -9,6 +9,8 @@ import { SelectedRoutePage } from "./SelectedRoutePage";
 import { useRouteExecution } from "../../hooks/useRouteExecution";
 import type { Route } from "@lifi/sdk";
 import { getStepList } from "./StepList/StepList";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Card = styled("div")`
   width: 28em;
@@ -36,6 +38,13 @@ const Header = styled("div")`
   font-size: 1.5rem;
   padding: 0.625rem 0 0.625rem 1.25rem;
   -webkit-text-stroke: thin;
+`;
+
+const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
+  font-size: 1.75rem;
+  margin-top: 8px;
+  color: #3e389f;
+  cursor: pointer;
 `;
 
 function Dex() {
@@ -82,6 +91,11 @@ function Dex() {
     }
   };
 
+  const openMainPageAndSwapRoutes = () => {
+    setOpenSwapRoutes(true);
+    setPage("main");
+  };
+
   const renderCorrectPage = () => {
     if (page === "main") {
       return (
@@ -107,6 +121,14 @@ function Dex() {
     } else if (page === "selectedRoute") {
       return (
         <>
+          <div style={{ display: "inline-block" }}>
+            <FontAwesomeIconStyled
+              onClick={
+                !status ? openMainPageAndSwapRoutes : () => setPage("main")
+              }
+              icon={faArrowLeft}
+            />
+          </div>
           {!status && <SelectedRoutePage route={selectedRoute} />}
           {route && status ? (
             <div style={{ marginTop: "20px" }}>{getStepList(route)}</div>
