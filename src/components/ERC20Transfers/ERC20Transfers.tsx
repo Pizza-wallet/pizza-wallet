@@ -13,7 +13,12 @@ import Blockie from "../Blockie";
 
 import React, { useState, useEffect } from "react";
 import { utils } from "ethers";
-import { fetchNftData } from "./utils";
+import {
+  allTokenTransaction,
+  allNftData,
+  allERC1155Data,
+  allNormalTransaction,
+} from "./utils";
 
 interface IStyled {
   top?: string;
@@ -45,7 +50,16 @@ function ERC20Transfers() {
   const allData = Object.values(fetchData).flat();
 
   const handleData = async () => {
-    const data = await fetchNftData();
+    const data = await allTokenTransaction();
+    const nftData = await allNftData();
+    const erc1155Data = await allERC1155Data();
+    const normalTxData = await allNormalTransaction();
+
+    console.log("1", data);
+    console.log("2", nftData);
+    console.log("3", erc1155Data);
+    console.log("4", normalTxData);
+
     setFetchData(data);
   };
 
