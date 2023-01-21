@@ -44,12 +44,15 @@ const apiList: ApiInfo[] = [
   },
 ];
 
-export const data = async (api: ApiInfo) => {
+// ERC 20 Transaction
+export const tokenTransaction = async (api: ApiInfo) => {
   try {
     const response = await axios.get(api.endpoint, {
       params: {
         module: "account",
         action: "tokentx",
+        offset: 10000,
+        sort: "desc",
         address: `${address}`,
         apikey: api.apikey,
       },
@@ -61,9 +64,86 @@ export const data = async (api: ApiInfo) => {
   }
 };
 
-export const fetchNftData = async () => {
-  const apiPromises = apiList.map((api) => data(api));
+export const allTokenTransaction = async () => {
+  const apiPromises = apiList.map((api) => tokenTransaction(api));
   const dataFromAllApis = await Promise.all(apiPromises);
-  console.log(dataFromAllApis);
+  return dataFromAllApis;
+};
+
+// ERC 721 transaction
+export const nftData = async (api: ApiInfo) => {
+  try {
+    const response = await axios.get(api.endpoint, {
+      params: {
+        module: "account",
+        action: "tokennfttx",
+        offset: 10000,
+        sort: "desc",
+        address: `${address}`,
+        apikey: api.apikey,
+      },
+    });
+    const data = response.data.result;
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const allNftData = async () => {
+  const apiPromises = apiList.map((api) => nftData(api));
+  const dataFromAllApis = await Promise.all(apiPromises);
+  return dataFromAllApis;
+};
+
+// ERC-1155 Transaction
+export const erc1155Data = async (api: ApiInfo) => {
+  try {
+    const response = await axios.get(api.endpoint, {
+      params: {
+        module: "account",
+        action: "token1155tx",
+        offset: 10000,
+        sort: "desc",
+        address: `${address}`,
+        apikey: api.apikey,
+      },
+    });
+    const data = response.data.result;
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const allERC1155Data = async () => {
+  const apiPromises = apiList.map((api) => erc1155Data(api));
+  const dataFromAllApis = await Promise.all(apiPromises);
+  return dataFromAllApis;
+};
+
+// Normal Transaction
+export const normalTransaction = async (api: ApiInfo) => {
+  try {
+    const response = await axios.get(api.endpoint, {
+      params: {
+        module: "account",
+        action: "txlist",
+        offset: 10000,
+        sort: "desc",
+        address: `${address}`,
+        apikey: api.apikey,
+      },
+    });
+    const data = response.data.result;
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const allNormalTransaction = async () => {
+  const apiPromises = apiList.map((api) => normalTransaction(api));
+  const dataFromAllApis = await Promise.all(apiPromises);
   return dataFromAllApis;
 };
