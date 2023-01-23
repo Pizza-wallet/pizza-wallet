@@ -33,10 +33,13 @@ export const SwapButton = ({
     }
     if (hasEnumFlag(statusOfSwap as any, RouteExecutionStatus.Pending)) {
       return (
-        <Spin
-          size="large"
-          style={{ color: "#3e389f", marginRight: "5px" }}
-        ></Spin>
+        <>
+          <Spin
+            size="large"
+            style={{ color: "#3e389f", marginRight: "5px" }}
+          ></Spin>{" "}
+          Pending
+        </>
       );
     }
     if (page === "selectedRoute") {

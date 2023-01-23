@@ -6,6 +6,8 @@ import { SwapInput } from "./SwapInput";
 import { SwapButton } from "./SwapButton";
 import { SwapRoutesPage } from "./SwapRoutes/SwapRoutesPage";
 import { SelectedRoutePage } from "./SelectedRoutePage";
+import { ActiveSwapsExpanded } from "./ActiveSwaps/ActiveSwapsExpanded";
+import { ActiveSwaps } from "./ActiveSwaps/ActiveSwaps";
 import { useRouteExecution } from "../../hooks/useRouteExecution";
 import type { Route } from "@lifi/sdk";
 import { getStepList } from "./StepList/StepList";
@@ -100,6 +102,7 @@ function Dex() {
     if (page === "main") {
       return (
         <>
+          <ActiveSwaps navigate={setPage} />
           <SelectChainAndToken
             handleSelectToken={() => setPage("selectToken")}
             setFormType={setFormType}
@@ -140,6 +143,13 @@ function Dex() {
             onClick={executeSwap}
           />
         </>
+      );
+    } else if (page === "activeSwapsPage") {
+      return (
+        <ActiveSwapsExpanded
+          setPage={setPage}
+          setSelectedRoute={setSelectedRoute}
+        />
       );
     } else {
       return (

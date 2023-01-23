@@ -40,9 +40,10 @@ const Text2 = styled("p")`
 interface TokenProps {
   token: any;
   step?: any;
+  dense?: boolean;
 }
 
-export const Token: React.FC<TokenProps> = ({ token, step }) => {
+export const Token: React.FC<TokenProps> = ({ token, step, dense }) => {
   const { chain } = useChain(token.chainId);
   const formattedTokenAmount = formatTokenAmount(token.amount, token.decimals);
   const formattedTokenPrice = formatTokenPrice(
@@ -70,7 +71,7 @@ export const Token: React.FC<TokenProps> = ({ token, step }) => {
             <SymbolText>{formattedTokenAmount}</SymbolText>
             <Text2>${limitDigits(formattedTokenPrice)}</Text2>
           </div>
-          {step ? (
+          {!dense && step ? (
             <Flex marginLeft={"5px"}>
               <div>
                 <Avatar
