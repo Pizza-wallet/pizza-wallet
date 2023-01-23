@@ -1,8 +1,8 @@
 /* eslint-disable consistent-return */
 import { List } from "antd";
 import { ActiveSwapItem } from "./ActiveSwapItem";
-import { useExecutingRoutesIds } from "../../../stores";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useExecutingRoutesIds, useRouteExecutionStore } from "../../../stores";
+import { faArrowLeft, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
@@ -35,6 +35,18 @@ const CardTitle = styled("p")`
   margin-left: 60px;
 `;
 
+const Typography = styled("p")`
+  color: #3e389f;
+  font-family: "Rubik", sans-serif;
+  font-size: 16px;
+  text-decoration: underline;
+  cursor: pointer;
+  line-height: 1.5rem;
+  &:hover {
+    color: #2f2a75;
+  }
+`;
+
 export const ActiveSwapsExpanded = ({
   setPage,
   setSelectedRoute,
@@ -44,7 +56,7 @@ export const ActiveSwapsExpanded = ({
 }) => {
   const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
   const executingRoutes = useExecutingRoutesIds(accountAddress);
-  // const deleteRoutes = useRouteExecutionStore((store) => store.deleteRoutes);
+  const deleteRoutes = useRouteExecutionStore((store) => store.deleteRoutes);
 
   // useEffect(() => {
   //   if (executingRoutes.length) {
@@ -57,13 +69,21 @@ export const ActiveSwapsExpanded = ({
   // }, [executingRoutes.length, toggleDialog]);
 
   if (!executingRoutes.length) {
-    return <h3>Active swaps empty</h3>;
+    return (
+      <div>
+        <FontAwesomeIconStyled
+          onClick={() => setPage("main")}
+          icon={faArrowLeft}
+        />
+        <h3>Active swaps empty</h3>
+      </div>
+    );
   }
 
   return (
     <>
-      <div style={{ width: "100%" }}>
-        <div style={{ display: "inline-block" }}>
+      <div style={{ display: "flex" }}>
+        <div>
           <FontAwesomeIconStyled
             onClick={() => setPage("main")}
             icon={faArrowLeft}
@@ -71,6 +91,12 @@ export const ActiveSwapsExpanded = ({
         </div>
 
         <CardTitle>Active swaps</CardTitle>
+        <div
+          style={{ marginLeft: "auto" }}
+          onClick={() => deleteRoutes("active")}
+        >
+          <Typography>Clear all</Typography>
+        </div>
       </div>
       <List>
         {executingRoutes.map((routeId: string) => (

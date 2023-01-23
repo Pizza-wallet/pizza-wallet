@@ -167,10 +167,6 @@ function Dex() {
     }
   };
 
-  console.log("Selectedroute from Dex component -> ", selectedRoute);
-  console.log("Route from Dex component -> ", route);
-  console.log("Status -> ", status);
-
   return (
     <>
       <div
