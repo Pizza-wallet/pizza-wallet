@@ -53,7 +53,6 @@ function Dex() {
   const [page, setPage] = useState("main");
   const [formType, setFormType] = useState("");
 
-  // Might be better to abstract this to global state (maybe use context)
   // Swap From chain and token
   const [fromChain, setFromChain] = useState(1);
   const [fromToken, setFromToken] = useState("");
@@ -96,6 +95,13 @@ function Dex() {
     setPage("main");
   };
 
+  const switchFromAndTo = () => {
+    setFromChain(toChain);
+    setToChain(fromChain);
+    setFromToken(toToken);
+    setToToken(fromToken);
+  };
+
   const renderCorrectPage = () => {
     if (page === "main") {
       return (
@@ -108,6 +114,7 @@ function Dex() {
             toChain={toChain}
             fromToken={fromToken}
             toToken={toToken}
+            switchFromAndTo={switchFromAndTo}
           />
           <SwapInput
             tokenAddress={fromToken}

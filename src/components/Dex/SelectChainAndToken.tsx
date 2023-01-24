@@ -41,6 +41,7 @@ interface ISelectChainAndToken {
   toChain: number;
   fromToken: string;
   toToken: string;
+  switchFromAndTo: () => void;
 }
 
 export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
@@ -50,6 +51,7 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
   toChain,
   fromToken,
   toToken,
+  switchFromAndTo,
 }) => {
   return (
     <>
@@ -60,7 +62,7 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
         chainId={fromChain}
         tokenAddress={fromToken}
       />
-      <IconContainer>
+      <IconContainer onClick={switchFromAndTo}>
         <IconCircle>
           <FontAwesomeIconStyled icon={faExchange} />
         </IconCircle>
