@@ -2,8 +2,6 @@ import { useRef } from "react";
 import type { FC } from "react";
 import type { LIFIToken } from "../../../types/client";
 import { useTokenBalances } from "../../../hooks/useTokenBalances";
-// import { SwapFormKey, SwapFormKeyHelper, useWallet } from "../../providers";
-// import type { Token } from "../../types";
 import { List, Spin } from "antd";
 import styled from "styled-components";
 import { TokenListItem } from "./TokenListItem";
@@ -16,9 +14,9 @@ const CenterLayout = styled("div")`
 `;
 
 interface ITokenList {
-  navigateBack: any;
-  setToken: any;
-  selectedChainId: any;
+  navigateBack: () => void;
+  setToken: (x: string) => void;
+  selectedChainId: number;
   tokenSearchFilter: string;
 }
 
@@ -64,13 +62,12 @@ export const TokenList: FC<ITokenList> = ({
     <div ref={parentRef} style={{ height: 600, overflow: "auto" }}>
       {!filteredTokens.length && !isLoading ? <p>No tokens found</p> : null}
       <List style={{ height: "100%" }}>
-        {filteredTokens.map((item: any, i: number) => {
+        {filteredTokens.map((item: LIFIToken, i: number) => {
           const token = item;
           return (
             <div key={i}>
               <TokenListItem
                 onClick={handleTokenClick}
-                key={item.key}
                 token={token}
                 isBalanceLoading={isBalanceLoading}
                 showBalance={true}

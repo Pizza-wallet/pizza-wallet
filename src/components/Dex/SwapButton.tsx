@@ -2,23 +2,28 @@ import { ButtonContainer, PrimaryButton } from "../reusable/Buttons";
 import { RouteExecutionStatus, hasEnumFlag } from "../../stores";
 import { Spin } from "antd";
 
+interface ISwapButton {
+  page: string;
+  onClick: (x: string) => void;
+  statusOfSwap?: number;
+  navigateBack: () => void;
+}
+
 export const SwapButton = ({
   page,
   onClick,
   statusOfSwap,
   navigateBack,
-}: {
-  page: string;
-  onClick: any;
-  statusOfSwap?: any;
-  navigateBack?: any;
-}) => {
+}: ISwapButton) => {
   const handleSwapButtonClick = async () => {
     // check we have users account details then execute swap
-    if (hasEnumFlag(statusOfSwap as any, RouteExecutionStatus.Done)) {
+    if (statusOfSwap && hasEnumFlag(statusOfSwap, RouteExecutionStatus.Done)) {
       navigateBack();
     }
-    if (hasEnumFlag(statusOfSwap as any, RouteExecutionStatus.Pending)) {
+    if (
+      statusOfSwap &&
+      hasEnumFlag(statusOfSwap, RouteExecutionStatus.Pending)
+    ) {
       return;
     }
     if (page === "selectedRoute") {
@@ -28,10 +33,13 @@ export const SwapButton = ({
   };
 
   const getButtonText = () => {
-    if (hasEnumFlag(statusOfSwap as any, RouteExecutionStatus.Done)) {
+    if (statusOfSwap && hasEnumFlag(statusOfSwap, RouteExecutionStatus.Done)) {
       return "Done";
     }
-    if (hasEnumFlag(statusOfSwap as any, RouteExecutionStatus.Pending)) {
+    if (
+      statusOfSwap &&
+      hasEnumFlag(statusOfSwap, RouteExecutionStatus.Pending)
+    ) {
       return (
         <>
           <Spin

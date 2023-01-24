@@ -7,6 +7,7 @@ import { Token } from "../Token";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import type { Route } from "@lifi/sdk";
 
 const Typography = styled("p")`
   color: #3e389f;
@@ -21,11 +22,17 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   margin: 5px;
 `;
 
-export const ActiveSwapItem: React.FC<{
+interface IActiveSwapItem {
   routeId: string;
-  setSelectedRoute?: any;
-  setPage?: any;
-}> = ({ routeId, setSelectedRoute, setPage }) => {
+  setSelectedRoute?: (val: Route) => void;
+  setPage?: (val: string) => void;
+}
+
+export const ActiveSwapItem: React.FC<IActiveSwapItem> = ({
+  routeId,
+  setSelectedRoute,
+  setPage,
+}) => {
   const { route, status } = useRouteExecution({
     routeId,
     executeInBackground: true,
@@ -48,8 +55,10 @@ export const ActiveSwapItem: React.FC<{
     // you need to change state in main component so this is the active swap
     // navigate(navigationRoutes.swapExecution, { state: { routeId } });
     // and also navigate to the correct page
-    setSelectedRoute(route);
-    setPage("selectedRoute");
+    if (setSelectedRoute && setPage) {
+      setSelectedRoute(route);
+      setPage("selectedRoute");
+    }
   };
 
   const getStatusComponent = () => {
@@ -70,8 +79,16 @@ export const ActiveSwapItem: React.FC<{
   return (
     <div style={{ marginTop: "20px" }} onClick={handleClick}>
       <div style={{ display: "flex" }}>
-        <Token token={route.fromToken} step={lastActiveStep} dense={true} />
-        <Token token={route.toToken} step={lastActiveStep} dense={true} />
+        <Token
+          token={{ ...route.fromToken, amount: "" }}
+          step={lastActiveStep}
+          dense={true}
+        />
+        <Token
+          token={{ ...route.toToken, amount: "" }}
+          step={lastActiveStep}
+          dense={true}
+        />
       </div>
 
       <div style={{ marginTop: "20px", paddingLeft: "10px" }}>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import type { FC } from "react";
 import ChainSelect from "./ChainSelect/ChainSelect";
 import { TokenList } from "./TokenList";
@@ -19,13 +19,13 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
 
 interface ISelectTokenPage {
   formType: string;
-  navigateBack: any;
-  fromChain: any;
-  setFromChain: any;
-  toChain: any;
-  setToChain: any;
-  setFromToken: any;
-  setToToken: any;
+  navigateBack: () => void;
+  fromChain: number;
+  setFromChain: Dispatch<SetStateAction<number>>;
+  toChain: number;
+  setToChain: Dispatch<SetStateAction<number>>;
+  setFromToken: Dispatch<SetStateAction<string>>;
+  setToToken: Dispatch<SetStateAction<string>>;
 }
 
 export const SelectTokenPage: FC<ISelectTokenPage> = ({
@@ -56,7 +56,6 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
       </div>
       <div>
         <ChainSelect
-          formType={formType}
           chainId={formType === "From" ? fromChain : toChain}
           setChain={formType === "From" ? setFromChain : setToChain}
         />

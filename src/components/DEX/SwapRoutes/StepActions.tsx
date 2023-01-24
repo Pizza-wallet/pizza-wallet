@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import type { LifiStep, Step } from "@lifi/sdk";
+import React from "react";
+import type { LifiStep, Step as StepType } from "@lifi/sdk";
 import { Typography, Avatar, Steps } from "antd";
 import { useChains } from "../../../hooks/useChains";
 import { LiFiToollogo } from "../icons/LiFiToolLogo";
@@ -30,10 +30,11 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
 `;
 
 interface IStepActionsProps {
-  _step: any;
+  _step: StepType;
 }
 
 export const StepActions: React.FC<IStepActionsProps> = ({ _step }) => {
+  const step = _step as LifiStep;
   return (
     <div>
       <div style={{ marginLeft: "10px", display: "flex" }}>
@@ -54,9 +55,9 @@ export const StepActions: React.FC<IStepActionsProps> = ({ _step }) => {
         <Steps
           direction="vertical"
           progressDot
-          current={_step.includedSteps.length}
+          current={step.includedSteps.length}
         >
-          {_step.includedSteps.map((step: any, index: number) => (
+          {step.includedSteps.map((step: any, index: number) => (
             <AntStep
               key={index}
               title={step.name}
@@ -69,7 +70,7 @@ export const StepActions: React.FC<IStepActionsProps> = ({ _step }) => {
   );
 };
 
-export const StepDetailsContent: React.FC<{ step: Step }> = ({ step }) => {
+export const StepDetailsContent: React.FC<{ step: StepType }> = ({ step }) => {
   return (
     <>
       <div style={{ marginTop: "6px" }}>
@@ -101,7 +102,9 @@ export const StepDetailsContent: React.FC<{ step: Step }> = ({ step }) => {
   );
 };
 
-export const CrossStepDetailsLabel: React.FC<{ step: Step }> = ({ step }) => {
+export const CrossStepDetailsLabel: React.FC<{ step: StepType }> = ({
+  step,
+}) => {
   // const { t } = useTranslation();
   const { getChainById } = useChains();
   return (
@@ -112,7 +115,9 @@ export const CrossStepDetailsLabel: React.FC<{ step: Step }> = ({ step }) => {
   );
 };
 
-export const SwapStepDetailsLabel: React.FC<{ step: Step }> = ({ step }) => {
+export const SwapStepDetailsLabel: React.FC<{ step: StepType }> = ({
+  step,
+}) => {
   const { getChainById } = useChains();
   return (
     <Typography>

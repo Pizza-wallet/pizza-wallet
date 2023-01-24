@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { SelectChainTokenBtn } from "./SelectChainTokenBtn";
 import { faExchange } from "@fortawesome/free-solid-svg-icons";
@@ -35,13 +35,12 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
 `;
 
 interface ISelectChainAndToken {
-  handleSelectToken: any;
-  setFormType: any;
-
-  fromChain: any;
-  toChain: any;
-  fromToken: any;
-  toToken: any;
+  handleSelectToken: Dispatch<SetStateAction<string>>;
+  setFormType: Dispatch<SetStateAction<string>>;
+  fromChain: number;
+  toChain: number;
+  fromToken: string;
+  toToken: string;
 }
 
 export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({

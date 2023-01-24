@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { Avatar, Image } from "antd";
 import { useChain } from "../../hooks/useChain";
@@ -48,11 +49,10 @@ const Flex = styled("div")`
 
 interface ISelectChainTokenBtn {
   formType: string;
-  handleClick: any;
-  setFormType: any;
-
-  chainId: any;
-  tokenAddress: any;
+  handleClick: Dispatch<SetStateAction<string>>;
+  setFormType: Dispatch<SetStateAction<string>>;
+  chainId: number;
+  tokenAddress: string;
 }
 
 export const SelectChainTokenBtn = ({
@@ -66,7 +66,7 @@ export const SelectChainTokenBtn = ({
   const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
 
   const handleCardClick = () => {
-    handleClick();
+    handleClick("selectToken");
     setFormType(formType);
   };
 

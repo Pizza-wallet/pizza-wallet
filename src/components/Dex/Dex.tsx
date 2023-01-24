@@ -74,20 +74,18 @@ function Dex() {
       // onAcceptExchangeRateUpdate: exchangeRateBottomSheetRef.current?.open,
     });
 
-  const handleSelectRoute = (route: any) => {
-    console.log("route selected - ", route);
+  const handleSelectRoute = (route: Route) => {
     setSelectedRoute(route);
     setOpenSwapRoutes(false);
     setPage("selectedRoute");
   };
 
-  const handleSetFromTokenAmount = (val: any) => {
+  const handleSetFromTokenAmount = (val: number) => {
     setFromTokenAmount(val);
     setOpenSwapRoutes(true);
   };
 
   const executeSwap = () => {
-    console.log("execute swap!");
     if (route) {
       executeRoute();
     }
@@ -104,7 +102,7 @@ function Dex() {
         <>
           <ActiveSwaps navigate={setPage} />
           <SelectChainAndToken
-            handleSelectToken={() => setPage("selectToken")}
+            handleSelectToken={setPage}
             setFormType={setFormType}
             fromChain={fromChain}
             toChain={toChain}
@@ -118,7 +116,7 @@ function Dex() {
             handleChange={(val: number) => handleSetFromTokenAmount(val)}
             selectedChainId={fromChain}
           />
-          <SwapButton page={page} onClick={() => {}} />
+          <SwapButton page={page} onClick={() => {}} navigateBack={() => {}} />
         </>
       );
     } else if (page === "selectedRoute") {
@@ -132,7 +130,9 @@ function Dex() {
               icon={faArrowLeft}
             />
           </div>
-          {!status && <SelectedRoutePage route={selectedRoute} />}
+          {!status && selectedRoute && (
+            <SelectedRoutePage route={selectedRoute} />
+          )}
           {route && status ? (
             <div style={{ marginTop: "20px" }}>{getStepList(route)}</div>
           ) : null}

@@ -20,8 +20,7 @@ export const Step: React.FC<{
   step: StepType;
   fromToken?: TokenAmount;
   toToken?: TokenAmount;
-  toAddress?: string;
-}> = ({ step, fromToken, toToken, toAddress }) => {
+}> = ({ step, fromToken, toToken }) => {
   const getCardTitle = () => {
     switch (step.type) {
       case "lifi":
@@ -40,8 +39,6 @@ export const Step: React.FC<{
         return "Swap step";
     }
   };
-
-  console.log("to address - ", toAddress);
 
   return (
     <Card>

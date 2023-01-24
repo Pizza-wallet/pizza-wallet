@@ -31,14 +31,14 @@ const Typography = styled("p")`
   }
 `;
 
-export const ActiveSwaps: React.FC<{ navigate: any }> = ({ navigate }) => {
+export const ActiveSwaps: React.FC<{ navigate: (x: string) => void }> = ({
+  navigate,
+}) => {
   const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
   const executingRoutes = useExecutingRoutesIds(accountAddress);
 
   const handleShowAll = () => {
     // navigate to page to show all active swaps
-    // at the moment it should only be showing the first one.
-    // navigate to active swaps page.
     navigate("activeSwapsPage");
   };
 

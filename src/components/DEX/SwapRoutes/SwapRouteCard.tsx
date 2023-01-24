@@ -11,6 +11,8 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { StepActions } from "./StepActions";
 import { useSetExecutableRoute } from "../../../stores";
+import type { Route } from "@lifi/sdk";
+import { LIFIToken } from "../../../types/client";
 
 const Card = styled("div")`
   width: 95%;
@@ -51,10 +53,10 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
 `;
 
 interface ISwapRouteCard {
-  toToken: any;
-  toAmount: any;
-  route: any;
-  handleSelectRoute: any;
+  toToken: LIFIToken;
+  toAmount: string;
+  route: Route;
+  handleSelectRoute: (val: Route) => void;
 }
 
 export const SwapRouteCard: React.FC<ISwapRouteCard> = ({

@@ -7,6 +7,8 @@ import {
   formatTokenPrice,
   limitDigits,
 } from "../../helpers/formatters";
+import type { Step as StepType } from "@lifi/sdk";
+import { LIFIToken } from "../../types/client";
 
 const Flex = styled("div")`
   display: flex;
@@ -38,8 +40,8 @@ const Text2 = styled("p")`
 `;
 
 interface TokenProps {
-  token: any;
-  step?: any;
+  token: LIFIToken;
+  step?: StepType;
   dense?: boolean;
 }
 

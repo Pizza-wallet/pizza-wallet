@@ -22,12 +22,7 @@ export const getStepList = (route?: Route) =>
         : undefined;
     return (
       <Fragment key={step.id}>
-        <Step
-          step={step}
-          fromToken={fromToken}
-          toToken={toToken}
-          toAddress={toAddress}
-        />
+        <Step step={step} fromToken={fromToken} toToken={toToken} />
         {steps.length > 1 && index !== steps.length - 1 ? <br /> : null}
       </Fragment>
     );

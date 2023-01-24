@@ -1,3 +1,4 @@
+import React from "react";
 import { Avatar, Image, Input, Button } from "antd";
 import { useToken } from "../../hooks/useToken";
 import { useChain } from "../../hooks/useChain";
@@ -50,9 +51,9 @@ const StyledMaxButton = styled(Button)`
 interface ISwapInput {
   tokenAddress: string;
   chainId: number;
-  handleChange: any;
+  handleChange: (val: number) => void;
   value: number;
-  selectedChainId: any;
+  selectedChainId: number;
 }
 
 export const SwapInput = ({
@@ -68,8 +69,6 @@ export const SwapInput = ({
   const { tokensWithBalance, isBalanceLoading } =
     useTokenBalances(selectedChainId);
 
-  console.log("tokens with balance - ", tokensWithBalance);
-
   const maxAmount = !tokenAddress
     ? 0
     : Number(
@@ -77,8 +76,6 @@ export const SwapInput = ({
           return val.address === tokenAddress;
         })[0].amount,
       );
-
-  console.log("max amount -", maxAmount);
 
   return (
     <Card>
@@ -104,7 +101,9 @@ export const SwapInput = ({
               autoComplete="off"
               placeholder="0"
               bordered={false}
-              onChange={(e: any) => handleChange(Number(e.target.value))}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(Number(e.target.value))
+              }
               value={value}
               required
             />

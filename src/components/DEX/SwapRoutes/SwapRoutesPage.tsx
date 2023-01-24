@@ -3,6 +3,7 @@ import { Spin, List } from "antd";
 import { useSwapRoutes } from "../../../hooks/useSwapRoutes";
 import styled from "styled-components";
 import { SwapRouteCard } from "./SwapRouteCard";
+import type { Route } from "@lifi/sdk";
 
 const CenterLayout = styled("div")`
   display: grid;
@@ -12,13 +13,13 @@ const CenterLayout = styled("div")`
 `;
 
 interface ISwapRoutes {
-  fromChainId: any;
-  fromTokenAddress: any;
-  toChainId: any;
-  toTokenAddress: any;
-  toAddress: any;
-  fromAmount: any;
-  handleSelectRoute: any;
+  fromChainId: number;
+  fromTokenAddress: string;
+  toChainId: number;
+  toTokenAddress: string;
+  toAddress: string;
+  fromAmount: number;
+  handleSelectRoute: (route: Route) => void;
 }
 
 export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
@@ -49,18 +50,11 @@ export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
 
   const currentRoute = routes?.[0];
 
-  // useSetRecommendedRoute(currentRoute, isFetching);
-
   if (!currentRoute && !isLoading && !isFetching && !isFetched) {
     return null;
   }
 
-  // const handleCardClick = () => {
-  //   navigate(navigationRoutes.swapRoutes);
-  // };
-
   const routeNotFound = !currentRoute && !isLoading && !isFetching;
-  // const onlyRecommendedRoute = variant === "refuel" || useRecommendedRoute;
 
   if (isLoading)
     return (
@@ -76,11 +70,10 @@ export const SwapRoutesPage: React.FC<ISwapRoutes> = ({
       <List style={{ height: "100%" }}>
         {routes?.length &&
           routes?.map((route, i) => {
-            console.log("route from map - ", route);
             return (
               <div key={i}>
                 <SwapRouteCard
-                  toToken={route.toToken}
+                  toToken={{ ...route.toToken, amount: "" }}
                   toAmount={route.toAmount}
                   route={route}
                   handleSelectRoute={handleSelectRoute}

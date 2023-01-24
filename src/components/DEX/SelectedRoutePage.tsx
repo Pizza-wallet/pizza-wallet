@@ -3,6 +3,7 @@ import { Token } from "./Token";
 import { StepActions } from "./SwapRoutes/StepActions";
 import { faGasPump } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { Route } from "@lifi/sdk";
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   font-size: 15px;
@@ -20,7 +21,7 @@ const Text = styled("p")`
 `;
 
 interface ISelectedRoutePage {
-  route: any;
+  route: Route;
 }
 
 export const SelectedRoutePage = ({ route }: ISelectedRoutePage) => {

@@ -2,9 +2,10 @@
 import { List } from "antd";
 import { ActiveSwapItem } from "./ActiveSwapItem";
 import { useExecutingRoutesIds, useRouteExecutionStore } from "../../../stores";
-import { faArrowLeft, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import type { Route } from "@lifi/sdk";
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   font-size: 1.75rem;
@@ -51,22 +52,12 @@ export const ActiveSwapsExpanded = ({
   setPage,
   setSelectedRoute,
 }: {
-  setPage: any;
-  setSelectedRoute: any;
+  setPage: (x: string) => void;
+  setSelectedRoute: (val: Route) => void;
 }) => {
   const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
   const executingRoutes = useExecutingRoutesIds(accountAddress);
   const deleteRoutes = useRouteExecutionStore((store) => store.deleteRoutes);
-
-  // useEffect(() => {
-  //   if (executingRoutes.length) {
-  //     return useHeaderActionStore.getState().setAction(
-  //       <IconButton size="medium" edge="end" onClick={toggleDialog}>
-  //         <DeleteIcon />
-  //       </IconButton>,
-  //     );
-  //   }
-  // }, [executingRoutes.length, toggleDialog]);
 
   if (!executingRoutes.length) {
     return (
@@ -95,7 +86,7 @@ export const ActiveSwapsExpanded = ({
           style={{ marginLeft: "auto" }}
           onClick={() => deleteRoutes("active")}
         >
-          <Typography>Clear all</Typography>
+          <Typography>Cancel all</Typography>
         </div>
       </div>
       <List>

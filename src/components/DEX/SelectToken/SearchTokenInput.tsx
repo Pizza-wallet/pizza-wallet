@@ -1,8 +1,9 @@
+import React from "react";
 import { Input } from "antd";
 const { Search } = Input;
 
 interface ISearchTokenInput {
-  setTokenSearchFilter: any;
+  setTokenSearchFilter: (x: string) => void;
 }
 
 export const SearchTokenInput = ({
@@ -11,7 +12,9 @@ export const SearchTokenInput = ({
   return (
     <>
       <Search
-        onChange={(e) => setTokenSearchFilter(e.target.value)}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setTokenSearchFilter(e.target.value)
+        }
         size={"large"}
         placeholder="Search your token"
       />
