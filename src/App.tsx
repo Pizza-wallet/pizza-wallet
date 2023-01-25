@@ -31,7 +31,7 @@ const DEX = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'DEX'*/
-      /*webpackPrefetch: true */ "./components/DEX"
+      /*webpackPrefetch: true */ "./components/Dex"
     ),
 );
 const Account = React.lazy(
