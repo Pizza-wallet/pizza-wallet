@@ -8,6 +8,7 @@ import { SwapRoutesPage } from "./SwapRoutes/SwapRoutesPage";
 import { SelectedRoutePage } from "./SelectedRoutePage";
 import { ActiveSwapsExpanded } from "./ActiveSwaps/ActiveSwapsExpanded";
 import { ActiveSwaps } from "./ActiveSwaps/ActiveSwaps";
+import { GasSufficiencyMessage } from "./GasSufficiencyMessage";
 import { useRouteExecution } from "../../hooks/useRouteExecution";
 import type { Route } from "@lifi/sdk";
 import { getStepList } from "./StepList/StepList";
@@ -125,6 +126,15 @@ function Dex() {
             value={fromTokenAmount}
             handleChange={(val: number) => handleSetFromTokenAmount(val)}
             selectedChainId={fromChain}
+          />
+          <GasSufficiencyMessage
+            route={selectedRoute!}
+            fromChainId={fromChain}
+            fromTokenAddress={fromToken}
+            toChainId={toChain}
+            toTokenAddress={toToken}
+            toAddress={""}
+            fromAmount={fromTokenAmount}
           />
           <SwapButton page={page} onClick={() => {}} navigateBack={() => {}} />
         </>
