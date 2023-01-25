@@ -96,10 +96,13 @@ function Dex() {
   };
 
   const switchFromAndTo = () => {
-    setFromChain(toChain);
-    setToChain(fromChain);
-    setFromToken(toToken);
-    setToToken(fromToken);
+    const requiredInputsFilled = toChain && fromChain && toToken && fromToken;
+    if (requiredInputsFilled) {
+      setFromChain(toChain);
+      setToChain(fromChain);
+      setFromToken(toToken);
+      setToToken(fromToken);
+    }
   };
 
   const renderCorrectPage = () => {
