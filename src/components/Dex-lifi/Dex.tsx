@@ -91,6 +91,7 @@ function Dex() {
   };
 
   const openMainPageAndSwapRoutes = () => {
+    setSelectedRoute(undefined);
     setOpenSwapRoutes(true);
     setPage("main");
   };
@@ -203,7 +204,7 @@ function Dex() {
           <InnerCard>{renderCorrectPage()}</InnerCard>
           <PoweredByLifi />
         </Card>
-        {openSwapRoutes && fromToken && toToken ? (
+        {openSwapRoutes && fromToken && toToken && fromTokenAmount ? (
           <Card>
             <Header>
               <p>Swap routes</p>

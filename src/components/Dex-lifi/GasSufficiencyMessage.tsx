@@ -16,7 +16,6 @@ const Card = styled("div")`
   width: 95%;
   border: 0.125rem solid #3e389f;
   border-radius: 10px;
-  cursor: pointer;
   margin: auto;
   margin-top: 30px;
   background: #f34337;

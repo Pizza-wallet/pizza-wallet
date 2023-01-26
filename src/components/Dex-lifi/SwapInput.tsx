@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Image, Input, Button } from "antd";
+import { Avatar, Image, Input, Button, InputNumber } from "antd";
 import { useToken } from "../../hooks/useToken";
 import { useChain } from "../../hooks/useChain";
 import { useTokenBalances } from "../../hooks/useTokenBalances";
@@ -29,11 +29,12 @@ const Flex = styled("div")`
   justify-content: start;
 `;
 
-const StyledInput = styled(Input)`
+const StyledInput = styled(InputNumber)`
   font-size: 26px;
   font-weight: 700;
   box-shadow: none;
   color: #3e389f;
+  width: 100%;
 `;
 
 const StyledMaxButton = styled(Button)`
@@ -43,6 +44,7 @@ const StyledMaxButton = styled(Button)`
   border-radius: 10px;
   background: none;
   margin-right: 10px;
+  margin-left: auto;
   line-height: 1;
   margin-top: 5px;
   color: #3e389f;
@@ -105,12 +107,13 @@ export const SwapInput = ({
               autoComplete="off"
               placeholder="0"
               bordered={false}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleChange(Number(e.target.value))
-              }
-              value={value}
+              controls={false}
+              onChange={(value: any) => handleChange(value)}
+              value={value === 0 ? "" : value}
               required
+              type="number"
             />
+            {/* <InputNumber min={1} max={10} defaultValue={3} onChange={onChange} /> */}
             <StyledMaxButton onClick={() => handleChange(maxAmount)}>
               Max
             </StyledMaxButton>
