@@ -57,7 +57,7 @@ function Dex() {
   // Swap From chain and token
   const [fromChain, setFromChain] = useState(1);
   const [fromToken, setFromToken] = useState("");
-  const [fromTokenAmount, setFromTokenAmount] = useState(0);
+  const [fromTokenAmount, setFromTokenAmount] = useState<number>(0);
   // Swap To chain and token
   const [toChain, setToChain] = useState(1);
   const [toToken, setToToken] = useState("");
@@ -68,11 +68,9 @@ function Dex() {
   // UI state
   const [openSwapRoutes, setOpenSwapRoutes] = useState(false);
 
-  const { route, status, executeRoute, restartRoute, deleteRoute } =
-    useRouteExecution({
-      routeId: selectedRoute?.id || "",
-      // onAcceptExchangeRateUpdate: exchangeRateBottomSheetRef.current?.open,
-    });
+  const { route, status, executeRoute, restartRoute } = useRouteExecution({
+    routeId: selectedRoute?.id || "",
+  });
 
   const handleSelectRoute = (route: Route) => {
     setSelectedRoute(route);
@@ -161,6 +159,7 @@ function Dex() {
             statusOfSwap={status}
             navigateBack={() => setPage("main")}
             onClick={executeSwap}
+            restartRoute={restartRoute}
           />
         </>
       );
@@ -202,7 +201,7 @@ function Dex() {
           </Header>
           <InnerCard>{renderCorrectPage()}</InnerCard>
         </Card>
-        {openSwapRoutes ? (
+        {openSwapRoutes && fromToken && toToken ? (
           <Card>
             <Header>
               <p>Swap routes</p>

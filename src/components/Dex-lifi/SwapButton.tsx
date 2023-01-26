@@ -7,6 +7,7 @@ interface ISwapButton {
   onClick: (x: string) => void;
   statusOfSwap?: number;
   navigateBack: () => void;
+  restartRoute?: () => void;
 }
 
 export const SwapButton = ({
@@ -14,11 +15,21 @@ export const SwapButton = ({
   onClick,
   statusOfSwap,
   navigateBack,
+  restartRoute,
 }: ISwapButton) => {
   const handleSwapButtonClick = async () => {
     // check we have users account details then execute swap
     if (statusOfSwap && hasEnumFlag(statusOfSwap, RouteExecutionStatus.Done)) {
       navigateBack();
+    }
+    if (
+      statusOfSwap &&
+      hasEnumFlag(statusOfSwap, RouteExecutionStatus.Failed)
+    ) {
+      // User clicked try again so restart route here
+      if (restartRoute) {
+        restartRoute();
+      }
     }
     if (
       statusOfSwap &&
@@ -35,6 +46,12 @@ export const SwapButton = ({
   const getButtonText = () => {
     if (statusOfSwap && hasEnumFlag(statusOfSwap, RouteExecutionStatus.Done)) {
       return "Done";
+    }
+    if (
+      statusOfSwap &&
+      hasEnumFlag(statusOfSwap, RouteExecutionStatus.Failed)
+    ) {
+      return "Try again";
     }
     if (
       statusOfSwap &&

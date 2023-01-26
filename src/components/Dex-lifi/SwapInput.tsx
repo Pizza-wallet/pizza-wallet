@@ -46,6 +46,10 @@ const StyledMaxButton = styled(Button)`
   line-height: 1;
   margin-top: 5px;
   color: #3e389f;
+  &:hover {
+    border: 0.125rem solid #3e389f;
+    color: #3e389f;
+  }
 `;
 
 interface ISwapInput {

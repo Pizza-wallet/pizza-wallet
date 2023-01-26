@@ -1,4 +1,5 @@
 import type { ExchangeRateUpdateParams, Route } from "@lifi/sdk";
+import { getChainById } from "@lifi/sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { shallow } from "zustand/shallow";
@@ -73,25 +74,41 @@ export const useRouteExecution = ({
     console.log("Route updated.", clonedUpdatedRoute);
   };
 
+  const switchChain = async (chainId: number): Promise<boolean> => {
+    return new Promise(async (resolve, reject) => {
+      const ethereum = (window as any).ethereum;
+      if (!provider) {
+        resolve(false);
+      }
+      try {
+        await ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: getChainById(chainId).metamask?.chainId }],
+        });
+        resolve(true);
+      } catch (error: any) {
+        // const ERROR_CODE_UNKNOWN_CHAIN = 4902
+        console.error(error);
+        reject(error);
+        resolve(false);
+      }
+    });
+  };
+
   const switchChainHook = async (requiredChainId: number) => {
     if (!signer) {
       return signer;
     }
     const currentChainId = await signer.getChainId();
     if (currentChainId !== requiredChainId) {
-      // figure out how to switch chain here
-      // Check the below works with all wallets
-      const ethereum = (window as any).ethereum;
-      const switched = "";
+      // Below should work with all wallets
+      let switched;
       try {
-        await ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: requiredChainId }],
-        });
+        switched = await switchChain(requiredChainId);
       } catch (error: any) {
+        switched = false;
         console.log("Error switching chain");
       }
-      // const switched = await switchChain(requiredChainId);
       if (!switched) {
         throw new Error("Chain was not switched.");
       }
