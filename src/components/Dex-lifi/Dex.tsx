@@ -14,6 +14,7 @@ import type { Route } from "@lifi/sdk";
 import { getStepList } from "./StepList/StepList";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PoweredByLifi } from "./icons/PoweredByLifi";
 
 const Card = styled("div")`
   width: 28em;
@@ -200,6 +201,7 @@ function Dex() {
             <p>Swap</p>
           </Header>
           <InnerCard>{renderCorrectPage()}</InnerCard>
+          <PoweredByLifi />
         </Card>
         {openSwapRoutes && fromToken && toToken ? (
           <Card>
