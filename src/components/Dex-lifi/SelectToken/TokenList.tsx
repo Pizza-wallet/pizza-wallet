@@ -1,10 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import type { FC } from "react";
 import type { LIFIToken } from "../../../types/client";
 import { useTokenBalances } from "../../../hooks/useTokenBalances";
 import { List, Spin } from "antd";
 import styled from "styled-components";
 import { TokenListItem } from "./TokenListItem";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const CenterLayout = styled("div")`
   display: grid;
@@ -47,9 +48,24 @@ export const TokenList: FC<ITokenList> = ({
 
   const isLoading = isTokensLoading;
 
+  const [dataForInfiniteScroll, setDataForInfiniteScroll] = useState<
+    LIFIToken[]
+  >(filteredTokens.slice(0, 50));
+
+  useEffect(() => {
+    // Set tokens when filter changes
+    setDataForInfiniteScroll(filteredTokens.slice(0, 50));
+  }, [filteredTokens]);
+
   const handleTokenClick = (tokenAddress: string) => {
     setToken(tokenAddress);
     navigateBack();
+  };
+
+  const fetchMoreData = () => {
+    // fetch 50 more tokens from filteredTokens
+    const showFiftyTokensMore = dataForInfiniteScroll.length + 50;
+    setDataForInfiniteScroll(filteredTokens.slice(0, showFiftyTokensMore));
   };
 
   if (isLoading)
@@ -59,23 +75,34 @@ export const TokenList: FC<ITokenList> = ({
       </CenterLayout>
     );
   return (
-    <div ref={parentRef} style={{ height: 600, overflow: "auto" }}>
+    <div
+      ref={parentRef}
+      id="scrollableDiv"
+      style={{ height: 600, overflow: "auto" }}
+    >
       {!filteredTokens.length && !isLoading ? <p>No tokens found</p> : null}
-      <List style={{ height: "100%" }}>
-        {filteredTokens.map((item: LIFIToken, i: number) => {
-          const token = item;
-          return (
-            <div key={i}>
-              <TokenListItem
-                onClick={handleTokenClick}
-                token={token}
-                isBalanceLoading={isBalanceLoading}
-                showBalance={true}
-              />
-            </div>
-          );
-        })}
-      </List>
+      <InfiniteScroll
+        dataLength={dataForInfiniteScroll.length}
+        next={fetchMoreData}
+        hasMore={true}
+        loader={<></>}
+        scrollableTarget="scrollableDiv"
+      >
+        {dataForInfiniteScroll &&
+          dataForInfiniteScroll.map((item: LIFIToken, i: number) => {
+            const token = item;
+            return (
+              <div key={i}>
+                <TokenListItem
+                  onClick={handleTokenClick}
+                  token={token}
+                  isBalanceLoading={isBalanceLoading}
+                  showBalance={true}
+                />
+              </div>
+            );
+          })}
+      </InfiniteScroll>
     </div>
   );
 };
