@@ -128,6 +128,8 @@ export const useSwapRoutes = (
             toAddress: toWalletAddress,
             options: {
               slippage: formattedSlippage,
+              integrator: "pizza-wallet", // string telling us who you are
+              fee: 0.1, // 0.1 refers to 10% of the transaction volume
               // bridges: {
               //   allow: enabledBridges,
               // },

@@ -1,5 +1,5 @@
 import type { ExchangeRateUpdateParams, Route } from "@lifi/sdk";
-import { getChainById } from "@lifi/sdk";
+import { getChainById, MetaMaskProviderErrorCode } from "@lifi/sdk";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useRef } from "react";
 import { shallow } from "zustand/shallow";
@@ -75,40 +75,71 @@ export const useRouteExecution = ({
   };
 
   const switchChain = async (chainId: number): Promise<boolean> => {
-    return new Promise(async (resolve, reject) => {
-      const ethereum = (window as any).ethereum;
+    return new Promise((resolve, reject) => {
+      const { ethereum } = window as any;
+      const provider: any = ethereum;
       if (!provider) {
         resolve(false);
       }
       try {
-        await ethereum.request({
-          method: "wallet_switchEthereumChain",
-          params: [{ chainId: getChainById(chainId).metamask?.chainId }],
+        provider
+          .request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: getChainById(chainId).metamask?.chainId }],
+          })
+          .catch((error: any) => {
+            if (error.code !== MetaMaskProviderErrorCode.userRejectedRequest) {
+              addChain(chainId).then((result) => resolve(result));
+            } else {
+              reject(error);
+            }
+          });
+        provider.once("chainChanged", (id: string) => {
+          if (parseInt(id) === chainId) {
+            resolve(true);
+          }
         });
-        resolve(true);
       } catch (error: any) {
         // const ERROR_CODE_UNKNOWN_CHAIN = 4902
-        console.error(error);
-        reject(error);
-        resolve(false);
+        if (error.code !== MetaMaskProviderErrorCode.userRejectedRequest) {
+          addChain(chainId).then((result) => resolve(result));
+        } else {
+          console.error(error);
+          resolve(false);
+        }
       }
     });
   };
 
+  const addChain = async (chainId: number) => {
+    const { ethereum } = window as any;
+    const provider: any = ethereum;
+
+    if (!provider) {
+      return false;
+    }
+
+    const params = getChainById(chainId).metamask;
+    try {
+      await provider.request({
+        method: "wallet_addEthereumChain",
+        params: [params],
+      });
+      return true;
+    } catch (error: any) {
+      console.error(`Error adding chain ${chainId}: ${error.message}`);
+    }
+    return false;
+  };
+
   const switchChainHook = async (requiredChainId: number) => {
+    console.log("Switch chain hook hit");
     if (!signer) {
       return signer;
     }
     const currentChainId = await signer.getChainId();
     if (currentChainId !== requiredChainId) {
-      // Below should work with all wallets
-      let switched;
-      try {
-        switched = await switchChain(requiredChainId);
-      } catch (error: any) {
-        switched = false;
-        console.log("Error switching chain");
-      }
+      const switched = await switchChain(requiredChainId);
       if (!switched) {
         throw new Error("Chain was not switched.");
       }
