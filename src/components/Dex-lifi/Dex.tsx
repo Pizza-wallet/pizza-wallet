@@ -9,40 +9,13 @@ import { SelectedRoutePage } from "./SelectedRoutePage";
 import { ActiveSwapsExpanded } from "./ActiveSwaps/ActiveSwapsExpanded";
 import { ActiveSwaps } from "./ActiveSwaps/ActiveSwaps";
 import { GasSufficiencyMessage } from "./GasSufficiencyMessage";
+import PizzawalletModal from "../reusable/PizzawalletModal";
 import { useRouteExecution } from "../../hooks/useRouteExecution";
 import type { Route } from "@lifi/sdk";
 import { getStepList } from "./StepList/StepList";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PoweredByLifi } from "./icons/PoweredByLifi";
-
-const Card = styled("div")`
-  width: 28em;
-  margin-left: auto;
-  margin-right: auto;
-  border: 0.125rem solid #3e389f;
-  background-color: #f8f2ed;
-  border-radius: 2.75rem;
-  padding: 0.425rem;
-  height: 100%;
-`;
-
-const InnerCard = styled("div")`
-  position: relative;
-  border: 0.125rem solid #3e389f;
-  background-color: #f8f2ed;
-  border-radius: 2.5625rem;
-  padding: 1.25rem;
-  width: 26.8em;
-`;
-
-const Header = styled("div")`
-  color: #3e389f;
-  font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 1.5rem;
-  padding: 0.625rem 0 0.625rem 1.25rem;
-  -webkit-text-stroke: thin;
-`;
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   font-size: 1.75rem;
@@ -197,30 +170,22 @@ function Dex() {
           justifyContent: "center",
         }}
       >
-        <Card>
-          <Header>
-            <p>Swap</p>
-          </Header>
-          <InnerCard>{renderCorrectPage()}</InnerCard>
-          <PoweredByLifi />
-        </Card>
+        <PizzawalletModal header={"Swap"} bottomLogo={<PoweredByLifi />}>
+          {renderCorrectPage()}
+          {/* <PoweredByLifi /> */}
+        </PizzawalletModal>
         {openSwapRoutes && fromToken && toToken && fromTokenAmount ? (
-          <Card>
-            <Header>
-              <p>Swap routes</p>
-            </Header>
-            <InnerCard>
-              <SwapRoutesPage
-                fromChainId={fromChain}
-                fromTokenAddress={fromToken}
-                toChainId={toChain}
-                toTokenAddress={toToken}
-                toAddress={""}
-                fromAmount={fromTokenAmount}
-                handleSelectRoute={handleSelectRoute}
-              />
-            </InnerCard>
-          </Card>
+          <PizzawalletModal header={"Swap routes"}>
+            <SwapRoutesPage
+              fromChainId={fromChain}
+              fromTokenAddress={fromToken}
+              toChainId={toChain}
+              toTokenAddress={toToken}
+              toAddress={""}
+              fromAmount={fromTokenAmount}
+              handleSelectRoute={handleSelectRoute}
+            />
+          </PizzawalletModal>
         ) : null}
       </div>
     </>

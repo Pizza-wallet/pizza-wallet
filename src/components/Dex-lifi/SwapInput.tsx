@@ -3,6 +3,7 @@ import { Avatar, Image, Input, Button, InputNumber } from "antd";
 import { useToken } from "../../hooks/useToken";
 import { useChain } from "../../hooks/useChain";
 import { useTokenBalances } from "../../hooks/useTokenBalances";
+import { PizzaWalletCard } from "../reusable/PizzaWalletCard";
 import styled from "styled-components";
 
 const Text = styled("p")`
@@ -12,16 +13,6 @@ const Text = styled("p")`
   line-height: 1.5rem;
   letter-spacing: 0.02em;
   margin: 10px 0 0.625rem 10px;
-`;
-
-const Card = styled("div")`
-  width: 95%;
-  height: 115px;
-  border: 0.125rem solid #3e389f;
-  border-radius: 10px;
-  cursor: pointer;
-  margin: auto;
-  margin-top: 30px;
 `;
 
 const Flex = styled("div")`
@@ -84,7 +75,7 @@ export const SwapInput = ({
       );
 
   return (
-    <Card>
+    <PizzaWalletCard height={"115px"}>
       <Text>You pay</Text>
       <Flex>
         {token && chain ? (
@@ -135,6 +126,6 @@ export const SwapInput = ({
           <p>${Math.round(value * Number(token.priceUSD))}</p>
         ) : null}
       </div>
-    </Card>
+    </PizzaWalletCard>
   );
 };

@@ -2,19 +2,10 @@
 import React from "react";
 import type { Step as StepType, TokenAmount } from "@lifi/sdk";
 import { StepActions } from "../SwapRoutes/StepActions";
+import { PizzaWalletCard } from "../../reusable/PizzaWalletCard";
 import { Token } from "../Token";
 import { StepProcess } from "./StepProcess";
 import { StepTimer } from "./StepTimer";
-import styled from "styled-components";
-
-const Card = styled("div")`
-  width: 95%;
-  border: 0.125rem solid #3e389f;
-  border-radius: 10px;
-  margin: auto;
-  margin-top: 30px;
-  padding: 20px;
-`;
 
 export const Step: React.FC<{
   step: StepType;
@@ -41,7 +32,7 @@ export const Step: React.FC<{
   };
 
   return (
-    <Card>
+    <PizzaWalletCard padding={"20px"}>
       <div
         style={{
           display: "flex",
@@ -64,6 +55,6 @@ export const Step: React.FC<{
 
         {toToken ? <Token token={toToken} /> : null}
       </div>
-    </Card>
+    </PizzaWalletCard>
   );
 };

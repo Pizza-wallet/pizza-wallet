@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Tag, Tooltip } from "antd";
 import { Token } from "../Token";
+import { PizzaWalletCard } from "../../reusable/PizzaWalletCard";
 import { getGasCostsBreakdown } from "./utils";
 import {
   faGasPump,
@@ -13,19 +14,6 @@ import { StepActions } from "./StepActions";
 import { useSetExecutableRoute } from "../../../stores";
 import type { Route } from "@lifi/sdk";
 import { LIFIToken } from "../../../types/client";
-
-const Card = styled("div")`
-  width: 95%;
-  border: 0.125rem solid #3e389f;
-  border-radius: 10px;
-  padding: 10px;
-  cursor: pointer;
-  margin: auto;
-  margin-top: 30px;
-  &:hover {
-    background: #e8e8e8;
-  }
-`;
 
 const Flex = styled("div")`
   display: flex;
@@ -100,7 +88,7 @@ export const SwapRouteCard: React.FC<ISwapRouteCard> = ({
   };
 
   return (
-    <Card onClick={handleRouteSelect}>
+    <PizzaWalletCard hover={true} padding={"10px"} onClick={handleRouteSelect}>
       <Flex marginBottom={"20px"} justifyContent={"space-between"}>
         <Tag color={tagColor}>{tag}</Tag>
         <Tooltip placement="top" title={gasCostTooltipText}>
@@ -145,6 +133,6 @@ export const SwapRouteCard: React.FC<ISwapRouteCard> = ({
           <StepActions key={step.id} _step={step} />
         ))}
       </div>
-    </Card>
+    </PizzaWalletCard>
   );
 };

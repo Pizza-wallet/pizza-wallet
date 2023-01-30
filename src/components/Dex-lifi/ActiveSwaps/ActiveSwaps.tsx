@@ -1,16 +1,8 @@
 import React from "react";
 import { useExecutingRoutesIds } from "../../../stores";
 import { ActiveSwapItem } from "./ActiveSwapItem";
+import { PizzaWalletCard } from "../../reusable/PizzaWalletCard";
 import styled from "styled-components";
-
-const Card = styled("div")`
-  width: 95%;
-  border: 0.125rem solid #3e389f;
-  border-radius: 10px;
-  margin: auto;
-  margin-top: 30px;
-  padding: 20px;
-`;
 
 const CardTitle = styled("p")`
   color: #3e389f;
@@ -47,7 +39,7 @@ export const ActiveSwaps: React.FC<{ navigate: (x: string) => void }> = ({
   }
 
   return (
-    <Card>
+    <PizzaWalletCard padding={"20px"}>
       <CardTitle>Active swaps</CardTitle>
       <div>
         {executingRoutes.slice(0, 1).map((routeId: string) => (
@@ -59,6 +51,6 @@ export const ActiveSwaps: React.FC<{ navigate: (x: string) => void }> = ({
           <Typography onClick={handleShowAll}>Show all</Typography>
         </div>
       </div>
-    </Card>
+    </PizzaWalletCard>
   );
 };

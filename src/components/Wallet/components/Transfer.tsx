@@ -10,35 +10,9 @@ import {
   PrimaryButton,
   SecondaryButton,
 } from "../../reusable/Buttons";
+import PizzawalletModal from "../../reusable/PizzawalletModal";
 import { Link } from "react-router-dom";
 import { BigNumber } from "@ethersproject/bignumber";
-
-const Card = styled("div")`
-  width: 26.8em;
-  margin-left: auto;
-  margin-right: auto;
-  border: 0.125rem solid #3e389f;
-  background-color: #f8f2ed;
-  border-radius: 2.75rem;
-  padding: 0.425rem;
-`;
-
-const InnerCard = styled("div")`
-  position: relative;
-  border: 0.125rem solid #3e389f;
-  background-color: #f8f2ed;
-  border-radius: 2.5625rem;
-  padding: 1.25rem;
-  width: 25.6em;
-`;
-
-const Header = styled("div")`
-  color: #3e389f;
-  font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 1.5rem;
-  padding: 0.625rem 0 0.625rem 1.25rem;
-  -webkit-text-stroke: thin;
-`;
 
 const Text = styled("p")`
   color: black;
@@ -193,11 +167,8 @@ function Transfer() {
   }
 
   return (
-    <Card>
-      <Header>
-        <p>Transfer Assets</p>
-      </Header>
-      <InnerCard>
+    <PizzawalletModal header={"Transfer Assets"}>
+      <>
         <Text>Send to:</Text>
         <AddressInput autoFocus onChange={setReceiver} />
 
@@ -230,8 +201,8 @@ function Transfer() {
             </PrimaryButton>
           </ButtonContainer>
         </Controls>
-      </InnerCard>
-    </Card>
+      </>
+    </PizzawalletModal>
   );
 }
 

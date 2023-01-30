@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Avatar, Image } from "antd";
 import { useChain } from "../../hooks/useChain";
 import { useToken } from "../../hooks/useToken";
+import { PizzaWalletCard } from "../reusable/PizzaWalletCard";
 
 const Text = styled("p")`
   color: #3e389f;
@@ -27,19 +28,6 @@ const Text2 = styled("p")`
   font-family: "Rubik", sans-serif;
   font-size: 13px;
   line-height: 1.5rem;
-`;
-
-const Card = styled("div")`
-  width: 95%;
-  height: 100px;
-  border: 0.125rem solid #3e389f;
-  border-radius: 10px;
-  cursor: pointer;
-  margin: auto;
-  margin-top: 30px;
-  &:hover {
-    background: #e8e8e8;
-  }
 `;
 
 const Flex = styled("div")`
@@ -71,7 +59,7 @@ export const SelectChainTokenBtn = ({
   };
 
   return (
-    <Card onClick={handleCardClick}>
+    <PizzaWalletCard height={"100px"} hover={true} onClick={handleCardClick}>
       <Text>{formType}</Text>
       <Flex>
         {token && chain ? (
@@ -107,6 +95,6 @@ export const SelectChainTokenBtn = ({
           </>
         )}
       </Flex>
-    </Card>
+    </PizzaWalletCard>
   );
 };

@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import { List } from "antd";
 import { ActiveSwapItem } from "./ActiveSwapItem";
+import { PizzaWalletCard } from "../../reusable/PizzaWalletCard";
 import { useExecutingRoutesIds, useRouteExecutionStore } from "../../../stores";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,19 +13,6 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   margin-top: 8px;
   color: #3e389f;
   cursor: pointer;
-`;
-
-const Card = styled("div")`
-  width: 95%;
-  border: 0.125rem solid #3e389f;
-  border-radius: 10px;
-  margin: auto;
-  margin-top: 30px;
-  padding: 20px;
-  cursor: pointer;
-  &:hover {
-    background: #e8e8e8;
-  }
 `;
 
 const CardTitle = styled("p")`
@@ -91,13 +79,13 @@ export const ActiveSwapsExpanded = ({
       </div>
       <List>
         {executingRoutes.map((routeId: string) => (
-          <Card key={routeId}>
+          <PizzaWalletCard hover={true} padding={"20px"} key={routeId}>
             <ActiveSwapItem
               routeId={routeId}
               setSelectedRoute={setSelectedRoute}
               setPage={setPage}
             />
-          </Card>
+          </PizzaWalletCard>
         ))}
       </List>
     </>
