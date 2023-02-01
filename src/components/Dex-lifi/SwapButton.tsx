@@ -1,6 +1,5 @@
-import { ButtonContainer, PrimaryButton } from "../reusable/Buttons";
+import { PrimaryButtonAnimation } from "../reusable/Buttons";
 import { RouteExecutionStatus, hasEnumFlag } from "../../stores";
-import { Spin } from "antd";
 
 interface ISwapButton {
   page: string;
@@ -57,18 +56,10 @@ export const SwapButton = ({
       statusOfSwap &&
       hasEnumFlag(statusOfSwap, RouteExecutionStatus.Pending)
     ) {
-      return (
-        <>
-          <Spin
-            size="large"
-            style={{ color: "#3e389f", marginRight: "5px" }}
-          ></Spin>{" "}
-          Pending
-        </>
-      );
+      return "Pending...";
     }
     if (page === "selectedRoute") {
-      return "Start swap";
+      return "Swap";
     } else if (page === "main") {
       return "Swap";
     }
@@ -76,14 +67,8 @@ export const SwapButton = ({
   };
 
   return (
-    <ButtonContainer
-      width={"14.375rem"}
-      height={"3.1875rem"}
-      margin={"2.25rem auto 2.25rem auto"}
-    >
-      <PrimaryButton onClick={handleSwapButtonClick}>
-        {getButtonText()}
-      </PrimaryButton>
-    </ButtonContainer>
+    <PrimaryButtonAnimation onClick={handleSwapButtonClick}>
+      {getButtonText()}
+    </PrimaryButtonAnimation>
   );
 };

@@ -19,7 +19,7 @@ const IconCircle = styled("div")`
   width: 50px;
   height: 50px;
   border-radius: 30px;
-  border: 1px solid #3e389f;
+  border: 0.125rem solid #3e389f;
   background-color: #f8f2ed;
   text-align: center;
   &:hover {
@@ -30,7 +30,7 @@ const IconCircle = styled("div")`
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   font-size: 1.75rem;
   rotate: 90deg;
-  margin-top: 8px;
+  margin-top: 9px;
   color: #3e389f;
 `;
 

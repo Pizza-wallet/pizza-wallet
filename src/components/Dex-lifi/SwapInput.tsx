@@ -1,5 +1,4 @@
-import React from "react";
-import { Avatar, Image, Input, Button, InputNumber } from "antd";
+import { Avatar, Image, Button, InputNumber } from "antd";
 import { useToken } from "../../hooks/useToken";
 import { useChain } from "../../hooks/useChain";
 import { useTokenBalances } from "../../hooks/useTokenBalances";
@@ -7,7 +6,7 @@ import { PizzaWalletCard } from "../reusable/PizzaWalletCard";
 import styled from "styled-components";
 
 const Text = styled("p")`
-  color: #3e389f;
+  color: #000000;
   font-family: "Rubik", sans-serif;
   font-size: 16px;
   line-height: 1.5rem;
@@ -24,8 +23,8 @@ const StyledInput = styled(InputNumber)`
   font-size: 26px;
   font-weight: 700;
   box-shadow: none;
-  color: #3e389f;
-  width: 100%;
+  color: #000000;
+  width: ${({ width }: { width: string }) => width};
 `;
 
 const StyledMaxButton = styled(Button)`
@@ -103,6 +102,7 @@ export const SwapInput = ({
               value={value === 0 ? "" : value}
               required
               type="number"
+              width={"100%"}
             />
             {/* <InputNumber min={1} max={10} defaultValue={3} onChange={onChange} /> */}
             <StyledMaxButton onClick={() => handleChange(maxAmount)}>
@@ -115,16 +115,36 @@ export const SwapInput = ({
               style={{
                 color: "#f56a00",
                 backgroundColor: "#e8e8e8",
-                marginLeft: "20px",
+                marginLeft: "25px",
               }}
             ></Avatar>
+            <StyledInput
+              size="small"
+              autoComplete="off"
+              placeholder="0"
+              bordered={false}
+              controls={false}
+              value={0}
+              required
+              type="number"
+              width={""}
+            />
           </>
         )}
       </Flex>
-      <div style={{ marginLeft: "60px", color: "grey" }}>
+      <div
+        style={{
+          marginLeft: "60px",
+          color: "grey",
+          position: "absolute",
+          bottom: "10px",
+        }}
+      >
         {token && value > 0 ? (
           <p>${Math.round(value * Number(token.priceUSD))}</p>
-        ) : null}
+        ) : (
+          <p>$0</p>
+        )}
       </div>
     </PizzaWalletCard>
   );

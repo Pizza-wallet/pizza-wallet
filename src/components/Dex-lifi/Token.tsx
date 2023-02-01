@@ -45,7 +45,7 @@ interface TokenProps {
   dense?: boolean;
 }
 
-export const Token: React.FC<TokenProps> = ({ token, step, dense }) => {
+export const Token: React.FC<TokenProps> = ({ token }) => {
   const { chain } = useChain(token.chainId);
   const formattedTokenAmount = formatTokenAmount(token.amount, token.decimals);
   const formattedTokenPrice = formatTokenPrice(
@@ -68,33 +68,11 @@ export const Token: React.FC<TokenProps> = ({ token, step, dense }) => {
             src={chain?.logoURI}
           />
         </Avatar.Group>
-        <div style={{ marginLeft: "10px", display: "flex" }}>
+        <div style={{ marginLeft: "10px" }}>
           <div>
             <SymbolText>{formattedTokenAmount}</SymbolText>
             <Text2>${limitDigits(formattedTokenPrice)}</Text2>
           </div>
-          {!dense && step ? (
-            <Flex marginLeft={"5px"}>
-              <div>
-                <Avatar
-                  src={step.toolDetails.logoURI}
-                  alt={step.toolDetails.name}
-                  size={"small"}
-                >
-                  {step.toolDetails.name[0]}
-                </Avatar>
-              </div>
-              <p
-                style={{
-                  fontSize: "12px",
-                  marginTop: "5px",
-                  color: "grey",
-                }}
-              >
-                {step.toolDetails.name}
-              </p>
-            </Flex>
-          ) : null}
         </div>
       </Flex>
     </>

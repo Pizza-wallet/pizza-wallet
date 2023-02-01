@@ -38,12 +38,15 @@ export const StepActions: React.FC<IStepActionsProps> = ({ _step }) => {
   return (
     <div>
       <div style={{ marginLeft: "10px", display: "flex" }}>
-        <Avatar
-          src={_step.type !== "lifi" ? _step.toolDetails.logoURI : undefined}
-          alt={_step.toolDetails.name}
-        >
-          {_step.type === "lifi" ? <LiFiToollogo /> : _step.toolDetails.name[0]}
-        </Avatar>
+        {_step.type === "lifi" ? (
+          <LiFiToollogo />
+        ) : (
+          <Avatar
+            src={_step.toolDetails.logoURI}
+            alt={_step.toolDetails.name}
+          ></Avatar>
+        )}
+
         <Typography style={{ marginTop: "10px", marginLeft: "5px" }}>
           {_step.type === "lifi"
             ? "LI.FI Smart Contract"
@@ -85,7 +88,7 @@ export const StepDetailsContent: React.FC<{ step: StepType }> = ({ step }) => {
           {formatTokenAmount(
             step.estimate.fromAmount,
             step.action.fromToken.decimals,
-          )}
+          )}{" "}
           {step.action.fromToken.symbol}
         </p>
 
@@ -94,7 +97,7 @@ export const StepDetailsContent: React.FC<{ step: StepType }> = ({ step }) => {
           {formatTokenAmount(
             step.execution?.toAmount ?? step.estimate.toAmount,
             step.execution?.toToken?.decimals ?? step.action.toToken.decimals,
-          )}
+          )}{" "}
           {step.execution?.toToken?.symbol ?? step.action.toToken.symbol}
         </p>
       </Flex>

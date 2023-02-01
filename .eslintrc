@@ -32,7 +32,6 @@
     "react/jsx-key": "off",
     "react/no-unescaped-entities": "off",
     "linebreak-style": 0,
-    "no-async-promise-executor": "off",
     // "@typescript-eslint/no-unused-vars": "off",
     // "@typescript-eslint/no-unused-vars-experimental": "error",
     // below is a temporary fix

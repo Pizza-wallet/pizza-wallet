@@ -5,6 +5,7 @@ export const PizzaWalletCard = styled("div")`
   border: 0.125rem solid #3e389f;
   border-radius: 10px;
   cursor: pointer;
+  position: relative;
   margin: auto;
   margin-top: 30px;
   height: ${({

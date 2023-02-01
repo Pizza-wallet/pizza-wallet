@@ -195,7 +195,7 @@ function Transfer() {
               // need to add loading animation to buttons
               // loading={isPending}
               onClick={() => transfer()}
-              disabled={!tx}
+              // disabled={!tx}
             >
               Transfer
             </PrimaryButton>

@@ -24,6 +24,12 @@ const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
 
+const DexContainer = styled("div")`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
+
 function Dex() {
   const [page, setPage] = useState("main");
   const [formType, setFormType] = useState("");
@@ -163,16 +169,9 @@ function Dex() {
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-        }}
-      >
-        <PizzawalletModal header={"Swap"} bottomLogo={<PoweredByLifi />}>
+      <DexContainer>
+        <PizzawalletModal header={"Swap"} logo={<PoweredByLifi />}>
           {renderCorrectPage()}
-          {/* <PoweredByLifi /> */}
         </PizzawalletModal>
         {openSwapRoutes && fromToken && toToken && fromTokenAmount ? (
           <PizzawalletModal header={"Swap routes"}>
@@ -187,7 +186,7 @@ function Dex() {
             />
           </PizzawalletModal>
         ) : null}
-      </div>
+      </DexContainer>
     </>
   );
 }

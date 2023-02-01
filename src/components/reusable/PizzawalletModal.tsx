@@ -27,24 +27,35 @@ const Header = styled("div")`
   -webkit-text-stroke: thin;
 `;
 
+const LogoContainer = styled("div")`
+  margin: 0.9375rem 0.9375rem 0 auto;
+`;
+
 interface IPizzawalletModal {
   header: string;
   children: any;
-  bottomLogo?: any;
+  logo?: any;
 }
 
 export default function PizzawalletModal({
   header,
   children,
-  bottomLogo,
+  logo,
 }: IPizzawalletModal) {
   return (
     <Card>
-      <Header>
-        <p>{header}</p>
-      </Header>
+      {logo ? (
+        <div style={{ display: "flex" }}>
+          <Header>{header}</Header>
+          <LogoContainer>{logo && logo}</LogoContainer>
+        </div>
+      ) : (
+        <Header>
+          <p>{header}</p>
+        </Header>
+      )}
+
       <InnerCard>{children}</InnerCard>
-      {bottomLogo && bottomLogo}
     </Card>
   );
 }
