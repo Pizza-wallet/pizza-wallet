@@ -6,7 +6,6 @@ const address = process.env.REACT_APP_TEST_ACCOUNT;
 
 export { default } from "./ERC20Transfers";
 
-// todo: expand to all actions
 export const transaction = async (api: ApiInfo, actionIndex: number) => {
   try {
     const response = await axios.get(api.endpoint, {
@@ -35,9 +34,6 @@ export const allTransactions = async () => {
         const api = apiList[i];
         const data = await transaction(api, j);
         dataFromAllApis.push([api.chainId, { ...data }]);
-
-        // wait 200ms between calls
-        await new Promise((resolve) => setTimeout(resolve, 200));
       }
     }
     return dataFromAllApis;
