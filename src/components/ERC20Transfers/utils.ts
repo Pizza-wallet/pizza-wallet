@@ -3,6 +3,8 @@ import axios from "axios";
 // todo: connect to user account
 const address = process.env.REACT_APP_TEST_ACCOUNT;
 
+export { default } from "./ERC20Transfers";
+
 interface ApiInfo {
   endpoint: string;
   apikey: any;
@@ -13,47 +15,47 @@ const apiList: ApiInfo[] = [
   {
     endpoint: "https://api.etherscan.io/api",
     apikey: process.env.REACT_APP_ETH_EXPLORER_API,
-    chainId: "",
+    chainId: "1",
   },
   {
     endpoint: "https://api.polygonscan.com/api",
     apikey: process.env.REACT_APP_POLY_EXPLORER_API,
-    chainId: "",
+    chainId: "137",
   },
   {
     endpoint: "https://api.ftmscan.com/api",
     apikey: process.env.REACT_APP_FTM_EXPLORER_API,
-    chainId: "",
+    chainId: "250",
   },
   {
     endpoint: "https://api.snowtrace.io/api",
     apikey: process.env.REACT_APP_AVAX_EXPLORER_API,
-    chainId: "",
+    chainId: "43114",
   },
   {
     endpoint: "https://api-optimistic.etherscan.io/api",
     apikey: process.env.REACT_APP_OP_EXPLORER_API,
-    chainId: "",
+    chainId: "10",
   },
   {
     endpoint: "https://api.arbiscan.io/api",
     apikey: process.env.REACT_APP_ARB_EXPLORER_API,
-    chainId: "",
+    chainId: "42161",
   },
   {
     endpoint: "https://api.bscscan.com/api",
     apikey: process.env.REACT_APP_BSC_EXPLORER_API,
-    chainId: "",
+    chainId: "56",
   },
   {
     endpoint: "https://api.gnosisscan.io/api",
     apikey: process.env.REACT_APP_GNOSIS_EXPLORER_API,
-    chainId: "",
+    chainId: "100",
   },
   {
     endpoint: "https://explorer.celo.org/mainnet/api",
     apikey: null,
-    chainId: "",
+    chainId: "42220",
   },
 ];
 
@@ -87,8 +89,20 @@ export const transaction = async (api: ApiInfo, transactionType: string) => {
       },
     });
     const data = response.data.result;
-    return data;
+    return [api.chainId, ...data];
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const allTransactions = async (transactionType: string) => {
+  try {
+    const apiPromises = apiList.map((api) => transaction(api, transactionType));
+  const dataFromAllApis = await Promise.all(apiPromises);
+  return dataFromAllApis.map((data: any, index) => {
+    return [apiList[index].chainId, ...data];
+  });
+  } catch (error) {
+    console.log(error)
   }
 };

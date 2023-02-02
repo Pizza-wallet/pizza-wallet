@@ -1,5 +1,4 @@
-// import React from "react";
-// import { useMoralis } from "react-moralis";
+import { useState, useEffect } from "react";
 // import { getEllipsisTxt } from "../../helpers/formatters";
 // import { getExplorer } from "../../helpers/networks";
 import "antd/dist/antd.css";
@@ -9,16 +8,10 @@ import Table from "../reusable/Table";
 // import { getChainDetails } from "../../helpers/getChainDetails";
 // import { CustomImg } from "../reusable/CustomImg";
 import styled from "styled-components";
-import Blockie from "../Blockie";
-
-import React, { useState, useEffect } from "react";
+// import Blockie from "../Blockie";
 import { utils } from "ethers";
-import {
-  allTokenTransaction,
-  allNftData,
-  allERC1155Data,
-  allNormalTransaction,
-} from "./utils";
+import { allTransactions } from "./utils";
+import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 interface IStyled {
   top?: string;
@@ -39,27 +32,11 @@ const AbsoluteImgContainer = styled("div")`
 `;
 
 function ERC20Transfers() {
-  const { ERC20Transfers, chainId } = useERC20Transfers();
-
-  // new implement
   const [fetchData, setFetchData] = useState({});
-
   const [loading, setLoading] = useState(false);
 
-  // it will flatten all the data into one
-  const allData = Object.values(fetchData).flat();
-
   const handleData = async () => {
-    const data = await allTokenTransaction();
-    const nftData = await allNftData();
-    const erc1155Data = await allERC1155Data();
-    const normalTxData = await allNormalTransaction();
-
-    console.log("1", data);
-    console.log("2", nftData);
-    console.log("3", erc1155Data);
-    console.log("4", normalTxData);
-
+    const data = await allTransactions;
     setFetchData(data);
   };
 
@@ -69,41 +46,8 @@ function ERC20Transfers() {
     setLoading(false);
   }, []);
 
-  const mockData = [
-    {
-      address: "0x263026e7e53dbfdce5ae55ade22493f828922965",
-      block_hash:
-        "0xd933d2c891c310a2b7a535080366fbe45e31d984b49ea87977cd3a1a27151b18",
-      block_number: "32492335",
-      block_timestamp: "02/08/2022 03:15PM",
-      transaction_hash:
-        "0x20150f86e4af053bf30d33e1ad63fb6c4fbe353c423786256251c6188cdbf631",
-      value: 108,
-      to_address: "0xdB75a62b27D8F2EdBa9119F741bd317139b55dcE",
-      from_address: "the-pizza-guy.eth",
-      token: {
-        address: "-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-        chainId: 137,
-        symbol: "USDC",
-        logoUri:
-          "https://storageapi.fleek.co/d1921602-c1d0-4d59-82e9-e36a2947b855-bucket/App/static/token-icons/usdc.webp",
-      },
-    },
-  ];
-
-  // Multiple Blockchain Links
-  // Todo this part for multiple blockchain explorer link
-  // const explorerLinks = {
-  //   Ethereum: "https://etherscan.io/tx/",
-  //   Polygon: "https://polygonscan.com/tx/",
-  //   Binance: "https://bscscan.com/tx/",
-  //   Fantom: "https://ftmscan.com/tx/tx/",
-  //   Gnosis: "https://gnosisscan.io/tx/",
-  //   Avalanche: "https://snowtrace.io/tx/",
-  //   Arbitrum: "https://arbiscan.io/tx/",
-  //   Optimism: "https://optimistic.etherscan.io/tx/",
-  //
-  // };
+  const allData = Object.values(fetchData).flat();
+  console.log(allData);
 
   const columns = [
     {
@@ -347,12 +291,11 @@ function ERC20Transfers() {
         }}
       >
         <Table
-          // loading={!mockData}
-          tableData={mockData}
+          // todo: abstract columns and tableData
+          tableData={columns}
           columns={columns}
           tableTitle={"Transactions History"}
           expandableRow={false}
-          // tableData={undefined}
           loading={loading}
         />
       </div>
