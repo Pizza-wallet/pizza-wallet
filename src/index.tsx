@@ -4,9 +4,20 @@ import App from "./App";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
+import { WagmiConfig, createClient } from "wagmi";
+import { getDefaultProvider } from "ethers";
+
+// Wagmi Client
+const client = createClient({
+  autoConnect: true,
+  provider: getDefaultProvider(),
+});
+
 ReactDOM.render(
   <StrictMode>
-    <App />,
+    <WagmiConfig client={client}>
+      <App />,
+    </WagmiConfig>
   </StrictMode>,
   document.getElementById("root"),
 );
