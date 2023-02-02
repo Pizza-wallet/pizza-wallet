@@ -8,23 +8,20 @@ export const useChains = () => {
     ["chains"],
     async () => {
       const availableChains = await lifi.getChains();
-      // const filteredChains = availableChains.filter((chain) =>
-      //   isItemAllowed(chain.id),
-      // );
-      // const chainOrder = useChainOrderStore
-      //   .getState()
-      //   .initializeChains(filteredChains.map((chain) => chain.id));
-      // const [fromChainValue, toChainValue] = getValues([
-      //   SwapFormKey.FromChain,
-      //   SwapFormKey.ToChain,
-      // ]);
-      // if (!fromChainValue) {
-      //   setValue(SwapFormKey.FromChain, chainOrder[0]);
-      // }
-      // if (!toChainValue) {
-      //   setValue(SwapFormKey.ToChain, chainOrder[0]);
-      // }
-      return { availableChains };
+      const unsupportedChains = [
+        "OKXChain",
+        "Moonriver",
+        "Moonbeam",
+        "FUSE",
+        "Cronos",
+        "Velas",
+        "Aurora",
+      ];
+      const filteredChains = availableChains.filter(
+        (chain) => !unsupportedChains.includes(chain.name),
+      );
+
+      return { filteredChains };
     },
     {
       refetchInterval: 180000,
@@ -34,14 +31,15 @@ export const useChains = () => {
 
   const getChainById = useCallback(
     (chainId: number) => {
-      const chain = data?.availableChains.find((chain) => chain.id === chainId);
-      // if (!chain) {
-      //   throw new Error('Chain not found or chainId is invalid.');
-      // }
+      const chain = data?.filteredChains.find((chain) => chain.id === chainId);
+      if (!chain) {
+        // throw new Error('Chain not found or chainId is invalid.');
+        console.log("Chain not found or chainId is invalid.");
+      }
       return chain;
     },
     [data],
   );
 
-  return { chains: data?.availableChains, getChainById, isLoading };
+  return { chains: data?.filteredChains, getChainById, isLoading };
 };
