@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-// import { getEllipsisTxt } from "../../helpers/formatters";
-// import { getExplorer } from "../../helpers/networks";
+//import { getEllipsisTxt } from "../../helpers/formatters";
+//import { getExplorer } from "../../helpers/networks";
 import "antd/dist/antd.css";
 import { useERC20Transfers } from "../../hooks/useERC20Transfers";
 import Table from "../reusable/Table";
-// import { limitDigits } from "../../helpers/formatters";
-// import { getChainDetails } from "../../helpers/getChainDetails";
-// import { CustomImg } from "../reusable/CustomImg";
+//import { limitDigits } from "../../helpers/formatters";
+//import { getChainDetails } from "../../helpers/getChainDetails";
+//import { CustomImg } from "../reusable/CustomImg";
 import styled from "styled-components";
-// import Blockie from "../Blockie";
+//import Blockie from "../Blockie";
 import { utils } from "ethers";
 import { allTransactions } from "./utils";
-import { ConsoleSqlOutlined } from "@ant-design/icons";
+//import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 interface IStyled {
   top?: string;
@@ -35,19 +35,19 @@ function ERC20Transfers() {
   const [fetchData, setFetchData] = useState({});
   const [loading, setLoading] = useState(false);
 
-  const handleData = async () => {
-    const data = await allTransactions;
-    setFetchData(data);
-  };
+  // todo: rewrite - Mike
+  //const handleData = async () => {
+  //  const data = await allTransactions;
+  //  setFetchData(data);
+  //};
 
   useEffect(() => {
     setLoading(true);
-    handleData();
+    //handleData();
     setLoading(false);
   }, []);
 
   const allData = Object.values(fetchData).flat();
-  console.log(allData);
 
   const columns = [
     {
