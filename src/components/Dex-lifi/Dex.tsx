@@ -174,17 +174,19 @@ function Dex() {
           {renderCorrectPage()}
         </PizzawalletModal>
         {openSwapRoutes && fromToken && toToken && fromTokenAmount ? (
-          <PizzawalletModal header={"Swap routes"}>
-            <SwapRoutesPage
-              fromChainId={fromChain}
-              fromTokenAddress={fromToken}
-              toChainId={toChain}
-              toTokenAddress={toToken}
-              toAddress={""}
-              fromAmount={fromTokenAmount}
-              handleSelectRoute={handleSelectRoute}
-            />
-          </PizzawalletModal>
+          <div style={{ marginLeft: "0.625rem" }}>
+            <PizzawalletModal header={"Swap routes"}>
+              <SwapRoutesPage
+                fromChainId={fromChain}
+                fromTokenAddress={fromToken}
+                toChainId={toChain}
+                toTokenAddress={toToken}
+                toAddress={""}
+                fromAmount={fromTokenAmount}
+                handleSelectRoute={handleSelectRoute}
+              />
+            </PizzawalletModal>
+          </div>
         ) : null}
       </DexContainer>
     </>

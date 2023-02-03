@@ -2,12 +2,16 @@ import styled from "styled-components";
 
 const Card = styled("div")`
   width: 26.8em;
-  margin-left: auto;
-  margin-right: auto;
   border: 0.125rem solid #3e389f;
   background-color: #f8f2ed;
   border-radius: 2.75rem;
   padding: 0.425rem;
+  ${({ center }: { center?: boolean }) =>
+    center &&
+    `
+  margin-left: auto;
+  margin-right: auto;
+`}
 `;
 
 const InnerCard = styled("div")`
@@ -35,15 +39,17 @@ interface IPizzawalletModal {
   header: string;
   children: any;
   logo?: any;
+  center?: boolean;
 }
 
 export default function PizzawalletModal({
   header,
   children,
   logo,
+  center,
 }: IPizzawalletModal) {
   return (
-    <Card>
+    <Card center={center}>
       {logo ? (
         <div style={{ display: "flex" }}>
           <Header>{header}</Header>

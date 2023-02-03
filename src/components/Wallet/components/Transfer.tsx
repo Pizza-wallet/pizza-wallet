@@ -167,7 +167,7 @@ function Transfer() {
   }
 
   return (
-    <PizzawalletModal header={"Transfer Assets"}>
+    <PizzawalletModal center={true} header={"Transfer Assets"}>
       <>
         <Text>Send to:</Text>
         <AddressInput autoFocus onChange={setReceiver} />
