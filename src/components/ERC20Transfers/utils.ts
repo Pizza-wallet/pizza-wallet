@@ -42,3 +42,20 @@ export const allTransactions = async () => {
   }
 };
 console.log(allTransactions());
+
+export const NFTs = async () => {
+  try {
+    const response = await axios.get("https://deep-index.moralis.io/api/v2/:address/nft", {
+      params: {
+        address: `${address}`,
+        chain: ["eth", "polygon", "fantom", "avalanche", "arbitrum", "bsc"],
+        apikey: process.env.REACT_APP_MORALIS_WEB3_API,
+      },
+    });
+    const data = response.data.result;
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+console.log(NFTs());
