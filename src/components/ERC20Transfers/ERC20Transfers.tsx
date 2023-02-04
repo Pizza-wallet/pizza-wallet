@@ -45,8 +45,7 @@ function ERC20Transfers() {
   useEffect(() => {
     setLoading(true);
     allTransactionsData();
-    allNftData();
-    //handleData()
+    //allNftData();
     setLoading(false);
   }, []);
 
