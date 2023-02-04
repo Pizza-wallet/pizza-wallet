@@ -1,1 +1,1 @@
-export { default } from "./ERC20Transfers"
+export { default } from "./ERC20Transfers";

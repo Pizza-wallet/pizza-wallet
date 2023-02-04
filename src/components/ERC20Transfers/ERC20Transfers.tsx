@@ -11,7 +11,7 @@ import styled from "styled-components";
 //import Blockie from "../Blockie";
 import { utils } from "ethers";
 import { allTransactionsData } from "../../hooks/useExplorersApis";
-import { allNftData } from "../../hooks/useMoralisWe3";
+import { allNftData } from "../../hooks/useMoralisWeb3";
 //import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 interface IStyled {
