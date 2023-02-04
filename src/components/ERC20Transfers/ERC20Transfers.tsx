@@ -10,7 +10,8 @@ import Table from "../reusable/Table";
 import styled from "styled-components";
 //import Blockie from "../Blockie";
 import { utils } from "ethers";
-import { allTransactions } from "./utils";
+import { allTransactionsData } from "../../hooks/useExplorersApis";
+import { allNftData } from "../../hooks/useMoralisWe3";
 //import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 interface IStyled {
@@ -43,7 +44,9 @@ function ERC20Transfers() {
 
   useEffect(() => {
     setLoading(true);
-    //handleData();
+    allTransactionsData();
+    allNftData();
+    //handleData()
     setLoading(false);
   }, []);
 
