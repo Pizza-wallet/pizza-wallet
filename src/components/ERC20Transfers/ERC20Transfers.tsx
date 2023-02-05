@@ -9,9 +9,9 @@ import Table from "../reusable/Table";
 //import { CustomImg } from "../reusable/CustomImg";
 import styled from "styled-components";
 //import Blockie from "../Blockie";
-import { utils } from "ethers";
 import { allTransactionsData } from "../../hooks/useExplorersApis";
-import { allNftData } from "../../hooks/useMoralisWeb3";
+import { TransferColumns } from "./TransferColumns";
+// import { allNftData } from "../../hooks/useMoralisWeb3";
 //import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 interface IStyled {
@@ -20,6 +20,29 @@ interface IStyled {
   left?: string;
   right?: string;
   width?: string;
+}
+
+interface ITransaction {
+  blockHash: string;
+  blockNumber: string;
+  chainId: number;
+  confirmations: string;
+  contractAddress: string;
+  cumulativeGasUsed: string;
+  from: string;
+  gas: string;
+  gasPrice: string;
+  gasUsed: string;
+  hash: string;
+  input: string;
+  nonce: string;
+  timeStamp: string;
+  to: string;
+  tokenDecimal: string;
+  tokenName: string;
+  tokenSymbol: string;
+  transactionIndex: string;
+  value: string;
 }
 
 const AbsoluteImgContainer = styled("div")`
@@ -33,256 +56,41 @@ const AbsoluteImgContainer = styled("div")`
 `;
 
 function ERC20Transfers() {
-  const [fetchData, setFetchData] = useState({});
+  const [fetchData, setFetchData] = useState<ITransaction[]>([]);
   const [loading, setLoading] = useState(false);
 
   // todo: rewrite - Mike
-  //const handleData = async () => {
-  //  const data = await allTransactions;
-  //  setFetchData(data);
-  //};
+  const handleData = async () => {
+    console.log("calling all transactions data");
+    const data = await allTransactionsData();
+    console.log("data from transfers component - ", data);
+    let transactionHistory: ITransaction[] = [];
+    for (const chain in data) {
+      const chainTransactions = data[chain];
+
+      //loop over chain transactions and collect transactions in an array.
+      chainTransactions.forEach((val) => {
+        if (val) {
+          const valWithChainId = val.map((val2: any) => {
+            return { ...val2, chainId: Number(chain) };
+          });
+          transactionHistory.push(...valWithChainId);
+        }
+      });
+    }
+
+    console.log("transaction history - ", transactionHistory);
+    setFetchData(transactionHistory);
+  };
 
   useEffect(() => {
     setLoading(true);
-    allTransactionsData();
+    handleData();
     //allNftData();
     setLoading(false);
   }, []);
 
-  const allData = Object.values(fetchData).flat();
-
-  const columns = [
-    {
-      title: "Timestamp",
-      dataIndex: "block_timestamp",
-      key: "block_timestamp",
-      render: () => {
-        if (!Array.isArray(allData)) {
-          return null;
-        }
-        return (
-          <div>
-            {allData.map((item) => {
-              const timestamp = item.timeStamp;
-              const date = new Date(timestamp * 1000);
-
-              const year = date.getFullYear();
-              const month = date.getMonth() + 1;
-              const day = date.getDate();
-
-              const formattedDate = `${day}-${month}-${year}`;
-
-              return (
-                <p
-                  style={{
-                    fontFamily: "Rubik",
-                    fontSize: "1.125rem",
-                    color: "rgba(0, 0, 0, 0.7)",
-                  }}
-                >
-                  {formattedDate}
-                </p>
-              );
-            })}
-            {/* <p
-              style={{
-                fontFamily: "Rubik",
-                fontSize: "0.875rem",
-                color: "rgba(0, 0, 0, 0.6)",
-              }}
-            >
-              {dateAndTime[1]}
-            </p> */}
-          </div>
-        );
-      },
-    },
-    {
-      title: "Token",
-      dataIndex: "token",
-      key: "token",
-      render: () => {
-        if (!Array.isArray(allData)) {
-          return null;
-        }
-
-        return (
-          <div>
-            {allData.map((item) => {
-              return (
-                <div
-                  style={{
-                    position: "relative",
-                    display: "flex",
-                  }}
-                >
-                  <div style={{ marginLeft: "0.3125rem" }}>
-                    <p
-                      style={{
-                        fontFamily: "Rubik",
-                        fontSize: "1.125rem",
-                        color: "#000000",
-                      }}
-                    >
-                      {item.tokenSymbol}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        );
-      },
-    },
-
-    {
-      title: "Amount",
-      dataIndex: "value",
-      key: "value",
-      render: () => {
-        // Make sure allData is defined and is an array
-        if (!Array.isArray(allData)) {
-          return null;
-        }
-
-        return (
-          <div>
-            {allData.map((item) => {
-              return (
-                <div>
-                  <p
-                    style={{
-                      color: "#000000",
-                      fontFamily: "Rubik",
-                      fontSize: "1.125rem",
-                    }}
-                  >
-                    {/* {item.value}
-                     */}
-                    {parseFloat(utils.formatEther(item.value)).toFixed(2)} USD
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        );
-      },
-    },
-
-    {
-      title: "Sending Address",
-      dataIndex: "from_address",
-      key: "from_address",
-      render: () => {
-        if (!Array.isArray(allData)) {
-          return null;
-        }
-
-        return (
-          <div>
-            {allData.map((item) => {
-              const shortFromAddress = `${item.from.substring(
-                0,
-                6,
-              )}...${item.from.substring(item.from.length - 4)}`;
-
-              return (
-                <div>
-                  {/* <Blockie address={from} size={5} /> */}
-                  <p
-                    style={{
-                      fontSize: "1rem",
-                      color: "rgba(0, 0, 0, 0.6)",
-                      display: "inline-block",
-                      marginLeft: "5px",
-                    }}
-                  >
-                    {shortFromAddress}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        );
-      },
-    },
-
-    {
-      title: "Receiving Address",
-      dataIndex: "to_address",
-      key: "to_address",
-      render: () => {
-        if (!Array.isArray(allData)) {
-          return null;
-        }
-
-        return (
-          <div>
-            {allData.map((item) => {
-              const shortTo =
-                item.to.substring(0, 6) +
-                "..." +
-                item.to.substring(item.to.length - 4);
-
-              return (
-                <div>
-                  {/* <Blockie address={from} size={5} /> */}
-                  <p
-                    style={{
-                      fontSize: "1rem",
-                      color: "rgba(0, 0, 0, 0.6)",
-                      display: "inline-block",
-                      marginLeft: "5px",
-                    }}
-                  >
-                    {shortTo}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        );
-      },
-    },
-
-    {
-      title: "Hash",
-      dataIndex: "transaction_hash",
-      key: "transaction_hash",
-      render: () => {
-        // Make sure allData is defined and is an array
-        if (!Array.isArray(allData)) {
-          return null;
-        }
-
-        return (
-          <div>
-            {allData.map((item) => {
-              return (
-                <div style={{ display: "block" }}>
-                  <a
-                    href={`https://polygonscan.com/tx/${item.hash}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Explorer
-                  </a>
-                  {/* Todo multiple blockchain part */}
-                  {/* <a
-                    href={`${explorerLinks[]}${item.hash}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    Explorer
-                  </a> */}
-                </div>
-              );
-            })}
-          </div>
-        );
-      },
-    },
-  ];
+  console.log("fetchData - ", fetchData);
 
   return (
     <div>
@@ -294,8 +102,8 @@ function ERC20Transfers() {
       >
         <Table
           // todo: abstract columns and tableData
-          tableData={columns}
-          columns={columns}
+          tableData={fetchData}
+          columns={TransferColumns}
           tableTitle={"Transactions History"}
           expandableRow={false}
           loading={loading}
