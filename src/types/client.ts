@@ -1,5 +1,20 @@
-// below is an example we will have more re-usable types and interfaces as we progress
-export interface Token {
+import type { TokenAmount } from "@lifi/sdk";
+export * from "@lifi/sdk";
+
+export interface LIFIToken extends TokenAmount {
+  featured?: boolean;
+}
+
+export interface IToken {
+  chainId: number;
+  address: string;
   name: string;
+  symbol: string;
+  decimals: number;
+  logoURI: string;
+  amount?: string;
   value: number;
+  priceUSD: string;
+  blockNumber?: number;
+  price?: number;
 }

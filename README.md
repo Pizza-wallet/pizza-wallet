@@ -32,13 +32,14 @@ Self custodial, decentralized, chain agnostic, service aggregator wallet. The on
 ### Supported Chains
 
 - Ethereum
-- Fantom
 - Polygon
+- Fantom
 - Avalanche
-- Arbitrum
 - Optimism
-- Binance
+- Arbitrum
+- BNB Smart Chain
 - Gnosis
+- Celo
 
 ## Development Guide
 
