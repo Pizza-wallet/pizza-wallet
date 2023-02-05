@@ -28,8 +28,7 @@ export const useTokens = (selectedChainId?: number) => {
       enabled: !isSupportedChainsLoading,
     },
   );
-  console.log("are we getting chains? - ", chains);
-  console.log("are we getting tokens? - ", data);
+
   return {
     tokens: data,
     isLoading,

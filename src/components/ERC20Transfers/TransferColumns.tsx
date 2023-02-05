@@ -1,4 +1,21 @@
-import { utils } from "ethers";
+import Event from "./Event";
+import CornerDownReceived from "./icons/cornerDownReceived.svg";
+import CornerDownSent from "./icons/cornerDownSent.svg";
+import { CustomImg } from "../reusable/CustomImg";
+import styled from "styled-components";
+import Blockie from "../Blockie";
+import moment from "moment";
+import { apiList } from "../../hooks/useExplorersApis";
+
+const StyledP = styled("p")`
+  font-family: "Rubik", sans-serif;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: 0.04em;
+  margin-left: 40px;
+`;
 
 export const TransferColumns = [
   {
@@ -6,37 +23,17 @@ export const TransferColumns = [
     dataIndex: "token",
     key: "token",
     render: (token: any, item: any) => {
-      console.log("token - ", token);
+      console.log(token);
       if (!item) {
         return null;
       }
 
-      // use information from item to get information on the token and amount etc
-
       return (
-        <div>
-          <div
-            style={{
-              position: "relative",
-              display: "flex",
-            }}
-          >
-            <div style={{ marginLeft: "0.3125rem" }}>
-              <p
-                style={{
-                  fontFamily: "Rubik",
-                  fontSize: "1.125rem",
-                  color: "#000000",
-                }}
-              >
-                {item.tokenSymbol}
-                {item.value &&
-                  parseFloat(utils.formatEther(item.value)).toFixed(2)}{" "}
-                USD
-              </p>
-            </div>
-          </div>
-        </div>
+        <Event
+          chainId={1}
+          tokenAddress={item.contractAddress}
+          value={item.value}
+        />
       );
     },
   },
@@ -44,30 +41,70 @@ export const TransferColumns = [
     title: "Result",
     dataIndex: "to",
     key: "to",
-    render: (to: any) => {
+    render: (to: any, item: any) => {
       if (!to) {
         return null;
       }
 
       // check if to is equal to users address, if so it's received if not then transferrred
+      // if it's to users address they receive if not it was sent.
+      const didUserReceive = to === process.env.REACT_APP_TEST_ACCOUNT;
+
+      console.log("item?? - ", item);
 
       return (
         <div>
           <div
             style={{
               position: "relative",
-              display: "flex",
             }}
           >
-            <div style={{ marginLeft: "0.3125rem" }}>
-              <p
-                style={{
-                  fontFamily: "Rubik",
-                  fontSize: "1.125rem",
-                  color: "#000000",
-                }}
-              ></p>
-            </div>
+            <>
+              {didUserReceive ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                    }}
+                  >
+                    <CustomImg
+                      width={"2.4375rem"}
+                      height={"2.4375rem"}
+                      src={CornerDownReceived}
+                    />
+                    <p
+                      style={{
+                        fontSize: "20px",
+                        color: "#4DC359",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Received
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{ display: "flex" }}>
+                    <CustomImg
+                      width={"2.4375rem"}
+                      height={"2.4375rem"}
+                      src={CornerDownSent}
+                    />
+                    <p
+                      style={{
+                        fontSize: "20px",
+                        color: "#F34337",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      Sent
+                    </p>
+                  </div>
+                </>
+              )}
+            </>
+            <StyledP>{item.gasUsed} gas fee</StyledP>
           </div>
         </div>
       );
@@ -88,10 +125,11 @@ export const TransferColumns = [
 
       return (
         <div>
-          <div>
+          <div style={{ display: "flex" }}>
+            <Blockie address={from.toLowerCase()} size={8} scale={3} />
             <p
               style={{
-                fontSize: "1rem",
+                fontSize: "1.125rem",
                 color: "rgba(0, 0, 0, 0.6)",
                 display: "inline-block",
                 marginLeft: "5px",
@@ -118,10 +156,11 @@ export const TransferColumns = [
 
       return (
         <div>
-          <div>
+          <div style={{ display: "flex" }}>
+            <Blockie address={to.toLowerCase()} size={8} scale={3} />
             <p
               style={{
-                fontSize: "1rem",
+                fontSize: "1.125rem",
                 color: "rgba(0, 0, 0, 0.6)",
                 display: "inline-block",
                 marginLeft: "5px",
@@ -149,6 +188,8 @@ export const TransferColumns = [
       const day = date.getDate();
 
       const formattedDate = `${day}-${month}-${year}`;
+      const time = moment(timeStamp * 1000).format("HH:mm");
+
       return (
         <div>
           <p
@@ -160,6 +201,15 @@ export const TransferColumns = [
           >
             {formattedDate}
           </p>
+          <p
+            style={{
+              fontFamily: "Rubik",
+              fontSize: "1.125rem",
+              color: "rgba(0, 0, 0, 0.7)",
+            }}
+          >
+            {time}
+          </p>
         </div>
       );
     },
@@ -169,10 +219,19 @@ export const TransferColumns = [
     title: "Details",
     dataIndex: "hash",
     key: "hash",
-    render: (hash: any) => {
+    render: (hash: any, item: any) => {
       if (!hash) {
         return null;
       }
+
+      // This is the url for the api but the principle is the same just put the needed urls in the config and get them here with chainId
+      const blockExplorerUrl = apiList.find((val) => {
+        if (val.chainId === item.chainId.toString()) {
+          return val;
+        }
+      })?.endpoint;
+
+      console.log("block explorer url - ", blockExplorerUrl);
       return (
         <div>
           <div style={{ display: "block" }}>
