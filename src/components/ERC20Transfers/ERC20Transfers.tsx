@@ -11,7 +11,8 @@ import styled from "styled-components";
 //import Blockie from "../Blockie";
 import { allTransactionsData } from "../../hooks/useExplorersApis";
 import { TransferColumns } from "./TransferColumns";
-// import { allNftData } from "../../hooks/useMoralisWeb3";
+import { allNftData } from "../../hooks/useMoralisWeb3";
+import { useSwapHistory } from "../../stores/routes";
 //import { ConsoleSqlOutlined } from "@ant-design/icons";
 
 interface IStyled {
@@ -20,6 +21,26 @@ interface IStyled {
   left?: string;
   right?: string;
   width?: string;
+}
+
+interface INft {
+  amount: string;
+  block_number: string;
+  block_number_minted: string;
+  chainId: number;
+  contract_type: string;
+  last_metadata_sync: any;
+  last_token_uri_sync: string;
+  timeStamp: string;
+  metadata: any;
+  minter_address: string;
+  name: string;
+  owner_of: string;
+  symbol: string;
+  token_address: string;
+  token_hash: string;
+  token_id: string;
+  token_uri: string;
 }
 
 interface ITransaction {
@@ -56,15 +77,25 @@ const AbsoluteImgContainer = styled("div")`
 `;
 
 function ERC20Transfers() {
-  const [fetchData, setFetchData] = useState<ITransaction[]>([]);
+  const swapHistory = useSwapHistory(process.env.REACT_APP_TEST_ACCOUNT);
+  const [fetchData, setFetchData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   // todo: rewrite - Mike
   const handleData = async () => {
+    console.log("swapHistory here - ", swapHistory);
+
+    const usersSwapHistory = swapHistory.reduce((acc: any, val: any) => {
+      acc.push({ ...val.route, type: "swap" });
+      return acc;
+    }, []);
+
+    console.log("the swap history - ", usersSwapHistory);
+
     console.log("calling all transactions data");
     const data = await allTransactionsData();
     console.log("data from transfers component - ", data);
-    let transactionHistory: ITransaction[] = [];
+    let transactionHistory: any = [];
     for (const chain in data) {
       const chainTransactions = data[chain];
 
@@ -79,8 +110,30 @@ function ERC20Transfers() {
       });
     }
 
+    console.log("NFT data - ", await allNftData());
+    const keys = [1, 137, 250, 43114, 42161, 56];
+    const nftData = await allNftData();
+    const dataFromChains = nftData ? nftData[0].dataFromChains : [];
+    let usersNftData = [];
+    for (let i = 0; i < dataFromChains.length; i++) {
+      console.log(dataFromChains[i]);
+      if (dataFromChains[i].length) {
+        // there is nft data on this chain loop and push to our new array
+        for (let j = 0; j < dataFromChains[i].length; j++) {
+          // TODO: need to figure out how to get metadata out of NFT string metadata
+          usersNftData.push({
+            ...dataFromChains[i][j],
+            chainId: keys[i],
+            timeStamp: dataFromChains[i][j].last_token_uri_sync,
+            type: "nft",
+          });
+        }
+      }
+    }
+
+    console.log("usersNftData  - ", usersNftData);
     console.log("transaction history - ", transactionHistory);
-    setFetchData(transactionHistory);
+    setFetchData([...transactionHistory, ...usersNftData, ...usersSwapHistory]);
   };
 
   useEffect(() => {

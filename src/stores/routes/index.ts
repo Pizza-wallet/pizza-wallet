@@ -4,3 +4,4 @@ export * from "./useExecutingRoutesIds";
 export * from "./useSetExecutableRoute";
 export * from "./useRouteExecutionStore";
 export * from "./utils";
+export * from "./useSwapHistory";

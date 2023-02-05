@@ -10,6 +10,9 @@ interface IEvent {
   chainId: number;
   tokenAddress: string;
   value: string;
+  type: string;
+  name: string;
+  tokenUri: string;
 }
 
 const Flex = styled("div")`
@@ -36,15 +39,14 @@ const DollarAmount = styled("p")`
   letter-spacing: 0.02em;
 `;
 
-function truncate(str: any, maxDecimalDigits: any) {
-  if (str.includes(".")) {
-    const parts = str.split(".");
-    return parts[0] + "." + parts[1].slice(0, maxDecimalDigits);
-  }
-  return str;
-}
-
-export function Event({ chainId, tokenAddress, value }: IEvent) {
+export function Event({
+  chainId,
+  tokenAddress,
+  value,
+  type,
+  name,
+  tokenUri,
+}: IEvent) {
   const { chain, isLoading: isChainLoading } = useChain(chainId);
   const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
 
@@ -67,6 +69,44 @@ export function Event({ chainId, tokenAddress, value }: IEvent) {
 
   // ethValue = Math.round(ethValue * 1e6) / 1e6;
   // ethValue = truncate(ethValue, 4);
+
+  if (type === "nft") {
+    return (
+      <>
+        <Avatar.Group>
+          <Avatar
+            style={{ marginLeft: "0.625rem" }}
+            src={<Image src={tokenUri} style={{ width: 44, height: 44 }} />}
+          >
+            {token?.symbol[0]}
+          </Avatar>
+          <Avatar
+            style={{ marginTop: "0.9375rem" }}
+            size={20}
+            src={chain?.logoURI}
+          />
+        </Avatar.Group>
+        <div>
+          <div
+            style={{
+              marginLeft: "0.625rem",
+              display: "flex",
+            }}
+          >
+            <SymbolText>{name}</SymbolText>
+          </div>
+          <div
+            style={{
+              marginLeft: "0.625rem",
+              display: "flex",
+            }}
+          >
+            <DollarAmount>{name}</DollarAmount>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <Flex>

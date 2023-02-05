@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Blockie from "../Blockie";
 import moment from "moment";
 import { apiList } from "../../hooks/useExplorersApis";
+import SwapEvent from "./SwapEvent";
 
 const StyledP = styled("p")`
   font-family: "Rubik", sans-serif;
@@ -28,11 +29,17 @@ export const TransferColumns = [
         return null;
       }
 
+      if (item.type === "swap") {
+        return <SwapEvent fromToken={item.fromToken} toToken={item.toToken} />;
+      }
       return (
         <Event
-          chainId={1}
+          chainId={item.chainId}
           tokenAddress={item.contractAddress}
           value={item.value}
+          type={item.type}
+          name={item.name}
+          tokenUri={item.token_uri}
         />
       );
     },
@@ -49,6 +56,7 @@ export const TransferColumns = [
       // check if to is equal to users address, if so it's received if not then transferrred
       // if it's to users address they receive if not it was sent.
       const didUserReceive = to === process.env.REACT_APP_TEST_ACCOUNT;
+      const minted = item.minter_address === process.env.REACT_APP_TEST_ACCOUNT;
 
       console.log("item?? - ", item);
 
@@ -60,7 +68,7 @@ export const TransferColumns = [
             }}
           >
             <>
-              {didUserReceive ? (
+              {didUserReceive || minted ? (
                 <>
                   <div
                     style={{
@@ -79,7 +87,7 @@ export const TransferColumns = [
                         marginLeft: "10px",
                       }}
                     >
-                      Received
+                      {minted ? "Minted" : "Received"}
                     </p>
                   </div>
                 </>

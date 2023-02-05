@@ -13,6 +13,7 @@ export const queryNftData = async (api: moralisApi, actionIndex: number) => {
       params: {
         chain: api.chains[actionIndex],
         apiKey: process.env.REACT_APP_MORALIS_WEB3_API,
+        normalizeMetadata: true,
       },
     });
     const data = response.data.result;
