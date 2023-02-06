@@ -42,13 +42,8 @@ export const getNftMetadata = async (
   console.log("chain - ", chain);
 
   try {
-    // const response = await Moralis.EvmApi.nft.getNFTMetadata({
-    //   address,
-    //   chain,
-    //   tokenId,
-    // });
     const response = await axiosInstance.get(
-      `https://deep-index.moralis.io/api/v2/nft/:${address}/:${tokenId}`,
+      `https://deep-index.moralis.io/api/v2/nft/${address}/${tokenId}`,
       {
         params: {
           chain: chain,
@@ -57,8 +52,9 @@ export const getNftMetadata = async (
         },
       },
     );
-    const data = response.data.result;
-    console.log("FROM GETNFT - ", data);
+
+    const data = response.data;
+
     return data;
   } catch (error) {
     console.error(error);
@@ -67,11 +63,6 @@ export const getNftMetadata = async (
 
 export const allNftData = async (address: any, tokenId: any, chainId: any) => {
   try {
-    // const api = moralisNftApi[0];
-    // const dataFromAllChains = [];
-    // const dataFromChains = [];
-    // for (let i = 0; i < api.chains.length; i++) {
-    // const nftData = await queryNftData(api, i);
     const chains: ChainInterface = {
       1: "eth",
       137: "polygon",
@@ -83,14 +74,8 @@ export const allNftData = async (address: any, tokenId: any, chainId: any) => {
     const chain = chains[chainId as keyof ChainInterface];
     const nftData = await getNftMetadata(address, tokenId, chain);
 
-    // dataFromChains.push(nftData);
-    // // }
-    // dataFromAllChains.push({ ...api, dataFromChains });
-
     return nftData;
   } catch (error) {
     console.error(error);
   }
 };
-
-// console.log(allNftData());

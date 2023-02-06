@@ -1,27 +1,10 @@
 import { useState, useEffect } from "react";
-//import { getEllipsisTxt } from "../../helpers/formatters";
-//import { getExplorer } from "../../helpers/networks";
 import "antd/dist/antd.css";
-import { useERC20Transfers } from "../../hooks/useERC20Transfers";
 import Table from "../reusable/Table";
-//import { limitDigits } from "../../helpers/formatters";
-//import { getChainDetails } from "../../helpers/getChainDetails";
-//import { CustomImg } from "../reusable/CustomImg";
-import styled from "styled-components";
-//import Blockie from "../Blockie";
 import { allTransactionsData } from "../../hooks/useExplorersApis";
 import { TransferColumns } from "./TransferColumns";
 import { allNftData } from "../../hooks/useMoralisWeb3";
 import { useSwapHistory } from "../../stores/routes";
-//import { ConsoleSqlOutlined } from "@ant-design/icons";
-
-interface IStyled {
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
-  width?: string;
-}
 
 interface INft {
   amount: string;
@@ -66,39 +49,28 @@ interface ITransaction {
   value: string;
 }
 
-const AbsoluteImgContainer = styled("div")`
-  position: absolute;
-  top: -0.3125rem;
-  top: ${(props: IStyled) => props.top};
-  bottom: ${(props) => props.bottom};
-  left: ${(props) => props.left};
-  right: ${(props) => props.right};
-  width: ${(props) => props.width};
-`;
-
 function ERC20Transfers() {
   const swapHistory = useSwapHistory(process.env.REACT_APP_TEST_ACCOUNT);
   const [fetchData, setFetchData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleData = async () => {
-    console.log("swapHistory here - ", swapHistory);
-
+    // get swap history (from local history to start)
     const usersSwapHistory = swapHistory.reduce((acc: any, val: any) => {
-      acc.push({ ...val.route, type: "swap", to: "" });
+      acc.push({
+        ...val.route,
+        type: "swap",
+        timeStamp: val.route.steps[0].execution.process[0].doneAt,
+      });
       return acc;
     }, []);
 
-    console.log("the swap history - ", usersSwapHistory);
-
-    console.log("calling all transactions data");
+    // get all transaction data
     const data = await allTransactionsData();
-    console.log("data from transfers component - ", data);
     let transactionHistory: any = [];
     for (const chain in data) {
       const chainTransactions = data[chain];
-
-      //loop over chain transactions and collect transactions in an array.
+      // loop over chain transactions and collect transactions in an array.
       chainTransactions.forEach((val) => {
         if (val) {
           const valWithChainId = val.map((val2: any) => {
@@ -109,30 +81,7 @@ function ERC20Transfers() {
       });
     }
 
-    // figure out which transactions are nft's then use api to get nft data
-    // because current api only shows which ones are owned.
-    // console.log("NFT data - ", await allNftData());
-    // const keys = [1, 137, 250, 43114, 42161, 56];
-    // const nftData = await allNftData();
-    // const dataFromChains = nftData ? nftData[0].dataFromChains : [];
-    // let usersNftData = [];
-    // for (let i = 0; i < dataFromChains.length; i++) {
-    //   console.log(dataFromChains[i]);
-    //   if (dataFromChains[i].length) {
-    //     // there is nft data on this chain loop and push to our new array
-    //     for (let j = 0; j < dataFromChains[i].length; j++) {
-    //       // TODO: need to figure out how to get metadata out of NFT string metadata
-    //       usersNftData.push({
-    //         ...dataFromChains[i][j],
-    //         chainId: keys[i],
-    //         timeStamp: dataFromChains[i][j].last_token_uri_sync,
-    //         type: "nft",
-    //       });
-    //     }
-    //   }
-    // }
-
-    // console.log("usersNftData  - ", usersNftData);
+    // get metadata for each nft transaction
     const nftTransactions = transactionHistory.filter((val: any) => {
       if (val.tokenID) {
         return val;
@@ -141,7 +90,7 @@ function ERC20Transfers() {
       }
     });
 
-    let nftMetadataArr = [];
+    let nftMetadataArr: any = [];
     for (let i = 0; i < nftTransactions.length; i++) {
       const nftTransaction = nftTransactions[i];
       const nftMetadata = await allNftData(
@@ -152,18 +101,38 @@ function ERC20Transfers() {
       nftMetadataArr.push(nftMetadata);
     }
 
-    console.log("nft transactions? - ", nftTransactions);
-    console.log("nft metaData? - ", nftMetadataArr);
-    console.log("transaction history - ", transactionHistory);
-    console.log("usersSwap history - ", usersSwapHistory);
-    setFetchData([...transactionHistory, ...usersSwapHistory]);
+    // add the metadata to the nftTransactions and then hook up the data to the table
+    const transactionHistoryWithNftMetadata = transactionHistory.map(
+      (transaction: any) => {
+        const tokenID = transaction.tokenID;
+        return {
+          ...transaction,
+          nftMetadata: tokenID
+            ? nftMetadataArr.find((val: any) => val.token_id === tokenID)
+            : null,
+          type: tokenID ? "nft" : "transaction",
+        };
+      },
+    );
+
+    // Sort by newest date first and save in state
+    const transactionsNftSwapData = [
+      ...transactionHistoryWithNftMetadata,
+      ...usersSwapHistory,
+    ].sort(function (x, y) {
+      return (
+        new Date(Number(y.timeStamp)).getTime() -
+        new Date(Number(x.timeStamp)).getTime()
+      );
+    });
+
+    setFetchData(transactionsNftSwapData);
+    setLoading(false);
   };
 
   useEffect(() => {
     setLoading(true);
     handleData();
-    //allNftData();
-    setLoading(false);
   }, []);
 
   console.log("fetchData - ", fetchData);
@@ -177,7 +146,6 @@ function ERC20Transfers() {
         }}
       >
         <Table
-          // todo: abstract columns and tableData
           tableData={fetchData}
           columns={TransferColumns}
           tableTitle={"Transactions History"}

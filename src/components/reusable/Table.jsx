@@ -89,9 +89,6 @@ function Table({ tableData, columns, tableTitle, expandableRow, loading }) {
         <tr key={i}>
           {columns.map((column, j) => {
             let info = data[column.dataIndex];
-            console.log("dataIndex - ", column.dataIndex);
-            console.log("data - ", data);
-            console.log("info - ", info);
             return (
               <CustomTableData key={j}>
                 {column.render(info, data)}

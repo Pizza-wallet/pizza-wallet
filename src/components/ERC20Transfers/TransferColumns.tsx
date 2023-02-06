@@ -41,12 +41,12 @@ export const TransferColumns = [
           />
         );
       } else if (item.type === "nft") {
-        const { image, name } = item.normalized_metadata;
+        const { image, name } = item.nftMetadata.normalized_metadata;
         return (
           <Event
             chainId={item.chainId}
             tokenAddress={item.token_address}
-            value={item.token_id}
+            value={item.tokenID}
             type={item.type}
             name={name}
             tokenUri={image}
@@ -103,10 +103,11 @@ export const TransferColumns = [
         );
       }
 
-      // check if to is equal to users address, if so it's received if not then transferrred
       // if it's to users address they receive if not it was sent.
       const didUserReceive = to === process.env.REACT_APP_TEST_ACCOUNT;
-      const minted = item.minter_address === process.env.REACT_APP_TEST_ACCOUNT;
+      const minted =
+        item.from === "0x0000000000000000000000000000000000000000" ||
+        item.from === item.contractAddress;
 
       return (
         <div>
@@ -285,7 +286,7 @@ export const TransferColumns = [
           if (val.chainId === item.chainId.toString()) {
             return val;
           }
-        })?.endpoint;
+        })?.blockExplorerEndpoint;
       }
 
       return (

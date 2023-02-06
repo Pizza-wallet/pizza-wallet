@@ -50,10 +50,6 @@ export function Event({
   const { chain, isLoading: isChainLoading } = useChain(chainId);
   const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
 
-  console.log("value - ", value);
-  console.log("chain - ", chain);
-  console.log("token from event - ", token);
-
   // const amount: any = token
   //   ? new BigNumber(value || "0").shiftedBy(-token?.decimals || 0).toFixed()
   //   : "0";
@@ -73,9 +69,12 @@ export function Event({
   if (type === "nft") {
     return (
       <Flex>
-        <Image src={tokenUri} style={{ width: 44, height: 44 }} />
+        <Image
+          src={tokenUri}
+          style={{ width: 54, height: 54, borderRadius: "5px" }}
+        />
         <Avatar
-          style={{ marginTop: "0.9375rem" }}
+          style={{ marginTop: "2.4rem", marginLeft: "-8px" }}
           size={20}
           src={chain?.logoURI}
         />
@@ -84,19 +83,17 @@ export function Event({
           <div
             style={{
               marginLeft: "0.625rem",
-              display: "flex",
             }}
           >
-            <SymbolText>{name}</SymbolText>
+            <SymbolText>#{value.substring(0, 4)}</SymbolText>
           </div>
-          {/* <div
+          <div
             style={{
               marginLeft: "0.625rem",
-              display: "flex",
             }}
           >
             <DollarAmount>{name}</DollarAmount>
-          </div> */}
+          </div>
         </div>
       </Flex>
     );
@@ -108,6 +105,7 @@ export function Event({
         <Avatar
           style={{ marginLeft: "0.625rem" }}
           src={<Image src={token?.logoURI} style={{ width: 32 }} />}
+          size={"large"}
         >
           {token?.symbol[0]}
         </Avatar>
