@@ -5,7 +5,7 @@ import { CustomImg } from "../reusable/CustomImg";
 import styled from "styled-components";
 import Blockie from "../Blockie";
 import moment from "moment";
-import { apiList } from "../../hooks/useExplorersApis";
+import { apiList } from "../../helpers/explorerApis";
 import SwapEvent from "./SwapEvent";
 
 const StyledP = styled("p")`
