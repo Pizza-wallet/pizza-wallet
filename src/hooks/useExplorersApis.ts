@@ -11,7 +11,7 @@ export const queryTransactions = async (
   actions: Array<string>,
 ) => {
   const requests = actions.map((action) =>
-    axios.get(api.endpoint, {
+    axios.get(`${api.endpoint}/api`, {
       params: {
         module: "account",
         action,

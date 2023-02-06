@@ -9,6 +9,9 @@ import { limitDigits, formatTokenAmount } from "../../helpers/formatters";
 interface IEvent {
   fromToken: any;
   toToken: any;
+  toAmount: any;
+  toAmountUSD: any;
+  decimals: any;
 }
 
 const Flex = styled("div")`
@@ -35,7 +38,13 @@ const DollarAmount = styled("p")`
   letter-spacing: 0.02em;
 `;
 
-export function SwapEvent({ fromToken, toToken }: IEvent) {
+export function SwapEvent({
+  fromToken,
+  toToken,
+  toAmount,
+  toAmountUSD,
+  decimals,
+}: IEvent) {
   const { chain: fromChainInfo, isLoading: isChainLoading } = useChain(
     fromToken.chainId,
   );
@@ -43,6 +52,8 @@ export function SwapEvent({ fromToken, toToken }: IEvent) {
   const { chain: toChainInfo, isLoading: isChainLoading2 } = useChain(
     toToken.chainId,
   );
+
+  const formattedTokenAmount = formatTokenAmount(toAmount, decimals);
 
   return (
     <Flex>
@@ -72,14 +83,14 @@ export function SwapEvent({ fromToken, toToken }: IEvent) {
           src={toChainInfo?.logoURI}
         />
       </Avatar.Group>
-      {/* <div>
+      <div>
         <div
           style={{
             marginLeft: "0.625rem",
             display: "flex",
           }}
         >
-          <SymbolText>{}</SymbolText> <SymbolText>{fromToken?.symbol}</SymbolText>
+          <SymbolText>{formattedTokenAmount}</SymbolText>
         </div>
         <div
           style={{
@@ -87,9 +98,9 @@ export function SwapEvent({ fromToken, toToken }: IEvent) {
             display: "flex",
           }}
         >
-          <DollarAmount>$1290 USD</DollarAmount>
+          <DollarAmount>${toAmountUSD} USD</DollarAmount>
         </div>
-      </div> */}
+      </div>
     </Flex>
   );
 }

@@ -81,12 +81,11 @@ function ERC20Transfers() {
   const [fetchData, setFetchData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // todo: rewrite - Mike
   const handleData = async () => {
     console.log("swapHistory here - ", swapHistory);
 
     const usersSwapHistory = swapHistory.reduce((acc: any, val: any) => {
-      acc.push({ ...val.route, type: "swap" });
+      acc.push({ ...val.route, type: "swap", to: "" });
       return acc;
     }, []);
 
@@ -110,30 +109,54 @@ function ERC20Transfers() {
       });
     }
 
-    console.log("NFT data - ", await allNftData());
-    const keys = [1, 137, 250, 43114, 42161, 56];
-    const nftData = await allNftData();
-    const dataFromChains = nftData ? nftData[0].dataFromChains : [];
-    let usersNftData = [];
-    for (let i = 0; i < dataFromChains.length; i++) {
-      console.log(dataFromChains[i]);
-      if (dataFromChains[i].length) {
-        // there is nft data on this chain loop and push to our new array
-        for (let j = 0; j < dataFromChains[i].length; j++) {
-          // TODO: need to figure out how to get metadata out of NFT string metadata
-          usersNftData.push({
-            ...dataFromChains[i][j],
-            chainId: keys[i],
-            timeStamp: dataFromChains[i][j].last_token_uri_sync,
-            type: "nft",
-          });
-        }
+    // figure out which transactions are nft's then use api to get nft data
+    // because current api only shows which ones are owned.
+    // console.log("NFT data - ", await allNftData());
+    // const keys = [1, 137, 250, 43114, 42161, 56];
+    // const nftData = await allNftData();
+    // const dataFromChains = nftData ? nftData[0].dataFromChains : [];
+    // let usersNftData = [];
+    // for (let i = 0; i < dataFromChains.length; i++) {
+    //   console.log(dataFromChains[i]);
+    //   if (dataFromChains[i].length) {
+    //     // there is nft data on this chain loop and push to our new array
+    //     for (let j = 0; j < dataFromChains[i].length; j++) {
+    //       // TODO: need to figure out how to get metadata out of NFT string metadata
+    //       usersNftData.push({
+    //         ...dataFromChains[i][j],
+    //         chainId: keys[i],
+    //         timeStamp: dataFromChains[i][j].last_token_uri_sync,
+    //         type: "nft",
+    //       });
+    //     }
+    //   }
+    // }
+
+    // console.log("usersNftData  - ", usersNftData);
+    const nftTransactions = transactionHistory.filter((val: any) => {
+      if (val.tokenID) {
+        return val;
+      } else {
+        return;
       }
+    });
+
+    let nftMetadataArr = [];
+    for (let i = 0; i < nftTransactions.length; i++) {
+      const nftTransaction = nftTransactions[i];
+      const nftMetadata = await allNftData(
+        nftTransaction.contractAddress,
+        nftTransaction.tokenID,
+        nftTransaction.chainId,
+      );
+      nftMetadataArr.push(nftMetadata);
     }
 
-    console.log("usersNftData  - ", usersNftData);
+    console.log("nft transactions? - ", nftTransactions);
+    console.log("nft metaData? - ", nftMetadataArr);
     console.log("transaction history - ", transactionHistory);
-    setFetchData([...transactionHistory, ...usersNftData, ...usersSwapHistory]);
+    console.log("usersSwap history - ", usersSwapHistory);
+    setFetchData([...transactionHistory, ...usersSwapHistory]);
   };
 
   useEffect(() => {

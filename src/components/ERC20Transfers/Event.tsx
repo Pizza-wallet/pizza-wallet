@@ -72,20 +72,14 @@ export function Event({
 
   if (type === "nft") {
     return (
-      <>
-        <Avatar.Group>
-          <Avatar
-            style={{ marginLeft: "0.625rem" }}
-            src={<Image src={tokenUri} style={{ width: 44, height: 44 }} />}
-          >
-            {token?.symbol[0]}
-          </Avatar>
-          <Avatar
-            style={{ marginTop: "0.9375rem" }}
-            size={20}
-            src={chain?.logoURI}
-          />
-        </Avatar.Group>
+      <Flex>
+        <Image src={tokenUri} style={{ width: 44, height: 44 }} />
+        <Avatar
+          style={{ marginTop: "0.9375rem" }}
+          size={20}
+          src={chain?.logoURI}
+        />
+
         <div>
           <div
             style={{
@@ -95,16 +89,16 @@ export function Event({
           >
             <SymbolText>{name}</SymbolText>
           </div>
-          <div
+          {/* <div
             style={{
               marginLeft: "0.625rem",
               display: "flex",
             }}
           >
             <DollarAmount>{name}</DollarAmount>
-          </div>
+          </div> */}
         </div>
-      </>
+      </Flex>
     );
   }
 

@@ -1,6 +1,15 @@
 import axios from "axios";
 import { moralisNftApi, moralisApi } from "../helpers/MoralisApi";
 
+interface ChainInterface {
+  1: string;
+  137?: string;
+  56?: string;
+  42161?: string;
+  43114?: string;
+  250?: string;
+}
+
 const axiosInstance = axios.create({
   headers: {
     "X-API-Key": process.env.REACT_APP_MORALIS_WEB3_API || "",
@@ -23,20 +32,65 @@ export const queryNftData = async (api: moralisApi, actionIndex: number) => {
   }
 };
 
-export const allNftData = async () => {
+export const getNftMetadata = async (
+  address: any,
+  tokenId: any,
+  chain: any,
+) => {
+  console.log("address - ", address);
+  console.log("tokenId - ", tokenId);
+  console.log("chain - ", chain);
+
   try {
-    const dataFromAllChains = [];
-    for (const api of moralisNftApi) {
-      const dataFromChains = [];
-      for (let i = 0; i < api.chains.length; i++) {
-        const nftData = await queryNftData(api, i);
-        dataFromChains.push(nftData);
-      }
-      dataFromAllChains.push({ ...api, dataFromChains });
-    }
-    return dataFromAllChains;
+    // const response = await Moralis.EvmApi.nft.getNFTMetadata({
+    //   address,
+    //   chain,
+    //   tokenId,
+    // });
+    const response = await axiosInstance.get(
+      `https://deep-index.moralis.io/api/v2/nft/:${address}/:${tokenId}`,
+      {
+        params: {
+          chain: chain,
+          apiKey: process.env.REACT_APP_MORALIS_WEB3_API,
+          normalizeMetadata: true,
+        },
+      },
+    );
+    const data = response.data.result;
+    console.log("FROM GETNFT - ", data);
+    return data;
   } catch (error) {
     console.error(error);
   }
 };
-console.log(allNftData());
+
+export const allNftData = async (address: any, tokenId: any, chainId: any) => {
+  try {
+    // const api = moralisNftApi[0];
+    // const dataFromAllChains = [];
+    // const dataFromChains = [];
+    // for (let i = 0; i < api.chains.length; i++) {
+    // const nftData = await queryNftData(api, i);
+    const chains: ChainInterface = {
+      1: "eth",
+      137: "polygon",
+      250: "fantom",
+      43114: "avalanche",
+      42161: "arbitrum",
+      56: "bsc",
+    };
+    const chain = chains[chainId as keyof ChainInterface];
+    const nftData = await getNftMetadata(address, tokenId, chain);
+
+    // dataFromChains.push(nftData);
+    // // }
+    // dataFromAllChains.push({ ...api, dataFromChains });
+
+    return nftData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// console.log(allNftData());

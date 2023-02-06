@@ -1,6 +1,7 @@
 import Event from "./Event";
 import CornerDownReceived from "./icons/cornerDownReceived.svg";
 import CornerDownSent from "./icons/cornerDownSent.svg";
+import SwapSign from "./icons/swap-sign.svg";
 import { CustomImg } from "../reusable/CustomImg";
 import styled from "styled-components";
 import Blockie from "../Blockie";
@@ -30,7 +31,27 @@ export const TransferColumns = [
       }
 
       if (item.type === "swap") {
-        return <SwapEvent fromToken={item.fromToken} toToken={item.toToken} />;
+        return (
+          <SwapEvent
+            fromToken={item.fromToken}
+            toToken={item.toToken}
+            toAmount={item.toAmount}
+            toAmountUSD={item.toAmountUSD}
+            decimals={item.decimals}
+          />
+        );
+      } else if (item.type === "nft") {
+        const { image, name } = item.normalized_metadata;
+        return (
+          <Event
+            chainId={item.chainId}
+            tokenAddress={item.token_address}
+            value={item.token_id}
+            type={item.type}
+            name={name}
+            tokenUri={image}
+          />
+        );
       }
       return (
         <Event
@@ -49,16 +70,43 @@ export const TransferColumns = [
     dataIndex: "to",
     key: "to",
     render: (to: any, item: any) => {
-      if (!to) {
-        return null;
+      if (item.type === "swap") {
+        console.log("item?? - ", item);
+        return (
+          <div>
+            <div
+              style={{
+                position: "relative",
+              }}
+            >
+              <>
+                <div style={{ display: "flex" }}>
+                  <CustomImg
+                    width={"2.4375rem"}
+                    height={"2.4375rem"}
+                    src={SwapSign}
+                  />
+                  <p
+                    style={{
+                      fontSize: "20px",
+                      color: "#3E389F",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    Swap
+                  </p>
+                </div>
+              </>
+              <StyledP>{item.gasCostUSD} gas fee</StyledP>
+            </div>
+          </div>
+        );
       }
 
       // check if to is equal to users address, if so it's received if not then transferrred
       // if it's to users address they receive if not it was sent.
       const didUserReceive = to === process.env.REACT_APP_TEST_ACCOUNT;
       const minted = item.minter_address === process.env.REACT_APP_TEST_ACCOUNT;
-
-      console.log("item?? - ", item);
 
       return (
         <div>
@@ -123,9 +171,9 @@ export const TransferColumns = [
     title: "From",
     dataIndex: "from",
     key: "from",
-    render: (from: any) => {
-      if (!from) {
-        return null;
+    render: (from: any, item: any) => {
+      if (item.type === "swap") {
+        from = item.fromAddress;
       }
       const shortFromAddress = `${from.substring(0, 6)}...${from.substring(
         from.length - 4,
@@ -155,9 +203,9 @@ export const TransferColumns = [
     title: "To",
     dataIndex: "to",
     key: "to",
-    render: (to: any) => {
-      if (!to) {
-        return null;
+    render: (to: any, item: any) => {
+      if (item.type === "swap") {
+        to = item.toAddress;
       }
 
       const shortTo = to.substring(0, 6) + "..." + to.substring(to.length - 4);
@@ -185,9 +233,9 @@ export const TransferColumns = [
     title: "Time",
     dataIndex: "timeStamp",
     key: "timeStamp",
-    render: (timeStamp: any) => {
-      if (!timeStamp) {
-        return null;
+    render: (timeStamp: any, item: any) => {
+      if (item.type === "swap") {
+        timeStamp = item.steps[0].execution.process[0].doneAt;
       }
       const date = new Date(timeStamp * 1000);
 
@@ -228,23 +276,27 @@ export const TransferColumns = [
     dataIndex: "hash",
     key: "hash",
     render: (hash: any, item: any) => {
-      if (!hash) {
-        return null;
+      let blockExplorerUrl;
+
+      if (item.type === "swap") {
+        blockExplorerUrl = item.steps[0].execution.process[0].txLink;
+      } else {
+        blockExplorerUrl = apiList.find((val) => {
+          if (val.chainId === item.chainId.toString()) {
+            return val;
+          }
+        })?.endpoint;
       }
 
-      // This is the url for the api but the principle is the same just put the needed urls in the config and get them here with chainId
-      const blockExplorerUrl = apiList.find((val) => {
-        if (val.chainId === item.chainId.toString()) {
-          return val;
-        }
-      })?.endpoint;
-
-      console.log("block explorer url - ", blockExplorerUrl);
       return (
         <div>
           <div style={{ display: "block" }}>
             <a
-              href={`https://polygonscan.com/tx/${hash}`}
+              href={
+                item.type === "swap"
+                  ? item.steps[0].execution.process[0].txLink
+                  : `${blockExplorerUrl}/tx/${hash}`
+              }
               target="_blank"
               rel="noreferrer"
             >
