@@ -49,7 +49,6 @@ export const limitDigits = (number: number) => {
   if (isNaN(Number(number))) {
     return 0;
   }
-  console.log("limitDigits - ", number);
   if (number === 0 || !number) return 0;
   if (number >= 1) {
     // it's a positive number show with two digits
@@ -57,7 +56,6 @@ export const limitDigits = (number: number) => {
   }
   // next check number has integer straight after decimal
   // if so show with 6 digits
-  console.log("limitDigits - ", number);
   const decimalStr = number.toString().split(".")[1];
   if (decimalStr.length && decimalStr[0] !== "0") {
     return number.toFixed(6);

@@ -57,10 +57,14 @@ function ERC20Transfers() {
   const handleData = async () => {
     // get swap history (from local history to start)
     const usersSwapHistory = swapHistory.reduce((acc: any, val: any) => {
+      // converting 13 digit unix to 10 (so we can sort by date with other tranactions)
+      const timeStamp = Math.round(
+        val.route.steps[0].execution.process[0].doneAt / 1000,
+      );
       acc.push({
         ...val.route,
         type: "swap",
-        timeStamp: val.route.steps[0].execution.process[0].doneAt,
+        timeStamp: timeStamp.toString(),
       });
       return acc;
     }, []);

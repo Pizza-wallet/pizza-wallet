@@ -13,8 +13,7 @@ interface IGasUsed {
 const StyledP = styled("p")`
   font-family: "Rubik", sans-serif;
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 400;
+  color: grey;
   line-height: 17px;
   letter-spacing: 0.04em;
   margin-left: 40px;
@@ -25,9 +24,6 @@ export function GasUsed({ chainId, tokenAddress, gasUsed }: IGasUsed) {
   const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
 
   let gasAmount = weiToEth(gasUsed, token?.decimals);
-  // let gasUsedInDollars = limitDigits(
-  //   Number(gasAmount) * Number(token?.priceUSD),
-  // );
   let gasUsedInDollars = limitDigits(
     Number(Number.parseFloat(gasAmount).toFixed(4)),
   );

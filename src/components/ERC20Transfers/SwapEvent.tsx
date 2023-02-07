@@ -55,20 +55,36 @@ export function SwapEvent({
   return (
     <Flex>
       <Avatar.Group>
-        <Avatar src={<Image src={fromToken?.logoURI} style={{ width: 32 }} />}>
+        <Avatar
+          src={
+            <Image
+              preview={false}
+              src={fromToken?.logoURI}
+              style={{ width: 32 }}
+            />
+          }
+        >
           {fromToken?.symbol[0]}
         </Avatar>
         <Avatar
-          style={{ marginTop: "0.9375rem", zIndex: "1" }}
+          style={{ marginTop: "1.1875rem", zIndex: "1" }}
           size={20}
           src={fromChainInfo?.logoURI}
         />
 
-        <Avatar src={<Image src={toToken?.logoURI} style={{ width: 32 }} />}>
+        <Avatar
+          src={
+            <Image
+              preview={false}
+              src={toToken?.logoURI}
+              style={{ width: 32 }}
+            />
+          }
+        >
           {toToken?.symbol[0]}
         </Avatar>
         <Avatar
-          style={{ marginTop: "0.9375rem", zIndex: "1" }}
+          style={{ marginTop: "1.1875rem", zIndex: "1" }}
           size={20}
           src={toChainInfo?.logoURI}
         />

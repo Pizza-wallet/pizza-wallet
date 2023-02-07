@@ -13,8 +13,7 @@ import SwapEvent from "./SwapEvent";
 const StyledP = styled("p")`
   font-family: "Rubik", sans-serif;
   font-size: 14px;
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 400;
+  color: grey;
   line-height: 17px;
   letter-spacing: 0.04em;
   margin-left: 40px;
@@ -104,7 +103,8 @@ export const TransferColumns = [
       }
 
       // if it's to users address they receive if not it was sent.
-      const didUserReceive = to === process.env.REACT_APP_TEST_ACCOUNT;
+      const didUserReceive =
+        to.toLowerCase() === process.env.REACT_APP_TEST_ACCOUNT?.toLowerCase();
       const minted =
         item.from === "0x0000000000000000000000000000000000000000" ||
         item.from === item.contractAddress;
@@ -240,16 +240,14 @@ export const TransferColumns = [
     dataIndex: "timeStamp",
     key: "timeStamp",
     render: (timeStamp: any, item: any) => {
+      let formattedDate;
       if (item.type === "swap") {
         timeStamp = item.steps[0].execution.process[0].doneAt;
+        formattedDate = moment(timeStamp).format("DD-MM-YYYY");
+      } else {
+        formattedDate = moment(timeStamp * 1000).format("DD-MM-YYYY");
       }
-      const date = new Date(timeStamp * 1000);
 
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-
-      const formattedDate = `${day}-${month}-${year}`;
       const time = moment(timeStamp * 1000).format("HH:mm");
 
       return (
@@ -266,8 +264,9 @@ export const TransferColumns = [
           <p
             style={{
               fontFamily: "Rubik",
-              fontSize: "1.125rem",
-              color: "rgba(0, 0, 0, 0.7)",
+              fontSize: "0.875rem",
+              // color: "rgba(0, 0, 0, 0.7)",
+              color: "grey",
             }}
           >
             {time}
