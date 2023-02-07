@@ -1,10 +1,7 @@
 import { useChain } from "../../hooks/useChain";
-import { useToken } from "../../hooks/useToken";
 import { Avatar, Image } from "antd";
 import styled from "styled-components";
-import { utils } from "ethers";
-import BigNumber from "bignumber.js";
-import { limitDigits, formatTokenAmount } from "../../helpers/formatters";
+import { limitDigits, weiToEth } from "../../helpers/formatters";
 
 interface IEvent {
   fromToken: any;
@@ -53,7 +50,7 @@ export function SwapEvent({
     toToken.chainId,
   );
 
-  const formattedTokenAmount = formatTokenAmount(toAmount, decimals);
+  const formattedTokenAmount = weiToEth(toAmount, decimals);
 
   return (
     <Flex>
@@ -83,7 +80,7 @@ export function SwapEvent({
             display: "flex",
           }}
         >
-          <SymbolText>{formattedTokenAmount}</SymbolText>
+          <SymbolText>{limitDigits(Number(formattedTokenAmount))}</SymbolText>
         </div>
         <div
           style={{

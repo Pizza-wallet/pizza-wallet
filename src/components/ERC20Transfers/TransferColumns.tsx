@@ -5,6 +5,7 @@ import SwapSign from "./icons/swap-sign.svg";
 import { CustomImg } from "../reusable/CustomImg";
 import styled from "styled-components";
 import Blockie from "../Blockie";
+import GasUsed from "./GasUsed";
 import moment from "moment";
 import { apiList } from "../../helpers/explorerApis";
 import SwapEvent from "./SwapEvent";
@@ -71,7 +72,6 @@ export const TransferColumns = [
     key: "to",
     render: (to: any, item: any) => {
       if (item.type === "swap") {
-        console.log("item?? - ", item);
         return (
           <div>
             <div
@@ -97,7 +97,7 @@ export const TransferColumns = [
                   </p>
                 </div>
               </>
-              <StyledP>{item.gasCostUSD} gas fee</StyledP>
+              <StyledP>${item.gasCostUSD} gas fee</StyledP>
             </div>
           </div>
         );
@@ -161,7 +161,12 @@ export const TransferColumns = [
                 </>
               )}
             </>
-            <StyledP>{item.gasUsed} gas fee</StyledP>
+
+            <GasUsed
+              chainId={item.chainId}
+              tokenAddress={item.contractAddress}
+              gasUsed={item.gasUsed}
+            />
           </div>
         </div>
       );

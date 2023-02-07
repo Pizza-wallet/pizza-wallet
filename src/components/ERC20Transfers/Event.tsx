@@ -2,9 +2,7 @@ import { useChain } from "../../hooks/useChain";
 import { useToken } from "../../hooks/useToken";
 import { Avatar, Image } from "antd";
 import styled from "styled-components";
-import { utils } from "ethers";
-import BigNumber from "bignumber.js";
-import { limitDigits, formatTokenAmount } from "../../helpers/formatters";
+import { limitDigits, weiToEth } from "../../helpers/formatters";
 
 interface IEvent {
   chainId: number;
@@ -50,21 +48,7 @@ export function Event({
   const { chain, isLoading: isChainLoading } = useChain(chainId);
   const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
 
-  // const amount: any = token
-  //   ? new BigNumber(value || "0").shiftedBy(-token?.decimals || 0).toFixed()
-  //   : "0";
-  const amount = token ? Number(value) ** token.decimals : 0;
-
-  let ethValue: any = token ? utils.formatEther(value) : 0;
-
-  // const priceUsd = token
-  //   ? Number(value) ** token.decimals * Number(token.priceUSD)
-  //   : 0;
-
-  // console.log("priceUsd - ", priceUsd);
-
-  // ethValue = Math.round(ethValue * 1e6) / 1e6;
-  // ethValue = truncate(ethValue, 4);
+  let readableAmount = weiToEth(value, token?.decimals);
 
   if (type === "nft") {
     return (
@@ -122,7 +106,9 @@ export function Event({
             display: "flex",
           }}
         >
-          <SymbolText>{ethValue}</SymbolText>{" "}
+          <SymbolText>
+            {limitDigits(Number(Number.parseFloat(readableAmount).toFixed(4)))}
+          </SymbolText>{" "}
           <SymbolText>{token?.symbol}</SymbolText>
         </div>
         <div
@@ -131,7 +117,9 @@ export function Event({
             display: "flex",
           }}
         >
-          <DollarAmount>$1290 USD</DollarAmount>
+          <DollarAmount>
+            ${limitDigits(Number(readableAmount) * Number(token?.priceUSD))}
+          </DollarAmount>
         </div>
       </div>
     </Flex>
