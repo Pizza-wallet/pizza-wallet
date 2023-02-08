@@ -71,18 +71,15 @@ img {
   display: block;
 }
 
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  background-color: var(--layout-white);
-  width: 80%;
-  height: 80%;
-  padding: 0.625rem 1.25rem 0.625rem 1.25rem;
-  border: 0.125rem solid var(--brand-blue);
-  border-collapse: separate;
-  border-radius: 2.5625rem;
-  border-spacing: 0px;
-  margin: 0 auto;
+article > * + * {
+  margin-top: 1em;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }
 
 thead {

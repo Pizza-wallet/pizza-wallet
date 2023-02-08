@@ -3,7 +3,8 @@ import { fetchDataUsingMulticall } from "./multicall";
 import { getPriceInformation } from "./getPriceInformation";
 import { getChainDetails } from "../../../helpers/getChainDetails";
 import { Fragment, JsonFragment } from "@ethersproject/abi";
-import { mockBalances } from "./mockData";
+import { IToken, IGroupedToken, ITokenList } from "../../../types";
+import { checkVariants } from "./checkVariants";
 
 const balanceAbi = [
   {
@@ -26,26 +27,6 @@ const balanceAbi = [
   },
 ];
 
-interface IToken {
-  chainId: number;
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  logoURI: string;
-  amount?: string;
-  value?: number;
-}
-
-interface ITokenList {
-  ethereum?: IToken[];
-  polygon?: IToken[];
-  avalanche?: IToken[];
-  fantom?: IToken[];
-  binance?: IToken[];
-  arbitrum?: IToken[];
-}
-
 interface MultiCallData {
   address: string;
   name: string;
@@ -55,8 +36,29 @@ interface MultiCallData {
 export const isZeroAddress = (address: string) => {
   if (address === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee") {
     return true;
+  } else if (address === "0x0000000000000000000000000000000000000000") {
+    return true;
   }
   return false;
+};
+
+export const getTokenBalanceForEachChain = async (
+  account: string,
+  tokenList: ITokenList,
+) => {
+  // get balances with tokenlist and multicall contract
+  let balances: ITokenList = {};
+
+  for (let chain in tokenList) {
+    // get and set balances above zero
+    const tokens: IToken[] | undefined = tokenList[chain as keyof ITokenList];
+
+    if (tokens) {
+      balances[chain as keyof ITokenList] = await getBalances(account, tokens);
+    }
+  }
+
+  return balances;
 };
 
 export const getBalances = async (walletAddress: string, tokens: IToken[]) => {
@@ -74,7 +76,9 @@ export const getBalances = async (walletAddress: string, tokens: IToken[]) => {
 
   const multicallAddress = process.env.REACT_APP_MULTICALL_ADDRESS || "";
   if (tokens.length > 0) {
-    return executeMulticall(walletAddress, tokens, multicallAddress, chainId);
+    return returnBalancesAboveZero(
+      await executeMulticall(walletAddress, tokens, multicallAddress, chainId),
+    );
   }
 };
 
@@ -113,17 +117,15 @@ const executeMulticall = async (
   }
 
   return tokens.map((token, i) => {
-    // usd coin showing decimals as 18 on eth chain even though it is 6
-    // figure out coins that dont have 18 decimals and test here
     const decimals = token.decimals;
-    const amount: any = new BigNumber(res[i].amount.toString() || "0")
+    const amount: any = new BigNumber(res[i]?.amount.toString() || "0")
       .shiftedBy(-decimals)
       .toFixed();
 
     return {
       ...token,
       amount: amount || "0",
-      blockNumber: res[i].blockNumber,
+      blockNumber: res[i]?.blockNumber,
     };
   });
 };
@@ -147,23 +149,9 @@ const fetchViaMulticall = async (
   }));
 };
 
-export const getBalanceAndPriceInformation = async (
-  account: string,
-  tokenList: ITokenList,
-) => {
-  // get balances with tokenlist and multicall contract
-  let balances: ITokenList = {};
-
-  for (let chain in tokenList) {
-    // get and set balances above zero
-    const tokens: IToken[] | undefined = tokenList[chain as keyof ITokenList];
-    if (tokens) {
-      balances[chain as keyof ITokenList] = returnBalancesAboveZero(
-        await getBalances(account, tokens),
-      );
-    }
-  }
-
+export const groupTokensWithPriceInfo = async (
+  balances: ITokenList,
+): Promise<IGroupedToken[]> => {
   // Get price info for each token
   const tokensWithPriceInfo: any = [];
 
@@ -172,23 +160,24 @@ export const getBalanceAndPriceInformation = async (
     if (userHasTokensOnChain) {
       const chainId = balances[chain as keyof ITokenList]?.[0].chainId;
       const tokenInfo = await getPriceInformation(
-        balances[chain as keyof ITokenList],
-        chainId,
+        balances[chain as keyof ITokenList]!,
+        chainId!,
       );
-      // we need to spread each array in to tokensWithPriceInfo
+
+      // we need to spread each array in to tokensWithPriceInfo (spread operator not working here)
       tokenInfo?.forEach((token) => {
         tokensWithPriceInfo.push(token);
       });
-      // tokensWithPriceInfo.push(...tokenInfo);
     }
   }
 
   // group tokens together by token name -
   const groupByTokenName = tokensWithPriceInfo.reduce(
     (group: any, token: any) => {
-      const name = token?.name;
-      group[name] = group[name] ?? [];
-      group[name].push(token);
+      // Check if wrapped token here and group with native tokens
+      const symbol = checkVariants(token, tokensWithPriceInfo);
+      group[symbol] = group[symbol] ?? [];
+      group[symbol].push(token);
       return group;
     },
     {},
@@ -203,19 +192,26 @@ export const getBalanceAndPriceInformation = async (
   const usersBalances = balancesWithPriceInfo.map((tokens) => {
     const tokenInfo = tokens[0];
 
-    const chainLogoUri: string[] = [];
-    tokens.forEach((val: IToken) => {
-      const chainId = val.chainId;
-      chainLogoUri.push(getChainDetails(chainId)!.logoUri);
-    });
+    const chainLogoUri: any[] = [
+      ...new Set(
+        tokens.map((val: IToken) => {
+          const chainId = val.chainId;
+          const logoUri = getChainDetails(chainId)!.logoUri;
+          return logoUri;
+        }),
+      ),
+    ];
 
     return {
       name: tokenInfo.name,
-      type: "chain",
+      type: "groupedTokens",
       symbol: tokenInfo.symbol,
       id: tokenInfo.name,
       chainLogoUri: chainLogoUri,
       logoURI: tokenInfo.logoURI,
+      chainId: tokenInfo.chainId,
+      decimals: tokenInfo.decimals,
+      address: "",
       price: tokenInfo.price,
       balance: tokens.reduce(
         (acc: number, obj: IToken) => (acc += Number(obj.amount)),
@@ -229,8 +225,10 @@ export const getBalanceAndPriceInformation = async (
     };
   });
 
-  console.log("what we are returning for token table - ", usersBalances);
-  return usersBalances;
+  const sortTokensByLargestValue = usersBalances.sort(
+    (a, b) => b.value - a.value,
+  );
+  return sortTokensByLargestValue;
 };
 
 const returnBalancesAboveZero = (balances: IToken[] | undefined) => {

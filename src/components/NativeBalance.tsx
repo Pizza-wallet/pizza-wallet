@@ -1,16 +1,11 @@
 import { Spin } from "antd";
-import { useMoralis } from "react-moralis";
+import { useMoralis, useNativeBalance } from "react-moralis";
 
-function NativeBalance(props: { totalBalance: string }) {
+function NativeBalance() {
+  const { data: balance, isLoading } = useNativeBalance();
   const { account, isAuthenticated } = useMoralis();
-  const isLoading = !props.totalBalance;
   if (!account || !isAuthenticated) return null;
-  if (isLoading)
-    return (
-      <div style={{ textAlign: "center", marginTop: "1.25rem" }}>
-        <Spin style={{ color: "#3e389f" }}></Spin>
-      </div>
-    );
+  if (isLoading) return <Spin style={{ color: "#3e389f" }}></Spin>;
   return (
     <div
       style={{
@@ -22,7 +17,7 @@ function NativeBalance(props: { totalBalance: string }) {
         fontWeight: "bold",
       }}
     >
-      ${props.totalBalance}
+      {balance.formatted}
     </div>
   );
 }
