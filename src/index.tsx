@@ -14,11 +14,10 @@ const QueryProvider = QueryClientProvider as FC<
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
-
 root.render(
   <QueryProvider client={queryClient}>
     <LIFIProvider>
-      <App />,
+      <App />
     </LIFIProvider>
   </QueryProvider>,
 );

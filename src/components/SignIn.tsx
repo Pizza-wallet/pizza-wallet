@@ -1,8 +1,3 @@
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import RPC from "../providers/ethersRPC";
 import { useLogin } from "../hooks/useLogin";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -107,46 +102,7 @@ const SocialIcons = styled("div")`
 `;
 
 export default function SignIn() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null,
-  );
   const { handleLogin } = useLogin();
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const web3auth = new Web3Auth({
-          clientId:
-            "BMMmqlFA6nK-t7M_AXK4swE7kNck-QCSBBONZWuwXXdY6nKRjT3uJugriq3o7mjMHA7bkMac9rygNmTrFv87h2Q",
-          web3AuthNetwork: "mainnet", // mainnet, aqua, celeste, cyan or testnet
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x13881",
-            rpcTarget: "https://rpc-mumbai.maticvigil.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-        });
-
-        const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "optional", // Pass on the mfa level of your choice: default, optional, mandatory, none
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
-        setWeb3auth(web3auth);
-
-        await web3auth.initModal();
-
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
 
   return (
     <AccountContainer>

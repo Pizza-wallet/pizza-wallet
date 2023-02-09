@@ -12,6 +12,7 @@ import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
 import { ChainsTokensToolsProvider } from "./providers/chainsTokensToolsProvider";
 import { IGroupedToken } from "./types";
+import { useWeb3AuthExecutionStore } from "./stores/web3Auth";
 
 const { Header, Sider, Content } = Layout;
 
@@ -152,11 +153,12 @@ const styles = {
 };
 
 const App = () => {
-  const [provider] = useState<SafeEventEmitterProvider | null>(null);
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
   const [totalBalance, setTotalBalance] = useState<string>();
   const [balances, setBalances] = useState<IGroupedToken[]>([]);
   const [showDashBoard, setShowDashboard] = useState(true);
+
+  const { provider } = useWeb3AuthExecutionStore((state: any) => state);
 
   useEffect(() => {
     !provider ? setShowDashboard(false) : setShowDashboard(true);
