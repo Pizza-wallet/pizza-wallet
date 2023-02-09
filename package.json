@@ -36,6 +36,7 @@
     "react-timer-hook": "^3.0.5",
     "styled-components": "^5.3.5",
     "web-vitals": "^1.0.1",
+    "web3": "^1.8.2",
     "yarn": "^1.22.17",
     "zustand": "^4.3.2"
   },

@@ -1,9 +1,3 @@
-import { useEffect, useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
-import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import { Web3AuthContext } from "../providers/Web3AuthContext";
-import { useLogin } from "../hooks/useLogin";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
@@ -12,6 +6,7 @@ import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import { CustomImg } from "./reusable/CustomImg";
+import { useWeb3Auth } from "../providers/web3auth";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -107,115 +102,60 @@ const SocialIcons = styled("div")`
 `;
 
 export default function SignIn() {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null,
-  );
-  const { handleLogin } = useLogin();
-
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const web3auth = new Web3Auth({
-          clientId:
-            "BMMmqlFA6nK-t7M_AXK4swE7kNck-QCSBBONZWuwXXdY6nKRjT3uJugriq3o7mjMHA7bkMac9rygNmTrFv87h2Q",
-          web3AuthNetwork: "mainnet", // mainnet, aqua, celeste, cyan or testnet
-          chainConfig: {
-            chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x13881",
-            rpcTarget: "https://rpc-mumbai.maticvigil.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
-          },
-        });
-
-        const openloginAdapter = new OpenloginAdapter({
-          loginSettings: {
-            mfaLevel: "optional", // Pass on the mfa level of your choice: default, optional, mandatory, none
-          },
-        });
-        web3auth.configureAdapter(openloginAdapter);
-        setWeb3auth(web3auth);
-
-        await web3auth.initModal();
-
-        if (web3auth.provider) {
-          setProvider(web3auth.provider);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    init();
-  }, []);
-
+  const { login } = useWeb3Auth();
   return (
-    <Web3AuthContext.Provider
-      value={{
-        web3auth,
-        provider,
-        setWeb3auth,
-        setProvider,
-      }}
-    >
-      <AccountContainer>
-        <Card>
-          <FlexContainerCenter>
-            <CustomImg
-              height={"70%"}
-              width={"70%"}
-              margin={"1.4375rem 0 1.0625rem 0"}
-              src={LoginLogo}
-            />
-          </FlexContainerCenter>
-          <InnerCard>
-            <>
+    <AccountContainer>
+      <Card>
+        <FlexContainerCenter>
+          <CustomImg
+            height={"70%"}
+            width={"70%"}
+            margin={"1.4375rem 0 1.0625rem 0"}
+            src={LoginLogo}
+          />
+        </FlexContainerCenter>
+        <InnerCard>
+          <>
+            <FlexContainerCenter>
+              <LoginTitle>Login</LoginTitle>
+            </FlexContainerCenter>
+            <div>
+              <ButtonCard>
+                <SocialIcons onClick={login}>
+                  <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
+                  <img src={facebook} alt="logo" />
+                  <img src={google} alt="logo" />
+                  <img src={twitter} alt="logo" />
+                  <TextStyled>and more</TextStyled>
+                </SocialIcons>
+                <ButtonContainer
+                  width={"14.375rem"}
+                  height={"3.1875rem"}
+                  margin={"1.25rem 0 0 0"}
+                >
+                  <PrimaryButton onClick={login}>Social Login</PrimaryButton>
+                </ButtonContainer>
+              </ButtonCard>
+
+              <Divider>
+                <DividerText>
+                  <DividerSpan>OR</DividerSpan>
+                </DividerText>
+              </Divider>
+
               <FlexContainerCenter>
-                <LoginTitle>Login</LoginTitle>
+                <ButtonContainer
+                  width={"14.375rem"}
+                  height={"3.1875rem"}
+                  margin={"0 0 4.0625rem 0"}
+                >
+                  <PrimaryButton>Import wallet</PrimaryButton>
+                </ButtonContainer>
               </FlexContainerCenter>
-              <div>
-                <ButtonCard>
-                  <SocialIcons onClick={handleLogin}>
-                    <CustomImg
-                      margin={"0 0 0.25rem 0"}
-                      src={apple}
-                      alt="logo"
-                    />
-                    <img src={facebook} alt="logo" />
-                    <img src={google} alt="logo" />
-                    <img src={twitter} alt="logo" />
-                    <TextStyled>and more</TextStyled>
-                  </SocialIcons>
-                  <ButtonContainer
-                    width={"14.375rem"}
-                    height={"3.1875rem"}
-                    margin={"1.25rem 0 0 0"}
-                  >
-                    <PrimaryButton onClick={handleLogin}>
-                      Social Login
-                    </PrimaryButton>
-                  </ButtonContainer>
-                </ButtonCard>
-
-                <Divider>
-                  <DividerText>
-                    <DividerSpan>OR</DividerSpan>
-                  </DividerText>
-                </Divider>
-
-                <FlexContainerCenter>
-                  <ButtonContainer
-                    width={"14.375rem"}
-                    height={"3.1875rem"}
-                    margin={"0 0 4.0625rem 0"}
-                  >
-                    <PrimaryButton>Import wallet</PrimaryButton>
-                  </ButtonContainer>
-                </FlexContainerCenter>
-              </div>
-            </>
-          </InnerCard>
-        </Card>
-      </AccountContainer>
-    </Web3AuthContext.Provider>
+            </div>
+          </>
+        </InnerCard>
+      </Card>
+    </AccountContainer>
   );
 }
