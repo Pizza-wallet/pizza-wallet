@@ -1,4 +1,8 @@
-import { useMoralis } from "react-moralis";
+import { useEffect, useState } from "react";
+import { Web3Auth } from "@web3auth/modal";
+import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
+import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
+import RPC from "../providers/ethersRPC";
 import Account from "./Account/Account";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -8,7 +12,6 @@ import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import { CustomImg } from "./reusable/CustomImg";
-import { useAuthenticateUser } from "../hooks/useAuthenticateUser";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -104,22 +107,138 @@ const SocialIcons = styled("div")`
 `;
 
 export default function SignIn() {
-  const { authError } = useMoralis();
-  const { authenticateUser } = useAuthenticateUser();
+  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
+  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
+    null,
+  );
 
-  const handleCustomLogin = async () => {
-    await authenticateUser(
-      {
-        provider: "web3Auth",
-        clientId:
-          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
-        rpcTarget:
-          "https://eth-mainnet.g.alchemy.com/v2/QYhVNEB6nYsSUseBAR1-vk1D2W6ulwxG",
-        chainId: "0x1",
-        appLogo: "pizza.png",
-      },
-      "web3Auth",
-    );
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const web3auth = new Web3Auth({
+          clientId: "",
+          web3AuthNetwork: "mainnet", // mainnet, aqua, celeste, cyan or testnet
+          chainConfig: {
+            chainNamespace: CHAIN_NAMESPACES.EIP155,
+            chainId: "0x13881",
+            rpcTarget: "https://rpc-mumbai.maticvigil.com", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+          },
+        });
+
+        const openloginAdapter = new OpenloginAdapter({
+          loginSettings: {
+            mfaLevel: "mandatory", // Pass on the mfa level of your choice: default, optional, mandatory, none
+          },
+        });
+        web3auth.configureAdapter(openloginAdapter);
+        setWeb3auth(web3auth);
+
+        await web3auth.initModal();
+
+        if (web3auth.provider) {
+          setProvider(web3auth.provider);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    init();
+  }, []);
+
+  const login = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    const web3authProvider = await web3auth.connect();
+    setProvider(web3authProvider);
+  };
+
+  const authenticateUser = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    const idToken = await web3auth.authenticateUser();
+    console.log(idToken);
+  };
+
+  const getUserInfo = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    const user = await web3auth.getUserInfo();
+    console.log(user);
+  };
+
+  const logout = async () => {
+    if (!web3auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    await web3auth.logout();
+    setProvider(null);
+  };
+
+  const getChainId = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const chainId = await rpc.getChainId();
+    console.log(chainId);
+  };
+  const getAccounts = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const address = await rpc.getAccounts();
+    console.log(address);
+  };
+
+  const getBalance = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const balance = await rpc.getBalance();
+    console.log(balance);
+  };
+
+  const sendTransaction = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const receipt = await rpc.sendTransaction();
+    console.log(receipt);
+  };
+
+  const signMessage = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const signedMessage = await rpc.signMessage();
+    console.log(signedMessage);
+  };
+
+  const getPrivateKey = async () => {
+    if (!provider) {
+      console.log("provider not initialized yet");
+      return;
+    }
+    const rpc = new RPC(provider);
+    const privateKey = await rpc.getPrivateKey();
+    console.log(privateKey);
   };
 
   return (
@@ -138,10 +257,9 @@ export default function SignIn() {
             <FlexContainerCenter>
               <LoginTitle>Login</LoginTitle>
             </FlexContainerCenter>
-            {authError && alert(JSON.stringify(authError.message))}
             <div>
               <ButtonCard>
-                <SocialIcons onClick={handleCustomLogin}>
+                <SocialIcons onClick={login}>
                   <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
                   <img src={facebook} alt="logo" />
                   <img src={google} alt="logo" />
@@ -153,9 +271,7 @@ export default function SignIn() {
                   height={"3.1875rem"}
                   margin={"1.25rem 0 0 0"}
                 >
-                  <PrimaryButton onClick={handleCustomLogin}>
-                    Social Login
-                  </PrimaryButton>
+                  <PrimaryButton onClick={login}>Social Login</PrimaryButton>
                 </ButtonContainer>
               </ButtonCard>
 
