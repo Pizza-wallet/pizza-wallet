@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { CHAIN_NAMESPACES, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-import RPC from "../providers/ethersRPC";
+import { Web3AuthContext } from "../providers/Web3AuthContext";
 import { useLogin } from "../hooks/useLogin";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -149,60 +149,73 @@ export default function SignIn() {
   }, []);
 
   return (
-    <AccountContainer>
-      <Card>
-        <FlexContainerCenter>
-          <CustomImg
-            height={"70%"}
-            width={"70%"}
-            margin={"1.4375rem 0 1.0625rem 0"}
-            src={LoginLogo}
-          />
-        </FlexContainerCenter>
-        <InnerCard>
-          <>
-            <FlexContainerCenter>
-              <LoginTitle>Login</LoginTitle>
-            </FlexContainerCenter>
-            <div>
-              <ButtonCard>
-                <SocialIcons onClick={handleLogin}>
-                  <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
-                  <img src={facebook} alt="logo" />
-                  <img src={google} alt="logo" />
-                  <img src={twitter} alt="logo" />
-                  <TextStyled>and more</TextStyled>
-                </SocialIcons>
-                <ButtonContainer
-                  width={"14.375rem"}
-                  height={"3.1875rem"}
-                  margin={"1.25rem 0 0 0"}
-                >
-                  <PrimaryButton onClick={handleLogin}>
-                    Social Login
-                  </PrimaryButton>
-                </ButtonContainer>
-              </ButtonCard>
-
-              <Divider>
-                <DividerText>
-                  <DividerSpan>OR</DividerSpan>
-                </DividerText>
-              </Divider>
-
+    <Web3AuthContext.Provider
+      value={{
+        web3auth,
+        provider,
+        setWeb3auth,
+        setProvider,
+      }}
+    >
+      <AccountContainer>
+        <Card>
+          <FlexContainerCenter>
+            <CustomImg
+              height={"70%"}
+              width={"70%"}
+              margin={"1.4375rem 0 1.0625rem 0"}
+              src={LoginLogo}
+            />
+          </FlexContainerCenter>
+          <InnerCard>
+            <>
               <FlexContainerCenter>
-                <ButtonContainer
-                  width={"14.375rem"}
-                  height={"3.1875rem"}
-                  margin={"0 0 4.0625rem 0"}
-                >
-                  <PrimaryButton>Import wallet</PrimaryButton>
-                </ButtonContainer>
+                <LoginTitle>Login</LoginTitle>
               </FlexContainerCenter>
-            </div>
-          </>
-        </InnerCard>
-      </Card>
-    </AccountContainer>
+              <div>
+                <ButtonCard>
+                  <SocialIcons onClick={handleLogin}>
+                    <CustomImg
+                      margin={"0 0 0.25rem 0"}
+                      src={apple}
+                      alt="logo"
+                    />
+                    <img src={facebook} alt="logo" />
+                    <img src={google} alt="logo" />
+                    <img src={twitter} alt="logo" />
+                    <TextStyled>and more</TextStyled>
+                  </SocialIcons>
+                  <ButtonContainer
+                    width={"14.375rem"}
+                    height={"3.1875rem"}
+                    margin={"1.25rem 0 0 0"}
+                  >
+                    <PrimaryButton onClick={handleLogin}>
+                      Social Login
+                    </PrimaryButton>
+                  </ButtonContainer>
+                </ButtonCard>
+
+                <Divider>
+                  <DividerText>
+                    <DividerSpan>OR</DividerSpan>
+                  </DividerText>
+                </Divider>
+
+                <FlexContainerCenter>
+                  <ButtonContainer
+                    width={"14.375rem"}
+                    height={"3.1875rem"}
+                    margin={"0 0 4.0625rem 0"}
+                  >
+                    <PrimaryButton>Import wallet</PrimaryButton>
+                  </ButtonContainer>
+                </FlexContainerCenter>
+              </div>
+            </>
+          </InnerCard>
+        </Card>
+      </AccountContainer>
+    </Web3AuthContext.Provider>
   );
 }

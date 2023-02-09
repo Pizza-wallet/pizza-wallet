@@ -1,12 +1,9 @@
-import { useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { useContext } from "react";
+import { Web3AuthContext } from "../providers/Web3AuthContext";
 
 export const useLogin = () => {
-  const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null,
-  );
+  const { web3auth, provider, setWeb3auth, setProvider } =
+    useContext(Web3AuthContext);
   const handleLogin = async () => {
     if (!web3auth) {
       console.log("web3auth not initialized yet");
