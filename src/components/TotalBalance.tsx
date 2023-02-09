@@ -1,15 +1,15 @@
 import { Spin } from "antd";
-import { useMoralis } from "react-moralis";
+// import { useMoralis } from "react-moralis";
 
 interface INativeBalance {
   totalBalance?: string;
 }
 
 function NativeBalance(props: INativeBalance) {
-  const { account, isAuthenticated } = useMoralis();
+  // const { account, isAuthenticated } = useMoralis();
   const isLoading = !props.totalBalance;
 
-  if (!account || !isAuthenticated) return null;
+  // if (!account || !isAuthenticated) return null;
   if (isLoading)
     return (
       <div style={{ textAlign: "center", marginTop: "1.25rem" }}>

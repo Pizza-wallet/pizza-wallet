@@ -3,12 +3,31 @@ import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import { getEllipsisTxt } from "../helpers/formatters";
 import Blockie from "./Blockie";
 import { Input } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
 import styled from "styled-components";
+import { PizzaWalletCard } from "./reusable/PizzaWalletCard";
+import { Avatar } from "antd";
 
 const StyledInput = styled(Input)`
-  border: 0.125rem solid #3e389f;
-  border-radius: 0.9375rem;
+  box-shadow: none;
+  color: #000000;
+  font-family: "Rubik", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: 0.02em;
+`;
+
+const Flex = styled("div")`
+  display: flex;
+  justify-content: start;
+`;
+
+const Text = styled("p")`
+  color: #000000;
+  font-family: "Rubik", sans-serif;
+  font-size: 16px;
+  line-height: 1.5rem;
+  letter-spacing: 0.02em;
+  margin: 10px 0 0.625rem 10px;
 `;
 
 function AddressInput(props: any) {
@@ -90,38 +109,42 @@ function AddressInput(props: any) {
   );
 
   return (
-    <StyledInput
-      ref={input}
-      size="large"
-      placeholder={props.placeholder ? props.placeholder : "Public address"}
-      prefix={
-        isDomain || address.length === 42 ? (
-          <Blockie
-            address={(isDomain ? validatedAddress : address).toLowerCase()}
-            size={8}
-            scale={3}
-          />
-        ) : (
-          <SearchOutlined />
-        )
-      }
-      suffix={validatedAddress && <Cross />}
-      autoFocus={props.autoFocus}
-      value={
-        isDomain
-          ? `${address} (${getEllipsisTxt(validatedAddress)})`
-          : validatedAddress || address
-      }
-      onChange={(e) => {
-        updateAddress(e.target.value);
-      }}
-      disabled={!!validatedAddress}
-      style={
-        validatedAddress
-          ? { ...props?.style, border: "0.0625rem solid rgb(33, 191, 150)" }
-          : { ...props?.style }
-      }
-    />
+    <PizzaWalletCard height={"6.25rem"}>
+      <Text>Address</Text>
+      <Flex>
+        <Avatar
+          style={{ marginLeft: "1.5625rem" }}
+          src={
+            <Blockie
+              address={(isDomain
+                ? validatedAddress
+                : props.receiver
+              ).toLowerCase()}
+              size={8}
+              scale={3}
+            />
+          }
+        ></Avatar>
+        <StyledInput
+          ref={input}
+          size="small"
+          placeholder={props.placeholder ? props.placeholder : "Public address"}
+          suffix={validatedAddress && <Cross />}
+          autoFocus={props.autoFocus}
+          bordered={false}
+          value={
+            isDomain
+              ? `${address} (${getEllipsisTxt(validatedAddress)})`
+              : validatedAddress || props.receiver
+          }
+          onChange={(e) => {
+            updateAddress(e.target.value);
+          }}
+          disabled={!!validatedAddress}
+          style={{ ...props?.style }}
+        />
+      </Flex>
+    </PizzaWalletCard>
   );
 }
 

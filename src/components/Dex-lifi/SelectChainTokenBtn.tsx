@@ -38,7 +38,7 @@ const Flex = styled("div")`
 interface ISelectChainTokenBtn {
   formType: string;
   handleClick: Dispatch<SetStateAction<string>>;
-  setFormType: Dispatch<SetStateAction<string>>;
+  setFormType?: Dispatch<SetStateAction<string>>;
   chainId: number;
   tokenAddress: string;
 }
@@ -55,7 +55,7 @@ export const SelectChainTokenBtn = ({
 
   const handleCardClick = () => {
     handleClick("selectToken");
-    setFormType(formType);
+    setFormType && setFormType(formType);
   };
 
   return (
