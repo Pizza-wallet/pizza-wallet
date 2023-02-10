@@ -20,6 +20,10 @@ const AbsoluteImgContainer = styled("div")`
   width: ${(props) => props.width};
 `;
 
+const StyledTabledata = styled("p")`
+  color: #000000;
+`;
+
 const displayChainIconsForToken = (chainIcons: string[]) => {
   // Logic to overlap icon images
   let num = 0;
@@ -101,7 +105,7 @@ export const columns = [
                     height: num > 0 ? "4.7875rem" : "2.5rem",
                     position: "absolute",
                     top: num > 0 ? "-3.5625rem" : "-1.25rem",
-                    left: "-1.7125rem",
+                    left: "-2.8125rem",
                     width: "2.375rem",
                   }}
                 ></div>
@@ -139,6 +143,7 @@ export const columns = [
                   marginLeft: "3.125rem",
                   fontSize: "1.5625rem",
                   lineHeight: "2.25rem",
+                  color: "#000000",
                 }}
               >
                 {item.symbol}
@@ -153,14 +158,20 @@ export const columns = [
     title: "Balance",
     dataIndex: "balance",
     key: "balance",
-    render: (value: number) => limitDigits(value),
+    render: (value: number) => (
+      <StyledTabledata>{limitDigits(value)}</StyledTabledata>
+    ),
   },
   {
     title: "Price",
     dataIndex: "price",
     key: "price",
     render: (value: number) =>
-      value ? `$${limitDigits(value)}` : "Not available",
+      value ? (
+        <StyledTabledata>{`$${limitDigits(value)}`}</StyledTabledata>
+      ) : (
+        "Not available"
+      ),
   },
 
   {
@@ -168,6 +179,10 @@ export const columns = [
     dataIndex: "value",
     key: "value",
     render: (value: number) =>
-      value ? `$${limitDigits(value)}` : "Not available",
+      value ? (
+        <StyledTabledata>{`$${limitDigits(value)}`}</StyledTabledata>
+      ) : (
+        "Not available"
+      ),
   },
 ];

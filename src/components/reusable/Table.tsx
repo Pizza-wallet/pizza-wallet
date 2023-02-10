@@ -84,7 +84,7 @@ const StyledTableScroll = styled("table")`
   tr {
     display: grid;
     grid-template-columns: ${(props: ITableStyles) =>
-      props.fixed ? "1fr 1fr 1fr 1fr" : "4fr 3fr 2fr 2fr 1fr 1fr"};
+      props.fixed ? "2fr 1fr 1fr 1fr" : "4fr 3fr 2fr 2fr 1fr 1fr"};
     grid-gap: 10px;
   }
 `;
@@ -93,7 +93,7 @@ const StyledTHead = styled("thead")`
   tr {
     display: grid;
     grid-template-columns: ${(props: ITableStyles) =>
-      props.fixed ? "1fr 1fr 1fr 1fr" : "4fr 3fr 2fr 2fr 1fr 1fr"};
+      props.fixed ? "2fr 1fr 1fr 1fr" : "4fr 3fr 2fr 2fr 1fr 1fr"};
     grid-gap: 10px;
   }
 `;
