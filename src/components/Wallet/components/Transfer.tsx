@@ -1,8 +1,8 @@
-import { Input, notification } from "antd";
-import { useEffect, useState } from "react";
-import { useMoralis } from "react-moralis";
+import { notification } from "antd";
+import { useEffect, useState, useCallback } from "react";
+import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import AddressInput from "../../AddressInput";
-import AssetSelector from "./AssetSelector";
+import { getEllipsisTxt } from "../../../helpers/formatters";
 import styled from "styled-components";
 import {
   ButtonContainer,
@@ -32,11 +32,6 @@ const Controls = styled("div")`
   margin-top: 2.3125rem;
 `;
 
-const StyledInput = styled(Input)`
-  border: 0.125rem solid #3e389f;
-  border-radius: 0.9375rem;
-`;
-
 export interface Transaction {
   hash?: string;
   to?: string;
@@ -58,11 +53,6 @@ export interface Transaction {
   wait?: () => { status: string; to: string; error: string };
 }
 
-// This could be made into a re-usable type - Token?
-// interface IAsset {
-//   token_address: string;
-// }
-
 interface ITransaction {
   receiver?: string;
   fromToken?: string;
@@ -76,9 +66,17 @@ interface Iresult {
 }
 
 function Transfer() {
-  const { Moralis } = useMoralis();
+  const { Moralis, web3 } = useMoralis();
+  const web3Provider: any = web3;
   const [receiver, setReceiver] = useState("");
   // const [asset, setAsset] = useState<string>();
+
+  const [address, setAddress] = useState("");
+  const [validatedAddress, setValidatedAddress] = useState("");
+  const [isDomain, setIsDomain] = useState(false);
+  const {
+    resolve: { resolveDomain },
+  } = useMoralisWeb3Api();
 
   const [page, setPage] = useState("main");
 
@@ -121,6 +119,8 @@ function Transfer() {
   };
 
   async function transfer() {
+    console.log("transfer happening - ");
+
     const { fromTokenAmount, receiver, fromToken } = tx;
 
     let options = {};
@@ -178,6 +178,59 @@ function Transfer() {
     }
   }
 
+  function isSupportedDomain(domain: string) {
+    return [
+      ".eth",
+      ".crypto",
+      ".coin",
+      ".wallet",
+      ".bitcoin",
+      ".x",
+      ".888",
+      ".nft",
+      ".dao",
+      ".blockchain",
+    ].some((tld) => domain.endsWith(tld));
+  }
+
+  const updateAddress = useCallback(
+    async (value: string) => {
+      setAddress(value);
+      if (isSupportedDomain(value)) {
+        const processPromise = function (promise: any) {
+          promise
+            .then((addr: string) => {
+              setValidatedAddress(addr);
+              setIsDomain(true);
+              setReceiver(addr);
+            })
+            .catch(() => {
+              setValidatedAddress("");
+              setReceiver("");
+            });
+        };
+        if (value.endsWith(".eth")) {
+          processPromise(web3Provider?.eth?.ens?.getAddress(value));
+        } else {
+          processPromise(
+            resolveDomain({
+              domain: value,
+            }).then((r) => r?.address),
+          );
+        }
+      } else if (value.length === 42) {
+        setValidatedAddress(getEllipsisTxt(value, 10));
+        setReceiver(getEllipsisTxt(value, 10));
+        setIsDomain(false);
+      } else {
+        setValidatedAddress("");
+        setIsDomain(false);
+        setReceiver("");
+      }
+    },
+    [resolveDomain, web3Provider?.eth?.ens],
+  );
+
   console.log("show tx here - ", tx);
 
   return (
@@ -196,9 +249,15 @@ function Transfer() {
       ) : (
         <>
           <Text>Send to:</Text>
-          <AddressInput autoFocus onChange={setReceiver} receiver={receiver} />
+          <AddressInput
+            updateAddress={updateAddress}
+            address={address}
+            validatedAddress={validatedAddress}
+            isDomain={isDomain}
+            setIsDomain={setIsDomain}
+            setValidatedAddress={setValidatedAddress}
+          />
 
-          {/* <Text>Asset:</Text> */}
           <SelectChainTokenBtn
             handleClick={setPage}
             chainId={fromChain}
@@ -206,7 +265,6 @@ function Transfer() {
             formType={"Choose asset"}
           />
 
-          {/* <Text>Amount:</Text> */}
           <SwapInput
             tokenAddress={fromToken}
             chainId={fromChain}
@@ -225,7 +283,7 @@ function Transfer() {
               <PrimaryButton
                 // need to add loading animation to buttons
                 // loading={isPending}
-                onClick={() => transfer()}
+                onClick={() => (tx ? transfer() : null)}
                 // disabled={!tx}
               >
                 Transfer
