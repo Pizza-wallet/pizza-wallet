@@ -66,6 +66,45 @@ const StyledTable = styled("table")`
   ${(props: ITableStyles) => props.fixed && "table-layout: fixed"};
 `;
 
+const StyledTableScroll = styled("table")`
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: var(--layout-white);
+  width: 100%;
+  height: 80%;
+  padding: 1.25rem 1.25rem 0.625rem 2.5rem;
+
+  border: 0.125rem solid var(--brand-blue);
+  border-collapse: separate;
+  border-radius: 2.5625rem;
+  border-spacing: 0px;
+  margin: 0 auto;
+  ${(props: ITableStyles) => props.fixed && "table-layout: fixed"};
+
+  tr {
+    display: grid;
+    grid-template-columns: ${(props: ITableStyles) =>
+      props.fixed ? "1fr 1fr 1fr 1fr" : "4fr 3fr 2fr 2fr 1fr 1fr"};
+    grid-gap: 10px;
+  }
+`;
+
+const StyledTHead = styled("thead")`
+  tr {
+    display: grid;
+    grid-template-columns: ${(props: ITableStyles) =>
+      props.fixed ? "1fr 1fr 1fr 1fr" : "4fr 3fr 2fr 2fr 1fr 1fr"};
+    grid-gap: 10px;
+  }
+`;
+
+const StyledTBody = styled("tbody")`
+  display: block;
+  width: 100%;
+  overflow: overlay;
+  height: 400px;
+`;
+
 interface ITable {
   tableData: any;
   columns: Column;
@@ -200,12 +239,12 @@ function Table({
         <Container>
           <p className="tabControls">{tableTitle}</p>
 
-          <StyledTable fixed={true}>
-            <thead>
+          <StyledTableScroll fixed={true}>
+            <StyledTHead fixed={true}>
               <tr>{renderHeader()}</tr>
-            </thead>
-            <tbody>{renderRowsExpandable()}</tbody>
-          </StyledTable>
+            </StyledTHead>
+            <StyledTBody>{renderRowsExpandable()}</StyledTBody>
+          </StyledTableScroll>
         </Container>
       </>
     );
@@ -215,12 +254,12 @@ function Table({
       <Container>
         <p className="tabControls">{tableTitle}</p>
 
-        <StyledTable>
-          <thead>
+        <StyledTableScroll>
+          <StyledTHead>
             <tr>{renderHeader()}</tr>
-          </thead>
-          <tbody>{renderRows()}</tbody>
-        </StyledTable>
+          </StyledTHead>
+          <StyledTBody>{renderRows()}</StyledTBody>
+        </StyledTableScroll>
       </Container>
     </>
   );

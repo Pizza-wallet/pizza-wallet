@@ -4,7 +4,6 @@ import { Avatar, Image } from "antd";
 import styled from "styled-components";
 import { limitDigits, weiToEth } from "../../helpers/formatters";
 import EmptyNft from "./icons/nft.svg";
-import PizzaCoin from "./icons/pizzaCoin.svg";
 
 interface IEvent {
   chainId: number;
@@ -100,7 +99,7 @@ export function Event({
           style={{ marginLeft: "0.625rem" }}
           src={
             <Image
-              src={!token?.logoURI ? PizzaCoin : token?.logoURI}
+              src={!token?.logoURI ? EmptyNft : token?.logoURI}
               preview={false}
               style={{ width: 32 }}
             />
