@@ -248,7 +248,7 @@ function Transfer() {
         />
       ) : (
         <>
-          <Text>Send to:</Text>
+          {/* <Text>Send to:</Text> */}
           <AddressInput
             updateAddress={updateAddress}
             address={address}

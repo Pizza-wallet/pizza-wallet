@@ -167,6 +167,8 @@ const App = () => {
   const [balances, setBalances] = useState<IGroupedToken[]>([]);
   const [showDashBoard, setShowDashboard] = useState(true);
 
+  const [transferHistory, setTransferHistory] = useState<any[]>([]);
+
   useEffect(() => {
     const connectorId: any = window.localStorage.getItem("connectorId");
     const chainId: number = Number(window.localStorage.getItem("chainId"));
@@ -280,7 +282,10 @@ const App = () => {
                       <Transfer />
                     </Route>
                     <Route path="/activity">
-                      <ERC20Transfers />
+                      <ERC20Transfers
+                        transferHistory={transferHistory}
+                        setTransferHistory={setTransferHistory}
+                      />
                     </Route>
                     <Route path="/dex">
                       <DEX />

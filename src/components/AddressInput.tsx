@@ -76,7 +76,7 @@ function AddressInput({
 
   return (
     <PizzaWalletCard height={"6.25rem"}>
-      <Text>Address</Text>
+      <Text>Send to:</Text>
       <Flex>
         <Avatar
           style={{ marginLeft: "1.5625rem" }}

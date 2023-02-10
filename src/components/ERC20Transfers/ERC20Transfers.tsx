@@ -49,11 +49,17 @@ interface ITransaction {
   value: string;
 }
 
-function ERC20Transfers() {
+function ERC20Transfers({
+  transferHistory,
+  setTransferHistory,
+}: {
+  transferHistory: any;
+  setTransferHistory: any;
+}) {
   const swapHistory = useSwapHistory(process.env.REACT_APP_TEST_ACCOUNT);
-  const [fetchData, setFetchData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
+  // TODO: Move handleData to a hook (useTransferHistory)
   const handleData = async () => {
     // get swap history (from local history to start)
     const usersSwapHistory = swapHistory.reduce((acc: any, val: any) => {
@@ -130,16 +136,16 @@ function ERC20Transfers() {
       );
     });
 
-    setFetchData(transactionsNftSwapData);
+    setTransferHistory(transactionsNftSwapData);
     setLoading(false);
   };
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(transferHistory.length ? false : true);
     handleData();
   }, []);
 
-  console.log("fetchData - ", fetchData);
+  console.log("fetchData - ", transferHistory);
 
   return (
     <div>
@@ -150,7 +156,7 @@ function ERC20Transfers() {
         }}
       >
         <Table
-          tableData={fetchData}
+          tableData={transferHistory}
           columns={TransferColumns}
           tableTitle={"Transactions History"}
           expandableRow={false}
