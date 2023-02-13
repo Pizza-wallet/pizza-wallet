@@ -62,6 +62,7 @@ export function Event({
         ) : (
           <Image
             src={tokenUri}
+            preview={true}
             onError={() => EmptyNft}
             style={{ width: 54, height: 54, borderRadius: "5px" }}
           />
