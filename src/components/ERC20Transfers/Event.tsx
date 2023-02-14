@@ -21,21 +21,23 @@ const Flex = styled("div")`
 
 const SymbolText = styled("p")`
   font-family: "Rubik", sans-serif;
-  font-size: 18px;
-  color: #000000;
+  font-style: normal;
   font-weight: 400;
-  line-height: 1.333rem;
-  letter-spacing: 0.02em;
-  margin-right: 5px;
+  font-size: 1.125rem;
+  line-height: 1.3125rem;
+  letter-spacing: 0.04rem;
+  color: #000000;
+  margin-right: 0.3125rem;
 `;
 
 const DollarAmount = styled("p")`
-  font-family: "Rubik", sans-serif;
-  font-size: 14px;
-  color: grey;
+  font-family: "Rubik";
+  font-style: normal;
   font-weight: 400;
-  line-height: 1.333rem;
-  letter-spacing: 0.02em;
+  font-size: 0.875rem;
+  line-height: 1.0625rem;
+  letter-spacing: 0.04rem;
+  color: grey;
 `;
 
 export function Event({

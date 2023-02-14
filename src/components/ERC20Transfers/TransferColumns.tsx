@@ -194,7 +194,12 @@ export const TransferColumns = [
                 fontSize: "1.125rem",
                 color: "rgba(0, 0, 0, 0.6)",
                 display: "inline-block",
-                marginLeft: "5px",
+                marginLeft: "0.3125rem",
+                fontFamily: "Rubik",
+                fontStyle: "normal",
+                fontWeight: "400",
+                lineHeight: "1.3125rem",
+                letterSpacing: "0.04rem",
               }}
             >
               {shortFromAddress}
@@ -257,6 +262,10 @@ export const TransferColumns = [
               fontFamily: "Rubik",
               fontSize: "1.125rem",
               color: "rgba(0, 0, 0, 0.7)",
+              fontStyle: "normal",
+              fontWeight: "400",
+              lineHeight: "1.3125rem",
+              letterSpacing: "0.04rem",
             }}
           >
             {formattedDate}
@@ -265,7 +274,6 @@ export const TransferColumns = [
             style={{
               fontFamily: "Rubik",
               fontSize: "0.875rem",
-              // color: "rgba(0, 0, 0, 0.7)",
               color: "grey",
             }}
           >
