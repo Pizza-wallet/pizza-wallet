@@ -2,9 +2,30 @@ import React, { useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import ConnectButton from "./ConnectButton";
 import { metaMask } from "./connectors/metamask";
-import { Button, Divider, Modal } from "antd";
+import { Button } from "antd";
 import metamask_Logo from "./WalletIcons/metamaskWallet.png";
 import { getAddChainParameters } from "./connectors/networks";
+import PizzawalletModal from "../reusable/PizzawalletModal";
+import Address from "../Address/Address";
+import styled from "styled-components";
+import ChainSelect from "../Dex-lifi/SelectToken/ChainSelect/ChainSelect";
+
+const Header = styled("div")`
+  color: #3e389f;
+  font-family: "Gloria Hallelujah", sans-serif;
+  font-size: 1.5rem;
+  padding: 0.625rem 0 0.625rem 0;
+  -webkit-text-stroke: thin;
+`;
+
+const StyledP = styled(`p`)`
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: 0.04em;
+`;
 
 const styles = {
   account: {
@@ -69,34 +90,47 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
           </Button>
         )}
 
-        <Modal
-          visible={isAuthModalOpen}
-          footer={null}
-          onCancel={() => setIsAuthModalOpen(false)}
-          bodyStyle={{
-            width: "350px",
-            margin: "auto",
-            padding: "15px",
-            fontSize: "17px",
-            fontWeight: "500",
-          }}
+        <PizzawalletModal
+          modalOpen={isAuthModalOpen}
+          setModalOpen={setIsAuthModalOpen}
+          width={"26.75rem"}
         >
-          <div style={styles.modalTitle}>Connect Your Wallet</div>
+          <>
+            <Header>Account</Header>
 
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <ConnectButton
-              label="MetaMask"
-              image={metamask_Logo}
-              onClick={async () => {
-                await metaMask.activate(getAddChainParameters(chain!));
-                window.localStorage.setItem("connectorId", "injected");
-                setIsAuthModalOpen(false);
+            <div
+              style={{
+                border: "2px solid #3e389f",
+                borderRadius: "41px",
+                height: "402px",
               }}
-            />
+            >
+              <div style={{ margin: "20px" }}>
+                <Address
+                  avatar="left"
+                  size={6}
+                  copyable
+                  style={{ fontSize: "1.25rem", margin: "20px" }}
+                />
 
-            <Divider />
-          </div>
-        </Modal>
+                <div style={{ margin: "50px 0 20px 0", textAlign: "center" }}>
+                  <StyledP>Block Explorers</StyledP>
+                </div>
+
+                <ChainSelect chainId={1} setChain={() => {}} />
+                {/* <ConnectButton
+                  label="MetaMask"
+                  image={metamask_Logo}
+                  onClick={async () => {
+                    await metaMask.activate(getAddChainParameters(chain!));
+                    window.localStorage.setItem("connectorId", "injected");
+                    setIsAuthModalOpen(false);
+                  }}
+                /> */}
+              </div>
+            </div>
+          </>
+        </PizzawalletModal>
 
         <br />
       </div>

@@ -9,7 +9,7 @@ import {
   PrimaryButton,
   SecondaryButton,
 } from "../../reusable/Buttons";
-import PizzawalletModal from "../../reusable/PizzawalletModal";
+import PizzawalletContainer from "../../reusable/PizzawalletContainer";
 import { Link } from "react-router-dom";
 import { BigNumber } from "@ethersproject/bignumber";
 import { SelectChainTokenBtn } from "../../Dex-lifi/SelectChainTokenBtn";
@@ -234,7 +234,7 @@ function Transfer() {
   console.log("show tx here - ", tx);
 
   return (
-    <PizzawalletModal center={true} header={"Transfer Assets"}>
+    <PizzawalletContainer center={true} header={"Transfer Assets"}>
       {page === "selectToken" ? (
         <SelectTokenPage
           formType={"From"}
@@ -292,7 +292,7 @@ function Transfer() {
           </Controls>
         </>
       )}
-    </PizzawalletModal>
+    </PizzawalletContainer>
   );
 }
 

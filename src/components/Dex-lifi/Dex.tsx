@@ -9,7 +9,7 @@ import { SelectedRoutePage } from "./SelectedRoutePage";
 import { ActiveSwapsExpanded } from "./ActiveSwaps/ActiveSwapsExpanded";
 import { ActiveSwaps } from "./ActiveSwaps/ActiveSwaps";
 import { GasSufficiencyMessage } from "./GasSufficiencyMessage";
-import PizzawalletModal from "../reusable/PizzawalletModal";
+import PizzawalletContainer from "../reusable/PizzawalletContainer";
 import { useRouteExecution } from "../../hooks/useRouteExecution";
 import type { Route } from "@lifi/sdk";
 import { getStepList } from "./StepList/StepList";
@@ -170,12 +170,12 @@ function Dex() {
   return (
     <>
       <DexContainer>
-        <PizzawalletModal header={"Swap"} logo={<PoweredByLifi />}>
+        <PizzawalletContainer header={"Swap"} logo={<PoweredByLifi />}>
           {renderCorrectPage()}
-        </PizzawalletModal>
+        </PizzawalletContainer>
         {openSwapRoutes && fromToken && toToken && fromTokenAmount ? (
           <div style={{ marginLeft: "0.625rem" }}>
-            <PizzawalletModal header={"Swap routes"}>
+            <PizzawalletContainer header={"Swap routes"}>
               <SwapRoutesPage
                 fromChainId={fromChain}
                 fromTokenAddress={fromToken}
@@ -185,7 +185,7 @@ function Dex() {
                 fromAmount={fromTokenAmount}
                 handleSelectRoute={handleSelectRoute}
               />
-            </PizzawalletModal>
+            </PizzawalletContainer>
           </div>
         ) : null}
       </DexContainer>

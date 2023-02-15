@@ -146,3 +146,8 @@ tbody:last-child tr:last-child td:first-child {
 .ant-spin-dot-item {
   background-color: #2f2a75;
 }
+
+.ant-modal-content {
+  border-radius: 44px;
+  border: 2px solid #3e389f;
+}
