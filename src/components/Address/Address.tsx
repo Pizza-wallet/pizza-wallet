@@ -2,13 +2,13 @@ import { useState } from "react";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import Blockie from "../Blockie";
 import "./identicon.css";
-import { useMoralis } from "react-moralis";
 import { Skeleton } from "antd";
 import { CustomImg } from "../reusable/CustomImg";
 import Copy from "./assets/copy.svg";
 import Eye from "./assets/eye.svg";
 import EyeHidden from "./assets/eyeHidden.svg";
 import styled from "styled-components";
+import PizzaWalletWarning from "../reusable/PizzaWalletWarning";
 
 const StyledAddressP = styled(`p`)`
   font-family: "Rubik";
@@ -16,22 +16,39 @@ const StyledAddressP = styled(`p`)`
   font-weight: 400;
   font-size: 16px;
   line-height: 19px;
-  margin: auto;
+  margin: 15px auto 0 auto;
   text-align: center;
   letter-spacing: 0.04em;
-  width: 50%;
+  width: 16.9375rem;
   color: rgba(0, 0, 0, 0.6);
+`;
+
+const StyledAddress = styled(`div`)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.5rem;
+  gap: 0.3125rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5625rem;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 28px;
+  letter-spacing: 0.04em;
 `;
 
 const styles = {
   address: {
-    height: "2.25rem",
     display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     padding: "0.5rem",
     gap: "0.3125rem",
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: "0.5625rem",
-    alignItems: "center",
 
     fontFamily: "Rubik",
     fontStyle: "normal",
@@ -51,7 +68,6 @@ interface IAddressProps {
 }
 
 function Address(props: IAddressProps) {
-  const { account, isAuthenticated } = useMoralis();
   // const [address, setAddress] = useState<any>();
   const [isClicked, setIsClicked] = useState(false);
   const [isPrivateKeyVisible, setIsPrivateKeyVisible] = useState(false);
@@ -68,15 +84,17 @@ function Address(props: IAddressProps) {
     );
 
   return (
-    <div>
-      <div style={{ ...styles.address, ...props.style }}>
+    <>
+      <StyledAddress>
         {props.avatar === "left" && (
           <Blockie address={address} size={20} scale={3} />
         )}
 
         <div>
-          <div style={{ display: "flex" }}>
-            <p>{props.size ? getEllipsisTxt(address, props.size) : address}</p>
+          <div style={{ display: "flex", marginBottom: "5px" }}>
+            <p style={{ marginRight: "10px" }}>
+              {props.size ? getEllipsisTxt(address, props.size) : address}
+            </p>
             {props.copyable &&
               (isClicked ? (
                 <Check />
@@ -92,10 +110,10 @@ function Address(props: IAddressProps) {
               ))}
           </div>
           <div style={{ display: "flex" }}>
-            <p>Private key</p>
+            <p style={{ marginRight: "10px" }}>Private key</p>
             {isPrivateKeyVisible ? (
               <CustomImg
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", marginLeft: "auto" }}
                 onClick={() => {
                   setIsPrivateKeyVisible(false);
                 }}
@@ -103,7 +121,7 @@ function Address(props: IAddressProps) {
               />
             ) : (
               <CustomImg
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", marginLeft: "auto" }}
                 onClick={() => {
                   setIsPrivateKeyVisible(true);
                 }}
@@ -112,14 +130,23 @@ function Address(props: IAddressProps) {
             )}
           </div>
         </div>
-      </div>
-      {/* Hardcoded the below for now */}
+      </StyledAddress>
       {isPrivateKeyVisible && (
-        <StyledAddressP>
-          afdfd9c3d2095ef696594f6cedca3f5e72dcd697e2a7521b1578140422a4f890
-        </StyledAddressP>
+        <>
+          {/* Hardcoded the below for now */}
+          <StyledAddressP>
+            afdfd9c3d2095ef696594f6cedca3f5e72dcd697e2a7521b1578140422a4f890
+          </StyledAddressP>
+          <PizzaWalletWarning
+            title={"Warning!"}
+            message={
+              "Never disclose this key. Anyone with your private key can steal any assets held in your account."
+            }
+            margin={"20px auto 0 auto"}
+          />
+        </>
       )}
-    </div>
+    </>
   );
 }
 

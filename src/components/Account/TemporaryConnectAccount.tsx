@@ -10,14 +10,6 @@ import Address from "../Address/Address";
 import styled from "styled-components";
 import ChainSelect from "../Dex-lifi/SelectToken/ChainSelect/ChainSelect";
 
-const Header = styled("div")`
-  color: #3e389f;
-  font-family: "Gloria Hallelujah", sans-serif;
-  font-size: 1.5rem;
-  padding: 0.625rem 0 0.625rem 0;
-  -webkit-text-stroke: thin;
-`;
-
 const StyledP = styled(`p`)`
   font-family: Rubik;
   font-style: normal;
@@ -94,31 +86,20 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
           modalOpen={isAuthModalOpen}
           setModalOpen={setIsAuthModalOpen}
           width={"26.75rem"}
+          title={"Account"}
         >
           <>
-            <Header>Account</Header>
+            <div style={{ margin: "1.25rem" }}>
+              <Address avatar="left" size={4} copyable />
 
-            <div
-              style={{
-                border: "2px solid #3e389f",
-                borderRadius: "41px",
-                height: "402px",
-              }}
-            >
-              <div style={{ margin: "20px" }}>
-                <Address
-                  avatar="left"
-                  size={6}
-                  copyable
-                  style={{ fontSize: "1.25rem", margin: "20px" }}
-                />
+              <div
+                style={{ margin: "3.125rem 0 1.25rem 0", textAlign: "center" }}
+              >
+                <StyledP>Block Explorers</StyledP>
+              </div>
 
-                <div style={{ margin: "50px 0 20px 0", textAlign: "center" }}>
-                  <StyledP>Block Explorers</StyledP>
-                </div>
-
-                <ChainSelect chainId={1} setChain={() => {}} />
-                {/* <ConnectButton
+              <ChainSelect chainId={1} setChain={() => {}} />
+              {/* <ConnectButton
                   label="MetaMask"
                   image={metamask_Logo}
                   onClick={async () => {
@@ -127,7 +108,6 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
                     setIsAuthModalOpen(false);
                   }}
                 /> */}
-              </div>
             </div>
           </>
         </PizzawalletModal>
