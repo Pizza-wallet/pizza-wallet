@@ -9,6 +9,7 @@ import PizzawalletModal from "../reusable/PizzawalletModal";
 import Address from "../Address/Address";
 import styled from "styled-components";
 import ChainSelect from "../Dex-lifi/SelectToken/ChainSelect/ChainSelect";
+import { apiList } from "../../helpers/explorerApis";
 
 const StyledP = styled(`p`)`
   font-family: Rubik;
@@ -66,6 +67,14 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
 
   const chain = props.chain !== undefined ? props.chain : chainId;
 
+  const navigateToBlockExplorer = (chainId: number) => {
+    const chain = chainId.toString();
+    const blockExplorerEndpoint = apiList.find(
+      (val) => val.chainId === chain,
+    )?.blockExplorerEndpoint;
+    window.open(blockExplorerEndpoint, "_blank");
+  };
+
   return (
     <>
       <div>
@@ -98,7 +107,7 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
                 <StyledP>Block Explorers</StyledP>
               </div>
 
-              <ChainSelect chainId={1} setChain={() => {}} />
+              <ChainSelect chainId={1} setChain={navigateToBlockExplorer} />
               {/* <ConnectButton
                   label="MetaMask"
                   image={metamask_Logo}
