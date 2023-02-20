@@ -1,16 +1,17 @@
-import { useState } from "react";
-import { Web3Auth } from "@web3auth/modal";
-import { SafeEventEmitterProvider } from "@web3auth/base";
+import { useWeb3AuthExecutionStore } from "../stores/web3Auth";
 
-export const useLogout = async () => {
-  const [web3auth] = useState<Web3Auth | null>(null);
-  const [provider, setProvider] = useState<SafeEventEmitterProvider | null>(
-    null,
+export const useLogout = () => {
+  const { setProvider, web3Auth } = useWeb3AuthExecutionStore(
+    (state: any) => state,
   );
-  if (!web3auth) {
-    console.log("web3auth not initialized yet");
-    return;
-  }
-  await web3auth.logout();
-  setProvider(null);
+
+  const handleLogout = async () => {
+    if (!web3Auth) {
+      console.log("web3auth not initialized yet");
+      return;
+    }
+    await web3Auth.logout();
+    setProvider(null);
+  };
+  return { handleLogout };
 };

@@ -56,6 +56,7 @@ const styles = {
 function Account() {
   const { account, chainId } = useMoralis();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { handleLogout } = useLogout();
 
   return (
     <>
@@ -115,7 +116,7 @@ function Account() {
             border: "0px",
             color: "white",
           }}
-          onClick={useLogout}
+          onClick={handleLogout}
         >
           Logout
         </Button>

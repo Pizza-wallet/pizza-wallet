@@ -5,8 +5,8 @@ import { Web3AuthExecutionStore } from "./types";
 export const useWeb3AuthExecutionStore = create<Web3AuthExecutionStore>()(
   persist(
     (set) => ({
-      provider: {},
-      web3Auth: {},
+      provider: null,
+      web3Auth: null,
       setProvider: (provider: any) => set(() => ({ provider: provider })),
       setWeb3Auth: (web3Auth: any) => set(() => ({ web3Auth: web3Auth })),
     }),
