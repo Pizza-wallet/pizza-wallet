@@ -26,8 +26,8 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test:unit": "mocha --require @babel/register --require ./test/helpers.js --require ./test/dom.js 'src/**/*.spec.js'",
-    "test:unit-ignore-styles": "mocha --require @babel/register --require ./test/helpers.js --require ./test/dom.js --require ignore-styles 'src/**/*.spec.js'",
+    "test:unit": "mocha --require @babel/register --require ./test/helpers.js --require ./test/dom.js 'src/**/*.spec.js' --reporter=spec",
+    "test:unit-ignore-styles": "mocha --require @babel/register --require ./test/helpers.js --require ./test/dom.js --require ignore-styles 'src/**/*.spec.js' --reporter=spec",
     "test:unit:watch": "npm run test:unit -- --watch",
     "eject": "react-app-rewired eject",
     "devchain": "node Truffle/scripts/devChain.js",
