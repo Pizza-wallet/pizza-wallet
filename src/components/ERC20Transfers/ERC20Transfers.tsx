@@ -92,6 +92,7 @@ function ERC20Transfers({
     }
 
     // get metadata for each nft transaction
+    // TODO: check how to identify NFT here (is tokenID the best way?)
     const nftTransactions = transactionHistory.filter((val: any) => {
       if (val.tokenID) {
         return val;
@@ -108,7 +109,14 @@ function ERC20Transfers({
         nftTransaction.tokenID,
         nftTransaction.chainId,
       );
-      nftMetadataArr.push(nftMetadata);
+
+      // For now if allNftData returns unknown then add empty metadata for NFT
+      nftMetadata
+        ? nftMetadataArr.push(nftMetadata)
+        : nftMetadataArr.push({
+            token_id: nftTransaction.tokenID,
+            normalized_metadata: { name: "unknown", image: "" },
+          });
     }
 
     // add the metadata to the nftTransactions and then hook up the data to the table
