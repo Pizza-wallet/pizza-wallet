@@ -3,8 +3,11 @@ import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
 import facebook from "./Account/WalletIcons/facebook.svg";
+import discord from "../assets/discord.svg";
+import reddit from "../assets/reddit.svg";
 import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
+import { Avatar } from "antd";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import { CustomImg } from "./reusable/CustomImg";
 
@@ -32,6 +35,11 @@ const InnerCard = styled("div")`
   padding: 1.25rem;
 `;
 
+const FlexContainer = styled("div")`
+  display: flex;
+  padding: 10px 15px 0 15px;
+`;
+
 const FlexContainerCenter = styled("div")`
   display: flex;
   flex-direction: column;
@@ -42,17 +50,11 @@ const FlexContainerCenter = styled("div")`
 const LoginTitle = styled("p")`
   font-family: "Gloria Hallelujah", sans-serif;
   color: var(--brand-blue);
-  font-size: 1.62rem;
+  font-size: 1.625rem;
   line-height: 3.25rem;
   letter-spacing: 0.04em;
   -webkit-text-stroke: thin;
-  margin-bottom: 2em;
-  @media (min-width: 1250px) {
-    margin-bottom: 2.5em;
-  }
-  @media (max-width: 380px) {
-    margin-bottom: 1em;
-  }
+  margin: 17px 17px 0 auto;
 `;
 
 const TextStyled = styled("p")`
@@ -99,7 +101,44 @@ const SocialIcons = styled("div")`
   justify-content: space-evenly;
   align-items: end;
   cursor: pointer;
+  width: 18.5625rem;
+  margin-bottom: 35px;
 `;
+
+const ActionTitle = styled(`p`)`
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+`;
+
+const SocialLoginCard = styled("div")`
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 37px;
+  height: 37px;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1.5px solid #3e389f;
+  &:hover {
+    border: 1.5px solid black;
+    background: rgb(220, 220, 220, 0.8);
+  }
+`;
+
+const socialLoginLogos = [
+  { logo: google, width: "21px", height: "26px" },
+  { logo: apple, width: "21px", height: "26px" },
+  { logo: facebook, width: "24px", height: "26px" },
+  { logo: twitter, width: "24px", height: "26px" },
+  { logo: discord, width: "24px", height: "24px" },
+  { logo: reddit, width: "24px", height: "24px" },
+];
 
 export default function SignIn() {
   const { handleLogin } = useLogin();
@@ -107,27 +146,33 @@ export default function SignIn() {
   return (
     <AccountContainer>
       <Card>
-        <FlexContainerCenter>
+        <FlexContainer>
           <CustomImg
-            height={"70%"}
-            width={"70%"}
+            height={"65%"}
+            width={"60%"}
             margin={"1.4375rem 0 1.0625rem 0"}
             src={LoginLogo}
           />
-        </FlexContainerCenter>
+          <LoginTitle>Login</LoginTitle>
+        </FlexContainer>
         <InnerCard>
           <>
-            <FlexContainerCenter>
-              <LoginTitle>Login</LoginTitle>
-            </FlexContainerCenter>
             <div>
+              <FlexContainerCenter>
+                <ActionTitle>Login with Social</ActionTitle>
+              </FlexContainerCenter>
               <ButtonCard>
                 <SocialIcons onClick={handleLogin}>
-                  <CustomImg margin={"0 0 0.25rem 0"} src={apple} alt="logo" />
-                  <img src={facebook} alt="logo" />
-                  <img src={google} alt="logo" />
-                  <img src={twitter} alt="logo" />
-                  <TextStyled>and more</TextStyled>
+                  {socialLoginLogos.map((val, i) => {
+                    return (
+                      <SocialLoginCard key={i}>
+                        <Avatar
+                          src={val.logo}
+                          style={{ width: val.width, height: val.height }}
+                        ></Avatar>
+                      </SocialLoginCard>
+                    );
+                  })}
                 </SocialIcons>
                 <ButtonContainer
                   width={"14.375rem"}
@@ -145,6 +190,10 @@ export default function SignIn() {
                   <DividerSpan>OR</DividerSpan>
                 </DividerText>
               </Divider>
+
+              <FlexContainerCenter>
+                <ActionTitle>Add your wallet</ActionTitle>
+              </FlexContainerCenter>
 
               <FlexContainerCenter>
                 <ButtonContainer
