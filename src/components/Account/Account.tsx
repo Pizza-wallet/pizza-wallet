@@ -11,7 +11,7 @@ import { CustomImg } from "../reusable/CustomImg";
 import AccountLogo from "../../assets/account-logo.svg";
 import styled from "styled-components";
 import { useAuthenticateUser } from "../../hooks/useAuthenticateUser";
-import TemporaryConnectAccount from "./TemporaryConnectAccount.tsx";
+import TemporaryConnectAccount from "./TemporaryConnectAccount";
 
 const AccountLogoContainer = styled("div")`
   cursor: pointer;
