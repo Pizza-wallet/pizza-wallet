@@ -10,6 +10,8 @@ import Address from "../Address/Address";
 import styled from "styled-components";
 import ChainSelect from "../Dex-lifi/SelectToken/ChainSelect/ChainSelect";
 import { apiList } from "../../helpers/explorerApis";
+import { ethers } from "ethers";
+import { getDefaultProvider, ExternalProvider } from "@ethersproject/providers";
 
 const StyledP = styled(`p`)`
   font-family: Rubik;
@@ -64,6 +66,7 @@ interface WantedChain {
 const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
   const { account, chainId } = useWeb3React();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [addressLens, setAddressLens] = useState("Connect Wallet");
 
   const chain = props.chain !== undefined ? props.chain : chainId;
 
@@ -74,6 +77,26 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
     )?.blockExplorerEndpoint;
     window.open(blockExplorerEndpoint, "_blank");
   };
+
+  // Connect Wallet
+  async function getAddress() {
+    try {
+      const provider = new ethers.providers.Web3Provider(
+        window.ethereum as any,
+      );
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const connectedAddress = await signer.getAddress();
+      console.log(connectedAddress);
+      const providerENS = getDefaultProvider();
+      const ensName = await providerENS.lookupAddress(connectedAddress);
+
+      setAddressLens(ensName || connectedAddress);
+    } catch (error) {
+      // console.log(error);
+    }
+  }
+  // Connect Wallet
 
   return (
     <>
@@ -86,8 +109,9 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
             type="primary"
             style={styles.button}
             onClick={() => setIsAuthModalOpen(true)}
+            // onClick={getAddress}
           >
-            Connect Wallet
+            {addressLens}
           </Button>
         )}
 
@@ -100,6 +124,7 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
           <>
             <div style={{ margin: "1.25rem" }}>
               <Address avatar="left" size={4} copyable />
+              <p> {addressLens}</p>
 
               <div
                 style={{ margin: "3.125rem 0 1.25rem 0", textAlign: "center" }}
