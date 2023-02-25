@@ -9,6 +9,7 @@ import Eye from "./assets/eye.svg";
 import EyeHidden from "./assets/eyeHidden.svg";
 import styled from "styled-components";
 import PizzaWalletWarning from "../reusable/PizzaWalletWarning";
+import useENSName from "../../hooks/useENS";
 
 const StyledAddressP = styled(`p`)`
   font-family: "Rubik";
@@ -75,8 +76,10 @@ function Address(props: IAddressProps) {
   // useEffect(() => {
   //   setAddress(props?.address || (isAuthenticated && account));
   // }, [account, isAuthenticated, props]);
+  // const ensName = process.env.REACT_APP_TEST_ACCOUNT;
+  const ensName = "0xE0B2A968Fc566bce543E9da6D3893FfE1170B833";
 
-  const address = process.env.REACT_APP_TEST_ACCOUNT;
+  const address = useENSName(ensName);
 
   if (!address)
     return (
@@ -93,7 +96,8 @@ function Address(props: IAddressProps) {
         <div>
           <div style={{ display: "flex", marginBottom: "5px" }}>
             <p style={{ marginRight: "10px" }}>
-              {props.size ? getEllipsisTxt(address, props.size) : address}
+              {/* {props.size ? getEllipsisTxt(address, props.size) : address} */}
+              {address}
             </p>
             {props.copyable &&
               (isClicked ? (
