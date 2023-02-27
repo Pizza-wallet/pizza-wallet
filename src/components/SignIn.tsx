@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -5,10 +6,12 @@ import twitter from "./Account/WalletIcons/twitter.svg";
 import facebook from "./Account/WalletIcons/facebook.svg";
 import discord from "../assets/discord.svg";
 import reddit from "../assets/reddit.svg";
+import backArrow from "../assets/backArrow.svg";
 import styled from "styled-components";
 import LoginLogo from "../assets/login-logo.svg";
-import { Avatar } from "antd";
+import { Input, Avatar } from "antd";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
+import PizzaWalletWarning from "./reusable/PizzaWalletWarning";
 import { CustomImg } from "./reusable/CustomImg";
 
 const AccountContainer = styled("div")`
@@ -55,14 +58,6 @@ const LoginTitle = styled("p")`
   letter-spacing: 0.04em;
   -webkit-text-stroke: thin;
   margin: 17px 17px 0 auto;
-`;
-
-const TextStyled = styled("p")`
-  font-family: "Rubik", sans-serif;
-  font-size: 0.93rem;
-  line-height: 1.125rem;
-  letter-spacing: 0.04em;
-  margin-bottom: 0.1875rem;
 `;
 
 const Divider = styled("div")`
@@ -114,6 +109,22 @@ const ActionTitle = styled(`p`)`
   text-align: center;
   letter-spacing: 0.04em;
   margin-bottom: 20px;
+  margin-top: 13px;
+`;
+
+const ActionTitleUnderlined = styled(`p`)`
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  text-align: center;
+  letter-spacing: 0.04em;
+  margin-bottom: 40px;
+  margin-top: 30px;
+  color: #3e389f;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 const SocialLoginCard = styled("div")`
@@ -131,6 +142,22 @@ const SocialLoginCard = styled("div")`
   }
 `;
 
+const StyledTitle = styled("p")`
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  text-align: center;
+  letter-spacing: 0.04em;
+`;
+
+const StyledInput = styled(Input)`
+  border: 0.125rem solid #3e389f;
+  border-radius: 0.9375rem;
+  height: 3.625rem;
+`;
+
 const socialLoginLogos = [
   { logo: google, width: "21px", height: "26px" },
   { logo: apple, width: "21px", height: "26px" },
@@ -142,6 +169,12 @@ const socialLoginLogos = [
 
 export default function SignIn() {
   const { handleLogin } = useLogin();
+  const [showImportWallet, setShowImportWallet] = useState(false);
+
+  const linkToDocs = () => {
+    var URL = "https://docs.pizzawallet.io";
+    window.open(URL, "_blank");
+  };
 
   return (
     <AccountContainer>
@@ -157,54 +190,95 @@ export default function SignIn() {
         </FlexContainer>
         <InnerCard>
           <>
-            <div>
-              <FlexContainerCenter>
-                <ActionTitle>Login with Social</ActionTitle>
-              </FlexContainerCenter>
-              <ButtonCard>
-                <SocialIcons onClick={handleLogin}>
-                  {socialLoginLogos.map((val, i) => {
-                    return (
-                      <SocialLoginCard key={i}>
-                        <Avatar
-                          src={val.logo}
-                          style={{ width: val.width, height: val.height }}
-                        ></Avatar>
-                      </SocialLoginCard>
-                    );
-                  })}
-                </SocialIcons>
-                <ButtonContainer
-                  width={"14.375rem"}
-                  height={"3.1875rem"}
-                  margin={"1.25rem 0 0 0"}
-                >
-                  <PrimaryButton onClick={handleLogin}>
-                    Social Login
-                  </PrimaryButton>
-                </ButtonContainer>
-              </ButtonCard>
+            {showImportWallet ? (
+              <>
+                <FlexContainer>
+                  <CustomImg
+                    onClick={() => setShowImportWallet(false)}
+                    width={"2.25rem"}
+                    style={{ cursor: "pointer", marginRight: "2.3rem" }}
+                    src={backArrow}
+                  />
+                  <StyledTitle>Add your wallet</StyledTitle>
+                </FlexContainer>
+                <ActionTitle>Enter your wallet's private key below</ActionTitle>
+                <ActionTitleUnderlined onClick={linkToDocs}>
+                  See list of our supported wallets and chains
+                </ActionTitleUnderlined>
+                <FlexContainerCenter>
+                  <StyledInput placeholder="Private key" />
+                </FlexContainerCenter>
 
-              <Divider>
-                <DividerText>
-                  <DividerSpan>OR</DividerSpan>
-                </DividerText>
-              </Divider>
+                <FlexContainerCenter>
+                  <PizzaWalletWarning
+                    title={"Warning!"}
+                    message={
+                      "Never disclose this key. Anyone with your private key can steal any assets held in your account."
+                    }
+                    margin={"2.0625rem 0 3.125rem 0"}
+                  />
 
-              <FlexContainerCenter>
-                <ActionTitle>Add your wallet</ActionTitle>
-              </FlexContainerCenter>
+                  <ButtonContainer
+                    width={"14.375rem"}
+                    height={"3.1875rem"}
+                    margin={"0 0 1.875rem 0"}
+                  >
+                    <PrimaryButton>Import wallet</PrimaryButton>
+                  </ButtonContainer>
+                </FlexContainerCenter>
+              </>
+            ) : (
+              <div>
+                <FlexContainerCenter>
+                  <ActionTitle>Login with Social</ActionTitle>
+                </FlexContainerCenter>
+                <ButtonCard>
+                  <SocialIcons onClick={handleLogin}>
+                    {socialLoginLogos.map((val, i) => {
+                      return (
+                        <SocialLoginCard key={i}>
+                          <Avatar
+                            src={val.logo}
+                            style={{ width: val.width, height: val.height }}
+                          ></Avatar>
+                        </SocialLoginCard>
+                      );
+                    })}
+                  </SocialIcons>
+                  <ButtonContainer
+                    width={"14.375rem"}
+                    height={"3.1875rem"}
+                    margin={"1.25rem 0 0 0"}
+                  >
+                    <PrimaryButton onClick={handleLogin}>
+                      Social Login
+                    </PrimaryButton>
+                  </ButtonContainer>
+                </ButtonCard>
 
-              <FlexContainerCenter>
-                <ButtonContainer
-                  width={"14.375rem"}
-                  height={"3.1875rem"}
-                  margin={"0 0 4.0625rem 0"}
-                >
-                  <PrimaryButton>Import wallet</PrimaryButton>
-                </ButtonContainer>
-              </FlexContainerCenter>
-            </div>
+                <Divider>
+                  <DividerText>
+                    <DividerSpan>OR</DividerSpan>
+                  </DividerText>
+                </Divider>
+
+                <FlexContainerCenter>
+                  <ActionTitle>Add Your Wallet</ActionTitle>
+                </FlexContainerCenter>
+
+                <FlexContainerCenter>
+                  <ButtonContainer
+                    width={"14.375rem"}
+                    height={"3.1875rem"}
+                    margin={"0 0 4.0625rem 0"}
+                  >
+                    <PrimaryButton onClick={() => setShowImportWallet(true)}>
+                      Import wallet
+                    </PrimaryButton>
+                  </ButtonContainer>
+                </FlexContainerCenter>
+              </div>
+            )}
           </>
         </InnerCard>
       </Card>
