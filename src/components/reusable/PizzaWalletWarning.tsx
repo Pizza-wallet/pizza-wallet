@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import warningStripe from "../../assets/warningStripes.png";
+import warningStripe from "../../assets/warningStripe.svg";
 
 const WarningContainer = styled(`div`)`
   position: relative;
@@ -16,8 +16,9 @@ const BackdropStyled = styled("div")`
   height: 109px;
   border: 2px solid #f34337;
   background-image: url(${warningStripe});
-  background-size: inherit;
-  background-position: center;
+  // background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   border-radius: 15px;
 `;
 
