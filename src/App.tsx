@@ -131,8 +131,13 @@ const GridLayout = styled(Layout)`
 `;
 
 const StyledContent = styled(Content)`
-  overflow-y: auto;
   padding-bottom: 1.25rem;
+`;
+
+const StyledLayout = styled(Layout)`
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--layout-blue);
   &::-webkit-scrollbar {
     -webkit-appearance: none;
   }
@@ -201,7 +206,7 @@ const App = () => {
   // } else {
   return (
     <ChainsTokensToolsProvider>
-      <Layout style={{ height: "100vh" }} hasSider>
+      <StyledLayout hasSider>
         <React.Suspense
           fallback={
             <GridLayout>
@@ -312,7 +317,7 @@ const App = () => {
             </Layout>
           </Router>
         </React.Suspense>
-      </Layout>
+      </StyledLayout>
     </ChainsTokensToolsProvider>
   );
   // }
