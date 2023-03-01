@@ -13,6 +13,7 @@ import { Input, Avatar } from "antd";
 import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import PizzaWalletWarning from "./reusable/PizzaWalletWarning";
 import { CustomImg } from "./reusable/CustomImg";
+import { ethers } from "ethers";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -158,6 +159,16 @@ const StyledInput = styled(Input)`
   height: 3.625rem;
 `;
 
+const StyledErrorText = styled(`p`)`
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  letter-spacing: 0.04em;
+  color: #f34337;
+`;
+
 const socialLoginLogos = [
   { logo: google, width: "21px", height: "26px" },
   { logo: apple, width: "21px", height: "26px" },
@@ -170,10 +181,29 @@ const socialLoginLogos = [
 export default function SignIn() {
   const { handleLogin } = useLogin();
   const [showImportWallet, setShowImportWallet] = useState(false);
+  const [privateKey, setPrivateKey] = useState("");
+  const [privateKeyError, setPrivateKeyError] = useState(false);
 
   const linkToDocs = () => {
     var URL = "https://docs.pizzawallet.io";
     window.open(URL, "_blank");
+  };
+
+  const checkPrivateKey = (e: any) => {
+    setPrivateKey("");
+    setPrivateKeyError(false);
+    const userInput = e.target.value;
+    let w;
+    if (userInput.length) {
+      try {
+        // Checking if user entered a private key
+        w = new ethers.Wallet(userInput);
+        setPrivateKey(userInput);
+        setPrivateKeyError(false);
+      } catch (e) {
+        setPrivateKeyError(true);
+      }
+    }
   };
 
   return (
@@ -206,7 +236,19 @@ export default function SignIn() {
                   See list of our supported wallets and chains
                 </ActionTitleUnderlined>
                 <FlexContainerCenter>
-                  <StyledInput placeholder="Private key" />
+                  <StyledInput
+                    onChange={checkPrivateKey}
+                    status={privateKeyError ? "error" : ""}
+                    placeholder="Private key"
+                  />
+                </FlexContainerCenter>
+                <FlexContainerCenter>
+                  {privateKeyError && (
+                    <StyledErrorText>
+                      Please enter your private key as a series of letters and
+                      numbers, without spaces or punctuation.
+                    </StyledErrorText>
+                  )}
                 </FlexContainerCenter>
 
                 <FlexContainerCenter>
