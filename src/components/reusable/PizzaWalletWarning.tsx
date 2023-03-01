@@ -20,6 +20,7 @@ const BackdropStyled = styled("div")`
   background-repeat: no-repeat;
   background-position: center center;
   border-radius: 15px;
+  background-color: #f8e4de;
 `;
 
 const WarningNotification = styled("div")`

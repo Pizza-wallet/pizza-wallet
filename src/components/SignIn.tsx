@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLogin } from "../hooks/useLogin";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
@@ -96,9 +96,8 @@ const SocialIcons = styled("div")`
   flex-direction: row;
   justify-content: space-evenly;
   align-items: end;
-  cursor: pointer;
   width: 18.5625rem;
-  margin-bottom: 35px;
+  margin-bottom: 10px;
 `;
 
 const ActionTitle = styled(`p`)`
@@ -128,6 +127,7 @@ const ActionTitleUnderlined = styled(`p`)`
   cursor: pointer;
 `;
 
+// To be used with avatars when social icons can be clicked
 const SocialLoginCard = styled("div")`
   position: relative;
   display: grid;
@@ -167,6 +167,7 @@ const StyledErrorText = styled(`p`)`
   line-height: 17px;
   letter-spacing: 0.04em;
   color: #f34337;
+  margin-top: 5px;
 `;
 
 const socialLoginLogos = [
@@ -183,6 +184,19 @@ export default function SignIn() {
   const [showImportWallet, setShowImportWallet] = useState(false);
   const [privateKey, setPrivateKey] = useState("");
   const [privateKeyError, setPrivateKeyError] = useState(false);
+  const [width, setWidth] = useState<number>(window.innerWidth);
+  const isMobile = width <= 415;
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowSizeChange);
+    return () => {
+      window.removeEventListener("resize", handleWindowSizeChange);
+    };
+  }, []);
+
+  const handleWindowSizeChange = () => {
+    setWidth(window.innerWidth);
+  };
 
   const linkToDocs = () => {
     var URL = "https://docs.pizzawallet.io";
@@ -205,6 +219,20 @@ export default function SignIn() {
       }
     }
   };
+
+  if (isMobile) {
+    return (
+      <FlexContainerCenter>
+        <PizzaWalletWarning
+          title={"Warning!"}
+          message={
+            "Pizza wallet does not support mobile devices at this point in time, please switch to desktop."
+          }
+          margin={"2.0625rem 0 3.125rem 0"}
+        />
+      </FlexContainerCenter>
+    );
+  }
 
   return (
     <AccountContainer>
@@ -278,12 +306,11 @@ export default function SignIn() {
                   <SocialIcons onClick={handleLogin}>
                     {socialLoginLogos.map((val, i) => {
                       return (
-                        <SocialLoginCard key={i}>
-                          <Avatar
-                            src={val.logo}
-                            style={{ width: val.width, height: val.height }}
-                          ></Avatar>
-                        </SocialLoginCard>
+                        <Avatar
+                          key={i}
+                          src={val.logo}
+                          style={{ width: val.width, height: val.height }}
+                        ></Avatar>
                       );
                     })}
                   </SocialIcons>
