@@ -87,7 +87,9 @@ function Address(props: IAddressProps) {
     <>
       <StyledAddress>
         {props.avatar === "left" && (
-          <Blockie address={address} size={20} scale={3} />
+          <div style={{ marginRight: "0.625rem", marginTop: "0.75rem" }}>
+            <Blockie address={address} size={10} scale={3} />
+          </div>
         )}
 
         <div>

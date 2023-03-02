@@ -107,7 +107,11 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
                 <StyledP>Block Explorers</StyledP>
               </div>
 
-              <ChainSelect chainId={1} setChain={navigateToBlockExplorer} />
+              <ChainSelect
+                chainId={1}
+                setChain={navigateToBlockExplorer}
+                centerItems={true}
+              />
               {/* <ConnectButton
                   label="MetaMask"
                   image={metamask_Logo}

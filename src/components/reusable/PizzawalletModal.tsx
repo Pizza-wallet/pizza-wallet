@@ -39,7 +39,14 @@ function PizzawalletModal({
         open={modalOpen}
         footer={null}
         width={width}
-        closeIcon={<img height={19} width={16} src={closeIcon} />}
+        closeIcon={
+          <img
+            height={20}
+            width={26}
+            style={{ marginRight: "1.875rem", marginTop: "1.25rem" }}
+            src={closeIcon}
+          />
+        }
         maskStyle={{ backgroundColor: "#A4ABAEB2" }}
         onCancel={() => setModalOpen(false)}
         bodyStyle={{
