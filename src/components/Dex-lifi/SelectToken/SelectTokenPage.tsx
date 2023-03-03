@@ -3,12 +3,9 @@ import type { FC } from "react";
 import ChainSelect from "./ChainSelect/ChainSelect";
 import { TokenList } from "./TokenList";
 import { SearchTokenInput } from "./SearchTokenInput";
-import { Typography } from "antd";
 import styled from "styled-components";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-const { Title } = Typography;
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   font-size: 1.75rem;
@@ -41,18 +38,8 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
   const [tokenSearchFilter, setTokenSearchFilter] = useState("");
   return (
     <>
-      <div style={{ display: "inline-block" }}>
+      <div style={{ display: "inline-block", marginBottom: "10px" }}>
         <FontAwesomeIconStyled onClick={navigateBack} icon={faArrowLeft} />
-      </div>
-      <div
-        style={{
-          display: "inline-block",
-          marginLeft: "85px",
-        }}
-      >
-        <Title style={{ color: "#3e389f" }} level={4}>
-          Swap {formType}
-        </Title>
       </div>
       <div>
         <ChainSelect

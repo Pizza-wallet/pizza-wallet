@@ -68,6 +68,11 @@ export const TokenList: FC<ITokenList> = ({
     setDataForInfiniteScroll(filteredTokens.slice(0, showFiftyTokensMore));
   };
 
+  console.log(
+    "tokens with balance - ",
+    tokensWithBalance?.filter((token) => token.amount !== "0"),
+  );
+
   if (isLoading)
     return (
       <CenterLayout>
@@ -78,7 +83,7 @@ export const TokenList: FC<ITokenList> = ({
     <div
       ref={parentRef}
       id="scrollableDiv"
-      style={{ height: 600, overflow: "auto" }}
+      style={{ height: 280, overflow: "auto" }}
     >
       {!filteredTokens.length && !isLoading ? <p>No tokens found</p> : null}
       <InfiniteScroll
@@ -89,19 +94,21 @@ export const TokenList: FC<ITokenList> = ({
         scrollableTarget="scrollableDiv"
       >
         {dataForInfiniteScroll &&
-          dataForInfiniteScroll.map((item: LIFIToken, i: number) => {
-            const token = item;
-            return (
-              <div key={i}>
-                <TokenListItem
-                  onClick={handleTokenClick}
-                  token={token}
-                  isBalanceLoading={isBalanceLoading}
-                  showBalance={true}
-                />
-              </div>
-            );
-          })}
+          dataForInfiniteScroll
+            .filter((token) => token.amount !== "0")
+            .map((item: LIFIToken, i: number) => {
+              const token = item;
+              return (
+                <div key={i}>
+                  <TokenListItem
+                    onClick={handleTokenClick}
+                    token={token}
+                    isBalanceLoading={isBalanceLoading}
+                    showBalance={true}
+                  />
+                </div>
+              );
+            })}
       </InfiniteScroll>
     </div>
   );

@@ -248,7 +248,6 @@ function Transfer() {
         />
       ) : (
         <>
-          {/* <Text>Send to:</Text> */}
           <AddressInput
             updateAddress={updateAddress}
             address={address}
@@ -262,7 +261,7 @@ function Transfer() {
             handleClick={setPage}
             chainId={fromChain}
             tokenAddress={fromToken}
-            formType={"Choose asset"}
+            formType={"Asset"}
           />
 
           <SwapInput

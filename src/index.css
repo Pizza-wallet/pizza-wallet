@@ -139,6 +139,7 @@ tbody:last-child tr:last-child td:first-child {
   -webkit-text-stroke: thin;
 }
 
+/*Customizing ant design styles here*/
 .ant-select-selector {
   border-radius: 0.8125rem !important;
 }

@@ -76,18 +76,30 @@ function AddressInput({
 
   return (
     <PizzaWalletCard height={"6.25rem"}>
-      <Text>Send to:</Text>
+      <Text>Send to</Text>
       <Flex>
-        <Avatar
-          style={{ marginLeft: "1.5625rem" }}
-          src={
-            <Blockie
-              address={(isDomain ? validatedAddress : address).toLowerCase()}
-              size={8}
-              scale={3}
-            />
-          }
-        ></Avatar>
+        <Avatar.Group>
+          <Avatar
+            style={{
+              marginLeft: "1.25rem",
+              color: "#f56a00",
+              backgroundColor: "#e8e8e8",
+            }}
+            src={
+              validatedAddress ||
+              (address && (
+                <Blockie
+                  address={(isDomain
+                    ? validatedAddress
+                    : address
+                  ).toLowerCase()}
+                  size={10}
+                  scale={3}
+                />
+              ))
+            }
+          ></Avatar>
+        </Avatar.Group>
         <StyledInput
           ref={input}
           size="small"

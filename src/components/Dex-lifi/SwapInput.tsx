@@ -75,10 +75,10 @@ export const SwapInput = ({
 
   return (
     <PizzaWalletCard height={"115px"}>
-      <Text>You pay</Text>
+      <Text>Amount</Text>
       <Flex>
-        {token && chain ? (
-          <>
+        <>
+          {token && chain ? (
             <Avatar.Group>
               <Avatar
                 style={{ marginLeft: "10px" }}
@@ -92,45 +92,42 @@ export const SwapInput = ({
                 src={chain.logoURI}
               />
             </Avatar.Group>
-            <StyledInput
-              size="small"
-              autoComplete="off"
-              placeholder="0"
-              bordered={false}
-              controls={false}
-              onChange={(value: any) => handleChange(value)}
-              value={value === 0 ? "" : value}
-              required
-              type="number"
-              width={"100%"}
-            />
-            {/* <InputNumber min={1} max={10} defaultValue={3} onChange={onChange} /> */}
-            <StyledMaxButton onClick={() => handleChange(maxAmount)}>
-              Max
-            </StyledMaxButton>
-          </>
-        ) : (
-          <>
-            <Avatar
-              style={{
-                color: "#f56a00",
-                backgroundColor: "#e8e8e8",
-                marginLeft: "25px",
-              }}
-            ></Avatar>
-            <StyledInput
-              size="small"
-              autoComplete="off"
-              placeholder="0"
-              bordered={false}
-              controls={false}
-              value={0}
-              required
-              type="number"
-              width={""}
-            />
-          </>
-        )}
+          ) : (
+            <Avatar.Group>
+              <Avatar
+                style={{
+                  marginLeft: "10px",
+                  color: "#f56a00",
+                  backgroundColor: "#e8e8e8",
+                }}
+              ></Avatar>
+              <Avatar
+                style={{
+                  marginTop: "15px",
+                  color: "#f56a00",
+                  backgroundColor: "#e8e8e8",
+                }}
+                size={20}
+              />
+            </Avatar.Group>
+          )}
+          <StyledInput
+            size="small"
+            autoComplete="off"
+            placeholder="0"
+            bordered={false}
+            controls={false}
+            onChange={(value: any) => handleChange(value)}
+            value={value === 0 ? "" : value}
+            required
+            type="number"
+            width={"100%"}
+          />
+          {/* <InputNumber min={1} max={10} defaultValue={3} onChange={onChange} /> */}
+          <StyledMaxButton onClick={() => handleChange(maxAmount)}>
+            Max
+          </StyledMaxButton>
+        </>
       </Flex>
       <div
         style={{

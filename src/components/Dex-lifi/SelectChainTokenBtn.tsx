@@ -6,16 +6,18 @@ import { useToken } from "../../hooks/useToken";
 import { PizzaWalletCard } from "../reusable/PizzaWalletCard";
 
 const Text = styled("p")`
-  color: #000000;
+  color: ${({ color }: { color?: string; margin?: string; opacity?: string }) =>
+    color};
+  opacity: ${({ opacity }) => opacity};
   font-family: "Rubik", sans-serif;
   font-size: 1rem;
   line-height: 1.5rem;
   letter-spacing: 0.02em;
-  margin: ${({ margin }: { margin?: string }) => margin};
+  margin: ${({ margin }) => margin};
 `;
 
 const SymbolText = styled("p")`
-  color: #3e389f;
+  color: #000000;
   font-family: "Rubik", sans-serif;
   font-size: 1.125rem;
   font-weight: bold;
@@ -24,7 +26,7 @@ const SymbolText = styled("p")`
 `;
 
 const Text2 = styled("p")`
-  color: #3e389f;
+  color: #000000;
   font-family: "Rubik", sans-serif;
   font-size: 0.8125rem;
   line-height: 1.5rem;
@@ -66,13 +68,21 @@ export const SelectChainTokenBtn = ({
           <Flex>
             <Avatar.Group>
               <Avatar
-                style={{ marginLeft: "0.625rem" }}
+                style={{
+                  marginLeft: "0.625rem",
+                  color: "#f56a00",
+                  backgroundColor: "#e8e8e8",
+                }}
                 src={<Image src={token.logoURI} style={{ width: 32 }} />}
               >
                 {token.symbol[0]}
               </Avatar>
               <Avatar
-                style={{ marginTop: "0.9375rem" }}
+                style={{
+                  marginTop: "0.9375rem",
+                  color: "#f56a00",
+                  backgroundColor: "#e8e8e8",
+                }}
                 size={20}
                 src={chain.logoURI}
               />
@@ -84,14 +94,20 @@ export const SelectChainTokenBtn = ({
           </Flex>
         ) : (
           <>
-            <Avatar
-              style={{
-                color: "#f56a00",
-                backgroundColor: "#e8e8e8",
-                marginLeft: "1.25rem",
-              }}
-            ></Avatar>
-            <Text margin={"0.6875rem 0 0.625rem 0.625rem"}>
+            <Avatar.Group>
+              <Avatar
+                style={{
+                  color: "#f56a00",
+                  backgroundColor: "#e8e8e8",
+                  marginLeft: "1.25rem",
+                }}
+              ></Avatar>
+            </Avatar.Group>
+            <Text
+              color={"rgb(116, 116, 116)"}
+              opacity={"0.6"}
+              margin={"0.6875rem 0 0.625rem 0.625rem"}
+            >
               Select chain and token
             </Text>
           </>
