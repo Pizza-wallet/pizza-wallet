@@ -55,6 +55,7 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
         setToken={formType === "From" ? setFromToken : setToToken}
         selectedChainId={formType === "From" ? fromChain : toChain}
         tokenSearchFilter={tokenSearchFilter}
+        formType={formType}
       />
     </>
   );

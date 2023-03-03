@@ -19,6 +19,7 @@ interface ITokenList {
   setToken: (x: string) => void;
   selectedChainId: number;
   tokenSearchFilter: string;
+  formType: string;
 }
 
 export const TokenList: FC<ITokenList> = ({
@@ -26,6 +27,7 @@ export const TokenList: FC<ITokenList> = ({
   setToken,
   selectedChainId,
   tokenSearchFilter,
+  formType,
 }) => {
   const parentRef = useRef(null);
   const {
@@ -95,7 +97,9 @@ export const TokenList: FC<ITokenList> = ({
       >
         {dataForInfiniteScroll &&
           dataForInfiniteScroll
-            .filter((token) => token.amount !== "0")
+            .filter((token) =>
+              formType === "From" ? token.amount !== "0" : token,
+            )
             .map((item: LIFIToken, i: number) => {
               const token = item;
               return (
