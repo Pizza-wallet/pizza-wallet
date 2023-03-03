@@ -10,6 +10,8 @@ import Address from "../Address/Address";
 import styled from "styled-components";
 import ChainSelect from "../Dex-lifi/SelectToken/ChainSelect/ChainSelect";
 import { apiList } from "../../helpers/explorerApis";
+import { CustomImg } from "../reusable/CustomImg";
+import AccountLogo from "../../assets/account-logo.svg";
 
 const StyledP = styled(`p`)`
   font-family: Rubik;
@@ -78,18 +80,14 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
   return (
     <>
       <div>
-        {account ? (
-          <p style={{ color: "white" }}>Connected</p>
-        ) : (
-          <Button
-            shape="round"
-            type="primary"
-            style={styles.button}
-            onClick={() => setIsAuthModalOpen(true)}
-          >
-            Connect Wallet
-          </Button>
-        )}
+        <CustomImg
+          onClick={() => setIsAuthModalOpen(true)}
+          width={"2.4375rem"}
+          height={"2.4375rem"}
+          margin={"0 3.125rem 0 0"}
+          style={{ cursor: "pointer" }}
+          src={AccountLogo}
+        />
 
         <PizzawalletModal
           modalOpen={isAuthModalOpen}
