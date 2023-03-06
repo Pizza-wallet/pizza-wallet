@@ -19,6 +19,7 @@ interface ISelectTokenPage {
   navigateBack: () => void;
   fromChain: number;
   setFromChain: Dispatch<SetStateAction<number>>;
+  setFromTokenBalance: Dispatch<SetStateAction<any>>;
   toChain: number;
   setToChain: Dispatch<SetStateAction<number>>;
   setFromToken: Dispatch<SetStateAction<string>>;
@@ -30,6 +31,7 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
   navigateBack,
   fromChain,
   setFromChain,
+  setFromTokenBalance,
   toChain,
   setToChain,
   setFromToken,
@@ -56,6 +58,7 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
         selectedChainId={formType === "From" ? fromChain : toChain}
         tokenSearchFilter={tokenSearchFilter}
         formType={formType}
+        setTokenBalance={setFromTokenBalance}
       />
     </>
   );

@@ -162,6 +162,7 @@ function Dex() {
           setToChain={setToChain}
           setFromToken={setFromToken}
           setToToken={setToToken}
+          setFromTokenBalance={() => {}}
         />
       );
     }

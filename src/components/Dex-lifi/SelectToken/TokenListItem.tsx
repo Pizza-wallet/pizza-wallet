@@ -33,7 +33,7 @@ const Flex = styled("div")`
 `;
 
 interface ITokenListItem {
-  onClick: (x: string) => void;
+  onClick: (x: LIFIToken) => void;
   token: LIFIToken;
   showBalance: boolean;
   isBalanceLoading: boolean;
@@ -48,7 +48,7 @@ interface ITokenListItemButton {
 
 export const TokenListItem: React.FC<ITokenListItem> = memo(
   ({ onClick, token, showBalance, isBalanceLoading }) => {
-    const handleClick = () => onClick?.(token.address);
+    const handleClick = () => onClick?.(token);
     return (
       <ListItem>
         <TokenListItemButton

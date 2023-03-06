@@ -1,11 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
-import { Avatar, Image } from "antd";
+import { Avatar, Image, Typography } from "antd";
 import { useChain } from "../../hooks/useChain";
 import { useToken } from "../../hooks/useToken";
 import { PizzaWalletCard } from "../reusable/PizzaWalletCard";
 
-const Text = styled("p")`
+const { Text, Title } = Typography;
+
+const MainText = styled("p")`
   color: ${({ color }: { color?: string; margin?: string; opacity?: string }) =>
     color};
   opacity: ${({ opacity }) => opacity};
@@ -43,6 +45,7 @@ interface ISelectChainTokenBtn {
   setFormType?: Dispatch<SetStateAction<string>>;
   chainId: number;
   tokenAddress: string;
+  chosenTokenBalance?: any;
 }
 
 export const SelectChainTokenBtn = ({
@@ -51,6 +54,7 @@ export const SelectChainTokenBtn = ({
   setFormType,
   chainId,
   tokenAddress,
+  chosenTokenBalance,
 }: ISelectChainTokenBtn) => {
   const { chain, isLoading: isChainLoading } = useChain(chainId);
   const { token, isLoading: isTokenLoading } = useToken(chainId, tokenAddress);
@@ -60,9 +64,29 @@ export const SelectChainTokenBtn = ({
     setFormType && setFormType(formType);
   };
 
+  const showTokenBalance = () => {
+    return (
+      chosenTokenBalance && (
+        <div style={{ marginLeft: "40px", height: "30px" }}>
+          {Number(chosenTokenBalance.amount) ? (
+            <MainText>{chosenTokenBalance.amount}</MainText>
+          ) : null}
+
+          <Text style={{ float: "right" }} type="secondary">
+            $
+            {Math.round(
+              Number(chosenTokenBalance.amount) *
+                Number(chosenTokenBalance.priceUSD),
+            )}
+          </Text>
+        </div>
+      )
+    );
+  };
+
   return (
     <PizzaWalletCard height={"6.25rem"} hover={true} onClick={handleCardClick}>
-      <Text margin={"0.625rem 0 0.625rem 0.625rem"}>{formType}</Text>
+      <MainText margin={"0.625rem 0 0.625rem 0.625rem"}>{formType}</MainText>
       <Flex>
         {token && chain ? (
           <Flex>
@@ -91,6 +115,7 @@ export const SelectChainTokenBtn = ({
               <SymbolText>{token.symbol}</SymbolText>
               <Text2>On {chain.name}</Text2>
             </div>
+            {showTokenBalance()}
           </Flex>
         ) : (
           <>
@@ -103,13 +128,13 @@ export const SelectChainTokenBtn = ({
                 }}
               ></Avatar>
             </Avatar.Group>
-            <Text
+            <MainText
               color={"rgb(116, 116, 116)"}
               opacity={"0.6"}
               margin={"0.6875rem 0 0.625rem 0.625rem"}
             >
               Select chain and token
-            </Text>
+            </MainText>
           </>
         )}
       </Flex>

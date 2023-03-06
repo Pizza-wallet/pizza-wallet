@@ -85,6 +85,8 @@ function Transfer() {
   const [fromToken, setFromToken] = useState("");
   const [fromTokenAmount, setFromTokenAmount] = useState<number>(0);
 
+  const [chosenTokenBalance, setChosenTokenBalance] = useState();
+
   const { token, isLoading: isTokenLoading } = useToken(fromChain, fromToken);
 
   const [tx, setTx] = useState<ITransaction>({
@@ -245,6 +247,7 @@ function Transfer() {
           setToChain={() => {}}
           setFromToken={setFromToken}
           setToToken={() => {}}
+          setFromTokenBalance={setChosenTokenBalance}
         />
       ) : (
         <>
@@ -262,6 +265,7 @@ function Transfer() {
             chainId={fromChain}
             tokenAddress={fromToken}
             formType={"Asset"}
+            chosenTokenBalance={chosenTokenBalance}
           />
 
           <SwapInput

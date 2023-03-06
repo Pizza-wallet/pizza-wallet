@@ -20,6 +20,7 @@ interface ITokenList {
   selectedChainId: number;
   tokenSearchFilter: string;
   formType: string;
+  setTokenBalance: (x: any) => void;
 }
 
 export const TokenList: FC<ITokenList> = ({
@@ -28,6 +29,7 @@ export const TokenList: FC<ITokenList> = ({
   selectedChainId,
   tokenSearchFilter,
   formType,
+  setTokenBalance,
 }) => {
   const parentRef = useRef(null);
   const {
@@ -59,8 +61,14 @@ export const TokenList: FC<ITokenList> = ({
     setDataForInfiniteScroll(filteredTokens.slice(0, 50));
   }, [filteredTokens]);
 
-  const handleTokenClick = (tokenAddress: string) => {
+  const handleTokenClick = (token: LIFIToken) => {
+    const tokenAddress = token.address;
     setToken(tokenAddress);
+    // set more information about the price etc
+    const amount = token.amount;
+    const priceUSD = token.priceUSD;
+    setTokenBalance({ amount, priceUSD });
+
     navigateBack();
   };
 
