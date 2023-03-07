@@ -20,6 +20,23 @@ const AbsoluteImgContainer = styled("div")`
   width: ${(props) => props.width};
 `;
 
+const ParentChildConnector = styled("div")`
+  border-bottom: 0.1875rem solid #a6a6a6;
+  border-left: 0.1875rem solid #a6a6a6;
+  height: ${(props: { num: number }) =>
+    props.num > 0 ? "4.7875rem" : "2.5rem"};
+  position: absolute;
+  top: ${(props: { num: number }) =>
+    props.num > 0 ? "-3.5625rem" : " -1.25rem"};
+  left: -1.7125rem;
+  width: 2.375rem;
+
+  @media (min-width: 1396px) {
+    left: -2.7125rem;
+    width: 2.375rem;
+  }
+`;
+
 const displayChainIconsForToken = (chainIcons: string[]) => {
   // Logic to overlap icon images
   let num = 0;
@@ -94,17 +111,7 @@ export const columns = [
             </AbsoluteImgContainer>
             {isToken && (
               <div style={{ position: "relative" }}>
-                <div
-                  style={{
-                    borderBottom: "0.1875rem solid #a6a6a6",
-                    borderLeft: "0.1875rem solid #a6a6a6",
-                    height: num > 0 ? "4.7875rem" : "2.5rem",
-                    position: "absolute",
-                    top: num > 0 ? "-3.5625rem" : "-1.25rem",
-                    left: "-1.7125rem",
-                    width: "2.375rem",
-                  }}
-                ></div>
+                <ParentChildConnector num={num}></ParentChildConnector>
               </div>
             )}
             {isToken ? (

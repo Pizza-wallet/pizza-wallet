@@ -14,7 +14,8 @@ import { IGroupedToken, ITokenList } from "../../types";
 const TableContainer = styled("div")`
   margin-left: auto;
   margin-right: auto;
-  width: 50rem;
+  min-width: 800px;
+  max-width: 1084px;
 `;
 
 interface IERC20Balance {

@@ -12,7 +12,7 @@ interface ITableStyles {
 
 const Container = styled("div")`
   min-width: 800px;
-  max-width: 900px;
+  max-width: 1084px;
   padding: 1.25rem 0.9375rem 1.25rem 0.9375rem;
   background-color: #f8f2ed;
   border-radius: 2.75rem;
