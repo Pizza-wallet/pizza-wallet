@@ -106,6 +106,9 @@ function Address(props: IAddressProps) {
                   onClick={() => {
                     navigator.clipboard.writeText(address);
                     setIsClicked(true);
+                    setTimeout(() => {
+                      setIsClicked(false);
+                    }, 3000); // 3000 milliseconds = 3 seconds
                   }}
                   src={Copy}
                 />
