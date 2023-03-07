@@ -78,7 +78,10 @@ export const GasSufficiencyMessage = ({
         <div>
           <div style={{ display: "flex" }}>
             <FontAwesomeIconStyled icon={faExclamationTriangle} />
-            {insufficientGas?.length ? (
+            {insufficientFunds ? (
+              <CardTitle>Insufficient funds</CardTitle>
+            ) : null}
+            {!insufficientFunds && insufficientGas?.length ? (
               <CardTitle>Insufficient gas</CardTitle>
             ) : null}
           </div>
