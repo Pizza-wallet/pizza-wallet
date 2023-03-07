@@ -16,6 +16,7 @@ import { SelectChainTokenBtn } from "../../Dex-lifi/SelectChainTokenBtn";
 import { SelectTokenPage } from "../../Dex-lifi/SelectToken/SelectTokenPage";
 import { SwapInput } from "../../Dex-lifi/SwapInput";
 import { useToken } from "../../../hooks/useToken";
+import { TransferError } from "./TransferError";
 
 const Text = styled("p")`
   color: black;
@@ -85,7 +86,10 @@ function Transfer() {
   const [fromToken, setFromToken] = useState("");
   const [fromTokenAmount, setFromTokenAmount] = useState<number>(0);
 
-  const [chosenTokenBalance, setChosenTokenBalance] = useState();
+  const [chosenTokenBalance, setChosenTokenBalance] = useState({
+    amount: "",
+    priceUSD: "",
+  });
 
   const { token, isLoading: isTokenLoading } = useToken(fromChain, fromToken);
 
@@ -274,6 +278,13 @@ function Transfer() {
             value={fromTokenAmount}
             handleChange={(val: number) => setFromTokenAmount(val)}
             selectedChainId={fromChain}
+          />
+
+          <TransferError
+            insufficientFunds={
+              Number(chosenTokenBalance.amount) * 1 < fromTokenAmount
+            }
+            amountToAdd={fromTokenAmount - Number(chosenTokenBalance.amount)}
           />
 
           <Controls>
