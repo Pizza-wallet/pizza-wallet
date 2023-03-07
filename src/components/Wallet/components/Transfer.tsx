@@ -87,7 +87,7 @@ function Transfer() {
   const [fromTokenAmount, setFromTokenAmount] = useState<number>(0);
 
   const [chosenTokenBalance, setChosenTokenBalance] = useState({
-    amount: "",
+    amount: null,
     priceUSD: "",
   });
 

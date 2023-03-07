@@ -68,17 +68,18 @@ export const SelectChainTokenBtn = ({
     return (
       chosenTokenBalance && (
         <div style={{ marginLeft: "40px", height: "30px" }}>
-          {Number(chosenTokenBalance.amount) ? (
-            <MainText>{chosenTokenBalance.amount}</MainText>
+          {chosenTokenBalance.amount ? (
+            <>
+              <MainText>{chosenTokenBalance.amount}</MainText>
+              <Text style={{ float: "right" }} type="secondary">
+                $
+                {Math.round(
+                  Number(chosenTokenBalance.amount) *
+                    Number(chosenTokenBalance.priceUSD),
+                )}
+              </Text>
+            </>
           ) : null}
-
-          <Text style={{ float: "right" }} type="secondary">
-            $
-            {Math.round(
-              Number(chosenTokenBalance.amount) *
-                Number(chosenTokenBalance.priceUSD),
-            )}
-          </Text>
         </div>
       )
     );
