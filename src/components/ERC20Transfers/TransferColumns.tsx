@@ -96,7 +96,9 @@ export const TransferColumns = [
                   </p>
                 </div>
               </>
-              <StyledP>${item.gasCostUSD} gas fee</StyledP>
+              {item.gasCostUSD !== "0" && (
+                <StyledP>${item.gasCostUSD} gas fee</StyledP>
+              )}
             </div>
           </div>
         );

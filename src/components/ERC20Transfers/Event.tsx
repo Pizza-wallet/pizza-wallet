@@ -59,14 +59,14 @@ export function Event({
         {!tokenUri ? (
           <Image
             src={EmptyNft}
-            style={{ width: 54, height: 54, borderRadius: "5px" }}
+            style={{ width: 44, height: 44, borderRadius: "5px" }}
           />
         ) : (
           <Image
             src={tokenUri}
             preview={true}
             onError={() => EmptyNft}
-            style={{ width: 54, height: 54, borderRadius: "5px" }}
+            style={{ width: 44, height: 44, borderRadius: "5px" }}
           />
         )}
         <Avatar
@@ -104,7 +104,7 @@ export function Event({
             <Image
               src={!token?.logoURI ? EmptyNft : token?.logoURI}
               preview={false}
-              style={{ width: 32 }}
+              style={{ width: 33 }}
             />
           }
           size={"large"}

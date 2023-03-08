@@ -27,6 +27,7 @@ export function GasUsed({ chainId, tokenAddress, gasUsed }: IGasUsed) {
   let gasUsedInDollars = limitDigits(
     Number(Number.parseFloat(gasAmount).toFixed(4)),
   );
+  if (gasUsedInDollars === 0) return null;
   return (
     <>
       <StyledP>${gasUsedInDollars} gas fee</StyledP>
