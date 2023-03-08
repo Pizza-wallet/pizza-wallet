@@ -20,6 +20,22 @@ const AbsoluteImgContainer = styled("div")`
   width: ${(props) => props.width};
 `;
 
+const ParentChildConnector = styled("div")`
+  border-bottom: 0.1875rem solid #a6a6a6;
+  border-left: 0.1875rem solid #a6a6a6;
+  height: ${(props: { num: number }) =>
+    props.num > 0 ? "4.7875rem" : "2.5rem"};
+  position: absolute;
+  top: ${(props: { num: number }) =>
+    props.num > 0 ? "-3.5625rem" : " -1.25rem"};
+  left: -3.8rem;
+  width: 2.375rem;
+  @media (min-width: 1350px) {
+    left: -4.6rem;
+    width: 2.375rem;
+  }
+`;
+
 const StyledTabledata = styled("p")`
   color: #000000;
 `;
@@ -98,17 +114,7 @@ export const columns = [
             </AbsoluteImgContainer>
             {isToken && (
               <div style={{ position: "relative" }}>
-                <div
-                  style={{
-                    borderBottom: "0.1875rem solid #a6a6a6",
-                    borderLeft: "0.1875rem solid #a6a6a6",
-                    height: num > 0 ? "4.7875rem" : "2.5rem",
-                    position: "absolute",
-                    top: num > 0 ? "-3.5625rem" : "-1.25rem",
-                    left: "-2.8125rem",
-                    width: "2.375rem",
-                  }}
-                ></div>
+                <ParentChildConnector num={num}></ParentChildConnector>
               </div>
             )}
             {isToken ? (

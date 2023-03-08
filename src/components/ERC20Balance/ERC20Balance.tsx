@@ -12,7 +12,10 @@ import { useChainsTokensTools } from "../../providers/chainsTokensToolsProvider"
 import { IGroupedToken, ITokenList } from "../../types";
 
 const TableContainer = styled("div")`
-  margin: 0 3.125rem 3.125rem 3.125rem;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 800px;
+  max-width: 1084px;
 `;
 
 interface IERC20Balance {

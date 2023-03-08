@@ -11,7 +11,7 @@ interface ITableStyles {
 }
 
 const Container = styled("div")`
-  width: 100%;
+  // width: 100%;
   padding: 1.25rem 0.9375rem 1.25rem 0.9375rem;
   background-color: #f8f2ed;
   border-radius: 2.75rem;
