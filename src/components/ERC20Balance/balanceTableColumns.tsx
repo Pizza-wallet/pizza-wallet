@@ -36,6 +36,22 @@ const ParentChildConnector = styled("div")`
   }
 `;
 
+const AssetContainer = styled("div")`
+  display: flex;
+  position: relative;
+  margin: ${(props: { isToken: boolean }) => (props.isToken ? "auto" : "0")};
+  width: ${(props: { isToken: boolean }) => (props.isToken ? "185px" : "auto")};
+  justify-content: flex-start;
+
+  @media (max-width: 1205px) {
+    display: flex;
+    position: relative;
+    margin: ${(props: { isToken: boolean }) => (props.isToken ? "auto" : "0")};
+    width: ${(props: { isToken: boolean }) =>
+      props.isToken ? "100px" : "auto"};
+  }
+`;
+
 const StyledTabledata = styled("p")`
   color: #000000;
 `;
@@ -91,14 +107,7 @@ export const columns = [
       const chainLogosForToken = item.chainLogoUri;
       const emptyTokenLogo = "https://etherscan.io/images/main/empty-token.png";
       return (
-        <div
-          style={{
-            display: "flex",
-            position: "relative",
-            margin: isToken ? "auto" : "0",
-            width: isToken ? "50%" : "auto",
-          }}
-        >
+        <AssetContainer isToken={isToken}>
           <div>
             <AbsoluteImgContainer
               left={isToken ? "1.5625rem" : ""}
@@ -156,7 +165,7 @@ export const columns = [
               </div>
             )}
           </div>
-        </div>
+        </AssetContainer>
       );
     },
   },

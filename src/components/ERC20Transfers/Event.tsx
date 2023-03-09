@@ -99,7 +99,7 @@ export function Event({
     <Flex>
       <Avatar.Group>
         <Avatar
-          style={{ marginLeft: "0.625rem" }}
+          // style={{ marginLeft: "0.625rem" }}
           src={
             <Image
               src={!token?.logoURI ? EmptyNft : token?.logoURI}
