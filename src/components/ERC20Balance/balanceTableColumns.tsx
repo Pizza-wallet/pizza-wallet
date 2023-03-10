@@ -100,7 +100,7 @@ export const columns = [
     title: "Asset",
     dataIndex: "logo",
     key: "logo",
-    render: (logo: any, item: any, num: number) => {
+    render: (logo: any, item: any, _num: number) => {
       console.log("logo here - ", logo);
       const isToken = item.type === "token";
       const logoURI = item.logoURI ? item.logoURI : "";
@@ -121,11 +121,11 @@ export const columns = [
                 borderRadius={"50%"}
               />
             </AbsoluteImgContainer>
-            {isToken && (
+            {/* {isToken && (
               <div style={{ position: "relative" }}>
                 <ParentChildConnector num={num}></ParentChildConnector>
               </div>
-            )}
+            )} */}
             {isToken ? (
               <AbsoluteImgContainer left={"3.9875rem"} top={"1.2375rem"}>
                 <CustomImg
