@@ -10,6 +10,7 @@ import {
   SecondaryButton,
 } from "../../reusable/Buttons";
 import PizzawalletContainer from "../../reusable/PizzawalletContainer";
+import PizzaWalletWarning from "../../reusable/PizzaWalletWarning";
 import { Link } from "react-router-dom";
 import { BigNumber } from "@ethersproject/bignumber";
 import { SelectChainTokenBtn } from "../../Dex-lifi/SelectChainTokenBtn";
@@ -263,6 +264,14 @@ function Transfer() {
             setIsDomain={setIsDomain}
             setValidatedAddress={setValidatedAddress}
           />
+
+          {address && !validatedAddress ? (
+            <PizzaWalletWarning
+              margin={"10px auto 0 auto"}
+              title={"Invalid address"}
+              message={"Please enter a valid evm address"}
+            />
+          ) : null}
 
           <SelectChainTokenBtn
             handleClick={setPage}
