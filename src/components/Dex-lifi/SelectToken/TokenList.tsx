@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import type { FC } from "react";
 import type { LIFIToken } from "../../../types/client";
 import { useTokenBalances } from "../../../hooks/useTokenBalances";
@@ -39,16 +39,18 @@ export const TokenList: FC<ITokenList> = ({
     isBalanceLoading,
   } = useTokenBalances(selectedChainId);
 
-  let filteredTokens = (tokensWithBalance ?? chainTokens ?? []) as LIFIToken[];
-  const searchFilter = tokenSearchFilter?.toUpperCase() ?? "";
-  filteredTokens = tokenSearchFilter
-    ? filteredTokens.filter(
-        (token) =>
-          token.name.toUpperCase().includes(searchFilter) ||
-          token.symbol.toUpperCase().includes(searchFilter) ||
-          token.address.toUpperCase().includes(searchFilter),
-      )
-    : filteredTokens;
+  let filteredTokens = useMemo(() => {
+    const tokens = (tokensWithBalance ?? chainTokens ?? []) as LIFIToken[];
+    const searchFilter = tokenSearchFilter?.toUpperCase() ?? "";
+    return tokenSearchFilter
+      ? tokens.filter(
+          (token) =>
+            token.name.toUpperCase().includes(searchFilter) ||
+            token.symbol.toUpperCase().includes(searchFilter) ||
+            token.address.toUpperCase().includes(searchFilter),
+        )
+      : tokens;
+  }, [tokensWithBalance, chainTokens, tokenSearchFilter]);
 
   const isLoading = isTokensLoading;
 
@@ -57,8 +59,9 @@ export const TokenList: FC<ITokenList> = ({
   >(filteredTokens.slice(0, 50));
 
   useEffect(() => {
-    // Set tokens when filter changes
-    setDataForInfiniteScroll(filteredTokens.slice(0, 50));
+    const tokens = new Set(filteredTokens); // create a Set from the filteredTokens array (to remove any possible duplicates)
+    const first50Tokens = Array.from(tokens).slice(0, 50); // convert the Set back to an array and extract the first 50 items
+    setDataForInfiniteScroll(first50Tokens);
   }, [filteredTokens]);
 
   const handleTokenClick = (token: LIFIToken) => {
@@ -77,11 +80,6 @@ export const TokenList: FC<ITokenList> = ({
     const showFiftyTokensMore = dataForInfiniteScroll.length + 50;
     setDataForInfiniteScroll(filteredTokens.slice(0, showFiftyTokensMore));
   };
-
-  console.log(
-    "tokens with balance - ",
-    tokensWithBalance?.filter((token) => token.amount !== "0"),
-  );
 
   if (isLoading)
     return (
@@ -106,10 +104,11 @@ export const TokenList: FC<ITokenList> = ({
         {dataForInfiniteScroll &&
           dataForInfiniteScroll
             .filter((token) =>
-              formType === "From" ? token.amount !== "0" : token,
+              formType === "From" ? token.amount !== "0" : true,
             )
             .map((item: LIFIToken, i: number) => {
               const token = item;
+              console.log("item - ", token);
               return (
                 <div key={i}>
                   <TokenListItem
