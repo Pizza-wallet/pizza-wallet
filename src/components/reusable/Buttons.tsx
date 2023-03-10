@@ -93,6 +93,63 @@ export const SecondaryButton = styled("button")`
   -webkit-text-stroke: thin;
 `;
 
+export const LogoutButton = styled("button")`
+  width: 100%;
+  height: 100%;
+  background: #f34337;
+  border-radius: 0.9375rem;
+  font-family: "Gloria Hallelujah", sans-serif;
+  font-size: 1.37rem;
+  cursor: pointer;
+  color: white;
+  user-select: none;
+  line-height: 1.75rem;
+  position: relative;
+  text-align: center;
+  z-index: 0;
+  transition: letter-spacing 0.4s ease;
+  border: none;
+  display: inline-block;
+  -webkit-text-stroke: thin;
+  letter-spacing: 0.03125rem;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #f34337;
+    z-index: -1;
+    border-radius: 0.9375rem;
+    width: 100%;
+    height: 100%;
+    border: 0.1875rem solid #f34337;
+  }
+
+  &:after {
+    pointer-events: none;
+    content: "";
+    background: #ee857e;
+    background-position: bottom;
+    background-repeat: round;
+    background-position-y: bottom;
+    background-repeat: round;
+    display: block;
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    transform: translate(0.3125rem, 0.34375rem);
+    z-index: -2;
+    border-radius: 0.9375rem;
+    width: 100%;
+    height: 100%;
+    border: 0.125rem solid #f34337;
+  }
+`;
+
 export const MenuButton = styled("button")`
   user-select: none;
   font-family: "Gloria Hallelujah", sans-serif;

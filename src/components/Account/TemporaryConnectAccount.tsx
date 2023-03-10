@@ -11,6 +11,7 @@ import styled from "styled-components";
 import ChainSelect from "../Dex-lifi/SelectToken/ChainSelect/ChainSelect";
 import { apiList } from "../../helpers/explorerApis";
 import { CustomImg } from "../reusable/CustomImg";
+import { LogoutButton, ButtonContainer } from "../reusable/Buttons";
 import AccountLogo from "../../assets/account-logo.svg";
 
 const StyledP = styled(`p`)`
@@ -119,6 +120,13 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
                     setIsAuthModalOpen(false);
                   }}
                 /> */}
+              <ButtonContainer
+                width={"171px"}
+                height={"51px"}
+                margin={"20px auto 30px auto"}
+              >
+                <LogoutButton>Sign Out</LogoutButton>
+              </ButtonContainer>
             </div>
           </>
         </PizzawalletModal>
