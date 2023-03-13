@@ -98,7 +98,13 @@ export const SelectChainTokenBtn = ({
                   color: "#f56a00",
                   backgroundColor: "#e8e8e8",
                 }}
-                src={<Image src={token.logoURI} style={{ width: 32 }} />}
+                src={
+                  <Image
+                    preview={false}
+                    src={token.logoURI}
+                    style={{ width: 32 }}
+                  />
+                }
               >
                 {token.symbol[0]}
               </Avatar>

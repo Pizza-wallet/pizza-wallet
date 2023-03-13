@@ -82,7 +82,13 @@ export const SwapInput = ({
             <Avatar.Group>
               <Avatar
                 style={{ marginLeft: "10px" }}
-                src={<Image src={token.logoURI} style={{ width: 32 }} />}
+                src={
+                  <Image
+                    preview={false}
+                    src={token.logoURI}
+                    style={{ width: 32 }}
+                  />
+                }
               >
                 {token.symbol[0]}
               </Avatar>
