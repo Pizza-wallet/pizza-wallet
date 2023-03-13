@@ -1,6 +1,7 @@
 import { notification } from "antd";
 import { useEffect, useState, useCallback } from "react";
 import { useMoralis, useMoralisWeb3Api } from "react-moralis";
+import { ethers } from "ethers";
 import AddressInput from "../../AddressInput";
 import { getEllipsisTxt } from "../../../helpers/formatters";
 import styled from "styled-components";
@@ -225,7 +226,7 @@ function Transfer() {
             }).then((r) => r?.address),
           );
         }
-      } else if (value.length === 42) {
+      } else if (ethers.utils.isAddress(value)) {
         setValidatedAddress(getEllipsisTxt(value, 10));
         setReceiver(getEllipsisTxt(value, 10));
         setIsDomain(false);

@@ -104,6 +104,7 @@ function AddressInput({
           ref={input}
           size="small"
           placeholder={"Public address"}
+          maxLength={42}
           suffix={validatedAddress && <Cross />}
           autoFocus={true}
           bordered={false}
