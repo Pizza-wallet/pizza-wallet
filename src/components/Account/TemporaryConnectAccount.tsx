@@ -107,7 +107,7 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
               </div>
 
               <ChainSelect
-                chainId={1}
+                chainId={0}
                 setChain={navigateToBlockExplorer}
                 centerItems={true}
               />
