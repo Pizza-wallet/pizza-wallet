@@ -27,6 +27,11 @@ const WarningNotification = styled("div")`
   margin-right: auto;
   position: relative;
   background: #f8e4de;
+
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 `;
 
 const StyledTitle = styled(`p`)`
