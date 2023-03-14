@@ -32,8 +32,6 @@ const Text = styled("p")`
 interface IAddressInput {
   validatedAddress: any;
   updateAddress: any;
-  setValidatedAddress: any;
-  setIsDomain: any;
   isDomain: any;
   address: any;
 }
@@ -41,36 +39,24 @@ interface IAddressInput {
 function AddressInput({
   validatedAddress,
   updateAddress,
-  setValidatedAddress,
-  setIsDomain,
   isDomain,
   address,
 }: IAddressInput) {
   const input = useRef<any>(null);
 
-  const Cross = () => (
+  const Check = () => (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="22"
-      height="22"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
-      strokeWidth="2"
-      stroke="#E33132"
+      strokeWidth="3"
+      stroke="#21BF96"
       fill="none"
       strokeLinecap="round"
       strokeLinejoin="round"
-      onClick={() => {
-        setValidatedAddress("");
-        setIsDomain(false);
-        setTimeout(function () {
-          input?.current?.focus();
-        });
-      }}
-      style={{ cursor: "pointer" }}
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
+      <path d="M5 12l5 5l10 -10" />
     </svg>
   );
 
@@ -104,7 +90,7 @@ function AddressInput({
           size="small"
           placeholder={"Public address"}
           maxLength={42}
-          suffix={validatedAddress && <Cross />}
+          suffix={validatedAddress && <Check />}
           autoFocus={true}
           bordered={false}
           value={
@@ -115,7 +101,7 @@ function AddressInput({
           onChange={(e) => {
             updateAddress(e.target.value);
           }}
-          disabled={!!validatedAddress}
+          // disabled={!!validatedAddress}
         />
       </Flex>
     </PizzaWalletCard>

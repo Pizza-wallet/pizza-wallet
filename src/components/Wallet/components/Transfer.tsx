@@ -262,8 +262,6 @@ function Transfer() {
             address={address}
             validatedAddress={validatedAddress}
             isDomain={isDomain}
-            setIsDomain={setIsDomain}
-            setValidatedAddress={setValidatedAddress}
           />
 
           {address && !validatedAddress ? (
