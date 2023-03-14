@@ -86,8 +86,7 @@ function AddressInput({
               backgroundColor: "#e8e8e8",
             }}
             src={
-              validatedAddress ||
-              (address && (
+              validatedAddress && (
                 <Blockie
                   address={(isDomain
                     ? validatedAddress
@@ -96,7 +95,7 @@ function AddressInput({
                   size={10}
                   scale={3}
                 />
-              ))
+              )
             }
           ></Avatar>
         </Avatar.Group>
