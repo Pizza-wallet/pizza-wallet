@@ -4,18 +4,19 @@ import { IToken } from "../../../types";
 
 export const getPriceInformation = async (
   balances: IToken[],
-  chainId: number,
+  _chainId: number,
 ) => {
-  let balancesWithPriceInfo: IToken[] = [];
+  // NOTE: Commenting out use of chainlink pricefeed for now (may use this later)
+  // let balancesWithPriceInfo: IToken[] = [];
 
-  for (let i = 0; i < balances.length; i++) {
-    const tokenSymbol = balances[i].symbol;
-    const priceFeed = await getPriceFeed(chainId, tokenSymbol);
-    let token = balances[i];
-    token.price = priceFeed;
+  // for (let i = 0; i < balances.length; i++) {
+  //   const tokenSymbol = balances[i].symbol;
+  //   const priceFeed = await getPriceFeed(chainId, tokenSymbol);
+  //   let token = balances[i];
+  //   token.price = priceFeed;
 
-    balancesWithPriceInfo.push(token);
-  }
+  //   balancesWithPriceInfo.push(token);
+  // }
 
   // add price information from chainlink or LIFI and return values
   return balances?.map((token) => {

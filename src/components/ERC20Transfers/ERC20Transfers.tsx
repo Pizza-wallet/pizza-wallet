@@ -169,7 +169,7 @@ function ERC20Transfers({
         <Table
           tableData={transferHistory}
           columns={TransferColumns}
-          tableTitle={"Transactions History"}
+          tableTitle={"History"}
           expandableRow={false}
           loading={loading}
         />
