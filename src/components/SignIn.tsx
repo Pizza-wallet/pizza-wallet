@@ -94,8 +94,7 @@ const ButtonCard = styled("div")`
 const SocialIcons = styled("div")`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  align-items: end;
+  justify-content: center;
   width: 18.5625rem;
   margin-bottom: 10px;
 `;
@@ -303,13 +302,17 @@ export default function SignIn() {
                   <ActionTitle>Login with Social</ActionTitle>
                 </FlexContainerCenter>
                 <ButtonCard>
-                  <SocialIcons onClick={handleLogin}>
+                  <SocialIcons>
                     {socialLoginLogos.map((val, i) => {
                       return (
                         <Avatar
                           key={i}
                           src={val.logo}
-                          style={{ width: val.width, height: val.height }}
+                          style={{
+                            width: val.width,
+                            height: val.height,
+                            marginRight: "3px",
+                          }}
                         ></Avatar>
                       );
                     })}
