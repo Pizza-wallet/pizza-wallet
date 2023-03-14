@@ -5,6 +5,7 @@ import { allTransactionsData } from "../../hooks/useExplorersApis";
 import { TransferColumns } from "./TransferColumns";
 import { allNftData } from "../../hooks/useMoralisWeb3";
 import { useSwapHistory } from "../../stores/routes";
+import styled from "styled-components";
 
 interface INft {
   amount: string;
@@ -48,6 +49,13 @@ interface ITransaction {
   transactionIndex: string;
   value: string;
 }
+
+const TableContainer = styled("div")`
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 800px;
+  max-width: 1084px;
+`;
 
 function ERC20Transfers({
   transferHistory,
@@ -157,12 +165,7 @@ function ERC20Transfers({
 
   return (
     <div>
-      <div
-        style={{
-          margin: "0 1.5625rem 3.125rem 1.5625rem",
-          height: "100%",
-        }}
-      >
+      <TableContainer>
         <Table
           tableData={transferHistory}
           columns={TransferColumns}
@@ -170,7 +173,7 @@ function ERC20Transfers({
           expandableRow={false}
           loading={loading}
         />
-      </div>
+      </TableContainer>
     </div>
   );
 }
