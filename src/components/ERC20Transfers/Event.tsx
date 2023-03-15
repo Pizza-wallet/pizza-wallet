@@ -95,11 +95,17 @@ export function Event({
     );
   }
 
+  const tokenAmountAndSymbol = `${limitDigits(
+    Number(Number.parseFloat(readableAmount).toFixed(4)),
+  )} ${token?.symbol}`;
+
+  const dots = token?.symbol && token?.symbol.length > 6 ? "..." : "";
+  const symbolSubString = token?.symbol.substring(0, 4) + dots;
+
   return (
     <Flex>
       <Avatar.Group>
         <Avatar
-          // style={{ marginLeft: "0.625rem" }}
           src={
             <Image
               src={!token?.logoURI ? EmptyNft : token?.logoURI}
@@ -127,7 +133,9 @@ export function Event({
           <SymbolText>
             {limitDigits(Number(Number.parseFloat(readableAmount).toFixed(4)))}
           </SymbolText>{" "}
-          <SymbolText>{token?.symbol}</SymbolText>
+          <SymbolText>
+            {tokenAmountAndSymbol.length > 11 ? symbolSubString : token?.symbol}
+          </SymbolText>
         </div>
         <div
           style={{

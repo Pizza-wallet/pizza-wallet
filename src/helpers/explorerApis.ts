@@ -10,14 +10,16 @@ export const apiList: ApiInfo[] = [
   {
     endpoint: "https://api.etherscan.io",
     blockExplorerEndpoint: "https://etherscan.io",
-    action: ["tokentx", "tokennfttx", "token1155tx"],
+    // action: ["tokentx", "tokennfttx", "token1155tx"],
+    action: ["tokentx"],
     apikey: process.env.REACT_APP_EXPLORER_API_ETH,
     chainId: "1",
   },
   {
     endpoint: "https://api.polygonscan.com",
     blockExplorerEndpoint: "https://polygonscan.com",
-    action: ["tokentx", "tokennfttx", "token1155tx"],
+    // action: ["tokentx", "tokennfttx", "token1155tx"],
+    action: ["tokentx"],
     apikey: process.env.REACT_APP_EXPLORER_API_POLYGON,
     chainId: "137",
   },
@@ -31,7 +33,8 @@ export const apiList: ApiInfo[] = [
   {
     endpoint: "https://api.snowtrace.io",
     blockExplorerEndpoint: "https://snowtrace.io",
-    action: ["tokentx", "tokennfttx", "token1155tx"],
+    // action: ["tokentx", "tokennfttx", "token1155tx"],
+    action: ["tokentx"],
     apikey: process.env.REACT_APP_EXPLORER_API_AVALANCHE,
     chainId: "43114",
   },
