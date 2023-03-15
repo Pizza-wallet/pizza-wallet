@@ -53,7 +53,7 @@ interface ITransaction {
 const TableContainer = styled("div")`
   margin-left: auto;
   margin-right: auto;
-  min-width: 800px;
+  min-width: 1010px;
   max-width: 1084px;
 `;
 

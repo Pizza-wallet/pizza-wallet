@@ -45,23 +45,76 @@ export const formatTokenPrice = (amount?: string, price?: string) => {
   return parseFloat(amount) * parseFloat(price);
 };
 
+function roundNumber(num: any) {
+  // round the number to 4 decimal places
+  let roundedNum = num.toFixed(4);
+  // extract the integer part of the number
+  let integerPart = Math.floor(roundedNum);
+  // extract the decimal part of the number
+  let decimalPart = roundedNum - integerPart;
+  // if the integer part is greater than 5, round the decimal part in excess
+  if (integerPart > 5) {
+    decimalPart = Math.ceil(decimalPart * 10000) / 10000;
+  }
+  // if the fourth decimal place is greater than or equal to 5, round the third decimal place in excess
+  else if (decimalPart >= 0.0005) {
+    decimalPart = Math.ceil(decimalPart * 1000) / 1000;
+  }
+  // combine the integer and decimal parts to get the rounded number
+  roundedNum = integerPart + decimalPart;
+
+  return roundedNum;
+}
+
 export const limitDigits = (number: number) => {
-  if (isNaN(Number(number)) || number === 1e-18) {
+  // if number is not a number, too large, 0 or undefined show 0
+  if (isNaN(Number(number)) || number === 0 || !number) {
     return 0;
   }
-  if (number === 0 || !number) return 0;
-  if (number >= 1) {
-    // it's a positive number show with two digits
-    return number.toFixed(2);
-  }
-  // next check number has integer straight after decimal
-  // if so show with 6 digits
-  const decimalStr = number.toString().split(".")[1];
-  if (decimalStr.length && decimalStr[0] !== "0") {
-    return number.toFixed(6);
+  if (number === 1e-18) {
+    return "0.0..1";
   }
 
-  // else show with 8 digits
+  // it's a positive number show with two digits
+  if (number >= 1) {
+    return number.toFixed(2);
+  }
+
+  let decimalStr = number.toString().split(".")[1];
+
+  if (!decimalStr) {
+    // Then there are too many zeros to split as above so use below method
+    const str = number.toExponential().replace(".", "");
+    const [digits, exponent] = str.split("e-");
+    const zeros = "0".repeat(Number(exponent) - digits.length);
+    decimalStr = zeros + digits;
+  }
+
+  if (decimalStr.length) {
+    // If it has a number above zero in the first two digits after comma show two digits
+    if (decimalStr[0] !== "0" || decimalStr[1] !== "0") {
+      return number.toFixed(2);
+    } else if (decimalStr[2] !== "0") {
+      // third decimal point format to 4 decimal places
+      return number.toFixed(4);
+    } else if (decimalStr[3] !== "0" || decimalStr[4] !== "0") {
+      // fourth and fifth decimal point round up
+      return roundNumber(number);
+    } else {
+      // after fifth decimal point we need to display the number as below -
+      // (e.g. 0,00005 --> 0,0..5; 0,000007 --> 0,0..7).
+      const firstNonZeroNumberAfterFifthDecimal = decimalStr
+        .split("")
+        .find((val) => {
+          if (val !== "0") {
+            return val;
+          }
+        });
+      return `0.0..${firstNonZeroNumberAfterFifthDecimal}`;
+    }
+  }
+
+  // This case should never be hit but it's here as a default
   return number.toFixed(8);
 };
 
