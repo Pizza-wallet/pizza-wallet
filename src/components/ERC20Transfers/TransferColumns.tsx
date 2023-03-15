@@ -160,15 +160,14 @@ export const TransferColumns = [
                       Sent
                     </p>
                   </div>
+                  <GasUsed
+                    chainId={item.chainId}
+                    tokenAddress={item.contractAddress}
+                    gasUsed={item.gasUsed}
+                  />
                 </>
               )}
             </>
-
-            <GasUsed
-              chainId={item.chainId}
-              tokenAddress={item.contractAddress}
-              gasUsed={item.gasUsed}
-            />
           </div>
         </div>
       );
