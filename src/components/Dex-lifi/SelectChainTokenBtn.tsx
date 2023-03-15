@@ -4,6 +4,7 @@ import { Avatar, Image, Typography } from "antd";
 import { useChain } from "../../hooks/useChain";
 import { useToken } from "../../hooks/useToken";
 import { PizzaWalletCard } from "../reusable/PizzaWalletCard";
+import { IChosenTokenBalance } from "../../types";
 
 const { Text, Title } = Typography;
 
@@ -45,7 +46,7 @@ interface ISelectChainTokenBtn {
   setFormType?: Dispatch<SetStateAction<string>>;
   chainId: number;
   tokenAddress: string;
-  chosenTokenBalance?: any;
+  chosenTokenBalance?: IChosenTokenBalance;
 }
 
 export const SelectChainTokenBtn = ({

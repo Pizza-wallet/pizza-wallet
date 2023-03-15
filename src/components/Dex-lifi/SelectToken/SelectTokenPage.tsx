@@ -24,6 +24,7 @@ interface ISelectTokenPage {
   setToChain: Dispatch<SetStateAction<number>>;
   setFromToken: Dispatch<SetStateAction<string>>;
   setToToken: Dispatch<SetStateAction<string>>;
+  setToTokenBalance: Dispatch<SetStateAction<any>>;
 }
 
 export const SelectTokenPage: FC<ISelectTokenPage> = ({
@@ -34,6 +35,7 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
   setFromTokenBalance,
   toChain,
   setToChain,
+  setToTokenBalance,
   setFromToken,
   setToToken,
 }) => {
@@ -58,7 +60,9 @@ export const SelectTokenPage: FC<ISelectTokenPage> = ({
         selectedChainId={formType === "From" ? fromChain : toChain}
         tokenSearchFilter={tokenSearchFilter}
         formType={formType}
-        setTokenBalance={setFromTokenBalance}
+        setTokenBalance={
+          formType === "From" ? setFromTokenBalance : setToTokenBalance
+        }
       />
     </>
   );

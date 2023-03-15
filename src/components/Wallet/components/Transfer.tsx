@@ -254,6 +254,7 @@ function Transfer() {
           setFromToken={setFromToken}
           setToToken={() => {}}
           setFromTokenBalance={setChosenTokenBalance}
+          setToTokenBalance={() => {}}
         />
       ) : (
         <>

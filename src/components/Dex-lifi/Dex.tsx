@@ -16,6 +16,7 @@ import { getStepList } from "./StepList/StepList";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PoweredByLifi } from "./icons/PoweredByLifi";
+import { IChosenTokenBalance } from "../../types";
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   font-size: 1.75rem;
@@ -38,9 +39,19 @@ function Dex() {
   const [fromChain, setFromChain] = useState(1);
   const [fromToken, setFromToken] = useState("");
   const [fromTokenAmount, setFromTokenAmount] = useState<number>(0);
+  const [chosenTokenBalanceFrom, setChosenTokenBalanceFrom] =
+    useState<IChosenTokenBalance>({
+      amount: null,
+      priceUSD: "",
+    });
   // Swap To chain and token
   const [toChain, setToChain] = useState(1);
   const [toToken, setToToken] = useState("");
+  const [chosenTokenBalanceTo, setChosenTokenBalanceTo] =
+    useState<IChosenTokenBalance>({
+      amount: null,
+      priceUSD: "",
+    });
 
   // Swap route
   const [selectedRoute, setSelectedRoute] = useState<Route>();
@@ -98,6 +109,8 @@ function Dex() {
             fromToken={fromToken}
             toToken={toToken}
             switchFromAndTo={switchFromAndTo}
+            chosenTokenBalanceTo={chosenTokenBalanceTo}
+            chosenTokenBalanceFrom={chosenTokenBalanceFrom}
           />
           <SwapInput
             tokenAddress={fromToken}
@@ -162,7 +175,8 @@ function Dex() {
           setToChain={setToChain}
           setFromToken={setFromToken}
           setToToken={setToToken}
-          setFromTokenBalance={() => {}}
+          setFromTokenBalance={setChosenTokenBalanceFrom}
+          setToTokenBalance={setChosenTokenBalanceTo}
         />
       );
     }

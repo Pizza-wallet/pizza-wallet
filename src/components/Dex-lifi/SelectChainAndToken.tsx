@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { SelectChainTokenBtn } from "./SelectChainTokenBtn";
 import { faExchange } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IChosenTokenBalance } from "../../types";
 
 const IconContainer = styled("div")`
   position: relative;
@@ -42,6 +43,8 @@ interface ISelectChainAndToken {
   fromToken: string;
   toToken: string;
   switchFromAndTo: () => void;
+  chosenTokenBalanceTo: IChosenTokenBalance;
+  chosenTokenBalanceFrom: IChosenTokenBalance;
 }
 
 export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
@@ -52,6 +55,8 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
   fromToken,
   toToken,
   switchFromAndTo,
+  chosenTokenBalanceTo,
+  chosenTokenBalanceFrom,
 }) => {
   return (
     <>
@@ -61,6 +66,7 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
         formType={"From"}
         chainId={fromChain}
         tokenAddress={fromToken}
+        chosenTokenBalance={chosenTokenBalanceFrom}
       />
       <IconContainer onClick={switchFromAndTo}>
         <IconCircle>
@@ -73,6 +79,7 @@ export const SelectChainAndToken: React.FC<ISelectChainAndToken> = ({
         formType={"To"}
         chainId={toChain}
         tokenAddress={toToken}
+        chosenTokenBalance={chosenTokenBalanceTo}
       />
     </>
   );

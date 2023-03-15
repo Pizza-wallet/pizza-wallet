@@ -40,3 +40,8 @@ export interface ITokenList {
   arbitrum?: IToken[];
   optimism?: IToken[];
 }
+
+export interface IChosenTokenBalance {
+  amount: string | null;
+  priceUSD: string;
+}
