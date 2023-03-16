@@ -13,6 +13,7 @@ import styled from "styled-components";
 import { ChainsTokensToolsProvider } from "./providers/chainsTokensToolsProvider";
 import { IGroupedToken } from "./types";
 import { useWeb3AuthExecutionStore } from "./stores/web3Auth";
+import { useTransferHistory } from "./hooks/useTransferHistory";
 
 const { Header, Sider, Content } = Layout;
 
@@ -41,7 +42,7 @@ const Account = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'Account'*/
-      /*webpackPrefetch: true */ "./components/Account/Account"
+      /*webpackPrefetch: true */ "./components/Account/TemporaryConnectAccount"
     ),
 );
 const Transfer = React.lazy(
@@ -162,8 +163,9 @@ const App = () => {
   const [totalBalance, setTotalBalance] = useState<string>();
   const [balances, setBalances] = useState<IGroupedToken[]>([]);
   const [showDashBoard, setShowDashboard] = useState(true);
-  const [transferHistory, setTransferHistory] = useState<any[]>([]);
+  // const [transferHistory, setTransferHistory] = useState<any[]>([]);
   const { provider } = useWeb3AuthExecutionStore((state: any) => state);
+  const { transferHistory } = useTransferHistory();
 
   useEffect(() => {
     !provider ? setShowDashboard(false) : setShowDashboard(true);
@@ -258,10 +260,7 @@ const App = () => {
                         <Transfer />
                       </Route>
                       <Route path="/activity">
-                        <ERC20Transfers
-                          transferHistory={transferHistory}
-                          setTransferHistory={setTransferHistory}
-                        />
+                        <ERC20Transfers transferHistory={transferHistory} />
                       </Route>
                       <Route path="/dex">
                         <DEX />

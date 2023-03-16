@@ -1,10 +1,4 @@
 import React, { useState } from "react";
-import { useWeb3React } from "@web3-react/core";
-import ConnectButton from "./ConnectButton";
-import { metaMask } from "./connectors/metamask";
-import { Button } from "antd";
-import metamask_Logo from "./WalletIcons/metamaskWallet.png";
-import { getAddChainParameters } from "./connectors/networks";
 import PizzawalletModal from "../reusable/PizzawalletModal";
 import Address from "../Address/Address";
 import styled from "styled-components";
@@ -13,6 +7,7 @@ import { apiList } from "../../helpers/explorerApis";
 import { CustomImg } from "../reusable/CustomImg";
 import { LogoutButton, ButtonContainer } from "../reusable/Buttons";
 import AccountLogo from "../../assets/account-logo.svg";
+import { useLogout } from "../../hooks/useLogout";
 
 const StyledP = styled(`p`)`
   font-family: Rubik;
@@ -64,11 +59,11 @@ interface WantedChain {
   chain?: number;
 }
 
-const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
-  const { account, chainId } = useWeb3React();
+const TemporaryConnectAccount: React.FC<WantedChain> = (_props) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const { handleLogout } = useLogout();
 
-  const chain = props.chain !== undefined ? props.chain : chainId;
+  // const chain = props.chain !== undefined ? props.chain : chainId;
 
   const navigateToBlockExplorer = (chainId: number) => {
     const chain = chainId.toString();
@@ -125,7 +120,7 @@ const TemporaryConnectAccount: React.FC<WantedChain> = (props) => {
                 height={"51px"}
                 margin={"20px auto 30px auto"}
               >
-                <LogoutButton>Sign Out</LogoutButton>
+                <LogoutButton onClick={handleLogout}>Sign Out</LogoutButton>
               </ButtonContainer>
             </div>
           </>
