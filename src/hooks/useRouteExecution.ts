@@ -11,7 +11,8 @@ import {
   isRouteFailed,
   useRouteExecutionStore,
 } from "../stores";
-import { useWeb3React } from "@web3-react/core";
+// import { useWeb3React } from "@web3-react/core";
+import { useWeb3AuthExecutionStore } from "../stores/web3Auth";
 import { deepClone } from "../helpers/utils";
 
 interface RouteExecutionProps {
@@ -31,7 +32,9 @@ export const useRouteExecution = ({
   const lifi = useLiFi();
 
   // using web3React temporarily to get signer
-  const { provider } = useWeb3React();
+  // const { provider } = useWeb3React();
+  const { provider } = useWeb3AuthExecutionStore((state: any) => state);
+  console.log("provider - ", provider);
   const signer = provider?.getSigner();
 
   const queryClient = useQueryClient();
