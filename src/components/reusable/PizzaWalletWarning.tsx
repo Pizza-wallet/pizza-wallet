@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import warningStripe from "../../assets/warningStripe.svg";
 
 const WarningContainer = styled(`div`)`
   position: relative;
   width: 282px;
   height: 109px;
-  margin: ${({ margin }: { margin: string }) => margin};
+  margin: ${({ margin }: { margin?: string }) => margin};
 `;
 
 const BackdropStyled = styled("div")`
@@ -14,8 +15,12 @@ const BackdropStyled = styled("div")`
   width: 282px;
   height: 109px;
   border: 2px solid #f34337;
-  background: #f8e4de;
+  background-image: url(${warningStripe});
+  // background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
   border-radius: 15px;
+  background-color: #f8e4de;
 `;
 
 const WarningNotification = styled("div")`
@@ -28,10 +33,10 @@ const WarningNotification = styled("div")`
   position: relative;
   background: #f8e4de;
 
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
+  // display: flex;
+  // justify-content: center;
+  // align-content: center;
+  // flex-direction: column;
 `;
 
 const StyledTitle = styled(`p`)`
@@ -58,7 +63,7 @@ const StyledMessage = styled(`p`)`
 interface IPizzawalletWarning {
   title: string;
   message: string;
-  margin: string;
+  margin?: string;
 }
 
 function PizzaWalletWarning({ title, message, margin }: IPizzawalletWarning) {

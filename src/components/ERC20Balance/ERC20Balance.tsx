@@ -77,6 +77,8 @@ function ERC20Balance({
     }
   }, [account, tokens]);
 
+  console.log("test limit digits - ", limitDigits(0.00000000007));
+
   return (
     <TableContainer>
       <Table
