@@ -67,6 +67,10 @@ export const TokenList: FC<ITokenList> = ({
   const handleTokenClick = (token: LIFIToken) => {
     const tokenAddress = token.address;
     setToken(tokenAddress);
+
+    // if this is formType - From then check if this tokens chainId is equal to current chain
+    // if it isn't then make a call to function to switch the current chain.
+
     // set more information about the price etc
     const amount = token.amount;
     const priceUSD = token.priceUSD;

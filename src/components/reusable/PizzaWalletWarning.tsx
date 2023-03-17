@@ -33,10 +33,10 @@ const WarningNotification = styled("div")`
   position: relative;
   background: #f8e4de;
 
-  // display: flex;
-  // justify-content: center;
-  // align-content: center;
-  // flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
 `;
 
 const StyledTitle = styled(`p`)`
