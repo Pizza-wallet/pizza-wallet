@@ -164,12 +164,13 @@ const App = () => {
   const [balances, setBalances] = useState<IGroupedToken[]>([]);
   const [showDashBoard, setShowDashboard] = useState(true);
   // const [transferHistory, setTransferHistory] = useState<any[]>([]);
-  const { provider } = useWeb3AuthExecutionStore((state: any) => state);
+  const { provider, web3Auth } = useWeb3AuthExecutionStore((state: any) => state);
   const { transferHistory } = useTransferHistory();
 
+  // todo: create logged in view logic
   useEffect(() => {
-    !provider ? setShowDashboard(false) : setShowDashboard(true);
-  }, [provider]);
+    !provider ? setShowDashboard(false) : setShowDashboard(true); 
+  }), [provider];
 
   if (!showDashBoard) {
     return (
