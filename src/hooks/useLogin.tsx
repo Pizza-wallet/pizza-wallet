@@ -14,7 +14,7 @@ export const useLogin = () => {
       try {
         const web3auth = new Web3Auth({
           clientId: `${process.env.REACT_APP_W3A_CLIENT_ID}`,
-          web3AuthNetwork: "testnet", // mainnet, aqua, celeste, cyan or testnet
+          web3AuthNetwork: "mainnet", // mainnet, aqua, celeste, cyan or testnet
           authMode: "WALLET",
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
