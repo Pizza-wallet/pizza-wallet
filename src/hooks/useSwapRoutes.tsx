@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Big from "big.js";
 import { useToken } from "./useToken";
 import { useLiFi } from "../providers";
+import { useWeb3AuthExecutionStore } from "../stores/web3Auth/useWeb3AuthExecutionStore";
 
 const refetchTime = 60_000;
 const defaultSlippage = "0.5";
@@ -28,7 +29,8 @@ export const useSwapRoutes = (
   const lifi = useLiFi();
   // const { variant, sdkConfig } = useWidgetConfig();
   // const { account, provider } = useWallet();
-  const account = process.env.REACT_APP_TEST_ACCOUNT;
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
+  //const account = process.env.REACT_APP_TEST_ACCOUNT;
   const queryClient = useQueryClient();
   // const { slippage, enabledBridges, enabledExchanges, routePriority } =
   //   useSettings([
@@ -60,7 +62,7 @@ export const useSwapRoutes = (
     Number(fromTokenAmount) > 0;
   const queryKey = [
     "routes",
-    account,
+    address,
     fromChainId,
     fromToken?.address,
     fromTokenAmount,

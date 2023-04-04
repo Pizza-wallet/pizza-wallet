@@ -1,10 +1,5 @@
 import type { SafeEventEmitterProvider } from "@web3auth/base";
-import { useWeb3AuthExecutionStore } from "../stores/web3Auth";
 import { ethers } from "ethers";
-
-const { setAddress } = useWeb3AuthExecutionStore(
-  (state: any) => state,
-);
 
 export default class EthereumRpc {
   private provider: SafeEventEmitterProvider;
@@ -33,7 +28,6 @@ export default class EthereumRpc {
       // Get user's Ethereum public address
       const address = await signer.getAddress();
       return address;
-      setAddress(address);
     } catch (error) {
       return error;
     }

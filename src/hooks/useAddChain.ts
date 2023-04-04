@@ -11,7 +11,7 @@ export const useAddChain = () => {
         return;
     } else {
         try {
-            // todo add dynamic chain config logic
+            // todo:  chain config logic
             await web3auth.addChain(
                 {}
             );

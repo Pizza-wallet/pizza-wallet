@@ -13,8 +13,8 @@ export const useLogout = () => {
       try {
         await web3auth.logout();
         setProvider(null);
-        console.log("Logged out successfully.")
-      } catch(error) {
+        console.log("Logged out successfully.");
+      } catch (error) {
         console.log(error);
       }
     };

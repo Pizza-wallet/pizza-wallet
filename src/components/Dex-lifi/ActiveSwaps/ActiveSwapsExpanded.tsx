@@ -7,6 +7,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import type { Route } from "@lifi/sdk";
+import { useWeb3AuthExecutionStore } from "../../../stores/web3Auth/useWeb3AuthExecutionStore";
 
 const FontAwesomeIconStyled = styled(FontAwesomeIcon)`
   font-size: 1.75rem;
@@ -43,8 +44,9 @@ export const ActiveSwapsExpanded = ({
   setPage: (x: string) => void;
   setSelectedRoute: (val: Route) => void;
 }) => {
-  const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
-  const executingRoutes = useExecutingRoutesIds(accountAddress);
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
+  //const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
+  const executingRoutes = useExecutingRoutesIds(address);
   const deleteRoutes = useRouteExecutionStore((store) => store.deleteRoutes);
 
   if (!executingRoutes.length) {

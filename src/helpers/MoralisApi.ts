@@ -1,10 +1,11 @@
+import { useWeb3AuthExecutionStore } from "../stores/web3Auth/useWeb3AuthExecutionStore";
+
 export interface moralisApi {
   endpoint: string;
   chains: string[];
 }
 
-// todo: connect to user account
-const address = process.env.REACT_APP_TEST_ACCOUNT;
+const { address } = useWeb3AuthExecutionStore((state: any) => state);
 
 export const moralisNftApi: moralisApi[] = [
   {

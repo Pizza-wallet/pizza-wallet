@@ -3,6 +3,7 @@ import { useExecutingRoutesIds } from "../../../stores";
 import { ActiveSwapItem } from "./ActiveSwapItem";
 import { PizzaWalletCard } from "../../reusable/PizzaWalletCard";
 import styled from "styled-components";
+import { useWeb3AuthExecutionStore } from "../../../stores/web3Auth/useWeb3AuthExecutionStore";
 
 const CardTitle = styled("p")`
   color: #3e389f;
@@ -26,8 +27,9 @@ const Typography = styled("p")`
 export const ActiveSwaps: React.FC<{ navigate: (x: string) => void }> = ({
   navigate,
 }) => {
-  const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
-  const executingRoutes = useExecutingRoutesIds(accountAddress);
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
+  //const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
+  const executingRoutes = useExecutingRoutesIds(address);
 
   const handleShowAll = () => {
     // navigate to page to show all active swaps

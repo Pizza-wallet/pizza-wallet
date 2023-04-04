@@ -6,6 +6,7 @@ import { useChains } from "./useChains";
 // import { useWallet } from '../providers';
 import { isRouteDone } from "../stores";
 import { useTokenBalance } from "./useTokenBalance";
+import { useWeb3AuthExecutionStore } from "../stores/web3Auth/useWeb3AuthExecutionStore";
 
 export interface GasSufficiency {
   gasAmount: Big;
@@ -20,7 +21,8 @@ const refetchInterval = 30_000;
 
 export const useGasSufficiency = (route?: Route) => {
   // const { account } = useWallet();
-  const accountAddress = process.env.REACT_APP_TEST_ACCOUNT;
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
+  //const address = process.env.REACT_APP_TEST_ACCOUNT;
   const { getChainById } = useChains();
   const { token: fromToken, getTokenBalancesWithRetry } = useTokenBalance(
     route?.fromToken,
@@ -28,9 +30,9 @@ export const useGasSufficiency = (route?: Route) => {
 
   const { data: insufficientGas, isInitialLoading: insufficientGasLoading } =
     useQuery(
-      ["gas-sufficiency-check", accountAddress, route?.id],
+      ["gas-sufficiency-check", address, route?.id],
       async () => {
-        if (!accountAddress || !route) {
+        if (!address || !route) {
           return null;
         }
         const gasCosts = route.steps
@@ -69,7 +71,7 @@ export const useGasSufficiency = (route?: Route) => {
         }
 
         const tokenBalances = await getTokenBalancesWithRetry(
-          accountAddress,
+          address,
           Object.values(gasCosts).map((item) => item.token),
         );
 
@@ -113,7 +115,7 @@ export const useGasSufficiency = (route?: Route) => {
         return gasCostResult;
       },
       {
-        enabled: Boolean(accountAddress && route),
+        enabled: Boolean(address && route),
         refetchInterval,
         staleTime: refetchInterval,
         cacheTime: refetchInterval,
@@ -124,9 +126,9 @@ export const useGasSufficiency = (route?: Route) => {
     data: insufficientFunds,
     isInitialLoading: insufficientFundsLoading,
   } = useQuery(
-    ["funds-sufficiency-check", accountAddress, route?.id],
+    ["funds-sufficiency-check", address, route?.id],
     async () => {
-      if (!accountAddress || !fromToken || !route || isRouteDone(route)) {
+      if (!address || !fromToken || !route || isRouteDone(route)) {
         return null;
       }
       let currentTokenBalance = Big(fromToken?.amount ?? 0);
@@ -145,7 +147,7 @@ export const useGasSufficiency = (route?: Route) => {
         return insufficientFunds;
       }
 
-      const tokenBalances = await getTokenBalancesWithRetry(accountAddress, [
+      const tokenBalances = await getTokenBalancesWithRetry(address, [
         currentAction.fromToken,
       ]);
 
@@ -156,7 +158,7 @@ export const useGasSufficiency = (route?: Route) => {
       return insufficientFunds;
     },
     {
-      enabled: Boolean(accountAddress && route && fromToken),
+      enabled: Boolean(address && route && fromToken),
       refetchInterval,
       staleTime: refetchInterval,
       cacheTime: refetchInterval,

@@ -9,6 +9,7 @@ import Eye from "./assets/eye.svg";
 import EyeHidden from "./assets/eyeHidden.svg";
 import styled from "styled-components";
 import PizzaWalletWarning from "../reusable/PizzaWalletWarning";
+import { useWeb3AuthExecutionStore } from "../../stores/web3Auth/useWeb3AuthExecutionStore";
 
 const StyledAddressP = styled(`p`)`
   font-family: "Rubik";
@@ -68,7 +69,7 @@ interface IAddressProps {
 }
 
 function Address(props: IAddressProps) {
-  // const [address, setAddress] = useState<any>();
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
   const [isClicked, setIsClicked] = useState(false);
   const [isPrivateKeyVisible, setIsPrivateKeyVisible] = useState(false);
 
@@ -76,7 +77,7 @@ function Address(props: IAddressProps) {
   //   setAddress(props?.address || (isAuthenticated && account));
   // }, [account, isAuthenticated, props]);
 
-  const address = process.env.REACT_APP_TEST_ACCOUNT;
+  //const address = process.env.REACT_APP_TEST_ACCOUNT;
 
   if (!address)
     return (

@@ -5,6 +5,7 @@ import { useCallback, useMemo } from "react";
 import { useLiFi } from "../providers";
 // import { useWeb3React } from "@web3-react/core";
 import { formatTokenAmount } from "../helpers/formatters";
+import { useWeb3AuthExecutionStore } from "../stores/web3Auth/useWeb3AuthExecutionStore";
 
 const defaultRefetchInterval = 60_000;
 
@@ -14,7 +15,8 @@ export const useTokenBalance = (token?: Token, accountAddress?: string) => {
   // const { provider } = useWeb3React();
   // const account = provider;
   const queryClient = useQueryClient();
-  const walletAddress = accountAddress ?? process.env.REACT_APP_TEST_ACCOUNT;
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
+  //const walletAddress = accountAddress ?? process.env.REACT_APP_TEST_ACCOUNT;
 
   const getTokenBalancesWithRetry = useCallback(
     async (
@@ -46,8 +48,8 @@ export const useTokenBalance = (token?: Token, accountAddress?: string) => {
   );
 
   const tokenBalanceQueryKey = useMemo(
-    () => ["token-balance", walletAddress, token?.chainId, token?.address],
-    [token?.address, token?.chainId, walletAddress],
+    () => ["token-balance", address, token?.chainId, token?.address],
+    [token?.address, token?.chainId, address],
   );
 
   const { data, isLoading, refetch } = useQuery(
@@ -108,7 +110,7 @@ export const useTokenBalance = (token?: Token, accountAddress?: string) => {
       } as TokenAmount;
     },
     {
-      enabled: Boolean(walletAddress && token),
+      enabled: Boolean(address && token),
       refetchInterval: defaultRefetchInterval,
       staleTime: defaultRefetchInterval,
     },

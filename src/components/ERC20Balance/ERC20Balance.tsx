@@ -10,6 +10,7 @@ import {
 } from "./balanceMethods/getBalances";
 import { useChainsTokensTools } from "../../providers/chainsTokensToolsProvider";
 import { IGroupedToken, ITokenList } from "../../types";
+import { useWeb3AuthExecutionStore } from "../../stores/web3Auth/useWeb3AuthExecutionStore";
 
 const TableContainer = styled("div")`
   margin-left: auto;
@@ -29,7 +30,7 @@ function ERC20Balance({
   setBalances,
   balances,
 }: IERC20Balance) {
-  const { account } = useMoralis();
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
   const { tokens } = useChainsTokensTools();
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +50,7 @@ function ERC20Balance({
       // get balances with tokenlist and multicall contract
       const balanceForEachChain: ITokenList = await getTokenBalanceForEachChain(
         // account!
-        process.env.REACT_APP_TEST_ACCOUNT || "",
+        address || "",
         supportedChains!,
       );
 
@@ -75,7 +76,7 @@ function ERC20Balance({
     if (tokensLoaded) {
       getBalancesAsync();
     }
-  }, [account, tokens]);
+  }, [address, tokens]);
 
   console.log("test limit digits - ", limitDigits(0.00000000007));
 

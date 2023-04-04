@@ -5,6 +5,7 @@ import { useLiFi } from "../providers";
 import type { LIFIToken } from "../types/client";
 import { formatTokenAmount } from "../helpers/formatters";
 import { useTokens } from "./useTokens";
+import { useWeb3AuthExecutionStore } from "../stores/web3Auth/useWeb3AuthExecutionStore";
 
 const defaultRefetchInterval = 60_000;
 const minRefetchInterval = 1000;
@@ -12,14 +13,15 @@ const minRefetchInterval = 1000;
 export const useTokenBalances = (selectedChainId?: number) => {
   const lifi = useLiFi();
   // const { account } = useWallet();
-  const account = { address: process.env.REACT_APP_TEST_ACCOUNT };
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
+  //const account = { address: process.env.REACT_APP_TEST_ACCOUNT };
   const { tokens, isLoading } = useTokens(selectedChainId);
   const [refetchInterval, setRefetchInterval] = useState(
     defaultRefetchInterval,
   );
 
   const isBalanceLoadingEnabled =
-    Boolean(account.address) &&
+    Boolean(address.address) &&
     Boolean(tokens?.length) &&
     Boolean(selectedChainId);
 
@@ -28,10 +30,11 @@ export const useTokenBalances = (selectedChainId?: number) => {
     isLoading: isBalanceLoading,
     refetch,
   } = useQuery(
-    ["token-balances", account.address, selectedChainId, tokens?.length],
-    async ({ queryKey: [, accountAddress] }) => {
+    //["token-balances", account.address, selectedChainId, tokens?.length],
+    ["token-balances", address, selectedChainId, tokens?.length],
+    async ({ queryKey: [, address] }) => {
       const tokenBalances = await lifi.getTokenBalances(
-        accountAddress as string,
+        address as string,
         tokens!,
       );
 
