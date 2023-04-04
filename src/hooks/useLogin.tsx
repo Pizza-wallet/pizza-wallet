@@ -13,9 +13,8 @@ export const useLogin = () => {
     const init = async () => {
       try {
         const web3auth = new Web3Auth({
-          clientId:
-            `${process.env.REACT_APP_W3A_CLIENT_ID}`,
-          web3AuthNetwork: `${process.env.REACT_APP_W3A_NETWORK}`, // mainnet, aqua, celeste, cyan or testnet
+          clientId: `${process.env.REACT_APP_W3A_CLIENT_ID}`,
+          web3AuthNetwork: "testnet", // mainnet, aqua, celeste, cyan or testnet
           authMode: "WALLET",
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
@@ -52,11 +51,11 @@ export const useLogin = () => {
       try {
         const web3authProvider = await web3auth.connect();
         setProvider(web3authProvider);
-        console.log("Logged in successfully.")
-      } catch(error) {
+        console.log("Logged in successfully.");
+      } catch (error) {
         console.log(error);
-      };
-    };
+      }
+    }
   };
   return { handleLogin };
 };
