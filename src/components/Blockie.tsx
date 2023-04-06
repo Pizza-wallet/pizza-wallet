@@ -23,11 +23,11 @@ function Blockie(props: IBlockie) {
     return <Skeleton.Avatar active size={40} />;
 
   const generateSeed = () => {
-    if (props.currentWallet && account) {
-      return account.toLowerCase();
-    } else {
-      props.address?.toLowerCase();
-    }
+    // if (props.currentWallet && account) {
+    //   return account.toLowerCase();
+    // } else {
+    return props.address?.toLowerCase();
+    // }
   };
   return (
     <Blockies seed={generateSeed() || ""} className="identicon" {...props} />

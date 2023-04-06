@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useMoralis } from "react-moralis";
 import {
   HashRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
-import { Layout, Alert, Spin } from "antd";
+// import { SafeEventEmitterProvider } from "@web3auth/base";
+import { Layout, Spin } from "antd";
 import "antd/dist/antd.css";
 import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
+import { ChainsTokensToolsProvider } from "./providers/chainsTokensToolsProvider";
+import { IGroupedToken } from "./types";
+//import { useWeb3AuthExecutionStore } from "./stores/web3Auth";
+import { useTransferHistory } from "./hooks/useTransferHistory";
+import { WEB3AUTH_NETWORK_TYPE } from "./config/web3AuthNetwork";
+import { CHAIN_CONFIG_TYPE } from "./config/chainConfig";
+import { Web3AuthProvider } from "./providers/web3Auth";
+import { IWalletProvider } from "./providers/walletProvider";
 
 const { Header, Sider, Content } = Layout;
 
@@ -17,28 +25,28 @@ const ERC20Transfers = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'ERC20Transfers'*/
-      /*webpackPrefetch: true */ "./components/ERC20Transfers"
+      /*webpackPrefetch: true */ "./components/ERC20Transfers/utils"
     ),
 );
 const ERC20Balance = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'ERC20Balance'*/
-      /*webpackPrefetch: true */ "./components/ERC20Balance"
+      /*webpackPrefetch: true */ "./components/ERC20Balance/ERC20Balance"
     ),
 );
 const DEX = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'DEX'*/
-      /*webpackPrefetch: true */ "./components/DEX"
+      /*webpackPrefetch: true */ "./components/Dex-lifi"
     ),
 );
 const Account = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'Account'*/
-      /*webpackPrefetch: true */ "./components/Account/Account"
+      /*webpackPrefetch: true */ "./components/Account/TemporaryConnectAccount"
     ),
 );
 const Transfer = React.lazy(
@@ -55,11 +63,11 @@ const Onramper = React.lazy(
       /*webpackPrefetch: true */ "./components/Onramper"
     ),
 );
-const NativeBalance = React.lazy(
+const TotalBalance = React.lazy(
   () =>
     import(
       /* webpackChunkName: 'NativeBalance'*/
-      /*webpackPrefetch: true */ "./components/NativeBalance"
+      /*webpackPrefetch: true */ "./components/TotalBalance"
     ),
 );
 const SignIn = React.lazy(
@@ -129,8 +137,13 @@ const GridLayout = styled(Layout)`
 `;
 
 const StyledContent = styled(Content)`
-  overflow-y: auto;
   padding-bottom: 1.25rem;
+`;
+
+const StyledLayout = styled(Layout)`
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--layout-blue);
   &::-webkit-scrollbar {
     -webkit-appearance: none;
   }
@@ -150,39 +163,27 @@ const styles = {
 };
 
 const App = () => {
-  const {
-    isWeb3Enabled,
-    enableWeb3,
-    isAuthenticated,
-    isWeb3EnableLoading,
-    authError,
-    account,
-    isInitialized,
-  } = useMoralis();
-
   const [collapsedSideBar, setCollapsedSideBar] = useState(false);
+  const [totalBalance, setTotalBalance] = useState<string>();
+  const [balances, setBalances] = useState<IGroupedToken[]>([]);
   const [showDashBoard, setShowDashboard] = useState(true);
+  // const [transferHistory, setTransferHistory] = useState<any[]>([]);
+  //const { provider, web3Auth } = useWeb3AuthExecutionStore(
+  //  (state: any) => state,
+  //);
+  const [web3AuthNetwork, setWeb3AuthNetwork] =
+    useState<WEB3AUTH_NETWORK_TYPE>("testnet");
+  const [chain, setChain] = useState<CHAIN_CONFIG_TYPE>("sepoliaTestnet");
+  const [provider] = useState<IWalletProvider | null>(null);
+  const { transferHistory } = useTransferHistory();
 
+  // todo: review loggedin view logic
   useEffect(() => {
-    const connectorId: any = window.localStorage.getItem("connectorId");
-    const chainId: number = Number(window.localStorage.getItem("chainId"));
-    if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading)
-      enableWeb3({
-        provider: connectorId,
-        clientId:
-          "BDd_ThRyII1AlPIPirOMjMz4ZZ5ai_NSGrBqU7dV1kBO36YNIrJDPXC-EXxB8W_ck2MQHWOfVOmKRw_MZAmq49A",
-        chainId: chainId,
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, isWeb3Enabled]);
+    !provider ? setShowDashboard(false) : setShowDashboard(true);
+  }),
+    [provider];
 
-  useEffect(() => {
-    const isAuth = () =>
-      !isAuthenticated ? setShowDashboard(false) : setShowDashboard(true);
-    isInitialized && isAuth();
-  }, [isInitialized, isAuthenticated]);
-
-  if (!showDashBoard || !account) {
+  if (!showDashBoard) {
     return (
       <GridLayout>
         <React.Suspense
@@ -194,111 +195,121 @@ const App = () => {
     );
   } else {
     return (
-      <Layout style={{ height: "100vh" }} hasSider>
-        <React.Suspense
-          fallback={
-            <GridLayout>
-              <Spin size="large" style={{ color: "#3e389f" }}></Spin>
-            </GridLayout>
-          }
-        >
-          <Router>
-            <Sider
-              width={293}
-              breakpoint="md"
-              collapsedWidth="0"
-              onBreakpoint={(broken) => {
-                console.log(broken);
-              }}
-              onCollapse={(collapsed, type) => {
-                console.log(collapsed, type);
-                setCollapsedSideBar(!collapsedSideBar);
-              }}
-              style={{
-                zIndex: "1",
-                height: "100vh",
-                position: "fixed",
-                width: "18.3125rem",
-                backgroundColor: "#F8F2ED",
-                left: 0,
-                top: 0,
-                bottom: 0,
-              }}
+      <Web3AuthProvider chain={chain} web3AuthNetwork={web3AuthNetwork}>
+        <ChainsTokensToolsProvider>
+          <StyledLayout hasSider>
+            <React.Suspense
+              fallback={
+                <GridLayout>
+                  <Spin size="large" style={{ color: "#3e389f" }}></Spin>
+                </GridLayout>
+              }
             >
-              <div style={{ display: "flex" }}>
-                <Logo />
-              </div>
-              <div style={{ position: "relative" }}>
-                <BackdropStyled></BackdropStyled>
-                <BalanceContainerStyled>
-                  <BalanceTitleStyled>
-                    <BalanceTextStyled>Balance</BalanceTextStyled>
-                  </BalanceTitleStyled>
-                  <NativeBalance />
-                </BalanceContainerStyled>
-              </div>
-              <MenuItems />
-            </Sider>
-            <Layout
-              style={{
-                marginLeft: collapsedSideBar ? 0 : 293,
-                backgroundColor: "#2F2A75",
-              }}
-            >
-              <Header
-                style={{
-                  marginTop: "2rem",
-                  padding: 0,
-                  backgroundColor: "#2F2A75",
-                }}
-              >
-                <div style={{ float: "right", marginRight: "0.625rem" }}>
-                  <Account />
-                </div>
-              </Header>
-              <StyledContent>
-                {authError && (
-                  <div style={styles.errorDiv}>
-                    <Alert message={authError.message} type="error" closable />
+              <Router>
+                <Sider
+                  width={293}
+                  breakpoint="md"
+                  collapsedWidth="0"
+                  onBreakpoint={(broken) => {
+                    console.log(broken);
+                  }}
+                  onCollapse={(collapsed, type) => {
+                    console.log(collapsed, type);
+                    setCollapsedSideBar(!collapsedSideBar);
+                  }}
+                  style={{
+                    zIndex: "1",
+                    height: "100vh",
+                    position: "fixed",
+                    width: "18.3125rem",
+                    backgroundColor: "#F8F2ED",
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                  }}
+                >
+                  <div style={{ display: "flex" }}>
+                    <Logo />
                   </div>
-                )}
-                <div style={styles.content}>
-                  <Switch>
-                    <Route path="/dashboard">
-                      <ERC20Balance />
-                    </Route>
-                    <Route path="/transfer">
-                      <Transfer />
-                    </Route>
-                    <Route path="/activity">
-                      <ERC20Transfers />
-                    </Route>
-                    <Route path="/dex">
-                      <DEX />
-                    </Route>
-                    <Route path="/onramper">
-                      <div
-                        style={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <Onramper />
-                      </div>
-                    </Route>
-                    <Route path="/">
-                      <Redirect to="/dashboard" />
-                    </Route>
-                    <Route path="/home">
-                      <Redirect to="/dashboard" />
-                    </Route>
-                    <Route path="/nonauthenticated">
-                      <>Please login using the "Authenticate" button</>
-                    </Route>
-                  </Switch>
-                </div>
-              </StyledContent>
-            </Layout>
-          </Router>
-        </React.Suspense>
-      </Layout>
+                  <div style={{ position: "relative" }}>
+                    <BackdropStyled></BackdropStyled>
+                    <BalanceContainerStyled>
+                      <BalanceTitleStyled>
+                        <BalanceTextStyled>Balance</BalanceTextStyled>
+                      </BalanceTitleStyled>
+                      <TotalBalance totalBalance={totalBalance} />
+                    </BalanceContainerStyled>
+                  </div>
+                  <MenuItems />
+                </Sider>
+                <Layout
+                  style={{
+                    marginLeft: collapsedSideBar ? 0 : 293,
+                    backgroundColor: "#2F2A75",
+                  }}
+                >
+                  <Header
+                    style={{
+                      marginTop: "2rem",
+                      padding: 0,
+                      backgroundColor: "#2F2A75",
+                    }}
+                  >
+                    <div style={{ float: "right", marginRight: "0.625rem" }}>
+                      <Account />
+                    </div>
+                  </Header>
+                  <StyledContent>
+                    <div style={styles.content}>
+                      <Switch>
+                        <Route path="/dashboard">
+                          <ERC20Balance
+                            setTotalBalance={setTotalBalance}
+                            setBalances={setBalances}
+                            balances={balances}
+                          />
+                        </Route>
+                        <Route path="/transfer">
+                          <Transfer />
+                        </Route>
+                        <Route path="/activity">
+                          {/*
+                          This logic is flawed because it means we will fetch the tx history before the user logs in, which is impossible
+                          todo: Only fetch tx history after logging in - @gitChimp88
+                          */}
+                          <ERC20Transfers transferHistory={transferHistory} />
+                        </Route>
+                        <Route path="/dex">
+                          <DEX />
+                        </Route>
+                        <Route path="/onramper">
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Onramper />
+                          </div>
+                        </Route>
+                        <Route path="/">
+                          <Redirect to="/dashboard" />
+                        </Route>
+                        <Route path="/home">
+                          <Redirect to="/dashboard" />
+                        </Route>
+                        <Route path="/nonauthenticated">
+                          <>Please login using the "Authenticate" button</>
+                        </Route>
+                      </Switch>
+                    </div>
+                  </StyledContent>
+                </Layout>
+              </Router>
+            </React.Suspense>
+          </StyledLayout>
+        </ChainsTokensToolsProvider>
+      </Web3AuthProvider>
     );
   }
 };

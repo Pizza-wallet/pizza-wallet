@@ -1,69 +1,77 @@
-import { useMoralis } from "react-moralis";
-import { getEllipsisTxt } from "../../helpers/formatters";
-import { getExplorer } from "../../helpers/networks";
-import { useERC20Transfers } from "../../hooks/useERC20Transfers";
+import { useState, useEffect } from "react";
+import "antd/dist/antd.css";
 import Table from "../reusable/Table";
+import { TransferColumns } from "./TransferColumns";
+import styled from "styled-components";
 
-function ERC20Transfers() {
-  const { ERC20Transfers, chainId } = useERC20Transfers();
-  const { Moralis } = useMoralis();
+interface INft {
+  amount: string;
+  block_number: string;
+  block_number_minted: string;
+  chainId: number;
+  contract_type: string;
+  last_metadata_sync: any;
+  last_token_uri_sync: string;
+  timeStamp: string;
+  metadata: any;
+  minter_address: string;
+  name: string;
+  owner_of: string;
+  symbol: string;
+  token_address: string;
+  token_hash: string;
+  token_id: string;
+  token_uri: string;
+}
 
-  const columns = [
-    {
-      title: "Token",
-      dataIndex: "address",
-      key: "address",
-      render: (token: string) => getEllipsisTxt(token, 8),
-    },
-    {
-      title: "From",
-      dataIndex: "from_address",
-      key: "from_address",
-      render: (from: string) => getEllipsisTxt(from, 8),
-    },
-    {
-      title: "To",
-      dataIndex: "to_address",
-      key: "to_address",
-      render: (to: string) => getEllipsisTxt(to, 8),
-    },
-    {
-      title: "Value",
-      dataIndex: "value",
-      key: "value",
-      render: (value: number, item: { decimals: number }) =>
-        parseFloat(Moralis.Units.FromWei(value, item.decimals)).toFixed(6),
-    },
-    {
-      title: "Hash",
-      dataIndex: "transaction_hash",
-      key: "transaction_hash",
-      render: (hash: string) => (
-        <a
-          href={`${getExplorer(chainId ? chainId : "")}tx/${hash}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View Transaction
-        </a>
-      ),
-    },
-  ];
+interface ITransaction {
+  blockHash: string;
+  blockNumber: string;
+  chainId: number;
+  confirmations: string;
+  contractAddress: string;
+  cumulativeGasUsed: string;
+  from: string;
+  gas: string;
+  gasPrice: string;
+  gasUsed: string;
+  hash: string;
+  input: string;
+  nonce: string;
+  timeStamp: string;
+  to: string;
+  tokenDecimal: string;
+  tokenName: string;
+  tokenSymbol: string;
+  transactionIndex: string;
+  value: string;
+}
+
+const TableContainer = styled("div")`
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 1010px;
+  max-width: 1084px;
+`;
+
+function ERC20Transfers({ transferHistory }: { transferHistory: any }) {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(transferHistory.length ? false : true);
+  }, [transferHistory]);
 
   return (
     <div>
-      <div
-        style={{
-          margin: "0 3.125rem 3.125rem 3.125rem",
-          height: "100%",
-        }}
-      >
+      <TableContainer>
         <Table
-          tableData={ERC20Transfers}
-          columns={columns}
-          tableTitle={"Transactions History"}
+          tableData={transferHistory}
+          columns={TransferColumns}
+          tableTitle={"History"}
+          expandableRow={false}
+          loading={loading}
         />
-      </div>
+      </TableContainer>
     </div>
   );
 }

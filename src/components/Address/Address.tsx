@@ -1,20 +1,62 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import { getEllipsisTxt } from "../../helpers/formatters";
 import Blockie from "../Blockie";
 import "./identicon.css";
-import { useMoralis } from "react-moralis";
 import { Skeleton } from "antd";
+import { CustomImg } from "../reusable/CustomImg";
+import Copy from "./assets/copy.svg";
+import Eye from "./assets/eye.svg";
+import EyeHidden from "./assets/eyeHidden.svg";
+import styled from "styled-components";
+import PizzaWalletWarning from "../reusable/PizzaWalletWarning";
+import { useWeb3AuthExecutionStore } from "../../stores/web3Auth/useWeb3AuthExecutionStore";
+
+const StyledAddressP = styled(`p`)`
+  font-family: "Rubik";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  margin: 15px auto 0 auto;
+  text-align: center;
+  letter-spacing: 0.04em;
+  width: 16.9375rem;
+  color: rgba(0, 0, 0, 0.6);
+`;
+
+const StyledAddress = styled(`div`)`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.5rem;
+  gap: 0.3125rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5625rem;
+
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 28px;
+  letter-spacing: 0.04em;
+`;
 
 const styles = {
   address: {
-    height: "2.25rem",
     display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     padding: "0.5rem",
     gap: "0.3125rem",
     backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: "0.5625rem",
-    alignItems: "center",
+
+    fontFamily: "Rubik",
+    fontStyle: "normal",
+    fontWeight: "400",
+    fontSize: "24px",
+    lineHeight: "28px",
+    letterSpacing: "0.04em",
   },
 };
 
@@ -27,51 +69,90 @@ interface IAddressProps {
 }
 
 function Address(props: IAddressProps) {
-  const { account, isAuthenticated } = useMoralis();
-  const [address, setAddress] = useState<any>();
+  const { address } = useWeb3AuthExecutionStore((state: any) => state);
   const [isClicked, setIsClicked] = useState(false);
+  const [isPrivateKeyVisible, setIsPrivateKeyVisible] = useState(false);
 
-  useEffect(() => {
-    setAddress(props?.address || (isAuthenticated && account));
-  }, [account, isAuthenticated, props]);
+  // useEffect(() => {
+  //   setAddress(props?.address || (isAuthenticated && account));
+  // }, [account, isAuthenticated, props]);
+
+  //const address = process.env.REACT_APP_TEST_ACCOUNT;
 
   if (!address)
     return (
       <Skeleton paragraph={{ rows: 1, width: "100%" }} title={false} active />
     );
 
-  const Copy = () => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="26"
-      height="26"
-      viewBox="0 0 24 24"
-      strokeWidth="2"
-      stroke="#3E389F"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ cursor: "pointer" }}
-      onClick={() => {
-        navigator.clipboard.writeText(address);
-        setIsClicked(true);
-      }}
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path d="M15 3v4a1 1 0 0 0 1 1h4" />
-      <path d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z" />
-      <path d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2" />
-      <title id="copy-address">Copy Address</title>
-    </svg>
-  );
-
   return (
-    <div style={{ ...styles.address, ...props.style }}>
-      {props.avatar === "left" && <Blockie address={address} size={7} />}
-      <p>{props.size ? getEllipsisTxt(address, props.size) : address}</p>
-      {props.avatar === "right" && <Blockie address={address} size={7} />}
-      {props.copyable && (isClicked ? <Check /> : <Copy />)}
-    </div>
+    <>
+      <StyledAddress>
+        {props.avatar === "left" && (
+          <div style={{ marginRight: "0.625rem", marginTop: "0.75rem" }}>
+            <Blockie address={address} size={10} scale={3} />
+          </div>
+        )}
+
+        <div>
+          <div style={{ display: "flex", marginBottom: "5px" }}>
+            <p style={{ marginRight: "10px" }}>
+              {props.size ? getEllipsisTxt(address, props.size) : address}
+            </p>
+            {props.copyable &&
+              (isClicked ? (
+                <Check />
+              ) : (
+                <CustomImg
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(address);
+                    setIsClicked(true);
+                    setTimeout(() => {
+                      setIsClicked(false);
+                    }, 3000); // 3000 milliseconds = 3 seconds
+                  }}
+                  src={Copy}
+                />
+              ))}
+          </div>
+          <div style={{ display: "flex" }}>
+            <p style={{ marginRight: "10px" }}>Private key</p>
+            {isPrivateKeyVisible ? (
+              <CustomImg
+                style={{ cursor: "pointer", marginLeft: "auto" }}
+                onClick={() => {
+                  setIsPrivateKeyVisible(false);
+                }}
+                src={Eye}
+              />
+            ) : (
+              <CustomImg
+                style={{ cursor: "pointer", marginLeft: "auto" }}
+                onClick={() => {
+                  setIsPrivateKeyVisible(true);
+                }}
+                src={EyeHidden}
+              />
+            )}
+          </div>
+        </div>
+      </StyledAddress>
+      {isPrivateKeyVisible && (
+        <>
+          {/* Hardcoded the below for now */}
+          <StyledAddressP>
+            afdfd9c3d2095ef696594f6cedca3f5e72dcd697e2a7521b1578140422a4f890
+          </StyledAddressP>
+          <PizzaWalletWarning
+            title={"Warning!"}
+            message={
+              "Never disclose this key. Anyone with your private key can steal any assets held in your account."
+            }
+            margin={"20px auto 0 auto"}
+          />
+        </>
+      )}
+    </>
   );
 }
 

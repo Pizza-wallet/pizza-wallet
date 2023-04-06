@@ -1,16 +1,16 @@
-import { useMoralis } from "react-moralis";
-import { Spin, Alert } from "antd";
-import { Button, Card, Modal } from "antd";
 import { useState } from "react";
+import { useLogout } from "../../hooks/useLogout";
+import { useMoralis } from "react-moralis";
+//import { Spin, Alert } from "antd";
+import { Button, Card, Modal } from "antd";
 import Address from "../Address/Address";
 import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "../../helpers/networks";
-import Text from "antd/lib/typography/Text";
-import { connectors } from "./config";
+//import Text from "antd/lib/typography/Text";
 import { CustomImg } from "../reusable/CustomImg";
 import AccountLogo from "../../assets/account-logo.svg";
 import styled from "styled-components";
-import { useAuthenticateUser } from "../../hooks/useAuthenticateUser";
+import { useWeb3Auth } from "../../providers/web3Auth";
 
 const AccountLogoContainer = styled("div")`
   cursor: pointer;
@@ -55,78 +55,9 @@ const styles = {
 };
 
 function Account() {
-  const { isAuthenticated, isAuthenticating, account, chainId, logout } =
-    useMoralis();
-  const { authenticateUser } = useAuthenticateUser();
+  const { logout } = useWeb3Auth();
+  const { account, chainId } = useMoralis();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isAuthModalVisible, setIsAuthModalVisible] = useState(false);
-
-  if (!isAuthenticated || !account) {
-    return (
-      <>
-        <div onClick={() => setIsAuthModalVisible(true)}>
-          <p style={styles.text}>Connect Wallet</p>
-        </div>
-        <Modal
-          visible={isAuthModalVisible}
-          footer={null}
-          onCancel={() => setIsAuthModalVisible(false)}
-          bodyStyle={{
-            padding: "0.9375rem",
-            fontSize: "1.0625rem",
-            fontWeight: "500",
-          }}
-          style={{
-            fontSize: "1rem",
-            fontWeight: "500",
-          }}
-          width="21.25rem"
-          className="custom-modal-style"
-        >
-          <div
-            style={{
-              padding: "0.625rem",
-              display: "flex",
-              justifyContent: "center",
-              fontWeight: "700",
-              fontSize: "1.25rem",
-            }}
-          >
-            <Spin spinning={isAuthenticating}> Connect Wallet </Spin>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-            {connectors.map(({ title, icon, connectorId }, key) => {
-              const provider: any = connectorId;
-              return (
-                <StyledConnector
-                  key={key}
-                  onClick={async () => {
-                    try {
-                      await authenticateUser(
-                        {
-                          provider: provider,
-                          signingMessage: "Pizza Authentication",
-                        },
-                        connectorId,
-                      );
-
-                      setIsAuthModalVisible(false);
-                    } catch (e: any) {
-                      console.log(e);
-                      <Alert message={e.message} type="warning" closable />;
-                    }
-                  }}
-                >
-                  <img src={icon} alt={title} style={styles.icon} />
-                  <Text style={{ fontSize: "0.875rem" }}>{title}</Text>
-                </StyledConnector>
-              );
-            })}
-          </div>
-        </Modal>
-      </>
-    );
-  }
 
   return (
     <>
@@ -186,13 +117,9 @@ function Account() {
             border: "0px",
             color: "white",
           }}
-          onClick={async () => {
-            await logout();
-            window.localStorage.removeItem("connectorId");
-            setIsModalVisible(false);
-          }}
+          onClick={logout}
         >
-          Disconnect Wallet
+          Logout
         </Button>
       </Modal>
     </>

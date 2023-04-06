@@ -1,3 +1,123 @@
+import Big from "big.js";
+import { utils } from "ethers";
+
+// JavaScript numbers use exponential notation for positive exponents of 21 and above. We need more.
+Big.PE = 42;
+// JavaScript numbers use exponential notation for negative exponents of -7 and below. We need more.
+Big.NE = -42;
+
+/**
+ * Format token amount to at least 4 decimals.
+ * @param amount amount to format.
+ * @returns formatted amount.
+ */
+export const formatTokenAmount = (
+  amount: string = "0",
+  decimals: number = 0,
+) => {
+  let shiftedAmount = amount;
+  if (decimals) {
+    shiftedAmount = (Number(amount) / 10 ** decimals).toString();
+  }
+  const parsedAmount = parseFloat(shiftedAmount);
+  if (parsedAmount === 0 || isNaN(Number(shiftedAmount))) {
+    return "0";
+  }
+
+  let decimalPlaces = 3;
+  const absAmount = Math.abs(parsedAmount);
+  while (absAmount < 1 / 10 ** decimalPlaces) {
+    decimalPlaces++;
+  }
+
+  return Big(
+    parseFloat(Big(parsedAmount).toFixed(decimalPlaces + 1, 0)),
+  ).toString();
+};
+
+export const formatTokenPrice = (amount?: string, price?: string) => {
+  if (!amount || !price) {
+    return 0;
+  }
+  if (isNaN(Number(amount)) || isNaN(Number(price))) {
+    return 0;
+  }
+  return parseFloat(amount) * parseFloat(price);
+};
+
+function roundNumber(num: any) {
+  // round the number to 4 decimal places
+  let roundedNum = num.toFixed(4);
+  // extract the integer part of the number
+  let integerPart = Math.floor(roundedNum);
+  // extract the decimal part of the number
+  let decimalPart = roundedNum - integerPart;
+  // if the integer part is greater than 5, round the decimal part in excess
+  if (integerPart > 5) {
+    decimalPart = Math.ceil(decimalPart * 10000) / 10000;
+  }
+  // if the fourth decimal place is greater than or equal to 5, round the third decimal place in excess
+  else if (decimalPart >= 0.0005) {
+    decimalPart = Math.ceil(decimalPart * 1000) / 1000;
+  }
+  // combine the integer and decimal parts to get the rounded number
+  roundedNum = integerPart + decimalPart;
+
+  return roundedNum;
+}
+
+export const limitDigits = (number: number) => {
+  // if number is not a number, too large, 0 or undefined show 0
+  if (isNaN(Number(number)) || number === 0 || !number) {
+    return 0;
+  }
+  if (number === 1e-18) {
+    return "0.0..1";
+  }
+
+  // it's a positive number show with two digits
+  if (number >= 1) {
+    return number.toFixed(2);
+  }
+
+  let decimalStr = number.toString().split(".")[1];
+
+  if (!decimalStr) {
+    // Then there are too many zeros to split as above so use below method
+    const str = number.toExponential().replace(".", "");
+    const [digits, exponent] = str.split("e-");
+    const zeros = "0".repeat(Number(exponent) - digits.length);
+    decimalStr = zeros + digits;
+  }
+
+  if (decimalStr.length) {
+    // If it has a number above zero in the first two digits after comma show two digits
+    if (decimalStr[0] !== "0" || decimalStr[1] !== "0") {
+      return number.toFixed(2);
+    } else if (decimalStr[2] !== "0") {
+      // third decimal point format to 4 decimal places
+      return number.toFixed(4);
+    } else if (decimalStr[3] !== "0" || decimalStr[4] !== "0") {
+      // fourth and fifth decimal point round up
+      return roundNumber(number);
+    } else {
+      // after fifth decimal point we need to display the number as below -
+      // (e.g. 0,00005 --> 0,0..5; 0,000007 --> 0,0..7).
+      const firstNonZeroNumberAfterFifthDecimal = decimalStr
+        .split("")
+        .find((val) => {
+          if (val !== "0") {
+            return val;
+          }
+        });
+      return `0.0..${firstNonZeroNumberAfterFifthDecimal}`;
+    }
+  }
+
+  // This case should never be hit but it's here as a default
+  return number.toFixed(8);
+};
+
 export const n6 = new Intl.NumberFormat("en-us", {
   style: "decimal",
   minimumFractionDigits: 0,
@@ -44,3 +164,7 @@ export const tokenValueTxt = (
   decimals: number,
   symbol: string,
 ) => `${n4.format(tokenValue(value, decimals))} ${symbol}`;
+
+export function weiToEth(weiAmount: any, decimals = 18) {
+  return utils.formatUnits(weiAmount, decimals);
+}
