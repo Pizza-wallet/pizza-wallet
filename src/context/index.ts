@@ -1,1 +1,0 @@
-export { Web3AuthContext } from "./web3AuthContext";

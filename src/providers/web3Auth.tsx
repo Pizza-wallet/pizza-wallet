@@ -1,4 +1,12 @@
-import { FunctionComponent, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Web3Auth } from "@web3auth/modal";
 import { ADAPTER_EVENTS, SafeEventEmitterProvider } from "@web3auth/base";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
@@ -6,11 +14,25 @@ import { getWalletProvider, IWalletProvider } from "./walletProvider";
 import { CHAIN_CONFIG, CHAIN_CONFIG_TYPE } from "../config/chainConfig";
 import { WEB3AUTH_NETWORK_TYPE } from "../config/web3AuthNetwork";
 import { IWeb3AuthContext } from "../types/web3Auth.types";
-import { Web3AuthContext } from "../context";
 
 export function useWeb3Auth(): IWeb3AuthContext {
   return useContext(Web3AuthContext);
 }
+
+export const Web3AuthContext = createContext<IWeb3AuthContext>({
+  web3Auth: null,
+  provider: null,
+  isLoading: false,
+  user: null,
+  chain: "",
+  login: async () => {},
+  logout: async () => {},
+  getUserInfo: async () => {},
+  signMessage: async () => {},
+  getAccounts: async () => {},
+  signTransaction: async () => {},
+  signAndSendTransaction: async () => {},
+});
 
 interface IWeb3AuthState {
   web3AuthNetwork: WEB3AUTH_NETWORK_TYPE;
@@ -25,7 +47,11 @@ interface IWeb3AuthProps {
 
 // all states are recorded in the web3auth session
 // maybe: add everything to global state
-export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, web3AuthNetwork, chain }: IWeb3AuthProps) => {
+export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({
+  children,
+  web3AuthNetwork,
+  chain,
+}: IWeb3AuthProps) => {
   const [web3Auth, setWeb3Auth] = useState<Web3Auth | null>(null);
   const [provider, setProvider] = useState<IWalletProvider | null>(null);
   const [user, setUser] = useState<unknown | null>(null);
@@ -36,7 +62,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
       const walletProvider = getWalletProvider(web3authProvider);
       setProvider(walletProvider);
     },
-    [chain]
+    [chain],
   );
 
   // Subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
@@ -86,7 +112,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
           loginSettings: {
             mfaLevel: "optional",
           },
-          adapterSettings: { 
+          adapterSettings: {
             network: web3AuthNetwork,
             // todo: config
             //whiteLabel: {
@@ -96,7 +122,8 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
             //  defaultLanguage: "en",
             //  dark: true, // whether to enable dark mode. defaultValue: false
             //},
-          }});
+          },
+        });
         web3AuthInstance.configureAdapter(adapter);
         subscribeAuthEvents(web3AuthInstance);
         setWeb3Auth(web3AuthInstance);
@@ -183,6 +210,10 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
     signTransaction,
     signAndSendTransaction,
   };
-  // todo: can you help here? - @gitChimp88
-  return <Web3AuthContext.Provider value={contextProvider}>{children}</Web3AuthContext.Provider>;
+
+  return (
+    <Web3AuthContext.Provider value={contextProvider}>
+      {children}
+    </Web3AuthContext.Provider>
+  );
 };
