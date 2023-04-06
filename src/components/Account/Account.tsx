@@ -10,6 +10,7 @@ import { getExplorer } from "../../helpers/networks";
 import { CustomImg } from "../reusable/CustomImg";
 import AccountLogo from "../../assets/account-logo.svg";
 import styled from "styled-components";
+import { useWeb3Auth } from "../../providers/web3Auth";
 
 const AccountLogoContainer = styled("div")`
   cursor: pointer;
@@ -54,9 +55,9 @@ const styles = {
 };
 
 function Account() {
+  const { logout } = useWeb3Auth();
   const { account, chainId } = useMoralis();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { handleLogout } = useLogout();
 
   return (
     <>
@@ -116,7 +117,7 @@ function Account() {
             border: "0px",
             color: "white",
           }}
-          onClick={handleLogout}
+          onClick={logout}
         >
           Logout
         </Button>

@@ -1,109 +1,74 @@
-import type { SafeEventEmitterProvider } from "@web3auth/base";
+import { SafeEventEmitterProvider } from "@web3auth/base";
 import { ethers } from "ethers";
+import { IWalletProvider } from "./walletProvider";
 
-export default class EthereumRpc {
-  private provider: SafeEventEmitterProvider;
-
-  constructor(provider: SafeEventEmitterProvider) {
-    this.provider = provider;
-  }
-
-  async getChainId(): Promise<any> {
+const ethProvider = (provider: SafeEventEmitterProvider): IWalletProvider => {
+  const getAccounts = async () => {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      // Get the connected Chain's ID
-      const networkDetails = await ethersProvider.getNetwork();
-
-      return networkDetails.chainId;
+      const providerInstance = new ethers.providers.Web3Provider(provider);
+      const accounts = await providerInstance.listAccounts();
+      console.log("Eth accounts", accounts);
     } catch (error) {
-      return error;
+      console.log("Error", error);
     }
-  }
+  };
 
-  async getAccounts(): Promise<any> {
+  // todo: generalise for user input
+  const signMessage = async () => {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const signer = ethersProvider.getSigner();
-
-      // Get user's Ethereum public address
-      const address = await signer.getAddress();
-      return address;
+      const pubKey = (await provider.request({
+        method: "eth_accounts",
+      })) as string[];
+      const providerInstance = new ethers.providers.Web3Provider(provider);
+      const signer = providerInstance.getSigner(pubKey[0]);
+      const message =
+        "0x47173285a8d7341e5e972fc677286384f802f8ef42a5ec5f03bbfa254cb01fad";
+      const signature = await signer.signMessage(message);
+      console.log("Eth sign message => true", signature);
     } catch (error) {
-      return error;
+      console.log("error", error);
     }
-  }
+  };
 
-  async getBalance(): Promise<string> {
+  // todo: generalise for user input
+  const signAndSendTransaction = async () => {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const signer = ethersProvider.getSigner();
-
-      // Get user's Ethereum public address
-      const address = await signer.getAddress();
-
-      // Get user's balance in ether
-      const balance = ethers.utils.formatEther(
-        await ethersProvider.getBalance(address), // Balance is in wei
-      );
-
-      return balance;
-    } catch (error) {
-      return error as string;
-    }
-  }
-
-  async sendTransaction(): Promise<any> {
-    try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const signer = ethersProvider.getSigner();
-
-      const destination = "0x40e1c367Eca34250cAF1bc8330E9EddfD403fC56";
-
-      // Convert 1 ether to wei
-      const amount = ethers.utils.parseEther("0.001");
-
-      // Submit transaction to the blockchain
-      const tx = await signer.sendTransaction({
-        to: destination,
-        value: amount,
-        maxPriorityFeePerGas: "5000000000", // Max priority fee per gas
-        maxFeePerGas: "6000000000000", // Max fee per gas
+      const providerInstance = new ethers.providers.Web3Provider(provider);
+      const signer = providerInstance.getSigner();
+      const accounts = await providerInstance.listAccounts();
+      const txRes = await signer.sendTransaction({
+        to: accounts[0],
+        value: ethers.utils.parseEther("0.01"),
       });
-
-      // Wait for transaction to be mined
-      const receipt = await tx.wait();
-
-      return receipt;
+      console.log("txRes", txRes);
     } catch (error) {
-      return error as string;
+      console.log("error", error);
     }
-  }
+  };
 
-  async signMessage() {
+  // todo: generalise for user input
+  const signTransaction = async () => {
     try {
-      const ethersProvider = new ethers.providers.Web3Provider(this.provider);
-      const signer = ethersProvider.getSigner();
-
-      const originalMessage = "YOUR_MESSAGE";
-
-      // Sign the message
-      const signedMessage = await signer.signMessage(originalMessage);
-
-      return signedMessage;
+      const providerInstance = new ethers.providers.Web3Provider(provider);
+      const signer = providerInstance.getSigner();
+      const accounts = await providerInstance.listAccounts();
+      const tx = {
+        to: accounts[0],
+        value: ethers.utils.parseEther("0.01"),
+      };
+      // only supported with social logins (openlogin adapter)
+      const txRes = await signer.signTransaction(tx);
+      console.log("txRes", txRes);
     } catch (error) {
-      return error as string;
+      console.log("error", error);
     }
-  }
+  };
+  return {
+    getAccounts,
+    signMessage,
+    signAndSendTransaction,
+    signTransaction,
+  };
+};
 
-  async getPrivateKey(): Promise<any> {
-    try {
-      const privateKey = await this.provider.request({
-        method: "eth_private_key",
-      });
-
-      return privateKey;
-    } catch (error) {
-      return error as string;
-    }
-  }
-}
+export default ethProvider;

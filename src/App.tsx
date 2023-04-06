@@ -12,8 +12,12 @@ import PizzaWalletLogo from "./assets/pizza-wallet-logo.svg";
 import styled from "styled-components";
 import { ChainsTokensToolsProvider } from "./providers/chainsTokensToolsProvider";
 import { IGroupedToken } from "./types";
-import { useWeb3AuthExecutionStore } from "./stores/web3Auth";
+//import { useWeb3AuthExecutionStore } from "./stores/web3Auth";
 import { useTransferHistory } from "./hooks/useTransferHistory";
+import { WEB3AUTH_NETWORK_TYPE } from "./config/web3AuthNetwork";
+import { CHAIN_CONFIG_TYPE } from "./config/chainConfig";
+import { Web3AuthProvider } from "./providers/web3Auth";
+import { IWalletProvider } from "./providers/walletProvider";
 
 const { Header, Sider, Content } = Layout;
 
@@ -164,12 +168,16 @@ const App = () => {
   const [balances, setBalances] = useState<IGroupedToken[]>([]);
   const [showDashBoard, setShowDashboard] = useState(true);
   // const [transferHistory, setTransferHistory] = useState<any[]>([]);
-  const { provider, web3Auth } = useWeb3AuthExecutionStore(
-    (state: any) => state,
-  );
+  //const { provider, web3Auth } = useWeb3AuthExecutionStore(
+  //  (state: any) => state,
+  //);
+  const [web3AuthNetwork, setWeb3AuthNetwork] =
+    useState<WEB3AUTH_NETWORK_TYPE>("testnet");
+  const [chain, setChain] = useState<CHAIN_CONFIG_TYPE>("sepoliaTestnet");
+  const [provider] = useState<IWalletProvider | null>(null);
   const { transferHistory } = useTransferHistory();
 
-  // todo: create logged in view logic
+  // todo: review loggedin view logic
   useEffect(() => {
     !provider ? setShowDashboard(false) : setShowDashboard(true);
   }),
@@ -187,112 +195,121 @@ const App = () => {
     );
   } else {
     return (
-      <ChainsTokensToolsProvider>
-        <StyledLayout hasSider>
-          <React.Suspense
-            fallback={
-              <GridLayout>
-                <Spin size="large" style={{ color: "#3e389f" }}></Spin>
-              </GridLayout>
-            }
-          >
-            <Router>
-              <Sider
-                width={293}
-                breakpoint="md"
-                collapsedWidth="0"
-                onBreakpoint={(broken) => {
-                  console.log(broken);
-                }}
-                onCollapse={(collapsed, type) => {
-                  console.log(collapsed, type);
-                  setCollapsedSideBar(!collapsedSideBar);
-                }}
-                style={{
-                  zIndex: "1",
-                  height: "100vh",
-                  position: "fixed",
-                  width: "18.3125rem",
-                  backgroundColor: "#F8F2ED",
-                  left: 0,
-                  top: 0,
-                  bottom: 0,
-                }}
-              >
-                <div style={{ display: "flex" }}>
-                  <Logo />
-                </div>
-                <div style={{ position: "relative" }}>
-                  <BackdropStyled></BackdropStyled>
-                  <BalanceContainerStyled>
-                    <BalanceTitleStyled>
-                      <BalanceTextStyled>Balance</BalanceTextStyled>
-                    </BalanceTitleStyled>
-                    <TotalBalance totalBalance={totalBalance} />
-                  </BalanceContainerStyled>
-                </div>
-                <MenuItems />
-              </Sider>
-              <Layout
-                style={{
-                  marginLeft: collapsedSideBar ? 0 : 293,
-                  backgroundColor: "#2F2A75",
-                }}
-              >
-                <Header
+      <Web3AuthProvider chain={chain} web3AuthNetwork={web3AuthNetwork}>
+        <ChainsTokensToolsProvider>
+          <StyledLayout hasSider>
+            <React.Suspense
+              fallback={
+                <GridLayout>
+                  <Spin size="large" style={{ color: "#3e389f" }}></Spin>
+                </GridLayout>
+              }
+            >
+              <Router>
+                <Sider
+                  width={293}
+                  breakpoint="md"
+                  collapsedWidth="0"
+                  onBreakpoint={(broken) => {
+                    console.log(broken);
+                  }}
+                  onCollapse={(collapsed, type) => {
+                    console.log(collapsed, type);
+                    setCollapsedSideBar(!collapsedSideBar);
+                  }}
                   style={{
-                    marginTop: "2rem",
-                    padding: 0,
+                    zIndex: "1",
+                    height: "100vh",
+                    position: "fixed",
+                    width: "18.3125rem",
+                    backgroundColor: "#F8F2ED",
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                  }}
+                >
+                  <div style={{ display: "flex" }}>
+                    <Logo />
+                  </div>
+                  <div style={{ position: "relative" }}>
+                    <BackdropStyled></BackdropStyled>
+                    <BalanceContainerStyled>
+                      <BalanceTitleStyled>
+                        <BalanceTextStyled>Balance</BalanceTextStyled>
+                      </BalanceTitleStyled>
+                      <TotalBalance totalBalance={totalBalance} />
+                    </BalanceContainerStyled>
+                  </div>
+                  <MenuItems />
+                </Sider>
+                <Layout
+                  style={{
+                    marginLeft: collapsedSideBar ? 0 : 293,
                     backgroundColor: "#2F2A75",
                   }}
                 >
-                  <div style={{ float: "right", marginRight: "0.625rem" }}>
-                    <Account />
-                  </div>
-                </Header>
-                <StyledContent>
-                  <div style={styles.content}>
-                    <Switch>
-                      <Route path="/dashboard">
-                        <ERC20Balance
-                          setTotalBalance={setTotalBalance}
-                          setBalances={setBalances}
-                          balances={balances}
-                        />
-                      </Route>
-                      <Route path="/transfer">
-                        <Transfer />
-                      </Route>
-                      <Route path="/activity">
-                        <ERC20Transfers transferHistory={transferHistory} />
-                      </Route>
-                      <Route path="/dex">
-                        <DEX />
-                      </Route>
-                      <Route path="/onramper">
-                        <div
-                          style={{ display: "flex", justifyContent: "center" }}
-                        >
-                          <Onramper />
-                        </div>
-                      </Route>
-                      <Route path="/">
-                        <Redirect to="/dashboard" />
-                      </Route>
-                      <Route path="/home">
-                        <Redirect to="/dashboard" />
-                      </Route>
-                      <Route path="/nonauthenticated">
-                        <>Please login using the "Authenticate" button</>
-                      </Route>
-                    </Switch>
-                  </div>
-                </StyledContent>
-              </Layout>
-            </Router>
-          </React.Suspense>
-        </StyledLayout>
-      </ChainsTokensToolsProvider>
+                  <Header
+                    style={{
+                      marginTop: "2rem",
+                      padding: 0,
+                      backgroundColor: "#2F2A75",
+                    }}
+                  >
+                    <div style={{ float: "right", marginRight: "0.625rem" }}>
+                      <Account />
+                    </div>
+                  </Header>
+                  <StyledContent>
+                    <div style={styles.content}>
+                      <Switch>
+                        <Route path="/dashboard">
+                          <ERC20Balance
+                            setTotalBalance={setTotalBalance}
+                            setBalances={setBalances}
+                            balances={balances}
+                          />
+                        </Route>
+                        <Route path="/transfer">
+                          <Transfer />
+                        </Route>
+                        <Route path="/activity">
+                          {/*
+                          This logic is flawed because it means we will fetch the tx history before the user logs in, which is impossible
+                          todo: Only fetch tx history after logging in - @gitChimp88
+                          */}
+                          <ERC20Transfers transferHistory={transferHistory} />
+                        </Route>
+                        <Route path="/dex">
+                          <DEX />
+                        </Route>
+                        <Route path="/onramper">
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Onramper />
+                          </div>
+                        </Route>
+                        <Route path="/">
+                          <Redirect to="/dashboard" />
+                        </Route>
+                        <Route path="/home">
+                          <Redirect to="/dashboard" />
+                        </Route>
+                        <Route path="/nonauthenticated">
+                          <>Please login using the "Authenticate" button</>
+                        </Route>
+                      </Switch>
+                    </div>
+                  </StyledContent>
+                </Layout>
+              </Router>
+            </React.Suspense>
+          </StyledLayout>
+        </ChainsTokensToolsProvider>
+      </Web3AuthProvider>
     );
   }
 };

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLogin } from "../hooks/useLogin";
+//import { useLogin } from "../hooks/useLogin";
 import apple from "./Account/WalletIcons/apple-social.svg";
 import google from "./Account/WalletIcons/google.svg";
 import twitter from "./Account/WalletIcons/twitter.svg";
@@ -14,6 +14,7 @@ import { ButtonContainer, PrimaryButton } from "./reusable/Buttons";
 import PizzaWalletWarning from "./reusable/PizzaWalletWarning";
 import { CustomImg } from "./reusable/CustomImg";
 import { ethers } from "ethers";
+import { useWeb3Auth } from "../providers/web3Auth";
 
 const AccountContainer = styled("div")`
   display: flex;
@@ -179,7 +180,8 @@ const socialLoginLogos = [
 ];
 
 export default function SignIn() {
-  const { handleLogin } = useLogin();
+  const { login } = useWeb3Auth();
+  //const { handleLogin } = useLogin();
   const [showImportWallet, setShowImportWallet] = useState(false);
   const [privateKey, setPrivateKey] = useState("");
   const [privateKeyError, setPrivateKeyError] = useState(false);
@@ -322,9 +324,7 @@ export default function SignIn() {
                     height={"3.1875rem"}
                     margin={"1.25rem 0 0 0"}
                   >
-                    <PrimaryButton onClick={handleLogin}>
-                      Social Login
-                    </PrimaryButton>
+                    <PrimaryButton onClick={login}>Social Login</PrimaryButton>
                   </ButtonContainer>
                 </ButtonCard>
 
